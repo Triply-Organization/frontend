@@ -1,0 +1,28 @@
+.ctn-login {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__login-form {
+        width: 500px;
+        height: 350px;
+        padding: 1rem 2rem;
+        background-color: #fff;
+        border-radius: 8px;
+
+        &__title {
+            text-align: center;
+        }
+
+        .login-form-forgot {
+            float: right;
+        }
+
+        .login-form-button {
+            width: 100%;
+        }
+    }
+}
