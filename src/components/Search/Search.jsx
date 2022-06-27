@@ -70,8 +70,12 @@ const Search = props => {
         </div>
       </Form.Item>
 
-      <Form.Item className="search-form__item">
-        <Button type="primary" htmlType="submit">
+      <Form.Item className="search-form__item--submit">
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="search-form__item__button"
+        >
           Search
         </Button>
       </Form.Item>
