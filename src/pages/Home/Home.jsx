@@ -1,5 +1,6 @@
 import { Button, Form } from 'antd';
-import React from 'react';
+import Aos from 'aos';
+import React, { useEffect } from 'react';
 import {
   BsArrowRight,
   BsFacebook,
@@ -21,6 +22,13 @@ import './Home.scss';
 const Home = () => {
   const [formSearch] = Form.useForm();
 
+  useEffect(() => {
+    Aos.init({
+      duration: 1500,
+    });
+    Aos.refresh();
+  }, []);
+
   const tour = {
     image:
       'https://demo2wpopal.b-cdn.net/triply/wp-content/uploads/2020/11/5c62cf53ebd1d70c3b6378fd_candre-mandawe-770529-unsplash-copy-820x520.jpg',
@@ -38,11 +46,18 @@ const Home = () => {
   return (
     <div className="home-wrapper">
       <div className="section-1">
-        <img className="section-1__bg" src={section1Background} alt="triply" />
+        <img
+          className="section-1__bg"
+          src={section1Background}
+          alt="triply"
+          data-aos="fade-left"
+        />
         <div className="section-1__content">
-          <h2 className="section-subtitle">Natural beauty</h2>
-          <h1>Discover the most engaging places</h1>
-          <button>
+          <h2 className="section-subtitle" data-aos="fade-right">
+            Natural beauty
+          </h2>
+          <h1 data-aos="fade-up">Discover the most engaging places</h1>
+          <button data-aos="fade-right">
             Explore Now
             <BsArrowRight />
           </button>
@@ -50,12 +65,13 @@ const Home = () => {
         <Search form={formSearch} onFinish={onSearch} />
       </div>
       <div className="section-2">
-        <div className="section-2__title">
+        <div className="section-2__title" data-aos="fade-down">
           <h2 className="section-subtitle">Don&apos;t Miss</h2>
           <h1 className="section-title">Specical Offers</h1>
         </div>
         <div className="section-2__panel-voucher">
           <CardVoucher
+            data-aos="fade-right"
             background={section2Banner1}
             title={'Weekly Flash Deals'}
             subTitle={'Up to 30% off'}
@@ -63,6 +79,7 @@ const Home = () => {
             buttonOnClick={() => {}}
           />
           <CardVoucher
+            data-aos="fade-up"
             background={section2Banner2}
             title={'Summer Escapes'}
             subTitle={'Plan your next trip'}
@@ -70,6 +87,7 @@ const Home = () => {
             buttonOnClick={() => {}}
           />
           <CardVoucher
+            data-aos="fade-left"
             background={section2Banner3}
             title={'Exclusive Deals'}
             subTitle={'Want to save up to 50%'}
@@ -97,11 +115,11 @@ const Home = () => {
         </div>
       </div>
       <div className="section-3">
-        <div className="section-2__title">
+        <div className="section-2__title" data-aos="fade-down">
           <h2 className="section-subtitle">What&apos;s new</h2>
           <h1 className="section-title">Popular Tours</h1>
         </div>
-        <div className="section-3__content-wrapper">
+        <div className="section-3__content-wrapper" data-aos="zoom-in">
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
