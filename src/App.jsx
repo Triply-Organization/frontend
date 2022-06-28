@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import './App.css';
+import Footer from './components/Footer';
 import logo from './logo.svg';
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           </a>
         </p>
       </header>
+      <Footer />
     </div>
   );
 }
