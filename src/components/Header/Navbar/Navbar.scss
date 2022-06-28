@@ -30,7 +30,12 @@
     color: #dc834e;
 
     > .header__subnav-wrapper {
-      display: block;
+      opacity: 1;
+      -webkit-transform: perspective(600px) rotateX(0);
+      transform: perspective(600px) rotateX(0);
+      -webkit-transform-origin: 0 0 0;
+      transition: all 0.5s ease-in-out;
+      visibility: visible;
     }
   }
 

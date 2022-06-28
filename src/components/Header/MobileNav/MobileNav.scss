@@ -41,7 +41,6 @@
 
 .mobileNav__account {
   padding: 0 18px 24px;
-  border-bottom: 1px solid #cccccc78;
 
   & > .mobileNav__account-heading {
     text-align: left;
@@ -60,8 +59,8 @@
 }
 
 .mobileNav__list-wrapper {
-  margin-top: 24px;
-  padding: 0 18px;
+  padding: 24px 18px 0;
+  border-top: 1px solid rgba(204, 204, 204, 0.45);
 }
 
 .mobileNav__list {
@@ -94,4 +93,10 @@
 }
 
 .mobileNav__words {
+}
+
+@media (max-width: 468px) {
+  .mobileNav__account-btn {
+    flex-direction: column;
+  }
 }

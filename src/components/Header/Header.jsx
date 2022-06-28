@@ -1,11 +1,15 @@
+/* eslint-disable no-unused-vars */
 import { UserOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu } from 'antd';
 import { Avatar } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineHome } from 'react-icons/ai';
+import { AiOutlineLogout } from 'react-icons/ai';
 import { BsChatRightDots } from 'react-icons/bs';
+import { BsHeart } from 'react-icons/bs';
 import { GrLanguage } from 'react-icons/gr';
 import { MdOutlinePlace } from 'react-icons/md';
+import { MdFeedback } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
 
 import logo from '../../assets/images/logo.png';
@@ -110,6 +114,72 @@ const userDataNoLogin = (
   />
 );
 
+const userDataLogin = (
+  <Menu
+    items={[
+      {
+        disabled: true,
+        key: '1',
+        label: (
+          <span className="header__language-heading header__language-item">
+            <span className="header__language-abbre">Hi Vo Quoc Duy</span>
+          </span>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <span className="header__language-item">
+            <span className="header__language-icon"></span>
+            <span className="header__language-words">My Tours</span>
+          </span>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <span className="header__language-item">
+            <span className="header__language-icon"></span>
+            <span className="header__language-words">My Reviews</span>
+          </span>
+        ),
+      },
+      {
+        key: '4',
+        label: (
+          <span className="header__language-item">
+            <span className="header__language-icon"></span>
+            <span className="header__language-words">Saved Tours</span>
+          </span>
+        ),
+      },
+      {
+        key: '5',
+        label: (
+          <span className="header__language-item">
+            <span className="header__language-icon"></span>
+            <span className="header__language-words">Log Out</span>
+          </span>
+        ),
+      },
+    ]}
+  />
+);
+
+const userDataLoginMobile = [
+  { title: 'my tours', icon: <TbTicket /> },
+  {
+    title: 'my reviews',
+    icon: <MdFeedback />,
+  },
+  {
+    title: 'saved tour',
+    icon: <BsHeart />,
+    subnav: ['destination1', 'destination2', 'destination3'],
+  },
+  { title: 'logout', icon: <AiOutlineLogout /> },
+];
+
 const navItem = [
   { title: 'home', icon: <AiOutlineHome />, subnav: [] },
   {
@@ -180,6 +250,7 @@ export default function Header() {
             mobileNavStatus={mobileNavStatus}
             onChangeNavbarStatus={onChangeNavbarStatus}
             navItem={navItem}
+            userDataLoginMobile={userDataLoginMobile}
           />
         ) : (
           <>
@@ -205,6 +276,7 @@ export default function Header() {
                 </Button>
               </Dropdown>
             </div>
+
             <div className="header__account-wrapper">
               <Dropdown
                 overlay={userDataNoLogin}
@@ -217,6 +289,14 @@ export default function Header() {
                 </div>
               </Dropdown>
             </div>
+
+            {/* <div className="header__account-wrapper">
+              <Dropdown overlay={userDataLogin} placement="bottomRight" arrow>
+                <div className="header__account-icon">
+                  <Avatar icon={<UserOutlined />} />
+                </div>
+              </Dropdown>
+            </div> */}
           </>
         )}
       </div>

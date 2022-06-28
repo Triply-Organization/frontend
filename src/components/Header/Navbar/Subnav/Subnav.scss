@@ -1,5 +1,4 @@
 .header__subnav-wrapper {
-  display: none;
   position: absolute;
   top: 100%;
   left: 0;
@@ -9,6 +8,14 @@
   cursor: default;
   border-radius: 4px;
   box-shadow: 2px -1px 4px 1px #00000030;
+  -webkit-transform: perspective(600px) rotateX(-90deg);
+  transform: perspective(600px) rotateX(-90deg);
+  -webkit-transform-origin: 0 0 0;
+  transform-origin: 0 0 0;
+  transition: all 0.5s;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.7s;
 }
 
 .header__subnav {

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 /* eslint-disable react/prop-types */
 import { Button } from 'antd';
 import { Typography } from 'antd';
@@ -9,7 +11,12 @@ import './MobileNav.scss';
 
 const { Title } = Typography;
 export default function MobileNav(props) {
-  const { mobileNavStatus, onChangeNavbarStatus, navItem } = props;
+  const {
+    mobileNavStatus,
+    onChangeNavbarStatus,
+    navItem,
+    userDataLoginMobile,
+  } = props;
   useEffect(() => {
     const mobileNav = document.querySelector('.mobileNav__overlays');
     if (mobileNavStatus) {
@@ -39,6 +46,7 @@ export default function MobileNav(props) {
             <VscChromeClose />
           </button>
         </div>
+
         <div className="mobileNav__account">
           <Title className="mobileNav__account-heading" level={4}>
             My account
@@ -52,6 +60,23 @@ export default function MobileNav(props) {
             </Button>
           </div>
         </div>
+
+        {/* <div className="mobileNav__account">
+          <Title className="mobileNav__account-heading" level={4}>
+            Hi Duy Vo
+          </Title>
+          <ul className="mobileNav__list">
+            {userDataLoginMobile.map((item, index) => {
+              return (
+                <li className="mobileNav__item" key={index}>
+                  <span className="mobileNav__icon">{item.icon}</span>
+                  <span className="mobileNav__words">{item.title}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div> */}
+
         <div className="mobileNav__list-wrapper">
           <ul className="mobileNav__list">
             {navItem.map((item, index) => {
