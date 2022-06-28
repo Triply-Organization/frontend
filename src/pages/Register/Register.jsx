@@ -187,7 +187,7 @@ const Register = () => {
                   htmlType="submit"
                   type="primary"
                 >
-                  {/* {Form.validate} */}Submit
+                  Next
                 </Button>
                 <Link to="/login">Already have account?</Link>
               </Form.Item>
@@ -209,9 +209,9 @@ const Register = () => {
                   },
                 ]}
               >
-                <Select size="large" placeholder="Select your role">
-                  <Option value="ROLE_CUSTOMER">Customer</Option>
-                  <Option value="ROLE_USER">User</Option>
+                <Select size="large" placeholder="You go here for ...">
+                  <Option value="ROLE_CUSTOMER">Be come a travler</Option>
+                  <Option value="ROLE_USER">To marketing our tour</Option>
                 </Select>
               </Form.Item>
 
