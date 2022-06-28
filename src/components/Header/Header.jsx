@@ -130,10 +130,16 @@ export default function Header() {
   const [activeTab, setActiveTab] = useState(0);
   // state set for window srollY
   const [scrollY, setScrollY] = useState(window.scrollY);
-  // state set of window width
+  // state set for window width
   const [width, setWidth] = useState(window.innerWidth);
+  // state set for mobileNav status
+  const [mobileNavStatus, setMobileNavStatus] = useState(false);
   const handleSetActiveTab = id => {
     setActiveTab(id);
+  };
+
+  const onChangeNavbarStatus = () => {
+    setMobileNavStatus(!mobileNavStatus);
   };
 
   useEffect(() => {
@@ -170,7 +176,11 @@ export default function Header() {
       </div>
       <div className="header__right-side">
         {width < 1023 ? (
-          <MobileNav navItem={navItem} />
+          <MobileNav
+            mobileNavStatus={mobileNavStatus}
+            onChangeNavbarStatus={onChangeNavbarStatus}
+            navItem={navItem}
+          />
         ) : (
           <>
             <div className="header__multi-currency">

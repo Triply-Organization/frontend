@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Button } from 'antd';
 import { Typography } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { VscChromeClose } from 'react-icons/vsc';
 
@@ -9,15 +9,33 @@ import './MobileNav.scss';
 
 const { Title } = Typography;
 export default function MobileNav(props) {
-  const { navItem } = props;
+  const { mobileNavStatus, onChangeNavbarStatus, navItem } = props;
+  useEffect(() => {
+    const mobileNav = document.querySelector('.mobileNav__overlays');
+    if (mobileNavStatus) {
+      mobileNav.classList.add('mobileNav__overlays--transition');
+    } else {
+      mobileNav.classList.remove('mobileNav__overlays--transition');
+    }
+  }, [mobileNavStatus]);
   return (
     <div className="mobileNav__wrapper">
-      <div className="mobileNav__icon">
+      <div
+        className="mobileNav__icon"
+        onClick={() => {
+          onChangeNavbarStatus();
+        }}
+      >
         <FaBars />
       </div>
       <div className="mobileNav__overlays">
         <div className="mobileNav_close-btn-wrapper">
-          <button className="mobileNav_close-btn">
+          <button
+            className="mobileNav_close-btn"
+            onClick={() => {
+              onChangeNavbarStatus();
+            }}
+          >
             <VscChromeClose />
           </button>
         </div>

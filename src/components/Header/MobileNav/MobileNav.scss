@@ -15,6 +15,14 @@
   right: 0;
   bottom: 0;
   background: #fff;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
+.mobileNav__overlays--transition {
+  transform: translateX(0%);
+  opacity: 1;
 }
 
 .mobileNav_close-btn-wrapper {
@@ -22,7 +30,7 @@
 }
 
 .mobileNav_close-btn {
-  padding: 8px;
+  padding: 10px;
   border: none;
   font-size: 1.5rem;
   line-height: 1.5rem;
