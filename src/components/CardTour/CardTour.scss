@@ -21,16 +21,32 @@
     z-index: 2;
   }
 
-  &__image {
+  &__image-wrapper {
     position: absolute;
     top: 0;
     left: 0;
     height: 50%;
     width: 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color: rgba(38, 0, 255, 0.2);
     border-radius: 16px;
-    transition: ease 300ms;
+    overflow: hidden;
+
+    &__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      transition: all 300ms;
+    }
+    &__image {
+      height: 100%;
+      width: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      border-radius: 16px;
+      transition: ease 300ms;
+    }
   }
 
   &__meta {
@@ -157,8 +173,8 @@
   }
 
   &:hover {
-    .card-tour__image {
-      transform: scale(1.1);
+    .card-tour__image-wrapper__image {
+      transform: scale(1.15);
     }
 
     .card-tour__meta__review__counter {
@@ -168,6 +184,10 @@
     .card-tour__meta__review__rate {
       transform: translateY(-100%);
       opacity: 0;
+    }
+    .card-tour__image-wrapper__overlay {
+      background-color: rgba(0, 0, 255, 0.2);
+      z-index: 2;
     }
   }
 }

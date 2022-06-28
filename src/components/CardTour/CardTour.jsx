@@ -16,7 +16,14 @@ const CardTour = props => {
   return (
     <div className="card-tour">
       {tag && <div className="card-tour__tag">{tag}</div>}
-      <img src={tour.image} alt={tour.name} className="card-tour__image" />
+      <div className="card-tour__image-wrapper">
+        <div className="card-tour__image-wrapper__overlay" />
+        <img
+          src={tour.image}
+          alt={tour.name}
+          className="card-tour__image-wrapper__image"
+        />
+      </div>
       <div className="card-tour__meta">
         <div className="card-tour__meta__item-wrapper">
           <div className="card-tour__meta__item">
