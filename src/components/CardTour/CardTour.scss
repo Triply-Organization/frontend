@@ -1,0 +1,173 @@
+.card-tour {
+  padding: 2rem;
+  position: relative;
+  width: 410px;
+  height: 465px;
+  background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+
+  &__tag {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    background-color: #35cadc;
+    color: white;
+    padding: 5px 1rem;
+    text-transform: uppercase;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 2;
+  }
+
+  &__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 16px;
+    transition: ease 300ms;
+  }
+
+  &__meta {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 50px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+      rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+    background-color: #fff;
+    border-radius: 8px;
+    z-index: 2;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__item-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      & > p {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      &__icon {
+        color: var(--global-color-primary);
+        font-size: 20px;
+      }
+    }
+    &__review {
+      width: 40%;
+      position: relative;
+
+      &__rate {
+        position: absolute;
+        font-size: 16px;
+        color: #00d084;
+        display: flex;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: ease 300ms;
+
+        & .ant-rate-star {
+          margin-right: 2px;
+        }
+      }
+
+      &__counter {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 5px;
+        color: #ccc;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(10px);
+        opacity: 0;
+        transition: ease 300ms;
+      }
+    }
+  }
+  &__content {
+    width: 100%;
+    margin-top: 75%;
+    height: fit-content;
+    z-index: 2;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #dadada;
+
+    & h2 {
+      color: black;
+      font-weight: bold;
+    }
+
+    & p {
+      color: #999;
+    }
+  }
+
+  &__footer {
+    width: calc(100% - 4rem);
+
+    position: absolute;
+    bottom: 0;
+    left: 2rem;
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > div {
+      & p {
+        color: #ccc;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      & b {
+        color: var(--global-color-primary);
+        font-size: 22px;
+      }
+    }
+
+    &__button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
+
+  &:hover {
+    .card-tour__image {
+      transform: scale(1.1);
+    }
+
+    .card-tour__meta__review__counter {
+      transform: translateY(-50%);
+      opacity: 1;
+    }
+    .card-tour__meta__review__rate {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  }
+}

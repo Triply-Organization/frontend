@@ -7,12 +7,23 @@ import section2Banner1 from '../../assets/images/section-2_banner-1.jpg';
 import section2Banner2 from '../../assets/images/section-2_banner-2.jpg';
 import section2Banner3 from '../../assets/images/section-2_banner-3.jpg';
 import section2Shape from '../../assets/images/section-2_shape.png';
+import CardTour from '../../components/CardTour/CardTour';
 import CardVoucher from '../../components/CardVoucher/CardVoucher';
 import Search from '../../components/Search/Search';
 import './Home.scss';
 
 const Home = () => {
   const [formSearch] = Form.useForm();
+
+  const tour = {
+    image:
+      'https://demo2wpopal.b-cdn.net/triply/wp-content/uploads/2020/11/5c62cf53ebd1d70c3b6378fd_candre-mandawe-770529-unsplash-copy-820x520.jpg',
+    duration: 7,
+    destination: 'Bryce Canyon National Park, USA',
+    name: 'Waterfalls, Geysers and Glacier',
+    price: 100,
+    maxPeople: 40,
+  };
 
   const onSearch = values => {
     console.log(values);
@@ -77,6 +88,20 @@ const Home = () => {
               </Button>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="section-3">
+        <div className="section-2__title">
+          <h2 className="section-subtitle">What&apos;s new</h2>
+          <h1 className="section-title">Popular Tours</h1>
+        </div>
+        <div className="section-3__content-wrapper">
+          <CardTour tour={tour} tag={'featured'} />
+          <CardTour tour={tour} tag={'featured'} />
+          <CardTour tour={tour} tag={'featured'} />
+          <CardTour tour={tour} tag={'featured'} />
+          <CardTour tour={tour} tag={'featured'} />
+          <CardTour tour={tour} tag={'featured'} />
         </div>
       </div>
     </div>
