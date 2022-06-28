@@ -1,7 +1,14 @@
 .header__subnav-wrapper {
+  display: none;
   position: absolute;
   top: 100%;
   left: 0;
+  background: #fff;
+  padding: 15px;
+  min-width: 260px;
+  cursor: default;
+  border-radius: 4px;
+  box-shadow: 2px -1px 4px 1px #00000030;
 }
 
 .header__subnav {
@@ -9,4 +16,17 @@
 }
 
 .header__subnav-item {
+  font-size: 1rem;
+  font-weight: lighter;
+  text-align: left;
+  padding: 6px 20px;
+  color: #000;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease-out;
+
+  &:hover {
+    background: #f4f4f4;
+    color: #dc834e;
+  }
 }

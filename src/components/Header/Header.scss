@@ -1,9 +1,20 @@
 .header__wrapper {
+  position: fixed;
+  background-color: #fff;
   width: 100%;
   display: flex;
   align-items: center;
   height: 90px;
-  padding: 0 24px;
+  padding: 0 30px;
+  transition: all 0.2s ease;
+
+  &.header__wrapper--transition {
+    height: 74px;
+    .header__logo-wrapper {
+      transform: scale(0.8);
+      transform-origin: left;
+    }
+  }
 }
 
 .header__left-side {
@@ -14,11 +25,13 @@
 }
 
 .header__logo-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 6%;
+  margin-right: 4%;
   padding: 25px 0;
+  transition: all 0.2s ease;
   cursor: pointer;
 }
 
@@ -31,10 +44,6 @@
   align-items: center;
 }
 
-.header__multi-lang-btn {
-  margin-right: 40px;
-}
-
 .header__multi-lang-icon {
 }
 
@@ -45,4 +54,149 @@
 }
 
 .header__account-icon {
+  & > .ant-avatar.ant-avatar-icon {
+    font-size: 18px;
+    line-height: 18px;
+    color: #000;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
+
+    & > span.anticon.anticon-user {
+      border: 1px solid black;
+      border-radius: 50%;
+      padding: 2px;
+    }
+  }
+}
+
+.header__currency-heading {
+}
+
+.header__currency-item {
+}
+
+.header__currency-abbre {
+}
+
+.header__language-heading {
+}
+
+.header__language-item {
+}
+
+.header__language-abbre {
+}
+
+.header__multi-currency {
+  margin-right: 12px;
+}
+
+button.ant-btn.ant-btn-default.ant-dropdown-trigger {
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+
+  &:hover {
+    border: 1px solid #d9d9d9;
+  }
+}
+
+li.ant-dropdown-menu-item.ant-dropdown-menu-item-disabled.ant-dropdown-menu-item-only-child {
+  font-size: 1.1rem;
+  color: black;
+  font-weight: 600;
+  cursor: default;
+  margin-bottom: 4px;
+}
+
+li.ant-dropdown-menu-item.ant-dropdown-menu-item-only-child {
+  font-size: 1rem;
+
+  &:hover {
+    color: #dc834e;
+  }
+}
+
+.header__multi-lang-wrapper {
+  margin-right: 24px;
+}
+
+button.ant-btn.ant-btn-default.ant-dropdown-trigger.header__multi-lang-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__multi-lang-btn {
+}
+
+.header__multi-lang-icon {
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+
+.header__multi-lang-words {
+  font-size: 1rem;
+}
+
+ul.ant-dropdown-menu.ant-dropdown-menu-root.ant-dropdown-menu-vertical.ant-dropdown-menu-light {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.header__account-dropdown {
+  &
+    ul.ant-dropdown-menu.ant-dropdown-menu-root.ant-dropdown-menu-vertical.ant-dropdown-menu-light {
+    min-width: 250px;
+  }
+
+  li {
+    &:hover {
+      background: none;
+    }
+  }
+
+  & button {
+    width: 100%;
+  }
+}
+
+.ant-btn.ant-btn-default.ant-dropdown-trigger {
+  &.header__multi-currency-container {
+    &:hover {
+      color: #000;
+    }
+  }
+
+  &.header__multi-lang-btn {
+    &:hover {
+      color: #000;
+    }
+  }
+}
+
+.header__account-wrapper {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    height: 65%;
+    color: #000;
+    left: -11px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    border-left: 1px solid #00000030;
+  }
 }

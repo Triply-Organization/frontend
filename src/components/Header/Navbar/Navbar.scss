@@ -21,4 +21,30 @@
   padding: 0 20px;
   cursor: pointer;
   position: relative;
+  font-size: 1.1rem;
+  text-transform: capitalize;
+  font-weight: 600;
+  transition: all 0.2s ease-out;
+
+  &:hover {
+    color: #dc834e;
+
+    > .header__subnav-wrapper {
+      display: block;
+    }
+  }
+
+  &::after {
+    content: '.';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    font-size: 2rem;
+    transform: translateY(-60%);
+    color: #dc834e;
+  }
+}
+
+.header__navbar-item--active {
+  color: #dc834e;
 }
