@@ -1,10 +1,10 @@
 import React from 'react';
 
 import './App.css';
-import Home from './pages/Home/Home';
+import AllTours from './pages/Search/AllTours';
 
 function App() {
-  return <Home />;
+  return <AllTours />;
 }
 
 export default App;
