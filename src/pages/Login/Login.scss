@@ -7,22 +7,29 @@
     align-items: center;
 
     &__login-form {
-        width: 500px;
-        height: 350px;
+        width: 400px;
+        height: fit-content;
         padding: 1rem 2rem;
         background-color: #fff;
         border-radius: 8px;
 
         &__title {
             text-align: center;
+            margin-bottom: 2rem;
         }
 
         .login-form-forgot {
-            float: right;
+            float: left;
         }
 
         .login-form-button {
             width: 100%;
+
+            border-radius: 16px;
+        }
+
+        .ant-input {
+            border-radius: 1rem;
         }
     }
 }

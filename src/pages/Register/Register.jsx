@@ -25,10 +25,10 @@ const Register = () => {
 
   const steps = [
     {
-      title: 'Give us your info 😉',
+      title: 'Give us your info',
     },
     {
-      title: 'Choose your Role 🤤',
+      title: 'Come here for ?',
     },
   ];
 
@@ -54,10 +54,19 @@ const Register = () => {
   const onFinish = values => {
     console.log('Received values of form: ', values);
   };
+
+  // const firstStep = values => {
+  //   form.validateFields(err => {
+  //     if (!err) {
+  //       console.log(values);
+  //       setCurrent(current + 1);
+  //     }
+  //   });
+  // };
   return (
     <div className="ctn ctn-register">
       <div className="ctn-register__register-form">
-        <Steps current={current}>
+        <Steps progressDot current={current}>
           {steps.map(item => (
             <Step key={item.title} title={item.title} />
           ))}
@@ -65,7 +74,7 @@ const Register = () => {
         {current === 0 ? (
           <>
             <div className="ctn-register__register-form__title">
-              <Title level={2}>Register</Title>
+              <Title level={2}>Create account</Title>
             </div>
             <Form
               {...formItemLayout}

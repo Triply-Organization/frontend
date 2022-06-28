@@ -5,7 +5,7 @@ import { userAPI } from '../../api/userApi';
 
 export const login = createAsyncThunk('user/login', async params => {
   const res = await userAPI.login(params);
-  return res.data;
+  return res;
 });
 
 const initialState = {
@@ -27,16 +27,16 @@ const loginSlice = createSlice({
     });
     builder.addCase(login.rejected, state => {
       state.loading = false;
+      message.error('Invalid email or password');
     });
     builder.addCase(login.fulfilled, (state, action) => {
       let data = action.payload;
+      console.log(data);
       state.loading = false;
       if (data.status === 'success') {
         localStorage.setItem('token', data.data.token);
         state.user = data.data.data;
         message.success('Login successfully!');
-      } else if (data.status === 'error') {
-        message.error('This is an error message');
       }
     });
   },

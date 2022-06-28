@@ -1,5 +1,4 @@
-import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Typography } from 'antd';
+import { Button, Form, Input, Typography } from 'antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -7,7 +6,7 @@ import { Link } from 'react-router-dom';
 import './Login.scss';
 import { login } from './LoginSlice';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -23,15 +22,14 @@ const Login = () => {
     <div className="ctn ctn-login">
       <div className="ctn-login__login-form">
         <div className="ctn-login__login-form__title">
-          <Title level={2}>Login</Title>
+          <Title level={2}>Welcome back</Title>
+          <Text strong>First time travel ?</Text>{' '}
+          <Link to="/register">Register now!</Link>
         </div>
         <Form
           name="normal_login"
-          className="login-form"
+          className="form"
           form={form}
-          initialValues={{
-            remember: true,
-          }}
           onFinish={onFinish}
         >
           <Form.Item
@@ -47,10 +45,7 @@ const Login = () => {
               },
             ]}
           >
-            <Input
-              prefix={<MailOutlined className="site-form-item-icon" />}
-              placeholder="Email"
-            />
+            <Input placeholder="Email" />
           </Form.Item>
           <Form.Item
             name="password"
@@ -61,20 +56,7 @@ const Login = () => {
               },
             ]}
           >
-            <Input
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Item>
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
-            <a className="login-form-forgot" href="">
-              Forgot password
-            </a>
+            <Input type="password" placeholder="Password" />
           </Form.Item>
 
           <Form.Item>
@@ -86,10 +68,10 @@ const Login = () => {
             >
               Log in
             </Button>
-            Or <Link to="/register">register now!</Link>
           </Form.Item>
         </Form>
       </div>
+      .
     </div>
   );
 };
