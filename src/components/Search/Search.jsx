@@ -5,6 +5,7 @@ import {
   AiOutlineCalendar,
   AiOutlineCompass,
   AiOutlineDribbble,
+  AiOutlineSearch,
   AiOutlineUser,
 } from 'react-icons/ai';
 
@@ -75,6 +76,7 @@ const Search = props => {
           type="primary"
           htmlType="submit"
           className="search-form__item__button"
+          icon={<AiOutlineSearch style={{ fontSize: '20px' }} />}
         >
           Search
         </Button>
