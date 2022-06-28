@@ -1,12 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  Typography,
-} from 'antd';
+import { Button, Form, Input, InputNumber, Select, Typography } from 'antd';
 import React from 'react';
 
 import './Register.scss';
@@ -31,19 +23,6 @@ const Register = () => {
       },
       sm: {
         span: 24,
-      },
-    },
-  };
-
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0,
-      },
-      sm: {
-        span: 16,
-        offset: 8,
       },
     },
   };
@@ -139,6 +118,10 @@ const Register = () => {
             <Input />
           </Form.Item>
 
+          <Form.Item name="address" label="Address">
+            <Input />
+          </Form.Item>
+
           <Form.Item
             name="phone"
             label="Phone Number"
@@ -174,27 +157,11 @@ const Register = () => {
             <Select placeholder="select your role">
               <Option value="ROLE_CUSTOMER">Customer</Option>
               <Option value="ROLE_USER">User</Option>
+              <Option value="ROLE_ADMIN">Admin</Option>
             </Select>
           </Form.Item>
 
-          <Form.Item
-            name="agreement"
-            valuePropName="checked"
-            rules={[
-              {
-                validator: (_, value) =>
-                  value
-                    ? Promise.resolve()
-                    : Promise.reject(new Error('Should accept agreement')),
-              },
-            ]}
-            {...tailFormItemLayout}
-          >
-            <Checkbox>
-              I have read the <a href="">agreement</a>
-            </Checkbox>
-          </Form.Item>
-          <Form.Item {...tailFormItemLayout}>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Register
             </Button>
