@@ -63,7 +63,7 @@ const Search = props => {
           <AiOutlineUser className="search-form__item__select__icon" />
           <div>
             <b>Guests</b>
-            <Select bordered={false} placeholder={'0'}>
+            <Select bordered={false} placeholder={'0'} showArrow={true}>
               <Option value="lucy">Canada</Option>
             </Select>
           </div>
