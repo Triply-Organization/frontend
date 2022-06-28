@@ -2,10 +2,15 @@ import { UserOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu } from 'antd';
 import { Avatar } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { AiOutlineHome } from 'react-icons/ai';
+import { BsChatRightDots } from 'react-icons/bs';
 import { GrLanguage } from 'react-icons/gr';
+import { MdOutlinePlace } from 'react-icons/md';
+import { TbTicket } from 'react-icons/tb';
 
 import logo from '../../assets/images/logo.png';
 import './Header.scss';
+import MobileNav from './MobileNav/MobileNav';
 import Navbar from './Navbar';
 
 const currency = (
@@ -105,6 +110,21 @@ const userDataNoLogin = (
   />
 );
 
+const navItem = [
+  { title: 'home', icon: <AiOutlineHome />, subnav: [] },
+  {
+    title: 'tours',
+    icon: <TbTicket />,
+    subnav: ['tour1', 'tour2', 'tour3', 'tour4'],
+  },
+  {
+    title: 'destinations',
+    icon: <MdOutlinePlace />,
+    subnav: ['destination1', 'destination2', 'destination3'],
+  },
+  { title: 'contact', icon: <BsChatRightDots />, subnav: [] },
+];
+
 export default function Header() {
   // state set for active tab
   const [activeTab, setActiveTab] = useState(0);
@@ -144,20 +164,14 @@ export default function Header() {
           <Navbar
             activeTab={activeTab}
             handleSetActiveTab={handleSetActiveTab}
-            navItem={[
-              { title: 'home', subnav: [] },
-              { title: 'tours', subnav: ['tour1', 'tour2', 'tour3', 'tour4'] },
-              {
-                title: 'destinations',
-                subnav: ['destination1', 'destination2', 'destination3'],
-              },
-              { title: 'contact', subnav: [] },
-            ]}
+            navItem={navItem}
           />
         )}
       </div>
       <div className="header__right-side">
-        {width < 1023 ? null : (
+        {width < 1023 ? (
+          <MobileNav navItem={navItem} />
+        ) : (
           <>
             <div className="header__multi-currency">
               <Dropdown
