@@ -1,13 +1,20 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import './App.scss';
-import { Register } from './pages/index';
+import RoutesApp from './Route/RoutesApp';
+import { store } from './app/store';
 
 function App() {
   return (
-    <div className="App">
-      <Register />
-    </div>
+    <Provider store={store}>
+      <Router>
+        <div className="App">
+          <RoutesApp />
+        </div>
+      </Router>
+    </Provider>
   );
 }
 

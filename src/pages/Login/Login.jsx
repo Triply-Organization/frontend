@@ -1,16 +1,22 @@
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, Typography } from 'antd';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import './Login.scss';
+import './LoginSlice';
+import { addNewUser } from './LoginSlice';
 
 const { Title } = Typography;
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
 
   const onFinish = values => {
     console.log('Received values of form: ', values);
+    dispatch(addNewUser(values));
   };
 
   return (
@@ -79,7 +85,7 @@ const Login = () => {
             >
               Log in
             </Button>
-            Or <a href="">register now!</a>
+            Or <Link to="/register">register now!</Link>
           </Form.Item>
         </Form>
       </div>
