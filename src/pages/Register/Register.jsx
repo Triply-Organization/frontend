@@ -211,7 +211,7 @@ const Register = () => {
               >
                 <Select size="large" placeholder="You go here for ...">
                   <Option value="ROLE_CUSTOMER">Be come a travler</Option>
-                  <Option value="ROLE_USER">To marketing our tour</Option>
+                  <Option value="ROLE_USER">To marketing your tour</Option>
                 </Select>
               </Form.Item>
 

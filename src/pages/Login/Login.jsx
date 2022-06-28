@@ -1,22 +1,22 @@
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, Typography } from 'antd';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import './Login.scss';
-import './LoginSlice';
-import { addNewUser } from './LoginSlice';
+import { login } from './LoginSlice';
 
 const { Title } = Typography;
 
 const Login = () => {
   const dispatch = useDispatch();
+  const loading = useSelector(state => state.login.loading);
   const [form] = Form.useForm();
-
   const onFinish = values => {
     console.log('Received values of form: ', values);
-    dispatch(addNewUser(values));
+    dispatch(login(values));
+    form.resetFields();
   };
 
   return (
@@ -79,6 +79,7 @@ const Login = () => {
 
           <Form.Item>
             <Button
+              loading={loading}
               type="primary"
               htmlType="submit"
               className="login-form-button"

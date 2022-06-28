@@ -1,18 +1,14 @@
 import { axiosClient } from './config/axiosClient';
 
 export const userAPI = {
-  getUserInfo() {
-    const url = `/users/`;
-    return axiosClient.get(url);
-  },
-
   login(params) {
-    const url = `/users/${params}`;
-    return axiosClient.post(url);
+    const url = `/login`;
+    console.log(params);
+    return axiosClient.post(url, params);
   },
 
   register(params) {
-    const url = `/users/${params}`;
-    return axiosClient.post(url);
+    const url = `/register`;
+    return axiosClient.post(url, params);
   },
 };

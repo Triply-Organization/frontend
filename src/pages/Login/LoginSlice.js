@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { message } from 'antd';
 
 import { userAPI } from '../../api/userApi';
 
-const login = createAsyncThunk('user/login', async params => {
+export const login = createAsyncThunk('user/login', async params => {
   const res = await userAPI.login(params);
   return res.data;
 });
@@ -28,8 +29,15 @@ const loginSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(login.fulfilled, (state, action) => {
+      let data = action.payload;
       state.loading = false;
-      state.user = action.payload;
+      if (data.status === 'success') {
+        localStorage.setItem('token', data.data.token);
+        state.user = data.data.data;
+        message.success('Login successfully!');
+      } else if (data.status === 'error') {
+        message.error('This is an error message');
+      }
     });
   },
 });
