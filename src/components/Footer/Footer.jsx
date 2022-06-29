@@ -32,7 +32,7 @@ export default function Footer() {
     <footer className="footer__wrapper">
       <div className="footer__upper">
         <div className="footer__info-wrapper">
-          <div className="footer__heading">
+          <div className="footer__heading footer__heading--center">
             <img src={logo} alt="" className="footer__info-logo" />
           </div>
           <div className="footer__info-description">
@@ -42,16 +42,18 @@ export default function Footer() {
               excepteur pariatur.
             </span>
           </div>
-          <div className="footer__info-address">
-            <span className="footer__info-address-words">
-              754 West Gartner Street Encino, CA 91316
-            </span>
+          <div className="footer__direct">
+            <div className="footer__info-address">
+              <span className="footer__info-address-words">
+                754 West Gartner Street Encino, CA 91316
+              </span>
+            </div>
+            <Button className="footer__info-view-map-btn" size="large">
+              View Map
+            </Button>
           </div>
-          <Button className="footer__info-view-map-btn" size="large">
-            View Map
-          </Button>
         </div>
-        <div className="footer__list-wrapper">
+        <div className="footer__list-wrapper footer__list-mobile--left">
           <Title className="footer__heading" level={4}>
             Our Services
           </Title>
@@ -59,13 +61,15 @@ export default function Footer() {
             {services.map((item, index) => {
               return (
                 <li className="footer__item" key={index}>
-                  {item}
+                  <a href="#" className="footer__link">
+                    {item}
+                  </a>
                 </li>
               );
             })}
           </ul>
         </div>
-        <div className="footer__list-wrapper">
+        <div className="footer__list-wrapper footer__list-mobile--right">
           <Title className="footer__heading" level={4}>
             Explore
           </Title>
@@ -73,7 +77,9 @@ export default function Footer() {
             {explore.map((item, index) => {
               return (
                 <li className="footer__item" key={index}>
-                  {item}
+                  <a href="#" className="footer__link">
+                    {item}
+                  </a>
                 </li>
               );
             })}
@@ -92,7 +98,9 @@ export default function Footer() {
               size="large"
               placeholder="Your email"
             />
-            <Button className="footer__detail-btn">Subscribe</Button>
+            <Button type="primary" size="large" className="footer__detail-btn">
+              Subscribe
+            </Button>
           </div>
         </div>
       </div>
@@ -104,13 +112,15 @@ export default function Footer() {
           </a>
           . All Rights Reserved.
         </div>
-        <div className="footer__lower-list">
+        <ul className="footer__lower-list">
           {footerItem.map((item, index) => (
-            <li className="footer_lower-item" key={index}>
-              {item}
+            <li className="footer__lower-item" key={index}>
+              <a href="#" className="footer__low-link">
+                {item}
+              </a>
             </li>
           ))}
-        </div>
+        </ul>
       </div>
     </footer>
   );
