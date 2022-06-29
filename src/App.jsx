@@ -1,10 +1,14 @@
 import React from 'react';
 
 import './App.css';
-import AllTours from './pages/Search/AllTours';
+import DetailTour from './pages/DetailTour';
 
 function App() {
-  return <AllTours />;
+  return (
+    <>
+      <DetailTour />
+    </>
+  );
 }
 
 export default App;
