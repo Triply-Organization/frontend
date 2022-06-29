@@ -130,8 +130,9 @@ const userDataLogin = (
         key: '2',
         label: (
           <span className="header__language-item">
-            <span className="header__language-icon"></span>
-            <span className="header__language-words">My Tours</span>
+            <a src="#" className="header__language-words">
+              My Tours
+            </a>
           </span>
         ),
       },
@@ -139,8 +140,9 @@ const userDataLogin = (
         key: '3',
         label: (
           <span className="header__language-item">
-            <span className="header__language-icon"></span>
-            <span className="header__language-words">My Reviews</span>
+            <a src="#" className="header__language-words">
+              My Reviews
+            </a>
           </span>
         ),
       },
@@ -148,8 +150,9 @@ const userDataLogin = (
         key: '4',
         label: (
           <span className="header__language-item">
-            <span className="header__language-icon"></span>
-            <span className="header__language-words">Saved Tours</span>
+            <a src="#" className="header__language-words">
+              Saved Tours
+            </a>
           </span>
         ),
       },
@@ -157,8 +160,9 @@ const userDataLogin = (
         key: '5',
         label: (
           <span className="header__language-item">
-            <span className="header__language-icon"></span>
-            <span className="header__language-words">Log Out</span>
+            <a src="#" className="header__language-words">
+              Log Out
+            </a>
           </span>
         ),
       },

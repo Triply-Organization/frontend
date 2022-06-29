@@ -13,15 +13,20 @@ export default function Navbar(props) {
           return (
             <>
               <li
-                className={
-                  activeTab === index
-                    ? 'header__navbar-item header__navbar-item--active'
-                    : 'header__navbar-item'
-                }
+                className="header__navbar-item"
                 onClick={() => handleSetActiveTab(index)}
                 key={index}
               >
-                {item.title}
+                <a
+                  href="#"
+                  className={
+                    activeTab === index
+                      ? 'header__navbar-link header__navbar-link--active'
+                      : 'header__navbar-link'
+                  }
+                >
+                  {item.title}
+                </a>
                 <Subnav subnavItem={item.subnav} />
               </li>
             </>

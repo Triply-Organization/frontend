@@ -13,7 +13,9 @@ export default function Subnav(props) {
             {subnavItem.map((item, index) => {
               return (
                 <li className="header__subnav-item" key={index}>
-                  {item}
+                  <a href="#" className="header__subnav-link">
+                    {item}
+                  </a>
                 </li>
               );
             })}

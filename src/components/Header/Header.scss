@@ -44,15 +44,6 @@
   align-items: center;
 }
 
-.header__multi-lang-icon {
-}
-
-.header__multi-lang-words {
-}
-
-.header__account {
-}
-
 .header__account-icon {
   & > .ant-avatar.ant-avatar-icon {
     font-size: 18px;
@@ -75,22 +66,13 @@
   }
 }
 
-.header__currency-heading {
-}
+.header__language-words {
+  color: #000;
+  display: block;
 
-.header__currency-item {
-}
-
-.header__currency-abbre {
-}
-
-.header__language-heading {
-}
-
-.header__language-item {
-}
-
-.header__language-abbre {
+  &:hover {
+    color: #dc834e;
+  }
 }
 
 .header__multi-currency {
@@ -136,9 +118,6 @@ button.ant-btn.ant-btn-default.ant-dropdown-trigger.header__multi-lang-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.header__multi-lang-btn {
 }
 
 .header__multi-lang-icon {

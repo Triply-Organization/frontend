@@ -69,8 +69,10 @@ export default function MobileNav(props) {
             {userDataLoginMobile.map((item, index) => {
               return (
                 <li className="mobileNav__item" key={index}>
-                  <span className="mobileNav__icon">{item.icon}</span>
-                  <span className="mobileNav__words">{item.title}</span>
+                  <a href="#" className="mobileNav__link">
+                    <span className="mobileNav__icon">{item.icon}</span>
+                    <span className="mobileNav__words">{item.title}</span>
+                  </a>
                 </li>
               );
             })}
@@ -82,8 +84,10 @@ export default function MobileNav(props) {
             {navItem.map((item, index) => {
               return (
                 <li className="mobileNav__item" key={index}>
-                  <span className="mobileNav__icon">{item.icon}</span>
-                  <span className="mobileNav__words">{item.title}</span>
+                  <a href="#" className="mobileNav__link">
+                    <span className="mobileNav__icon">{item.icon}</span>
+                    <span className="mobileNav__words">{item.title}</span>
+                  </a>
                 </li>
               );
             })}

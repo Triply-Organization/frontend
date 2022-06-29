@@ -68,19 +68,24 @@
 }
 
 .mobileNav__item {
+  margin: 4px 0;
+}
+
+.mobileNav__link {
   font-size: 1rem;
   text-transform: capitalize;
   text-align: left;
   padding: 6px 12px;
   border-radius: 5px;
-  margin: 4px 0;
   cursor: pointer;
   display: flex;
   align-items: center;
   transition: all 0.2s ease-out;
+  color: #000;
 
   &:hover {
     background: #f0f0f0;
+    color: #dc834e;
   }
 }
 

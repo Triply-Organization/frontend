@@ -23,14 +23,18 @@
 }
 
 .header__subnav-item {
+}
+
+.header__subnav-link {
+  border-radius: 6px;
+  display: block;
   font-size: 1rem;
   font-weight: lighter;
   text-align: left;
-  padding: 6px 20px;
   color: #000;
   cursor: pointer;
-  border-radius: 6px;
   transition: all 0.2s ease-out;
+  padding: 6px 20px;
 
   &:hover {
     background: #f4f4f4;
