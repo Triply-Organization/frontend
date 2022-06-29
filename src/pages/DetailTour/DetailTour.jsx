@@ -1,10 +1,12 @@
-import { Carousel, Typography } from 'antd';
+import { Carousel } from 'antd';
+import { Collapse } from 'antd';
 import React from 'react';
 import { AiOutlineDollar } from 'react-icons/ai';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { BiTimeFive } from 'react-icons/bi';
 import { BiCommentDetail } from 'react-icons/bi';
 import { GoLocation } from 'react-icons/go';
-import { GrGroup } from 'react-icons/gr';
+import { RiErrorWarningLine } from 'react-icons/ri';
 import { RiGroupLine } from 'react-icons/ri';
 
 import img1 from '../../assets/images/detail_images/5c486e7270c16e87069fbb70_cano-cristales-fluss-in-Kolumbien-720x450.jpg';
@@ -20,7 +22,105 @@ import img10 from '../../assets/images/detail_images/5c48735739c52149617831f9_DS
 import img11 from '../../assets/images/detail_images/5c48735739c52149617831f9_DSC04931-copy-720x450.jpg';
 import './DetailTour.scss';
 
-const { Title } = Typography;
+const { Panel } = Collapse;
+
+const tourPlanItems = [
+  {
+    header: (
+      <span className="detailTour__plan-heading">
+        <GoLocation className="detailTour__plan-icon" />
+        <span className="detailTour__plan-heading-word">
+          Day 1{' '}
+          <span className="detailTour__place-words">
+            Caño Cristiletos (smaller Caño Cristales River)
+          </span>
+        </span>
+      </span>
+    ),
+    text: (
+      <p className="detail__plan-description">
+        You will start your adventure in Bogota. Arriving at the airport on your
+        own, you will board your flight from Bogota to La Macarena (1 hour
+        flight). Presentation time can be as early as 5:00am*. Once you arrive
+        at the La Macarena airport you will be greeted by a FlashpackerConnect
+        guide/representative. From here, you will attend an information session
+        with National Park Sierra de la Macarena (video and talk with park
+        representative) and be transported to your hotel for check in.
+      </p>
+    ),
+  },
+  {
+    header: (
+      <span className="detailTour__plan-heading">
+        <GoLocation className="detailTour__plan-icon" />
+        <span className="detailTour__plan-heading-word">
+          Day 2{' '}
+          <span className="detailTour__place-words">
+            Caño Cristales Full Day Tour
+          </span>
+        </span>
+      </span>
+    ),
+    text: (
+      <p className="detail__plan-description">
+        Before your adventure starts you will have breakfast at a local
+        restaurant. Afterwards, you will launch from La Macarena’s boat ramp for
+        a 30 minute boat ride. During this ride you will have the opportunity to
+        see monkeys, and exotic bird species such as the prehistoric Hoatzan.
+        You will then be transported in 4x4s from the La Cachivera district to
+        Caño Cajuche. Once we arrive in Caño Cajuche we will start our walk to
+        Caño Cristales.* Our route will end at Los Ochos also known as The 8s
+        which is considered the most picturesque location throughout the park
+        (around 6 hours total).
+      </p>
+    ),
+  },
+  {
+    header: (
+      <span className="detailTour__plan-heading">
+        <GoLocation className="detailTour__plan-icon" />
+        <span className="detailTour__plan-heading-word">
+          Day 3{' '}
+          <span className="detailTour__place-words">
+            Redal Jungle Full Day Hike
+          </span>
+        </span>
+      </span>
+    ),
+    text: (
+      <p className="detail__plan-description">
+        As you venture down river, you will notice the transition from a middle
+        climate of where the Andes and Amazon meet to a complete Amazon
+        environment. Fresh water dolphins, anacondas, crocodiles, and many other
+        species can be seen on the way down
+      </p>
+    ),
+  },
+  {
+    header: (
+      <span className="detailTour__plan-heading">
+        <GoLocation className="detailTour__plan-icon" />
+        <span className="detailTour__plan-heading-word">
+          Day 4{' '}
+          <span className="detailTour__place-words">
+            Morning Boat Ride - Departure
+          </span>
+        </span>
+      </span>
+    ),
+    text: (
+      <p className="detail__plan-description">
+        On the morning of your last day you will wake up early for a sunrise
+        wildlife boat ride (around 6:00am depending on time of year) after
+        enjoying this you will be taken to breakfast at a local farm. After
+        breakfast, you will go back to your hotel to pack (around 9:00 am).
+        Flights back to Bogota vary in time and are typically between
+        10:00am-2:00pm depending on availability and flight schedule that day.
+        (Lunch included if you have an afternoon flight.)
+      </p>
+    ),
+  },
+]; // submenu keys of first level
 
 const images = [
   img1,
@@ -48,12 +148,12 @@ const detailTourItem = [
     detail: '4 days',
   },
   {
-    icon: <GrGroup />,
+    icon: <RiGroupLine />,
     title: 'max people',
     detail: '50',
   },
   {
-    icon: <RiGroupLine />,
+    icon: <RiErrorWarningLine />,
     title: 'min age',
     detail: '12+',
   },
@@ -64,13 +164,18 @@ const detailTourItem = [
   },
 ];
 
+const services = [
+  'Specialized bilingual guide',
+  'Private Transport',
+  'Entrance fees (Cable and car and Moon Valley)',
+  'Box lunch water, banana apple and chocolate',
+];
+
 export default function DetailTour() {
   return (
     <section className="detailTour">
-      <div className="detailTour__overview">
-        <Title className="detailTour__overview-heading">
-          Cano Cristales River Trip
-        </Title>
+      <div className="detailTour__intro">
+        <h1 className="detailTour__intro-heading">Cano Cristales River Trip</h1>
         <div className="detailTour__location">
           <span className="detailTour__icon">
             <GoLocation></GoLocation>
@@ -81,6 +186,7 @@ export default function DetailTour() {
         </div>
         <div className="detailTour__carousel-wrapper">
           <Carousel
+            autoplay
             className="detailTour__carousel"
             draggable={true}
             slidesToShow={2}
@@ -118,6 +224,58 @@ export default function DetailTour() {
             );
           })}
         </div>
+      </div>
+      <div className="detailTour__content-wrapper">
+        <div className="detailTour__content">
+          <div className="detailTour__overview">
+            <h2 className="detailTour__content-heading">overview</h2>
+            <p className="detailTour__overview-description">
+              Caño Cristales Tour, (aka the most beautiful river in the world)
+              is an exceptional and surprising natural beauty. Its unique
+              ecosystem is very fragile and now belongs to the Sierra de la
+              Macarena Natural National Park.
+            </p>
+          </div>
+          <div className="detailTour__services">
+            <h2 className="detailTour__content-heading">services</h2>
+            <ul className="detailTour__services-list">
+              {services.map((item, index) => {
+                return (
+                  <li className="detailTour__services-item" key={index}>
+                    <AiOutlineCheckCircle className="detailTour__services-item-icon"></AiOutlineCheckCircle>
+                    {item}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="detailTour__plan">
+            <h2 className="detailTour__content-heading detailTour__content-heading--primary">
+              tour plan
+            </h2>
+            <Collapse
+              accordion
+              className="detailTour__plan"
+              expandIconPosition="end"
+            >
+              {tourPlanItems.map((item, index) => {
+                return (
+                  <Panel
+                    className="detailTour__plan-item"
+                    header={item.header}
+                    key={index}
+                  >
+                    <p>{item.text}</p>
+                  </Panel>
+                );
+              })}
+            </Collapse>
+          </div>
+          <div className="detailTour__map">
+            <h2 className="detailTour__content-heading">tour map</h2>
+          </div>
+        </div>
+        <div className="detailTour__booking-wrapper"></div>
       </div>
     </section>
   );
