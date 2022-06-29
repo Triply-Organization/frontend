@@ -1,7 +1,13 @@
-.cms-content {
-  padding: 24;
-  margin: 0;
+.layout-cms-customer {
+  min-height: 100vh;
+  height: fit-content;
+  min-width: 100vw;
+  width: fit-content;
+}
 
+.cms-content {
+  margin: 24px 16px 0;
+  overflow: initial;
   &__action {
     width: 100%;
     display: flex;

@@ -7,6 +7,7 @@ import {
   AiOutlineUnorderedList,
 } from 'react-icons/ai';
 
+import FormTour from '../../components/FormTour/FormTour';
 import './CMSCustomer.scss';
 
 const { Content, Sider } = Layout;
@@ -72,7 +73,7 @@ const CMSCustomer = () => {
   };
 
   return (
-    <Layout style={{ height: '100vh' }}>
+    <Layout className="layout-cms-customer">
       <Sider width={200}>
         <Menu
           mode="inline"
@@ -84,9 +85,11 @@ const CMSCustomer = () => {
           items={itemSider}
         />
       </Sider>
+
       <Layout
         style={{
           padding: '0 24px 24px',
+          height: 'fit-content',
         }}
       >
         <Breadcrumb
@@ -98,37 +101,42 @@ const CMSCustomer = () => {
           <Breadcrumb.Item>CMS</Breadcrumb.Item>
         </Breadcrumb>
         <Content className="cms-content">
-          <div className="cms-content__action">
-            <Button
-              type="primary"
-              size="large"
-              icon={<AiOutlinePlus />}
-              className="cms-content__btn"
-            >
-              Add new tour
-            </Button>
-            <Button
-              type="primary"
-              size="large"
-              icon={<AiOutlineDelete />}
-              className="cms-content__btn"
-              danger
-            />
-          </div>
+          {false && (
+            <>
+              <div className="cms-content__action">
+                <Button
+                  type="primary"
+                  size="large"
+                  icon={<AiOutlinePlus />}
+                  className="cms-content__btn"
+                >
+                  Add new tour
+                </Button>
+                <Button
+                  type="primary"
+                  size="large"
+                  icon={<AiOutlineDelete />}
+                  className="cms-content__btn"
+                  danger
+                />
+              </div>
 
-          <Table
-            columns={columns}
-            dataSource={data}
-            pagination={{
-              defaultPageSize: 10,
-              showSizeChanger: true,
-              pageSizeOptions: ['10', '20', '30'],
-            }}
-            rowSelection={{
-              type: 'checkbox',
-              ...rowSelection,
-            }}
-          />
+              <Table
+                columns={columns}
+                dataSource={data}
+                pagination={{
+                  defaultPageSize: 10,
+                  showSizeChanger: true,
+                  pageSizeOptions: ['10', '20', '30'],
+                }}
+                rowSelection={{
+                  type: 'checkbox',
+                  ...rowSelection,
+                }}
+              />
+            </>
+          )}
+          <FormTour />
         </Content>
       </Layout>
     </Layout>
