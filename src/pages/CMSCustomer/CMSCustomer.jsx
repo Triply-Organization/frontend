@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Layout, Menu, Table } from 'antd';
+import { Breadcrumb, Button, Form, Layout, Menu, Table } from 'antd';
 import React from 'react';
 import {
   AiFillDashboard,
@@ -21,6 +21,12 @@ function getItem(label, key, icon, children, type) {
   };
 }
 const CMSCustomer = () => {
+  const [formTour] = Form.useForm();
+
+  const onFinish = value => {
+    console.log(value);
+  };
+
   const data = [
     {
       id: '1',
@@ -136,7 +142,7 @@ const CMSCustomer = () => {
               />
             </>
           )}
-          <FormTour />
+          <FormTour form={formTour} onFinish={onFinish} />
         </Content>
       </Layout>
     </Layout>

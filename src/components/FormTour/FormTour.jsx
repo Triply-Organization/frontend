@@ -1,5 +1,7 @@
 import {
+  Button,
   Collapse,
+  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -11,7 +13,12 @@ import {
 } from 'antd';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { AiOutlineInbox } from 'react-icons/ai';
+import {
+  AiOutlineEye,
+  AiOutlineInbox,
+  AiOutlineMinusCircle,
+  AiOutlinePlus,
+} from 'react-icons/ai';
 
 import './FormTour.scss';
 
@@ -24,7 +31,7 @@ const { Option } = Select;
 const FormTour = props => {
   const { form, onFinish } = props;
   const [minAge, setMinAge] = useState(null);
-  console.log(minAge);
+  const [duration, setDuration] = useState(null);
 
   const beforeUpload = file => {
     const isPNG = file.type === 'image/png';
@@ -55,7 +62,31 @@ const FormTour = props => {
             },
           ]}
         >
-          <Input size="large" placeholder="Tour title" />
+          <div className="form-tour__control-header">
+            <Input
+              size="large"
+              placeholder="Tour title"
+              style={{ width: '30%' }}
+            />
+            <Space>
+              <Button
+                type="primary"
+                size="large"
+                icon={<AiOutlinePlus />}
+                htmlType="submit"
+                className="form-tour__control-header__btn"
+              >
+                Add now
+              </Button>
+              <Button
+                size="large"
+                icon={<AiOutlineEye />}
+                className="form-tour__control-header__btn"
+              >
+                Review
+              </Button>
+            </Space>
+          </div>
         </Form.Item>
 
         <div className="card-container">
@@ -73,6 +104,7 @@ const FormTour = props => {
                   ]}
                 >
                   <InputNumber
+                    onChange={e => setDuration(e)}
                     min={1}
                     max={30}
                     size="large"
@@ -147,7 +179,7 @@ const FormTour = props => {
                     rules={[
                       {
                         required: true,
-                        message: 'Please input your tour title!',
+                        message: 'Please input your tour cover image',
                       },
                     ]}
                   >
@@ -171,16 +203,7 @@ const FormTour = props => {
                       </p>
                     </Dragger>
                   </Form.Item>
-                  <Form.Item
-                    label="Gallery"
-                    name="gallery"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please input your tour title!',
-                      },
-                    ]}
-                  >
+                  <Form.Item label="Gallery" name="gallery">
                     <Dragger
                       name="image-detail"
                       multiple={true}
@@ -265,11 +288,78 @@ const FormTour = props => {
                 />
               </Form.Item>
             </TabPane>
-            <TabPane tab="Tour plan" key="3"></TabPane>
+            <TabPane tab="Tour plan" key="3">
+              <Collapse defaultActiveKey={['1']}>
+                {Array.from(Array(duration), (_, i) => {
+                  return (
+                    <Panel header={`Day ${i + 1}`} key={i + 1}>
+                      <Form.Item
+                        label="Description"
+                        name={`day${i + 1}`}
+                        rules={[
+                          {
+                            required: true,
+                            message: `Please input Description your tour plan day ${
+                              i + 1
+                            }`,
+                          },
+                        ]}
+                      >
+                        <TextArea
+                          style={{ resize: 'none' }}
+                          rows={3}
+                          size="large"
+                        />
+                      </Form.Item>
+                    </Panel>
+                  );
+                })}
+              </Collapse>
+            </TabPane>
+            <TabPane tab="Date open" key="4">
+              <Form.List name="dateOpen">
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <Space
+                        key={key}
+                        style={{
+                          display: 'flex',
+                          marginBottom: 8,
+                        }}
+                        align="baseline"
+                      >
+                        <Form.Item
+                          className="date-open-form"
+                          {...restField}
+                          name={[name, key]}
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Missing last name',
+                            },
+                          ]}
+                        >
+                          <DatePicker size="large" />
+                        </Form.Item>
+                        <AiOutlineMinusCircle
+                          onClick={() => remove(name)}
+                          style={{ fontSize: '18px' }}
+                        />
+                      </Space>
+                    ))}
+                    <Form.Item>
+                      <Button type="dashed" onClick={() => add()} block>
+                        More open
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
+              </Form.List>
+            </TabPane>
           </Tabs>
         </div>
       </div>
-      <div className="form-tour__content__right"></div>
     </Form>
   );
 };
