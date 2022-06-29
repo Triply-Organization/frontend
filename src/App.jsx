@@ -1,10 +1,10 @@
 import React from 'react';
 
 import './App.css';
-import AllTours from './pages/Search/AllTours';
+import CMSCustomer from './pages/CMSCustomer/CMSCustomer';
 
 function App() {
-  return <AllTours />;
+  return <CMSCustomer />;
 }
 
 export default App;
