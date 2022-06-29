@@ -13,7 +13,6 @@ const Login = () => {
   const loading = useSelector(state => state.login.loading);
   const [form] = Form.useForm();
   const onFinish = values => {
-    console.log('Received values of form: ', values);
     dispatch(login(values));
     form.resetFields();
   };

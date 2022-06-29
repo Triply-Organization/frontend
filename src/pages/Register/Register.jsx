@@ -1,24 +1,25 @@
 import { Button, Col, Form, Input, Row, Select, Steps, Typography } from 'antd';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useStepsForm } from 'sunflower-antd';
 
 import './Register.scss';
+import { register } from './RegisterSlice';
 
 const { Option } = Select;
 const { Title } = Typography;
 const { Step } = Steps;
 
 const Register = () => {
-  // const [current, setCurrent] = useState(0);
-  // const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.register.loading);
 
   const { form, current, gotoStep, stepsProps, formProps, submit } =
     useStepsForm({
       async submit(values) {
-        // const { email, password, phone, role, address } = values;
-        // console.log(email, password, phone, role, address);
-        console.log(values);
+        let newValues = { ...values, roles: [values.roles] };
+        dispatch(register(newValues));
         await new Promise(r => setTimeout(r, 1000));
         return 'ok';
       },
@@ -144,7 +145,7 @@ const Register = () => {
 
     <>
       <Form.Item
-        name="role"
+        name="roles"
         rules={[
           {
             required: true,
@@ -153,8 +154,8 @@ const Register = () => {
         ]}
       >
         <Select size="large" placeholder="You go here for ...">
-          <Option value="ROLE_CUSTOMER">Be come a travler</Option>
-          <Option value="ROLE_USER">To marketing your tour</Option>
+          <Option value="ROLE_USER">Be come a traveler</Option>
+          <Option value="ROLE_CUSTOMER">To marketing your tour</Option>
         </Select>
       </Form.Item>
 
@@ -166,6 +167,7 @@ const Register = () => {
           Prev
         </Button>
         <Button
+          loading={loading}
           type="primary"
           onClick={() => {
             submit().then(result => console.log(result));
@@ -206,10 +208,6 @@ const Register = () => {
     },
   };
 
-  // const onFinish = values => {
-  //   console.log('Received values of form: ', values);
-  // };
-
   return (
     <div className="ctn ctn-register">
       <div className="ctn-register__register-form">
@@ -227,7 +225,6 @@ const Register = () => {
           {...formItemLayout}
           layout="vertical"
           name="register"
-          // onFinish={onFinish}
           form={form}
           scrollToFirstError
           {...formProps}
