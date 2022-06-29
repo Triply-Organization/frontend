@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Pagination, Select } from 'antd';
+import { Button, Pagination, Select } from 'antd';
 import React, { useState } from 'react';
 import {
   BsSortDown,
@@ -9,6 +9,7 @@ import {
 
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import CardTour from '../../components/CardTour/CardTour';
+import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
 import Search from '../../components/Search/Search';
 import './AllTours.scss';
 
@@ -123,16 +124,12 @@ const AllTours = () => {
   return (
     <div>
       <div className="breadcrumb-wrapper">
-        <img src={breadcrumbBg} alt="triply" />
-        <div className="breadcrumb-wrapper__content">
-          <h2 className="breadcrumb-wrapper__content__title">All Tours</h2>
-          <Breadcrumb className="breadcrumb-wrapper__content__breadcrumb">
-            <Breadcrumb.Item>
-              <a href="/">HOME</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>ALL TOURS</Breadcrumb.Item>
-          </Breadcrumb>
-        </div>
+        <ImageBreadcrumb
+          title={'All Tours'}
+          currentPageTitle={'ALL TOURS'}
+          beforePath={[{ title: 'HOME', path: '/' }]}
+          breadcrumbBg={breadcrumbBg}
+        />
         <Search />
       </div>
 
