@@ -1,6 +1,9 @@
-import { Carousel } from 'antd';
+import { Button, Carousel } from 'antd';
 import { Collapse } from 'antd';
-import React from 'react';
+import { DatePicker } from 'antd';
+import { Radio } from 'antd';
+import { Select } from 'antd';
+import React, { useState } from 'react';
 import { AiOutlineDollar } from 'react-icons/ai';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { BiTimeFive } from 'react-icons/bi';
@@ -21,6 +24,8 @@ import img8 from '../../assets/images/detail_images/5c48735739c52149617831f9_DSC
 import img10 from '../../assets/images/detail_images/5c48735739c52149617831f9_DSC04931-copy-720x450 (1).jpg';
 import img11 from '../../assets/images/detail_images/5c48735739c52149617831f9_DSC04931-copy-720x450.jpg';
 import './DetailTour.scss';
+
+const { Option } = Select;
 
 const { Panel } = Collapse;
 
@@ -171,7 +176,10 @@ const services = [
   'Box lunch water, banana apple and chocolate',
 ];
 
+const ticketsNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
 export default function DetailTour() {
+  const [radioValue, setRadioValue] = useState(1);
   return (
     <section className="detailTour">
       <div className="detailTour__intro">
@@ -275,7 +283,108 @@ export default function DetailTour() {
             <h2 className="detailTour__content-heading">tour map</h2>
           </div>
         </div>
-        <div className="detailTour__booking-wrapper"></div>
+        <div className="detailTour__booking-wrapper">
+          <div className="detailTour__booking">
+            <h3 className="detailTour__booking-heading">Book This Tour</h3>
+            <div className="detailTour__booking-form">
+              <div className="detailTour__booking-date">
+                <p className="detailTour__booking-label">From:</p>
+                <DatePicker className="detailTour__booking-date-input" />
+              </div>
+              <div className="detailTour__booking-time">
+                <p className="detailTour__booking-label">Time:</p>
+                <Radio.Group
+                  onChange={e => {
+                    setRadioValue(e.target.value);
+                  }}
+                  value={radioValue}
+                >
+                  <Radio value={1}>10:00</Radio>
+                  <Radio value={2}>12:00</Radio>
+                  <Radio value={3}>17:00</Radio>
+                </Radio.Group>
+              </div>
+              <div className="detailTour__booking-tickets">
+                <p className="detailTour__booking-label">Tickets:</p>
+                <div className="detailTour__booking-tickets-section">
+                  <label
+                    htmlFor="tickets-section1"
+                    className="detailTour__booking-tickets-description"
+                  >
+                    Adult (18+ years){' '}
+                    <span className="detailTour__booking-tickets-price">
+                      $138.00
+                    </span>
+                  </label>
+                  <Select id="tickets-section1" defaultValue="0">
+                    {ticketsNumber.map((item, index) => {
+                      return (
+                        <Option value={item} key={index}>
+                          {item}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </div>
+                <div className="detailTour__booking-tickets-section">
+                  <label
+                    htmlFor="tickets-section2"
+                    className="detailTour__booking-tickets-description"
+                  >
+                    Youth (13-17 years){' '}
+                    <span className="detailTour__booking-tickets-price">
+                      $128.00
+                    </span>
+                  </label>
+                  <Select id="tickets-section2" defaultValue="0">
+                    {ticketsNumber.map((item, index) => {
+                      return (
+                        <Option value={item} key={index}>
+                          {item}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </div>
+                <div className="detailTour__booking-tickets-section">
+                  <label
+                    htmlFor="tickets-section3"
+                    className="detailTour__booking-tickets-description"
+                  >
+                    Children (0-12 years){' '}
+                    <span className="detailTour__booking-tickets-price">
+                      $0.00
+                    </span>
+                  </label>
+                  <Select id="tickets-section3" defaultValue="0">
+                    {ticketsNumber.map((item, index) => {
+                      return (
+                        <Option value={item} key={index}>
+                          {item}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </div>
+              </div>
+              <div className="detailTour__booking-footer">
+                <div className="detailTour__booking-count">
+                  <span className="detailTour__booking-count-words">
+                    Total:
+                  </span>
+                  <span className="detailTour__booking-total">$0.00</span>
+                </div>
+                <Button
+                  className="detailTour__booking-btn"
+                  type="primary"
+                  size="large"
+                >
+                  book now
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
