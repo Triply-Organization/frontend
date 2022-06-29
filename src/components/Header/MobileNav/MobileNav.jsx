@@ -6,11 +6,14 @@ import { Typography } from 'antd';
 import React, { useEffect } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { VscChromeClose } from 'react-icons/vsc';
+import { useNavigate } from 'react-router-dom';
 
 import './MobileNav.scss';
 
 const { Title } = Typography;
+
 export default function MobileNav(props) {
+  let navigate = useNavigate();
   const {
     mobileNavStatus,
     onChangeNavbarStatus,
@@ -52,10 +55,18 @@ export default function MobileNav(props) {
             My account
           </Title>
           <div className="mobileNav__account-btn">
-            <Button type="primary" size="large">
-              Sign Up
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => navigate('/login')}
+            >
+              Login
             </Button>
-            <Button type="default" size="large">
+            <Button
+              type="default"
+              size="large"
+              onClick={() => navigate('/register')}
+            >
               Register
             </Button>
           </div>

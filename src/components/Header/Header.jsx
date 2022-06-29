@@ -2,7 +2,7 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu } from 'antd';
 import { Avatar } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AiOutlineHome } from 'react-icons/ai';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { BsChatRightDots } from 'react-icons/bs';
@@ -11,10 +11,11 @@ import { GrLanguage } from 'react-icons/gr';
 import { MdOutlinePlace } from 'react-icons/md';
 import { MdFeedback } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
+import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.png';
 import './Header.scss';
-import MobileNav from './MobileNav/MobileNav';
+import MobileNav from './MobileNav';
 import Navbar from './Navbar';
 
 const currency = (
@@ -76,38 +77,6 @@ const language = (
           <span className="header__language-item">
             <span className="header__language-words">Tiếng Việt</span>
           </span>
-        ),
-      },
-    ]}
-  />
-);
-
-const userDataNoLogin = (
-  <Menu
-    items={[
-      {
-        disabled: true,
-        key: '1',
-        label: (
-          <span className="header__language-heading header__language-item">
-            <span className="header__language-abbre">My Account</span>
-          </span>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <Button type="primary" size="large">
-            Sign Up
-          </Button>
-        ),
-      },
-      {
-        key: '3',
-        label: (
-          <Button type="default" size="large">
-            Register
-          </Button>
         ),
       },
     ]}
@@ -176,30 +145,22 @@ const userDataLoginMobile = [
     title: 'my reviews',
     icon: <MdFeedback />,
   },
-  {
-    title: 'saved tour',
-    icon: <BsHeart />,
-    subnav: ['destination1', 'destination2', 'destination3'],
-  },
   { title: 'logout', icon: <AiOutlineLogout /> },
 ];
 
 const navItem = [
-  { title: 'home', icon: <AiOutlineHome />, subnav: [] },
+  { title: 'home', icon: <AiOutlineHome />, subnav: [], link: '/' },
   {
     title: 'tours',
     icon: <TbTicket />,
     subnav: ['tour1', 'tour2', 'tour3', 'tour4'],
+    link: '/tours',
   },
-  {
-    title: 'destinations',
-    icon: <MdOutlinePlace />,
-    subnav: ['destination1', 'destination2', 'destination3'],
-  },
-  { title: 'contact', icon: <BsChatRightDots />, subnav: [] },
+  { title: 'contact', icon: <BsChatRightDots />, subnav: [], link: '/contact' },
 ];
 
 export default function Header() {
+  let navigate = useNavigate();
   // state set for active tab
   const [activeTab, setActiveTab] = useState(0);
   // state set for window srollY
@@ -211,6 +172,48 @@ export default function Header() {
   const handleSetActiveTab = id => {
     setActiveTab(id);
   };
+
+  const userDataNoLogin = useMemo(() => {
+    return (
+      <Menu
+        items={[
+          {
+            disabled: true,
+            key: '1',
+            label: (
+              <span className="header__language-heading header__language-item">
+                <span className="header__language-abbre">My Account</span>
+              </span>
+            ),
+          },
+          {
+            key: '2',
+            label: (
+              <Button
+                type="primary"
+                size="large"
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </Button>
+            ),
+          },
+          {
+            key: '3',
+            label: (
+              <Button
+                type="default"
+                size="large"
+                onClick={() => navigate('/register')}
+              >
+                Register
+              </Button>
+            ),
+          },
+        ]}
+      />
+    );
+  }, []);
 
   const onChangeNavbarStatus = () => {
     setMobileNavStatus(!mobileNavStatus);
@@ -237,9 +240,9 @@ export default function Header() {
       }
     >
       <div className="header__left-side">
-        <div className="header__logo-wrapper">
+        <Link to="/" className="header__logo-wrapper">
           <img src={logo} alt="logo" className="header__logo" />
-        </div>
+        </Link>
         {width < 1023 ? null : (
           <Navbar
             activeTab={activeTab}
