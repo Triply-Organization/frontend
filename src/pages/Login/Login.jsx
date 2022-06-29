@@ -1,3 +1,4 @@
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Typography } from 'antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,6 +29,8 @@ const Login = () => {
         <Form
           name="normal_login"
           className="form"
+          size="large"
+          layout="vertical"
           form={form}
           onFinish={onFinish}
         >
@@ -44,7 +47,10 @@ const Login = () => {
               },
             ]}
           >
-            <Input placeholder="Email" />
+            <Input
+              prefix={<MailOutlined className="site-form-item-icon" />}
+              placeholder="Email"
+            />
           </Form.Item>
           <Form.Item
             name="password"
@@ -55,7 +61,11 @@ const Login = () => {
               },
             ]}
           >
-            <Input type="password" placeholder="Password" />
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
           </Form.Item>
 
           <Form.Item>
