@@ -7,7 +7,7 @@
     align-items: center;
 
     &__login-form {
-        width: 400px;
+        width: 500px;
         height: fit-content;
         padding: 1rem 2rem;
         background-color: #fff;
@@ -28,8 +28,12 @@
             border-radius: 16px;
         }
 
-        .ant-input {
+        .ant-input-affix-wrapper {
             border-radius: 1rem;
+        }
+
+        .site-form-item-icon {
+            opacity: 0.3;
         }
     }
 }
