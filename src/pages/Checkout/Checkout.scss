@@ -11,22 +11,6 @@
 
     &__left-ctn {
         width: 60%;
-
-        &__info-display {
-            width: 100%;
-        }
-
-        .ctn-result {
-            background-color: rgb(241, 250, 247);
-
-            .result-payment {
-                color: #f7931e;
-            }
-        }
-
-        .synthetic-price {
-            text-align: right;
-        }
     }
 
     &__right-ctn {

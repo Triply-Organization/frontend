@@ -234,6 +234,7 @@ const Register = () => {
         <Form
           {...formItemLayout}
           layout="vertical"
+          labelCol={{ span: 12 }}
           name="register"
           size="large"
           form={form}

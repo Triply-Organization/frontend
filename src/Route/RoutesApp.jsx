@@ -4,6 +4,8 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
 import AllTours from '../pages/Alltours/AllTours';
+import Checkout from '../pages/Checkout/Checkout';
+import Confirmation from '../pages/Confirmation/Confirmation';
 import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
 import MyTour from '../pages/MyTour/MyTour';
@@ -29,6 +31,10 @@ const RoutesApp = () => {
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="checkout/:id" element={<Checkout />} />
+      <Route path="confirmation/:id" element={<Confirmation />} />
+
+      {/* <Route path="*" element={<NoMatch />} /> */}
     </Routes>
   );
 };
