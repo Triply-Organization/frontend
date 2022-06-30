@@ -11,7 +11,7 @@ import React from 'react';
 
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import paypal from '../../assets/images/paypal-logo.png';
-import { ImageBreadcrumb, OrderDetail } from '../../components';
+import { Header, ImageBreadcrumb, OrderDetail } from '../../components';
 import './Checkout.scss';
 
 const { Title } = Typography;
@@ -22,6 +22,7 @@ const Checkout = () => {
   };
   return (
     <>
+      <Header />
       <ImageBreadcrumb
         title={'Checkout'}
         breadcrumbBg={breadcrumbBg}

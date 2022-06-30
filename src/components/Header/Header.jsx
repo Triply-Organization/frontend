@@ -3,6 +3,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu } from 'antd';
 import { Avatar } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AiOutlineHome } from 'react-icons/ai';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { BsChatRightDots } from 'react-icons/bs';
@@ -13,6 +14,8 @@ import { MdFeedback } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
 
 import logo from '../../assets/images/logo.png';
+import SelectCustom from '../Select/SelectCustom';
+import LanguageSelect from './../LanguageSelect/LanguageSelect';
 import './Header.scss';
 import MobileNav from './MobileNav/MobileNav';
 import Navbar from './Navbar';
@@ -76,38 +79,6 @@ const language = (
           <span className="header__language-item">
             <span className="header__language-words">Tiếng Việt</span>
           </span>
-        ),
-      },
-    ]}
-  />
-);
-
-const userDataNoLogin = (
-  <Menu
-    items={[
-      {
-        disabled: true,
-        key: '1',
-        label: (
-          <span className="header__language-heading header__language-item">
-            <span className="header__language-abbre">My Account</span>
-          </span>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <Button type="primary" size="large">
-            Sign Up
-          </Button>
-        ),
-      },
-      {
-        key: '3',
-        label: (
-          <Button type="default" size="large">
-            Register
-          </Button>
         ),
       },
     ]}
@@ -208,6 +179,40 @@ export default function Header() {
   const [width, setWidth] = useState(window.innerWidth);
   // state set for mobileNav status
   const [mobileNavStatus, setMobileNavStatus] = useState(false);
+  const { t } = useTranslation();
+
+  const userDataNoLogin = (
+    <Menu
+      items={[
+        {
+          disabled: true,
+          key: '1',
+          label: (
+            <span className="header__language-heading header__language-item">
+              <span className="header__language-abbre">My Account</span>
+            </span>
+          ),
+        },
+        {
+          key: '2',
+          label: (
+            <Button type="primary" size="large">
+              {t('hello')}
+            </Button>
+          ),
+        },
+        {
+          key: '3',
+          label: (
+            <Button type="default" size="large">
+              {t('cta.register')}
+            </Button>
+          ),
+        },
+      ]}
+    />
+  );
+
   const handleSetActiveTab = id => {
     setActiveTab(id);
   };
@@ -271,14 +276,15 @@ export default function Header() {
               </Dropdown>
             </div>
             <div className="header__multi-lang-wrapper">
-              <Dropdown overlay={language} placement="bottomRight" arrow>
+              {/* <Dropdown overlay={language} placement="bottomRight" arrow>
                 <Button className="header__multi-lang-btn">
                   <span className="header__multi-lang-icon">
                     <GrLanguage />
                   </span>
                   <span className="header__multi-lang-words">EN</span>
                 </Button>
-              </Dropdown>
+              </Dropdown> */}
+              <LanguageSelect />
             </div>
 
             <div className="header__account-wrapper">

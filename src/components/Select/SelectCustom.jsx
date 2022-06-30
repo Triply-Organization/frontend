@@ -3,12 +3,11 @@ import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-// const { Option } = Select;
+const { Option } = Select;
 
 const SelectCustom = props => {
-  // eslint-disable-next-line react/prop-types
-  const { defaultValue, style, onChange, suffixIcon } = props;
-
+  const { defaultValue, style, options, onChange, suffixIcon } = props;
+  console.log(props);
   return (
     <>
       <Select
@@ -17,7 +16,7 @@ const SelectCustom = props => {
         style={style}
         onChange={onChange}
       >
-        {/* {options.map(option => (
+        {options?.map(option => (
           <Option key={option.key}>
             <img
               style={{
@@ -29,17 +28,17 @@ const SelectCustom = props => {
             />
             {option.value}
           </Option>
-        ))} */}
+        ))}
       </Select>
     </>
   );
 };
 
-SelectCustom.PropTypes = {
-  defaultValue: PropTypes.any,
-  options: PropTypes.array,
+SelectCustom.propTypes = {
+  defaultValue: PropTypes.array,
+  options: PropTypes.any,
   suffixIcon: PropTypes.any,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   style: PropTypes.any,
 };
 

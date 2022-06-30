@@ -1,20 +1,20 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-// import englishIcon from '../../assets/icons/united-kingdom.png'
-// import vietnameIcon from '../../assets/icons/vietnam.png'
-import { Select } from '..';
+import englishIcon from '../../assets/images/united-kingdom.png';
+import vietnameIcon from '../../assets/images/vietnam.png';
+import { Select } from '../../components';
 
 const languageOptions = [
   {
     key: 'vi',
     value: 'Vietnamese',
-    // icon: vietnameIcon,
+    icon: vietnameIcon,
   },
   {
     key: 'en',
     value: 'English',
-    // icon: englishIcon,
+    icon: englishIcon,
   },
 ];
 
