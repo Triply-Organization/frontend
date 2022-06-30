@@ -7,7 +7,7 @@ import './ImageBreadcrumb.scss';
 const ImageBreadcrumb = props => {
   const { title, breadcrumbBg, currentPageTitle, beforePath } = props;
   return (
-    <>
+    <div className="breadcrumb">
       <img src={breadcrumbBg} alt="triply" className="breadcrumb-image" />
       <div className="breadcrumb-content">
         <h2 className="breadcrumb-content__title">{title}</h2>
@@ -23,7 +23,7 @@ const ImageBreadcrumb = props => {
           <Breadcrumb.Item>{currentPageTitle}</Breadcrumb.Item>
         </Breadcrumb>
       </div>
-    </>
+    </div>
   );
 };
 
