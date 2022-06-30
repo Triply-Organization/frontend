@@ -6,6 +6,7 @@ import { Typography } from 'antd';
 import React, { useEffect } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { VscChromeClose } from 'react-icons/vsc';
+import { Link } from 'react-router-dom';
 
 import './MobileNav.scss';
 
@@ -84,10 +85,10 @@ export default function MobileNav(props) {
             {navItem.map((item, index) => {
               return (
                 <li className="mobileNav__item" key={index}>
-                  <a href="#" className="mobileNav__link">
+                  <Link to={'#'} className="mobileNav__link">
                     <span className="mobileNav__icon">{item.icon}</span>
                     <span className="mobileNav__words">{item.title}</span>
-                  </a>
+                  </Link>
                 </li>
               );
             })}

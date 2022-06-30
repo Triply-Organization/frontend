@@ -8,6 +8,7 @@ import {
   BsTwitter,
   BsYoutube,
 } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 import section1Background from '../../assets/images/section-1-background.png';
 import section2Banner1 from '../../assets/images/section-2_banner-1.jpg';
@@ -148,15 +149,15 @@ const Home = () => {
           <p className="section-4__text">
             Don&apos;t wait any longer. Contact us!
           </p>
-          <a href="#" className="section-4__link">
+          <Link to="#" className="section-4__link">
             +(84) 1800 - 333 5555
-          </a>
+          </Link>
         </div>
         <div className="section-4__2nd">
           <p style={{ opacity: '0' }}>a</p>
-          <a href="#" className="section-4__link">
+          <Link to="#" className="section-4__link">
             support@triply.com
-          </a>
+          </Link>
         </div>
 
         <div className="section-4__follow-us">

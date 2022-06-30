@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
@@ -21,8 +21,9 @@ const RoutesApp = () => {
           </>
         }
       >
-        <Route index element={<Home />} />
-        <Route path="/search" element={<AllTours />} />
+        <Route index element={<Navigate to="/home" replace />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/tours" element={<AllTours />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
