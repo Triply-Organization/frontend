@@ -6,6 +6,12 @@
     justify-content: center;
     align-items: center;
 
+    background: url("../../assets/images/bg-2.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: contain;
+
     &__login-form {
         width: 500px;
         height: fit-content;
