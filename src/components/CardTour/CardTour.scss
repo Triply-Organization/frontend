@@ -38,6 +38,9 @@
       height: 100%;
       width: 100%;
       transition: all 400ms;
+      z-index: 2;
+      opacity: 0;
+      background-color: rgba(0, 0, 255, 0.15);
     }
     &__image {
       height: 100%;
@@ -186,8 +189,7 @@
       opacity: 0;
     }
     .card-tour__image-wrapper__overlay {
-      background-color: rgba(0, 0, 255, 0.2);
-      z-index: 2;
+      opacity: 1;
     }
   }
 }
