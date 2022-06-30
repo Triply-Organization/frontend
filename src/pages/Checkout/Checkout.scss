@@ -23,6 +23,10 @@
                 color: #f7931e;
             }
         }
+
+        .synthetic-price {
+            text-align: right;
+        }
     }
 
     &__right-ctn {
@@ -45,6 +49,33 @@
             .button-checkout-page {
                 width: 100%;
             }
+        }
+    }
+
+    .ant-typography {
+        margin: 0;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .ctn-checkout {
+        flex-direction: column;
+
+        &__left-ctn {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        &__right-ctn {
+            width: 100%;
+        }
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .ctn-checkout {
+        .synthetic-price {
+            text-align: left;
         }
     }
 }

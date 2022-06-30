@@ -39,13 +39,13 @@ const Checkout = () => {
           <Divider />
           <div className="ctn-checkout__left-ctn__info-display">
             <Row gutter={8}>
-              <Col span={8}>
+              <Col lg={8} md={6} sm={6} xs={0}>
                 <Image
                   width={150}
                   src="https://demo2.pavothemes.com/triply/wp-content/uploads/2020/11/5c486ea739c52128a578315e_DSC04947-copy-150x150.jpg"
                 />
               </Col>
-              <Col span={12}>
+              <Col lg={12} md={15} sm={15} xs={18}>
                 <Title level={4}>Caño Cristales River Trip</Title>
                 <section>
                   <Text strong>Date: 06/30/2022</Text>
@@ -61,57 +61,58 @@ const Checkout = () => {
                   </span>
                 </section>
               </Col>
-              <Col span={4}>
+              <Col lg={4} md={3} sm={3} xs={6}>
                 <Title level={5}>$0.00</Title>
               </Col>
             </Row>
             <Divider />
             <Row gutter={8}>
-              <Col span={8}></Col>
-              <Col span={12}>
-                <Title level={5}> Service per booking</Title>
+              <Col lg={8} md={6} sm={6} xs={0}></Col>
+              <Col lg={12} md={15} sm={15} xs={18}>
+                <section>
+                  <Title level={5}> Service per booking</Title>
+                </section>
+                <section>
+                  <Title level={5}>Service per person</Title>
+                </section>
               </Col>
-              <Col span={4}>
-                <Text strong>$138.00</Text>
-              </Col>
-            </Row>
-            <Row gutter={8}>
-              <Col span={8}></Col>
-              <Col span={12}>
-                <Title level={5}>Service per person</Title>
-              </Col>
-              <Col span={4}>
-                <Text strong>$20.00</Text>
+              <Col lg={4} md={3} sm={3} xs={6}>
+                <section>
+                  <Text strong>$138.00</Text>
+                </section>
+                <section>
+                  <Text strong>$20.00</Text>
+                </section>
               </Col>
             </Row>
             <Row gutter={8} className="ctn-result">
-              <Col span={8}></Col>
-              <Col span={12} style={{ textAlign: 'right' }}>
+              <Col lg={8} md={6} sm={6} xs={0}></Col>
+              <Col className="synthetic-price" lg={12} md={15} sm={15} xs={18}>
                 <section>
-                  <Title level={5}>Subtotal</Title>
+                  <Text strong>Subtotal</Text>
                 </section>
                 <section>
-                  <Title level={5}>Total</Title>
+                  <Text strong>Total</Text>
                 </section>
                 <section>
-                  <Title level={5}>Amount Paid</Title>
+                  <Text strong>Amount Paid</Text>
                 </section>
                 <section>
                   <Title level={5}>Amount Due</Title>
                 </section>
               </Col>
-              <Col span={4}>
+              <Col lg={4} md={3} sm={3} xs={6}>
                 <section>
-                  <Title level={5}>$158.00</Title>
+                  <Text strong>$158.00</Text>
                 </section>
                 <section>
-                  <Title level={5}>$158.00</Title>
+                  <Text strong>$158.00</Text>
                 </section>
                 <section>
-                  <Title level={5}>$0</Title>
+                  <Text strong>$0</Text>
                 </section>
                 <section>
-                  <Title level={4} className="result-payment">
+                  <Title level={5} className="result-payment">
                     $158.00
                   </Title>
                 </section>
