@@ -53,6 +53,12 @@ const Register = () => {
             required: true,
             message: 'Please input your password!',
           },
+          {
+            pattern:
+              '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$',
+            message:
+              'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character',
+          },
         ]}
         hasFeedback
       >
@@ -153,7 +159,11 @@ const Register = () => {
           },
         ]}
       >
-        <Select size="large" placeholder="You go here for ...">
+        <Select
+          size="large"
+          placeholder="You go here for ..."
+          style={{ borderRadius: '1rem' }}
+        >
           <Option value="ROLE_USER">Be come a traveler</Option>
           <Option value="ROLE_CUSTOMER">To marketing your tour</Option>
         </Select>
@@ -225,6 +235,7 @@ const Register = () => {
           {...formItemLayout}
           layout="vertical"
           name="register"
+          size="large"
           form={form}
           scrollToFirstError
           {...formProps}
