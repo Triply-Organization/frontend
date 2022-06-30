@@ -1,4 +1,4 @@
-import { Button, Form, Select } from 'antd';
+import { Button, DatePicker, Form, Select } from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
@@ -11,7 +11,7 @@ import {
 
 import './Search.scss';
 
-const { Option } = Select;
+const { Option, OptGroup } = Select;
 
 const Search = props => {
   const { form, onFinish } = props;
@@ -25,8 +25,15 @@ const Search = props => {
           <AiOutlineCompass className="search-form__item__select__icon" />
           <div>
             <b>Destinations</b>
-            <Select bordered={false} placeholder={'Where are you going?'}>
-              <Option value="lucy">Canada</Option>
+            <Select
+              bordered={false}
+              placeholder={'Where are you going?'}
+              showArrow
+            >
+              <OptGroup label="All destinations">
+                <Option value="jack">Vietnam</Option>
+                <Option value="lucy">USA</Option>
+              </OptGroup>
             </Select>
           </div>
         </div>
@@ -41,7 +48,10 @@ const Search = props => {
           <div>
             <b>Activity</b>
             <Select bordered={false} placeholder={'All Activity'}>
-              <Option value="lucy">Canada</Option>
+              <OptGroup label="All Activity">
+                <Option value="jack">Jack</Option>
+                <Option value="lucy">Lucy</Option>
+              </OptGroup>
             </Select>
           </div>
         </div>
@@ -52,9 +62,7 @@ const Search = props => {
           <AiOutlineCalendar className="search-form__item__select__icon" />
           <div>
             <b>When</b>
-            <Select bordered={false} placeholder={'Date from'}>
-              <Option value="lucy">Canada</Option>
-            </Select>
+            <DatePicker bordered={false} style={{ paddingLeft: 0 }} />
           </div>
         </div>
       </Form.Item>
@@ -64,8 +72,17 @@ const Search = props => {
           <AiOutlineUser className="search-form__item__select__icon" />
           <div>
             <b>Guests</b>
-            <Select bordered={false} placeholder={'0'} showArrow={true}>
-              <Option value="lucy">Canada</Option>
+            <Select
+              className="select-guest-mul"
+              mode="multiple"
+              showArrow
+              bordered={false}
+              style={{ padding: 0 }}
+              placeholder="Whose ticket?"
+            >
+              <Option value="children">Children</Option>
+              <Option value="young">Young</Option>
+              <Option value="adult">Adult</Option>
             </Select>
           </div>
         </div>
