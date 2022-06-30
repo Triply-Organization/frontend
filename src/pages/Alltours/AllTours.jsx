@@ -122,7 +122,11 @@ const AllTours = () => {
     console.log(page);
   };
   return (
-    <div>
+    <div
+      style={{
+        marginTop: '90px',
+      }}
+    >
       <div className="breadcrumb-wrapper">
         <ImageBreadcrumb
           title={'All Tours'}
