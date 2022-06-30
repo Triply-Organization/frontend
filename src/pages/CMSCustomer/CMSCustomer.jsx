@@ -1,4 +1,5 @@
 import { Breadcrumb, Button, Form, Layout, Menu, Table } from 'antd';
+import moment from 'moment';
 import React from 'react';
 import {
   AiFillDashboard,
@@ -24,7 +25,15 @@ const CMSCustomer = () => {
   const [formTour] = Form.useForm();
 
   const onFinish = value => {
-    console.log(value);
+    const value1 = value.dateOpen.map(dateArray => {
+      return moment(dateArray.time).format('YYYY-MM-DD');
+    });
+
+    const res = {
+      ...value,
+      dateOpen: value1,
+    };
+    console.log(res);
   };
 
   const data = [

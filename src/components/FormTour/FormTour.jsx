@@ -167,15 +167,18 @@ const FormTour = props => {
                   style={{ resize: 'none' }}
                   rows={3}
                   size="large"
-                  placeholder="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Error obcaecati placeat, aliquid nostrum atque repellendus iure necessitatibus dolor ab dolorum aperiam facere voluptates delectus voluptatem dolore ullam eveniet non magni."
+                  placeholder="Tell about your tour..."
                 />
               </Form.Item>
 
-              <Collapse defaultActiveKey={['1']}>
+              <Collapse
+                defaultActiveKey={['1']}
+                style={{ marginBottom: '1rem' }}
+              >
                 <Panel header="Images" key="1">
                   <Form.Item
                     label="Cover image"
-                    name="cover"
+                    name={['tourImages', 'cover']}
                     rules={[
                       {
                         required: true,
@@ -195,7 +198,7 @@ const FormTour = props => {
                         <AiOutlineInbox />
                       </p>
                       <p className="ant-upload-text">
-                        Click or drag image to this area to upload
+                        Click or drag png/jpeg to this area to upload
                       </p>
                       <p className="ant-upload-hint">
                         This image will be used to display as the cover photo of
@@ -203,7 +206,7 @@ const FormTour = props => {
                       </p>
                     </Dragger>
                   </Form.Item>
-                  <Form.Item label="Gallery" name="gallery">
+                  <Form.Item label="Gallery" name={['tourImages', 'gallery']}>
                     <Dragger
                       name="image-detail"
                       multiple={true}
@@ -215,11 +218,11 @@ const FormTour = props => {
                         <AiOutlineInbox />
                       </p>
                       <p className="ant-upload-text">
-                        Click or drag image to this area to upload
+                        Click or drag png/jpeg to this area to upload
                       </p>
                       <p className="ant-upload-hint">
-                        This image will be used to display as the cover photo of
-                        your tour. It will show up on the tour card interface.
+                        You can post many detailed images of your tour, it will
+                        help people understand your tour.
                       </p>
                     </Dragger>
                   </Form.Item>
@@ -229,11 +232,11 @@ const FormTour = props => {
             <TabPane tab="Ticket" key="2">
               <Form.Item
                 label="Children (0 - 12 years)"
-                name="0to12"
+                name={['ticket', 'children']}
                 rules={[
                   {
-                    required: true,
-                    message: 'Please input your tour duration!',
+                    required: minAge <= 0,
+                    message: 'Please input your price of ticket!',
                   },
                 ]}
               >
@@ -249,11 +252,11 @@ const FormTour = props => {
               </Form.Item>
               <Form.Item
                 label="Youth (13 - 17 years)"
-                name="12to18"
+                name={['ticket', 'youth']}
                 rules={[
                   {
-                    required: true,
-                    message: 'Please input your tour duration!',
+                    required: minAge <= 12,
+                    message: 'Please input your price of ticket!',
                   },
                 ]}
               >
@@ -269,11 +272,11 @@ const FormTour = props => {
               </Form.Item>
               <Form.Item
                 label="Adult (18+ years)"
-                name="upper18"
+                name={['ticket', 'adult']}
                 rules={[
                   {
-                    required: true,
-                    message: 'Please input your tour duration!',
+                    required: minAge <= 18,
+                    message: 'Please input your price of ticket!',
                   },
                 ]}
               >
@@ -294,8 +297,24 @@ const FormTour = props => {
                   return (
                     <Panel header={`Day ${i + 1}`} key={i + 1}>
                       <Form.Item
+                        label="Title"
+                        name={['tourPlans', `${i + 1}`, 'title']}
+                        rules={[
+                          {
+                            required: true,
+                            message: `Please input title of day ${i + 1}`,
+                          },
+                        ]}
+                      >
+                        <Input
+                          style={{ resize: 'none' }}
+                          rows={3}
+                          size="large"
+                        />
+                      </Form.Item>
+                      <Form.Item
                         label="Description"
-                        name={`day${i + 1}`}
+                        name={['tourPlans', i + 1, 'description']}
                         rules={[
                           {
                             required: true,
@@ -316,7 +335,49 @@ const FormTour = props => {
                 })}
               </Collapse>
             </TabPane>
-            <TabPane tab="Date open" key="4">
+            <TabPane tab="Services" key="4">
+              <Form.List name="services">
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <Space
+                        key={key}
+                        style={{
+                          display: 'flex',
+                          marginBottom: 8,
+                        }}
+                        align="baseline"
+                      >
+                        <Form.Item
+                          className="date-open-form"
+                          {...restField}
+                          name={[name, `${key}`]}
+                          fieldKey={[name, `${key}`]}
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Missing last name',
+                            },
+                          ]}
+                        >
+                          <Input size="large" />
+                        </Form.Item>
+                        <AiOutlineMinusCircle
+                          onClick={() => remove(name)}
+                          style={{ fontSize: '18px' }}
+                        />
+                      </Space>
+                    ))}
+                    <Form.Item>
+                      <Button type="dashed" onClick={() => add()} block>
+                        More service
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
+              </Form.List>
+            </TabPane>
+            <TabPane tab="Date open" key="5">
               <Form.List name="dateOpen">
                 {(fields, { add, remove }) => (
                   <>
@@ -332,7 +393,8 @@ const FormTour = props => {
                         <Form.Item
                           className="date-open-form"
                           {...restField}
-                          name={[name, key]}
+                          name={[name, `time`]}
+                          fieldKey={[name, `time`]}
                           rules={[
                             {
                               required: true,
@@ -340,7 +402,7 @@ const FormTour = props => {
                             },
                           ]}
                         >
-                          <DatePicker size="large" />
+                          <DatePicker size="large" format={'YYYY/MM/DD'} />
                         </Form.Item>
                         <AiOutlineMinusCircle
                           onClick={() => remove(name)}
