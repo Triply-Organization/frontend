@@ -1,6 +1,6 @@
 .home-wrapper {
   max-width: 100vw;
-  height: 100%;
+  height: fit-content;
   overflow-x: hidden;
 }
 
@@ -456,38 +456,6 @@
 }
 
 @media screen and (max-width: 650px) {
-  .section-1 {
-    .search-form {
-      bottom: -20%;
-      grid-template-columns: 1fr;
-      grid-template-areas:
-        'destinations'
-        'activity'
-        'when'
-        'guests'
-        'submit';
-
-      &__item {
-        padding: 1rem;
-        &__button {
-          border-radius: 0 0 16px 16px;
-          height: 50px;
-        }
-      }
-      &__destinations {
-        border-bottom: 0.5px solid #ccc;
-      }
-
-      &__activity {
-        border-bottom: 0.5px solid #ccc;
-      }
-
-      &__when {
-        border-bottom: 0.5px solid #ccc;
-      }
-    }
-  }
-
   .section-2 {
     margin-top: 150px;
   }
