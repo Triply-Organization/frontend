@@ -255,6 +255,7 @@ span.detailTour__booking-tickets-price {
 span.detailTour__booking-count-words {
   font-size: 1rem;
   color: #666;
+  font-weight: bold;
 }
 
 span.detailTour__booking-total {
@@ -452,10 +453,15 @@ span.anticon.anticon-right.slick-arrow.slick-next {
 }
 
 .ant-input-number {
-  width: 70px;
+  width: 60px;
+  min-width: 60px;
   border: 1px solid #e5e5e5 !important;
 }
 
 .ant-input-number-input-wrap {
   border: 1px solid #e5e5e5;
+}
+
+p.detailTour__booking-label {
+  font-weight: bold;
 }

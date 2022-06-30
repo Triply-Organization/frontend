@@ -1,6 +1,14 @@
 import { UserOutlined } from '@ant-design/icons';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Avatar, Button, Carousel, InputNumber, Progress, Rate } from 'antd';
+import {
+  Avatar,
+  Button,
+  Carousel,
+  Form,
+  InputNumber,
+  Progress,
+  Rate,
+} from 'antd';
 import { Collapse } from 'antd';
 import { DatePicker } from 'antd';
 import React from 'react';
@@ -545,10 +553,13 @@ export default function DetailTour() {
           <div className="detailTour__booking-wrapper">
             <div className="detailTour__booking">
               <h3 className="detailTour__booking-heading">Book This Tour</h3>
-              <div className="detailTour__booking-form">
+              <Form autoComplete="off" className="detailTour__booking-form">
                 <div className="detailTour__booking-date">
                   <p className="detailTour__booking-label">From:</p>
-                  <DatePicker className="detailTour__booking-date-input" />
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    className="detailTour__booking-date-input"
+                  />
                 </div>
                 <div className="detailTour__booking-tickets">
                   <p className="detailTour__booking-label">Tickets:</p>
@@ -619,7 +630,7 @@ export default function DetailTour() {
                     book now
                   </Button>
                 </div>
-              </div>
+              </Form>
             </div>
           </div>
         </div>
