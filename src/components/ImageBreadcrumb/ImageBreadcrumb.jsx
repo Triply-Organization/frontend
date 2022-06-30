@@ -1,6 +1,7 @@
 import { Breadcrumb } from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import './ImageBreadcrumb.scss';
 
@@ -15,7 +16,7 @@ const ImageBreadcrumb = props => {
           {beforePath.map((item, index) => {
             return (
               <Breadcrumb.Item key={index}>
-                <a href={item.path}>{item.title}</a>
+                <Link to={item.path}>{item.title}</Link>
               </Breadcrumb.Item>
             );
           })}

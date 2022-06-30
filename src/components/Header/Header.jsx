@@ -11,6 +11,7 @@ import { GrLanguage } from 'react-icons/gr';
 import { MdOutlinePlace } from 'react-icons/md';
 import { MdFeedback } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
+import { Link } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.png';
 import './Header.scss';
@@ -130,9 +131,9 @@ const userDataLogin = (
         key: '2',
         label: (
           <span className="header__language-item">
-            <a src="#" className="header__language-words">
+            <Link to={'/customer'} className="header__language-words">
               My Tours
-            </a>
+            </Link>
           </span>
         ),
       },
@@ -140,9 +141,9 @@ const userDataLogin = (
         key: '3',
         label: (
           <span className="header__language-item">
-            <a src="#" className="header__language-words">
+            <Link to={'#'} className="header__language-words">
               My Reviews
-            </a>
+            </Link>
           </span>
         ),
       },
@@ -150,19 +151,9 @@ const userDataLogin = (
         key: '4',
         label: (
           <span className="header__language-item">
-            <a src="#" className="header__language-words">
-              Saved Tours
-            </a>
-          </span>
-        ),
-      },
-      {
-        key: '5',
-        label: (
-          <span className="header__language-item">
-            <a src="#" className="header__language-words">
+            <Link to={'/login'} className="header__language-words">
               Log Out
-            </a>
+            </Link>
           </span>
         ),
       },
