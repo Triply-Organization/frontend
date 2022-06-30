@@ -8,20 +8,16 @@ import {
   Input,
   Radio,
   Row,
-  Tabs,
   Typography,
 } from 'antd';
 import React from 'react';
 
-// import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
+import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import paypal from '../../assets/images/paypal-logo.png';
-// import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
-import Footer from './../../components/Footer/Footer';
-import Header from './../../components/Header/Header';
+import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
 import './Checkout.scss';
 
 const { Title, Text } = Typography;
-const { TabPane } = Tabs;
 
 const Checkout = () => {
   const onFinish = values => {
@@ -29,13 +25,12 @@ const Checkout = () => {
   };
   return (
     <>
-      <Header />
-      {/* <ImageBreadcrumb
+      <ImageBreadcrumb
         title={'Checkout'}
         breadcrumbBg={breadcrumbBg}
         currentPageTitle={'CHECKOUT'}
         beforePath={[{ title: 'HOME', path: '/' }]}
-      /> */}
+      />
       <div className="ctn ctn-checkout">
         <div className="ctn-checkout__left-ctn">
           <div className="ctn-checkout__left-ctn__title">
@@ -130,7 +125,12 @@ const Checkout = () => {
             <Title level={2}>Contact information</Title>
           </div>
           <div className="ctn-checkout__right-ctn__form">
-            <Form size="large" className="checkout-form" onFinish={onFinish}>
+            <Form
+              size="large"
+              className="checkout-form"
+              onFinish={onFinish}
+              initialValues={{ payment: 'paypal' }}
+            >
               <Form.Item
                 name="first_name"
                 rules={[
@@ -187,7 +187,9 @@ const Checkout = () => {
                 name="amount"
                 label={<Title level={5}>Amount to Pay now </Title>}
               >
-                <Radio value="50">$50.00</Radio>
+                <Radio.Group>
+                  <Radio value="50">$50.00</Radio>
+                </Radio.Group>
               </Form.Item>
 
               <Divider />
@@ -196,19 +198,12 @@ const Checkout = () => {
                 Payment Method
               </Title>
               <Form.Item name="payment">
-                <Tabs defaultActiveKey="1" type="card">
-                  <TabPane tab={<Text>Pay later</Text>} key="1">
-                    <Title level={5}>Book now, pay later!</Title>
-                  </TabPane>
-                  <TabPane tab={<Text>Paypal</Text>} key="2">
-                    <div>
-                      <img className="paypal-img" src={paypal} alt="paypal" />
-                      <Title level={5}>
-                        Continue complete order and Pay with PayPal
-                      </Title>
-                    </div>
-                  </TabPane>
-                </Tabs>
+                <div>
+                  <img className="paypal-img" src={paypal} alt="paypal" />
+                  <Title level={5}>
+                    Continue complete order and Pay with PayPal
+                  </Title>
+                </div>
               </Form.Item>
 
               <Form.Item
@@ -241,7 +236,6 @@ const Checkout = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
