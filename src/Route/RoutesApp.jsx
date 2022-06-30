@@ -8,6 +8,7 @@ import Checkout from '../pages/Checkout/Checkout';
 import Confirmation from '../pages/Confirmation/Confirmation';
 import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
+import MyTour from '../pages/MyTour/MyTour';
 import Register from '../pages/Register/Register';
 
 const RoutesApp = () => {
@@ -26,6 +27,7 @@ const RoutesApp = () => {
         <Route index element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />} />
         <Route path="/tours" element={<AllTours />} />
+        <Route path="/my-tour" element={<MyTour />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
