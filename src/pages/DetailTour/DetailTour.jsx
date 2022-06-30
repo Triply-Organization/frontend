@@ -8,10 +8,12 @@ import {
   InputNumber,
   Progress,
   Rate,
+  notification,
 } from 'antd';
 import { Collapse } from 'antd';
 import { DatePicker } from 'antd';
-import React from 'react';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineDollar } from 'react-icons/ai';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { BiTimeFive } from 'react-icons/bi';
@@ -318,7 +320,43 @@ const userReviews = [
   },
 ];
 
+const disabledDate = current => {
+  // Can not select days before today and today
+  return current && current < moment().endOf('day');
+};
+
 export default function DetailTour() {
+  const [bookingDate, setBookingDate] = useState('');
+  const [adultNumber, setAdultNumber] = useState(0);
+  const [youthNumber, setYouthNumber] = useState(0);
+  const [childrenNumber, setChildrenNumber] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  // validate booking
+  const handleSubmit = () => {
+    if (!bookingDate) {
+      notification.error({
+        message: 'Book failed!',
+        description: 'Please choose the day!',
+      });
+    } else if (adultNumber === 0 && youthNumber === 0 && childrenNumber === 0) {
+      notification.error({
+        message: 'Book failed!',
+        description: 'Please choose your ticket!',
+      });
+    } else {
+      notification.success({
+        message: 'Book successfully!',
+        description: 'Please choose your ticket!',
+      });
+      console.log(bookingDate, adultNumber, youthNumber, childrenNumber);
+    }
+  };
+
+  useEffect(() => {
+    setTotal(adultNumber * 138 + youthNumber * 128 + childrenNumber * 50);
+  }, [adultNumber, youthNumber, childrenNumber]);
+
   return (
     <section className="detailTour">
       <div className="detailTour__intro-wrapper">
@@ -553,82 +591,107 @@ export default function DetailTour() {
           <div className="detailTour__booking-wrapper">
             <div className="detailTour__booking">
               <h3 className="detailTour__booking-heading">Book This Tour</h3>
-              <Form autoComplete="off" className="detailTour__booking-form">
-                <div className="detailTour__booking-date">
+              <Form
+                initialValues={{ ticket: 0 }}
+                autoComplete="off"
+                className="detailTour__booking-form"
+              >
+                <Form.Item className="detailTour__booking-date">
                   <p className="detailTour__booking-label">From:</p>
                   <DatePicker
+                    disabledDate={disabledDate}
+                    onChange={(date, dateString) => {
+                      setBookingDate(dateString);
+                    }}
                     format="DD/MM/YYYY"
                     className="detailTour__booking-date-input"
                   />
-                </div>
+                </Form.Item>
                 <div className="detailTour__booking-tickets">
                   <p className="detailTour__booking-label">Tickets:</p>
-                  <div className="detailTour__booking-tickets-section">
+                  <Form.Item
+                    className="detailTour__booking-tickets-section"
+                    name="ticket"
+                  >
                     <label
                       htmlFor="tickets-section1"
                       className="detailTour__booking-tickets-description"
                     >
                       Adult (18+ years){' '}
                       <span className="detailTour__booking-tickets-price">
-                        $138.00
+                        ${138}.00
                       </span>
                     </label>
                     <InputNumber
                       id="tickets-section1"
+                      onChange={e => setAdultNumber(e)}
+                      value={adultNumber}
                       min={0}
                       max={10}
-                      defaultValue={0}
                     />
-                  </div>
-                  <div className="detailTour__booking-tickets-section">
+                  </Form.Item>
+                  <Form.Item
+                    className="detailTour__booking-tickets-section"
+                    name="ticket"
+                  >
                     <label
                       htmlFor="tickets-section2"
                       className="detailTour__booking-tickets-description"
                     >
                       Youth (13-17 years){' '}
                       <span className="detailTour__booking-tickets-price">
-                        $128.00
+                        ${128}.00
                       </span>
                     </label>
                     <InputNumber
+                      value={youthNumber}
+                      onChange={e => setYouthNumber(e)}
                       id="tickets-section2"
                       min={0}
                       max={10}
-                      defaultValue={0}
                     />
-                  </div>
-                  <div className="detailTour__booking-tickets-section">
+                  </Form.Item>
+                  <Form.Item
+                    className="detailTour__booking-tickets-section"
+                    name="ticket"
+                  >
                     <label
                       htmlFor="tickets-section3"
                       className="detailTour__booking-tickets-description"
                     >
                       Children (0-12 years){' '}
                       <span className="detailTour__booking-tickets-price">
-                        $0.00
+                        ${50}.00
                       </span>
                     </label>
                     <InputNumber
+                      value={childrenNumber}
+                      onChange={e => setChildrenNumber(e)}
                       id="tickets-section3"
                       min={0}
                       max={10}
-                      defaultValue={0}
                     />
-                  </div>
+                  </Form.Item>
                 </div>
                 <div className="detailTour__booking-footer">
                   <div className="detailTour__booking-count">
                     <span className="detailTour__booking-count-words">
                       Total:
                     </span>
-                    <span className="detailTour__booking-total">$0.00</span>
+                    <span className="detailTour__booking-total">
+                      ${total}.00
+                    </span>
                   </div>
-                  <Button
-                    className="detailTour__booking-btn"
-                    type="primary"
-                    size="large"
-                  >
-                    book now
-                  </Button>
+                  <Form.Item htmlType="submit">
+                    <Button
+                      onClick={handleSubmit}
+                      className="detailTour__booking-btn"
+                      type="primary"
+                      size="large"
+                    >
+                      book now
+                    </Button>
+                  </Form.Item>
                 </div>
               </Form>
             </div>
