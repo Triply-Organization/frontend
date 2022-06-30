@@ -1,9 +1,9 @@
-import { Button, Carousel } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { Avatar, Button, Carousel, InputNumber, Progress, Rate } from 'antd';
 import { Collapse } from 'antd';
 import { DatePicker } from 'antd';
-import { Radio } from 'antd';
-import { Select } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import { AiOutlineDollar } from 'react-icons/ai';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { BiTimeFive } from 'react-icons/bi';
@@ -23,9 +23,8 @@ import img9 from '../../assets/images/detail_images/5c4875597c042e6e499061e8_cc4
 import img8 from '../../assets/images/detail_images/5c48735739c52149617831f9_DSC04931-copy-720x450 (1).jpg';
 import img10 from '../../assets/images/detail_images/5c48735739c52149617831f9_DSC04931-copy-720x450 (1).jpg';
 import img11 from '../../assets/images/detail_images/5c48735739c52149617831f9_DSC04931-copy-720x450.jpg';
+import CardTour from '../../components/CardTour/CardTour';
 import './DetailTour.scss';
-
-const { Option } = Select;
 
 const { Panel } = Collapse;
 
@@ -176,211 +175,450 @@ const services = [
   'Box lunch water, banana apple and chocolate',
 ];
 
-const ticketsNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const relatedTour = [
+  {
+    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
+    name: 'Discover Island asdasdasd',
+    duration: 5,
+    maxPeople: 50,
+    destination: 'Long Xuyen, USA',
+    price: 69,
+  },
+  {
+    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
+    name: 'Discover Island asdasdasd',
+    duration: 5,
+    maxPeople: 50,
+    destination: 'Long Xuyen, USA',
+    price: 69,
+  },
+  {
+    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
+    name: 'Discover Island asdasdasd',
+    duration: 5,
+    maxPeople: 50,
+    destination: 'Long Xuyen, USA',
+    price: 69,
+  },
+  {
+    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
+    name: 'Discover Island asdasdasd',
+    duration: 5,
+    maxPeople: 50,
+    destination: 'Long Xuyen, USA',
+    price: 69,
+  },
+];
+
+const reviews = [
+  {
+    title: 'location',
+    point: 4.38,
+  },
+  {
+    title: 'services',
+    point: 4.5,
+  },
+  {
+    title: 'price',
+    point: 4.24,
+  },
+  {
+    title: 'rooms',
+    point: 4.3,
+  },
+];
+
+const userReviews = [
+  {
+    name: 'elicia',
+    avatar:
+      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
+    date: '11/11/2022',
+    rating: [
+      {
+        title: 'location',
+        point: 3,
+      },
+      {
+        title: 'services',
+        point: 2,
+      },
+      {
+        title: 'price',
+        point: 4,
+      },
+      {
+        title: 'room',
+        point: 5,
+      },
+    ],
+    comment:
+      'This is exactly what i was looking for, thank you so much for these tutorials',
+  },
+  {
+    name: 'elicia',
+    avatar:
+      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
+    date: '11/11/2022',
+    rating: [
+      {
+        title: 'location',
+        point: 3,
+      },
+      {
+        title: 'services',
+        point: 2,
+      },
+      {
+        title: 'price',
+        point: 4,
+      },
+      {
+        title: 'room',
+        point: 5,
+      },
+    ],
+    comment:
+      'This is exactly what i was looking for, thank you so much for these tutorials',
+  },
+  {
+    name: 'elicia',
+    avatar:
+      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
+    date: '11/11/2022',
+    rating: [
+      {
+        title: 'location',
+        point: 3,
+      },
+      {
+        title: 'services',
+        point: 2,
+      },
+      {
+        title: 'price',
+        point: 4,
+      },
+      {
+        title: 'room',
+        point: 5,
+      },
+    ],
+    comment:
+      'This is exactly what i was looking for, thank you so much for these tutorials',
+  },
+];
 
 export default function DetailTour() {
-  const [radioValue, setRadioValue] = useState(1);
   return (
     <section className="detailTour">
-      <div className="detailTour__intro">
-        <h1 className="detailTour__intro-heading">Cano Cristales River Trip</h1>
-        <div className="detailTour__location">
-          <span className="detailTour__icon">
-            <GoLocation></GoLocation>
-          </span>
-          <span className="detailTour__words">
-            Bryce Canyon National Park, USA
-          </span>
-        </div>
-        <div className="detailTour__carousel-wrapper">
-          <Carousel
-            autoplay
-            className="detailTour__carousel"
-            draggable={true}
-            slidesToShow={2}
-          >
-            {images.map((item, index) => {
+      <div className="detailTour__intro-wrapper">
+        <div className="detailTour__intro-content">
+          <h1 className="detailTour__intro-heading">
+            Cano Cristales River Trip
+          </h1>
+          <div className="detailTour__location">
+            <span className="detailTour__icon">
+              <GoLocation></GoLocation>
+            </span>
+            <span className="detailTour__words">
+              Bryce Canyon National Park, USA
+            </span>
+          </div>
+          <div className="detailTour__carousel-wrapper">
+            <Carousel
+              arrows
+              prevArrow={<LeftOutlined />}
+              nextArrow={<RightOutlined />}
+              autoplay
+              className="detailTour__carousel"
+              draggable={true}
+              slidesToShow={2}
+            >
+              {images.map((item, index) => {
+                return (
+                  <>
+                    <div className="detailTour__img-wrapper">
+                      <img
+                        src={item}
+                        key={index}
+                        alt="photo"
+                        className="detailTour__img"
+                      />
+                    </div>
+                  </>
+                );
+              })}
+            </Carousel>
+          </div>
+          <div className="detailTour__information">
+            {detailTourItem.map((item, index) => {
               return (
-                <img
-                  src={item}
-                  key={index}
-                  alt="photo"
-                  className="detailTour__img"
-                />
+                <>
+                  <div className="detailTour__information-item" key={index}>
+                    <span className="detailTour__information-icon">
+                      {item.icon}
+                    </span>
+                    <span className="detailTour__information-words">
+                      <p className="detailTour__information-heading-words">
+                        {item.title}
+                      </p>
+                      <p className="detailTour__information-detail">
+                        {item.detail}
+                      </p>
+                    </span>
+                  </div>
+                </>
               );
             })}
-          </Carousel>
-        </div>
-        <div className="detailTour__information">
-          {detailTourItem.map((item, index) => {
-            return (
-              <>
-                <div className="detailTour__information-item" key={index}>
-                  <span className="detailTour__information-icon">
-                    {item.icon}
-                  </span>
-                  <span className="detailTour__information-words">
-                    <p className="detailTour__information-heading-words">
-                      {item.title}
-                    </p>
-                    <p className="detailTour__information-detail">
-                      {item.detail}
-                    </p>
-                  </span>
-                </div>
-              </>
-            );
-          })}
+          </div>
         </div>
       </div>
-      <div className="detailTour__content-wrapper">
-        <div className="detailTour__content">
-          <div className="detailTour__overview">
-            <h2 className="detailTour__content-heading">overview</h2>
-            <p className="detailTour__overview-description">
-              Caño Cristales Tour, (aka the most beautiful river in the world)
-              is an exceptional and surprising natural beauty. Its unique
-              ecosystem is very fragile and now belongs to the Sierra de la
-              Macarena Natural National Park.
-            </p>
-          </div>
-          <div className="detailTour__services">
-            <h2 className="detailTour__content-heading">services</h2>
-            <ul className="detailTour__services-list">
-              {services.map((item, index) => {
-                return (
-                  <li className="detailTour__services-item" key={index}>
-                    <AiOutlineCheckCircle className="detailTour__services-item-icon"></AiOutlineCheckCircle>
-                    {item}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          <div className="detailTour__plan">
-            <h2 className="detailTour__content-heading detailTour__content-heading--primary">
-              tour plan
-            </h2>
-            <Collapse
-              accordion
-              className="detailTour__plan"
-              expandIconPosition="end"
-            >
-              {tourPlanItems.map((item, index) => {
-                return (
-                  <Panel
-                    className="detailTour__plan-item"
-                    header={item.header}
-                    key={index}
-                  >
-                    <p>{item.text}</p>
-                  </Panel>
-                );
-              })}
-            </Collapse>
-          </div>
-          <div className="detailTour__map">
-            <h2 className="detailTour__content-heading">tour map</h2>
-          </div>
-        </div>
-        <div className="detailTour__booking-wrapper">
-          <div className="detailTour__booking">
-            <h3 className="detailTour__booking-heading">Book This Tour</h3>
-            <div className="detailTour__booking-form">
-              <div className="detailTour__booking-date">
-                <p className="detailTour__booking-label">From:</p>
-                <DatePicker className="detailTour__booking-date-input" />
-              </div>
-              <div className="detailTour__booking-time">
-                <p className="detailTour__booking-label">Time:</p>
-                <Radio.Group
-                  onChange={e => {
-                    setRadioValue(e.target.value);
-                  }}
-                  value={radioValue}
-                >
-                  <Radio value={1}>10:00</Radio>
-                  <Radio value={2}>12:00</Radio>
-                  <Radio value={3}>17:00</Radio>
-                </Radio.Group>
-              </div>
-              <div className="detailTour__booking-tickets">
-                <p className="detailTour__booking-label">Tickets:</p>
-                <div className="detailTour__booking-tickets-section">
-                  <label
-                    htmlFor="tickets-section1"
-                    className="detailTour__booking-tickets-description"
-                  >
-                    Adult (18+ years){' '}
-                    <span className="detailTour__booking-tickets-price">
-                      $138.00
-                    </span>
-                  </label>
-                  <Select id="tickets-section1" defaultValue="0">
-                    {ticketsNumber.map((item, index) => {
+      <div className="detailTour__information-section">
+        <div className="detailTour__content-wrapper">
+          <div className="detailTour__content">
+            <div className="detailTour__overview">
+              <h2 className="detailTour__content-heading">overview</h2>
+              <p className="detailTour__overview-description">
+                Caño Cristales Tour, (aka the most beautiful river in the world)
+                is an exceptional and surprising natural beauty. Its unique
+                ecosystem is very fragile and now belongs to the Sierra de la
+                Macarena Natural National Park.
+              </p>
+            </div>
+            <div className="detailTour__services">
+              <h2 className="detailTour__content-heading">services</h2>
+              <ul className="detailTour__services-list">
+                {services.map((item, index) => {
+                  return (
+                    <li className="detailTour__services-item" key={index}>
+                      <AiOutlineCheckCircle className="detailTour__services-item-icon"></AiOutlineCheckCircle>
+                      {item}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+            <div className="detailTour__plan">
+              <h2 className="detailTour__content-heading detailTour__content-heading--primary">
+                tour plan
+              </h2>
+              <Collapse
+                accordion
+                className="detailTour__plan"
+                expandIconPosition="end"
+              >
+                {tourPlanItems.map((item, index) => {
+                  return (
+                    <Panel
+                      className="detailTour__plan-item"
+                      header={item.header}
+                      key={index}
+                    >
+                      <p>{item.text}</p>
+                    </Panel>
+                  );
+                })}
+              </Collapse>
+            </div>
+            <div className="detailTour__relatedTour">
+              <h2 className="detailTour__content-heading">you may like</h2>
+              <Carousel
+                autoplay
+                className="detailTour__relatedTour-carousel"
+                draggable={true}
+                slidesToShow={2}
+              >
+                {relatedTour.map((item, index) => {
+                  return (
+                    <>
+                      <div className="detailTour__relatedTour-item">
+                        <CardTour tour={item} key={index} />
+                      </div>
+                    </>
+                  );
+                })}
+              </Carousel>
+            </div>
+            <div className="detailTour__review-wrapper">
+              <div className="detailTour__review-overall-wrapper">
+                <h2 className="detailTour__content-heading">reviews</h2>
+                <div className="detailTour__review-overall">
+                  <div className="detailTour__review-overall-words">
+                    <div className="detailTour__review-overall-point">
+                      <span className="detailTour__review-overall-average">
+                        4.28
+                      </span>
+                      <span className="detailTour__review-overall-pattern">
+                        /5
+                      </span>
+                    </div>
+                    <p className="detailTour__review-overall-adj">wonderful</p>
+                    <p className="detailTour__review-overall-total">
+                      8 verified reviews
+                    </p>
+                  </div>
+                  <div className="detailTour__review-chart-wrapper">
+                    {reviews.map((item, index) => {
                       return (
-                        <Option value={item} key={index}>
-                          {item}
-                        </Option>
+                        <>
+                          <div
+                            key={index}
+                            className="detailTour__review-chart-item"
+                          >
+                            <p className="detailTour__review-chart-heading">
+                              <span className="detailTour__review-chart-title">
+                                {item.title}
+                              </span>
+                              <span className="detailTour__review-chart-point">
+                                {item.point}/5
+                              </span>
+                            </p>
+                            <Progress
+                              className="detailTour__review-chart-progress"
+                              percent={(item.point / 5) * 100}
+                              showInfo={false}
+                            />
+                          </div>
+                        </>
                       );
                     })}
-                  </Select>
-                </div>
-                <div className="detailTour__booking-tickets-section">
-                  <label
-                    htmlFor="tickets-section2"
-                    className="detailTour__booking-tickets-description"
-                  >
-                    Youth (13-17 years){' '}
-                    <span className="detailTour__booking-tickets-price">
-                      $128.00
-                    </span>
-                  </label>
-                  <Select id="tickets-section2" defaultValue="0">
-                    {ticketsNumber.map((item, index) => {
-                      return (
-                        <Option value={item} key={index}>
-                          {item}
-                        </Option>
-                      );
-                    })}
-                  </Select>
-                </div>
-                <div className="detailTour__booking-tickets-section">
-                  <label
-                    htmlFor="tickets-section3"
-                    className="detailTour__booking-tickets-description"
-                  >
-                    Children (0-12 years){' '}
-                    <span className="detailTour__booking-tickets-price">
-                      $0.00
-                    </span>
-                  </label>
-                  <Select id="tickets-section3" defaultValue="0">
-                    {ticketsNumber.map((item, index) => {
-                      return (
-                        <Option value={item} key={index}>
-                          {item}
-                        </Option>
-                      );
-                    })}
-                  </Select>
+                  </div>
                 </div>
               </div>
-              <div className="detailTour__booking-footer">
-                <div className="detailTour__booking-count">
-                  <span className="detailTour__booking-count-words">
-                    Total:
-                  </span>
-                  <span className="detailTour__booking-total">$0.00</span>
+              <div className="detailTour__review-detail-wrapper">
+                {userReviews.map((item, index) => {
+                  return (
+                    <>
+                      <div
+                        key={index}
+                        className="detailTour__review-detail-item"
+                      >
+                        <div className="detailTour__review-item-avatar">
+                          <Avatar
+                            src={item.avatar}
+                            size="large"
+                            icon={<UserOutlined />}
+                          />
+                        </div>
+                        <div className="detailTour__review-item-section">
+                          <p className="detailTour__review-item-name">
+                            {item.name}
+                          </p>
+                          <p className="detailTour__review-item-date">
+                            {item.date}
+                          </p>
+                          <div className="detailTour__review-item-rating-wrapper">
+                            {item.rating.map((rItem, rIndex) => {
+                              return (
+                                <>
+                                  <div
+                                    className="detailTour__review-item-rating"
+                                    key={rIndex}
+                                  >
+                                    <p className="detailTour__review-item-title">
+                                      {rItem.title}
+                                    </p>
+                                    <Rate
+                                      disabled
+                                      defaultValue={rItem.point}
+                                      className="detailTour__review-item-point"
+                                    />
+                                  </div>
+                                </>
+                              );
+                            })}
+                          </div>
+                          <p className="detailTour__review-item-comment">
+                            This is exactly what i was looking for, thank you so
+                            much for these tutorials
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="detailTour__booking-wrapper">
+            <div className="detailTour__booking">
+              <h3 className="detailTour__booking-heading">Book This Tour</h3>
+              <div className="detailTour__booking-form">
+                <div className="detailTour__booking-date">
+                  <p className="detailTour__booking-label">From:</p>
+                  <DatePicker className="detailTour__booking-date-input" />
                 </div>
-                <Button
-                  className="detailTour__booking-btn"
-                  type="primary"
-                  size="large"
-                >
-                  book now
-                </Button>
+                <div className="detailTour__booking-tickets">
+                  <p className="detailTour__booking-label">Tickets:</p>
+                  <div className="detailTour__booking-tickets-section">
+                    <label
+                      htmlFor="tickets-section1"
+                      className="detailTour__booking-tickets-description"
+                    >
+                      Adult (18+ years){' '}
+                      <span className="detailTour__booking-tickets-price">
+                        $138.00
+                      </span>
+                    </label>
+                    <InputNumber
+                      id="tickets-section1"
+                      min={0}
+                      max={10}
+                      defaultValue={0}
+                    />
+                  </div>
+                  <div className="detailTour__booking-tickets-section">
+                    <label
+                      htmlFor="tickets-section2"
+                      className="detailTour__booking-tickets-description"
+                    >
+                      Youth (13-17 years){' '}
+                      <span className="detailTour__booking-tickets-price">
+                        $128.00
+                      </span>
+                    </label>
+                    <InputNumber
+                      id="tickets-section2"
+                      min={0}
+                      max={10}
+                      defaultValue={0}
+                    />
+                  </div>
+                  <div className="detailTour__booking-tickets-section">
+                    <label
+                      htmlFor="tickets-section3"
+                      className="detailTour__booking-tickets-description"
+                    >
+                      Children (0-12 years){' '}
+                      <span className="detailTour__booking-tickets-price">
+                        $0.00
+                      </span>
+                    </label>
+                    <InputNumber
+                      id="tickets-section3"
+                      min={0}
+                      max={10}
+                      defaultValue={0}
+                    />
+                  </div>
+                </div>
+                <div className="detailTour__booking-footer">
+                  <div className="detailTour__booking-count">
+                    <span className="detailTour__booking-count-words">
+                      Total:
+                    </span>
+                    <span className="detailTour__booking-total">$0.00</span>
+                  </div>
+                  <Button
+                    className="detailTour__booking-btn"
+                    type="primary"
+                    size="large"
+                  >
+                    book now
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
