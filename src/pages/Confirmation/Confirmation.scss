@@ -1,0 +1,38 @@
+.ctn-confirmation {
+    max-width: 1320px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__order-info {
+        margin-bottom: 3rem;
+
+        &__content {
+            margin-top: 2rem;
+            height: fit-content;
+
+            display: flex;
+            justify-content: space-between;
+
+            & > div {
+                width: 200px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    }
+
+    &__order-details {
+        width: 55%;
+        height: 100%;
+
+        &__title {
+            text-align: center;
+        }
+    }
+}
