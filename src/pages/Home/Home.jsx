@@ -1,16 +1,9 @@
 import { Button } from 'antd';
 import Aos from 'aos';
 import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  BsArrowRight,
-  BsFacebook,
-  BsInstagram,
-  BsTwitter,
-  BsYoutube,
-} from 'react-icons/bs';
+import { BsArrowRight } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import { getDestinationsServiceTours } from '../../app/toursSlice';
@@ -33,8 +26,6 @@ const Home = () => {
 
   // React router
   const navigate = useNavigate();
-
-  const { t } = useTranslation();
 
   useEffect(() => {
     loading();
@@ -87,65 +78,72 @@ const Home = () => {
           </h2>
           <h1>Discover the most engaging places</h1>
           <button data-aos="fade-right">
-            {t('cta.explore')}
+            Explore Now
             <BsArrowRight />
           </button>
         </div>
-        <Search onFinish={onSearch} />
+        <Search
+          onFinish={onSearch}
+          destinations={destinations}
+          services={services}
+        />
       </div>
       <div className="section-2">
         <div className="section-2__title">
           <h2 className="section-subtitle" data-aos="fade-down">
-            {t('home.offer.dont_miss')}
+            Don&apos;t Miss
           </h2>
           <h1 className="section-title" data-aos="fade-up">
-            {t('home.offer.special_offer')}
+            Specical Offers
           </h1>
         </div>
         <div className="section-2__panel-voucher">
           <CardVoucher
             data-aos="fade-right"
             background={section2Banner1}
-            title={t('home.offer.item_1.title')}
-            subTitle={t('home.offer.item_1.sub_title')}
-            buttonContent={t('home.offer.item_1.btn')}
+            title={'Weekly Flash Deals'}
+            subTitle={'Up to 30% off'}
+            buttonContent={'View Deals'}
             buttonOnClick={() => {}}
           />
           <CardVoucher
             data-aos="fade-up"
             background={section2Banner2}
-            title={t('home.offer.item_2.title')}
-            subTitle={t('home.offer.item_2.sub_title')}
-            buttonContent={t('home.offer.item_2.btn')}
+            title={'Summer Escapes'}
+            subTitle={'Plan your next trip'}
+            buttonContent={'Learn more'}
             buttonOnClick={() => {}}
           />
           <CardVoucher
             data-aos="fade-left"
             background={section2Banner3}
-            title={t('home.offer.item_3.title')}
-            subTitle={t('home.offer.item_3.sub_title')}
-            buttonContent={t('home.offer.item_3.btn')}
+            title={'Exclusive Deals'}
+            subTitle={'Want to save up to 50%'}
+            buttonContent={'Subscribe Us'}
             buttonOnClick={() => {}}
           />
         </div>
         <div className="section-2__auth">
           <img src={section2Shape} alt="auth" />
           <div className="section-2__auth__typho">
-            <h2>{t('home.auth.title')}</h2>
-            <p>{t('home.auth.content')}</p>
+            <h2>Not a Member Yet?</h2>
+            <p>
+              Join us! Our members can access savings of up to 50% and earn Trip
+              Coins while booking.
+            </p>
             <div className="section-2__auth__control">
               <Button
                 type="primary"
                 className="section-2__auth__control__btn"
                 data-aos="fade-left"
               >
-                {t('cta.login')} <BsArrowRight />
+                Sign In <BsArrowRight />
               </Button>
               <Button
                 className="section-2__auth__control__btn"
                 data-aos="fade-right"
               >
-                {t('cta.register')} <BsArrowRight />
+                Register <BsArrowRight />
               </Button>
             </div>
           </div>
@@ -154,10 +152,10 @@ const Home = () => {
       <div className="section-3">
         <div className="section-2__title">
           <h2 className="section-subtitle" data-aos="fade-down">
-            {t('home.popular_tour.title')}
+            What&apos;s new
           </h2>
           <h1 className="section-title" data-aos="fade-up">
-            {t('home.popular_tour.content')}
+            Popular Tours
           </h1>
         </div>
         <div className="section-3__content-wrapper">
@@ -167,50 +165,6 @@ const Home = () => {
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
-        </div>
-      </div>
-      <div className="section-4">
-        <div className="section-4__1st">
-          <p className="section-4__text">{t('home.banner.telephone')}</p>
-          <Link to="#" className="section-4__link">
-            +(84) 1800 - 333 5555
-          </Link>
-        </div>
-        <div className="section-4__2nd">
-          <p style={{ opacity: '0' }}>a</p>
-          <Link to="#" className="section-4__link">
-            support@triply.com
-          </Link>
-        </div>
-
-        <div className="section-4__follow-us">
-          <p className="section-4__text">{t('home.banner.follow')}</p>
-          <div className="section-4__wrapper-button">
-            <Button
-              className="section-4__button"
-              icon={<BsFacebook />}
-              shape="circle"
-              size="large"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsTwitter />}
-              shape="circle"
-              size="large"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsYoutube />}
-              size="large"
-              shape="circle"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsInstagram />}
-              size="large"
-              shape="circle"
-            />
-          </div>
         </div>
       </div>
     </div>

@@ -184,6 +184,8 @@ export default function DetailTour() {
   const [childrenNumber, setChildrenNumber] = useState(0);
   const [total, setTotal] = useState(0);
 
+  console.log(detailTour);
+
   const detailTourItem = useMemo(() => {
     return [
       {
@@ -280,7 +282,13 @@ export default function DetailTour() {
   };
 
   useEffect(() => {
-    setTotal(adultNumber * 138 + youthNumber * 128 + childrenNumber * 50);
+    if (detailTour.tourPlans) {
+      setTotal(
+        adultNumber * detailTour.tickets[2].adult +
+          youthNumber * detailTour.tickets[1].youth +
+          childrenNumber * detailTour.tickets[0].children,
+      );
+    }
   }, [adultNumber, youthNumber, childrenNumber]);
 
   return (
@@ -566,7 +574,11 @@ export default function DetailTour() {
                     >
                       Adult (18+ years){' '}
                       <span className="detailTour__booking-tickets-price">
-                        ${138}.00
+                        $
+                        {detailTour.tickets && detailTour.tickets.length > 0
+                          ? detailTour.tickets[2].adult
+                          : 0}
+                        .00
                       </span>
                     </label>
                     <InputNumber
@@ -587,7 +599,11 @@ export default function DetailTour() {
                     >
                       Youth (13-17 years){' '}
                       <span className="detailTour__booking-tickets-price">
-                        ${128}.00
+                        $
+                        {detailTour.tickets && detailTour.tickets.length > 0
+                          ? detailTour.tickets[1].youth
+                          : 0}
+                        .00
                       </span>
                     </label>
                     <InputNumber
@@ -608,7 +624,11 @@ export default function DetailTour() {
                     >
                       Children (0-12 years){' '}
                       <span className="detailTour__booking-tickets-price">
-                        ${50}.00
+                        $
+                        {detailTour.tickets && detailTour.tickets.length > 0
+                          ? detailTour.tickets[0].children
+                          : 0}
+                        .00
                       </span>
                     </label>
                     <InputNumber
