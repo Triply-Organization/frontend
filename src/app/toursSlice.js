@@ -40,6 +40,7 @@ const toursSlice = createSlice({
       message.error('Can not connect to server. Please check your internet');
     });
     builder.addCase(getDestinationsServiceTours.fulfilled, (state, action) => {
+      state.loading = false;
       let { data } = action.payload;
       if (data.status === 'success') {
         state.destinations = data.data.destinations;
@@ -62,6 +63,7 @@ const toursSlice = createSlice({
       message.error('Can not connect to server. Please check your internet');
     });
     builder.addCase(getToursByFilter.fulfilled, (state, action) => {
+      state.loading = false;
       let { data } = action.payload.data;
       const res = data.tours.map(item => ({
         ...item,
