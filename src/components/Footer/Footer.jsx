@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import { Typography } from 'antd';
 import { Input } from 'antd';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BsFacebook, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
 
 import logo from '../../assets/images/logo-white.png';
@@ -10,25 +11,31 @@ import './Footer.scss';
 
 const { Title } = Typography;
 
-const services = [
-  'booking',
-  'rentalCar',
-  'hostelWorld',
-  'triago',
-  'tripAdvior',
-];
-
-const explore = [
-  'madrid tour',
-  'stockholm city',
-  'roma city',
-  'shanghai city',
-  'tokyo',
-];
-
-const footerItem = ['privacy', 'policy', 'about us', 'FAQ', 'blog'];
-
 export default function Footer() {
+  const { t } = useTranslation();
+  const footerItem = [
+    `${t('footer.contact.privacy')}`,
+    `${t('footer.contact.policy')}`,
+    `${t('footer.contact.about_us')}`,
+    `${t('footer.contact.faq')}`,
+    `${t('footer.contact.blog')}`,
+  ];
+
+  const services = [
+    `${t('footer.service.item.booking')}`,
+    `${t('footer.service.item.rental_car')}`,
+    `${t('footer.service.item.hostel_world')}`,
+    `${t('footer.service.item.triago')}`,
+    `${t('footer.service.item.trip_advisor')}`,
+  ];
+
+  const explore = [
+    `${t('footer.explore.item.madrid')}`,
+    `${t('footer.explore.item.stockhome')}`,
+    `${t('footer.explore.item.rome')}`,
+    `${t('footer.explore.item.shanghai')}`,
+    `${t('footer.explore.item.tokyo')}`,
+  ];
   return (
     <footer className="footer__wrapper">
       <div className="section-4">
@@ -84,9 +91,7 @@ export default function Footer() {
           </div>
           <div className="footer__info-description">
             <span className="footer__info-description-words">
-              Nisi ut aliquip ex ea commodo consequatute irure dolor in
-              reprehenderit in voluptatevelit esse cillum dolore eu fugiat nulla
-              excepteur pariatur.
+              {t('footer.title')}
             </span>
           </div>
           <div className="footer__direct">
@@ -96,7 +101,7 @@ export default function Footer() {
               </span>
             </div>
             <Button className="footer__info-view-map-btn" size="large">
-              View Map
+              {t('cta.view')}
             </Button>
           </div>
         </div>
@@ -134,19 +139,19 @@ export default function Footer() {
         </div>
         <div className="footer__detail-wrapper">
           <Title className="footer__heading" level={4}>
-            Get Updates & More
+            {t('footer.get_update.title')}
           </Title>
           <p className="footer__detail-words">
-            Subscribe to the free newsletter and stay up to date
+            {t('footer.get_update.content')}
           </p>
           <div className="footer__detail-form">
             <Input
               className="footer__detail-input"
               size="large"
-              placeholder="Your email"
+              placeholder={t('cta.place_holder_input-email')}
             />
             <Button type="primary" size="large" className="footer__detail-btn">
-              Subscribe
+              {t('cta.subscribe')}
             </Button>
           </div>
         </div>

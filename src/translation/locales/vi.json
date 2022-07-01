@@ -1,0 +1,325 @@
+{
+    "hello": "Xin chao",
+    "cta": {
+      "login": "Đăng nhập",
+      "logout": "Đăng xuất",
+      "register": "Đăng ký",
+      "explore": "Khám phá",
+      "view": "Tìm trên bản đồ",
+      "refresh": "Refresh",
+      "save": "Save",
+      "delete": "Delete",
+      "move": "Move",
+      "adjust": "Adjust",
+      "split": "Split",
+      "upload": "Upload",
+      "download": "Download",
+      "apply": "Apply",
+      "report": "Report",
+      "cancel_order": "Cancel Order",
+      "force_supplier_approve": "Force Supplier Approval",
+      "supplier_approve": "Supplier Approval",
+      "approve_order": "Approve Order",
+      "delivered": "Delivered",
+      "finish_order": "Set Finished",
+      "download_order_delivery_note": "Delivery Note (PDF)",
+      "download_order_pdf": "Order (PDF)",
+      "download_order_csv": "CSV",
+      "upload_order_confirmation": "Upload Confirmation",
+      "place_holder_input-email": "Nhập vào email của bạn",
+      "place-holder-search": "Nhập để gửi",
+      "back_to_list": "Back to List",
+      "show_history": "Show History",
+      "subscribe": "Gửi",
+      "search": "Tìm kiếm",
+      "buy-it-now": "MUA NGAY",
+      "add": "Thêm",
+      "cancle": "Trở về",
+      "update": "Cập nhật"
+    },
+  
+    "header": {
+      "home": "Trang chủ",
+      "tour": "Chuyến du lịch",
+      "destination": "Điểm đến",
+      "contact": "Liên hệ",
+      "currency": "Tiền tệ",
+
+      "logged_in": {
+        "tour": "Chuyến đi của tôi",
+        "review": "Đánh giá của tôi",
+        "save_tour": "Những chuyến đã đi"
+      },
+
+      "not_logged_in": {
+        "my_account": "Tài khoản của tôi"
+      }
+    },
+
+    "home": {
+      "offer": {
+        "dont_miss": "Đừng bỏ lỡ",
+        "special_offer": "Những ưu đãi đặc biệt",
+        "item_1": {
+          "title": "Ưu đãi hàng tuần",
+          "sub_title": "Lên đến 30%",
+          "btn": "Xem chi tiết"
+        },
+        "item_2": {
+          "title": "Chạy trốn mùa hè",
+          "sub_title": "Lên kế hoạch nào",
+          "btn": "Tìm hiểu"
+        },
+        "item_3": {
+          "title": "Ưu đãi độc quyền",
+          "sub_title": "Tiết kiệm lên đến 50%",
+          "btn": "Đăng ký"
+        }
+      },
+      "auth": {
+        "title": "Bạn chưa là thành viên?",
+        "content": "Tham gia cùng chúng tôi! Voucher giảm giá lên đến 50% sẽ được gửi đến ngay."
+      },
+      "popular_tour": {
+        "title": "Có gì mới",
+        "content": "Chuyến đi phổ biến"
+      },
+      "banner": {
+        "telephone": "Đừng chần chừ. Hãy liên hệ chúng tôi ngay!",
+        "follow": "Theo dõi chúng tôi"
+      }
+    },
+
+    "footer": {
+      "title": "Triply, giúp bạn dễ dàng tìm và đặt trước một thứ gì đó mà bạn thích làm. Với quyền truy cập vào bộ sưu tập trải nghiệm chất lượng cao lớn nhất thế giới, luôn có điều gì đó mới mẻ để khám phá, cả ở gần và xa nhà. Từ những khoảnh khắc phải làm đến khám phá những điều cần biết, hãy xem những điều quen thuộc theo cách mới hoặc những điều chưa biết lần đầu tiên!",
+      "service": {
+        "title": "Dịch vụ",
+        "item": {
+          "booking": "Đặt chỗ",
+          "rental_car": "Thuê xe",
+          "hostel_world": "Nhà nghỉ",
+          "triago": "Triago",
+          "trip_advisor": "Tìm hiểu thêm về chuyến đi"
+        }
+      },
+      "explore": {
+        "tilte": "Explore",
+        "item": {
+          "madrid": "Marid Tour",
+          "stockhome": "StockHome City",
+          "rome": "Rome City",
+          "shanghai": "Shanghai City",
+          "tokyo": "Tokyo"
+        }
+      },
+      "get_update": {
+        "title": "Cập nhật thêm",
+        "content": "Đăng ký để nhận các thông miễn phí và luôn cập nhật"
+      },
+      "copy_right": "Copyright © 2022 Triply. All Rights Reserved.",
+      "contact": {
+        "privacy": "Chính sách bảo mật",
+        "policy": "Chính sách",
+        "about_us": "Về chúng tôi",
+        "faq": "Thắc mắc",
+        "blog": "Blog"
+      }
+    },
+  
+    "common": {
+      "update": "Update",
+      "update_confirm": "Are you sure to save this update ?",
+      "delete_confirm": "Are you sure to delete ?",
+      "order": "SẮP XẾP",
+      "file_id": "File ID",
+      "available": "Available",
+      "disabled": "Disabled",
+      "total": "Total: {{number}}",
+      "sum": "Sum",
+      "table_range": "{{from}} - {{to}} of {{total}} items",
+      "zendesk_ticket": "Zendesk Ticket",
+      "zendesk_user": "Zendesk User",
+      "summary": "Summary",
+      "general_info": "General Info",
+      "note": "Notes",
+      "log": "Logs",
+      "split": "Split",
+      "items": "Items",
+      "actions": "Actions",
+      "documents": "Documents",
+      "all": "All",
+      "at": "At",
+      "by": "By",
+      "from": "From",
+      "to": "To",
+      "action": "Action",
+      "history": "History",
+      "supplier_number": "{{number}} suppliers",
+      "asc": "Thấp đến cao",
+      "desc": "Cao đến thấp"
+    },
+  
+    "field": {
+      "no": "No",
+      "order_id": "Order ID",
+      "order_name": "Order Name",
+      "date_range": "Date range",
+      "from_date": "From date",
+      "to_date": "To date",
+      "file": "File",
+      "start_at": "Start At",
+      "created_at": "Created At",
+      "updated_at": "Updated At",
+      "uploaded_by": "Uploaded By",
+      "status": "Status",
+      "warehouse": "Warehouse",
+      "supplier": "Supplier",
+      "parent_distributor_order_id": "Split From",
+      "supplier_id": "Supplier ID",
+      "total_positions": "Total Positions",
+      "name": "Name",
+      "position": "Position",
+      "discount": "Discount",
+      "total_amount": "Total Amount",
+      "total_gross": "Gross Total",
+      "currency": "Currency",
+      "date": "Date",
+      "order_date": "Order Date",
+      "booking_date": "Booking Date",
+      "reference_no": "Reference Nr",
+      "id": "ID",
+      "item_id": "Item ID",
+      "supplier_sku": "Supplier SKU",
+      "description": "Description",
+      "quantity": "Số lượng",
+      "net_base_price": "Net Base Price",
+      "net_price": "Net Price",
+      "user": "User",
+      "payment_method": "Payment Method",
+      "payment_terms_in_days": "Payment Terms In Days",
+      "payment_terms_date": "Payment Terms Date",
+      "proposed_delivery": "Proposed Delivery",
+      "timeslot": "Timeslot",
+      "confirm_delivery": "Connox Confirm Delivery",
+      "remarks": "Remarks",
+      "thresholds": "Thresholds",
+      "delivery_date": "Delivery Date",
+      "duration": "Duration",
+      "select_detail_page": "Hãy chọn màu, khung và kích cỡ của xe"
+    },
+    "error": {
+      "order_upload": {
+        "missing_lines": "There is some order lines missing in PDF file.",
+        "missing_delivery_date": "Proposed delivery date of some order lines is missing in file."
+      }
+    },
+    "order": {
+      "title": "Orders"
+    },
+    "order_detail": {
+      "table_action": {
+        "edit": "Edit Item",
+        "edit_delivery_date": "Edit Delivery Date",
+        "accept_delivery_date": "Accept Delivery Date",
+        "edit_confirm_date": "Edit Confirm Delivery Date",
+        "accept_confirm_date": "Accept Confirm Delivery Date"
+      }
+    },
+    "order_document": {
+      "upload": {
+        "title": "Upload document for Order #{{orderId}}",
+        "document_help": "PDF, DOC, DOCX, XLS, XLSX files only"
+      }
+    },
+    "order_upload": {
+      "title": "Parsed orders",
+      "process_manual": "Please process order manual on ECS",
+      "update_lines": "Update lines",
+      "parse_status": "Parse status: $t(natif_status.{{status}})"
+    },
+    "order_upload_modal": {
+      "title": "Upload order confirmation",
+      "title_order": "Upload confirmation for Order #{{orderId}}",
+      "file_note": "PDF or CSV",
+      "field": {
+        "help": "Choose file (pdf, csv)"
+      }
+    },
+    "order_upload_report_modal": {
+      "title": "Export Report"
+    },
+    "gate_day": {
+      "unassigned": "Unassigned",
+      "delivery_modal": {
+        "title": "Add New Delivery:"
+      }
+    },
+    "delivery_detail": {
+      "tracked_time": "Tracked time",
+      "delete_confirmation": "Are you sure you want to delete delivery {{id}}",
+      "field": {
+        "paper": "{{supplier}}'s papers",
+        "started_at": "Started at",
+        "finished_at": "Finished at"
+      },
+      "cta": {
+        "delete": "Delete this delivery"
+      }
+    },
+    "natif_status": {
+      "0": "Init",
+      "1": "Upload Processing",
+      "2": "Upload Done",
+      "3": "Upload Error",
+      "4": "Natif Processing",
+      "5": "Natif Done",
+      "6": "Natif Error",
+      "7": "Skip",
+      "8": "Done"
+    },
+    "order_status": {
+      "0": "Pending",
+      "1": "Supplier Approved",
+      "2": "Arrival Confirmation",
+      "3": "Cancelled",
+      "4": "Approved",
+      "5": "Delivered",
+      "6": "Finished"
+    },
+    "order_timeslot": {
+      "0000-0000": "No Timeslot",
+      "08:00-12:00": "08:00-12:00",
+      "12:00-15:00": "12:00-15:00",
+      "15:00-18:00": "15:00-18:00"
+    },
+    "order_history_action": {
+      "1": "Change Status",
+      "2": "Add Note",
+      "3": "Update Note",
+      "4": "Update Order Info",
+      "5": "Update Order Item",
+      "6": "Update Delivery Date",
+      "7": "Update Confirmation Date",
+      "8": "Split",
+      "9": "Upload File",
+      "10": "Upload Document",
+      "11": "Delete Document"
+    },
+    "delivery_status": {
+      "0": "Open",
+      "1": "Confirmed",
+      "2": "Arrived",
+      "3": "In Progress",
+      "4": "Finished",
+      "5": "Cancelled"
+    },
+    "mapping": {
+      "field": "$t(field.{{name}})",
+      "order_uploaded_status": "$t(natif_status.{{status}})",
+      "order_status": "$t(order_status.{{status}})",
+      "order_timeslot": "$t(order_timeslot.{{value}})",
+      "order_history_action": "$t(order_history_action.{{action}})",
+      "delivery_status": "$t(delivery_status.{{status}})"
+    }
+  }
+  

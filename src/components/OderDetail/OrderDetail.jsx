@@ -1,11 +1,14 @@
 import { Col, Divider, Image, Row, Typography } from 'antd';
+import { PropTypes } from 'prop-types';
 import React from 'react';
 
 import './OrderDetail.scss';
 
 const { Title, Text } = Typography;
 
-const OrderDetail = () => {
+const OrderDetail = props => {
+  const { data } = props;
+  console.log(data);
   return (
     <>
       <Divider />
@@ -18,23 +21,51 @@ const OrderDetail = () => {
             />
           </Col>
           <Col lg={12} md={15} sm={15} xs={18}>
-            <Title level={4}>Caño Cristales River Trip</Title>
+            <Title level={4}>{data.title}</Title>
             <section>
-              <Text strong>Date: 06/30/2022</Text>
+              <Text strong>Date: </Text>
+              {data.date}
             </section>
-            <Text strong>Duration:</Text> {'4 days'}
+            <Text strong>Duration: </Text>
+            {data.duration} days
             <section>
               <Text strong>Ticket:</Text>
             </section>
-            <section>
-              <span>
-                <Text>Adultx1: </Text>
-                <Text strong>{'$138'}</Text>
-              </span>
+            <section className="checkout-info-display__ticket-ctn">
+              {data.tickets.adult.quantity && (
+                <span>
+                  <Text>Adult: </Text>
+                  <Text strong>
+                    ${data.tickets.adult.price} x {data.tickets.adult.quantity}
+                  </Text>
+                </span>
+              )}
+              {data.tickets.youth.quantity ? (
+                <span>
+                  <Text>Youth</Text>
+                  <Text strong>
+                    ${data.tickets.youth.price} x {data.tickets.youth.quantity}
+                  </Text>
+                </span>
+              ) : null}
+              {data.tickets.children.quantity ? (
+                <span>
+                  <Text>Children: </Text>
+                  <Text strong>
+                    ${data.tickets.children.price} x{' '}
+                    {data.tickets.children.quantity}
+                  </Text>
+                </span>
+              ) : null}
             </section>
           </Col>
           <Col lg={4} md={3} sm={3} xs={6}>
-            <Title level={5}>$0.00</Title>
+            <Title level={5}>
+              {/* {data.tickets.adult.price +
+                data.tickets.youth.price +
+                data.tickets.children.price} */}
+              $0.00
+            </Title>
           </Col>
         </Row>
         <Divider />
@@ -57,17 +88,17 @@ const OrderDetail = () => {
           </Col>
           <Col lg={4} md={3} sm={3} xs={6}>
             <section>
-              <Text strong>$138.00</Text>
+              <Text strong>$0.00</Text>
             </section>
             <section>
-              <Text strong>$138.00</Text>
+              <Text strong>$0.00</Text>
             </section>
             <section>
-              <Text strong>$0</Text>
+              <Text strong>$0.00</Text>
             </section>
             <section>
               <Title level={5} className="result-payment">
-                $138.00
+                $0.00
               </Title>
             </section>
           </Col>
@@ -75,6 +106,10 @@ const OrderDetail = () => {
       </div>
     </>
   );
+};
+
+OrderDetail.propTypes = {
+  data: PropTypes.object,
 };
 
 export default OrderDetail;

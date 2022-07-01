@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import './App.scss';
 import RoutesApp from './Route/RoutesApp';
 import { store } from './app/store';
+import './translation';
 
 function App() {
   return (
