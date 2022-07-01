@@ -1,5 +1,7 @@
 import React from 'react';
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
+import { Route, Routes } from 'react-router-loading';
+import { topbar } from 'react-router-loading';
 
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
@@ -13,6 +15,13 @@ import MyTour from '../pages/MyTour/MyTour';
 import Register from '../pages/Register/Register';
 
 const RoutesApp = () => {
+  topbar.config({
+    barColors: {
+      0: 'rgba(34,193,195,1)',
+      1.0: 'rgba(253,187,45,1)',
+    },
+  });
+
   return (
     <Routes>
       <Route
@@ -27,7 +36,7 @@ const RoutesApp = () => {
       >
         <Route index element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/tours" element={<AllTours />} />
+        <Route path="/tours" element={<AllTours />} loading />
         <Route path="/my-tour" element={<MyTour />} />
         <Route path="/detail/:id" element={<DetailTour />} />
       </Route>
