@@ -231,34 +231,51 @@ export default function DetailTour() {
         description: 'Please choose your ticket!',
       });
     } else {
-      notification.success({
-        message: 'Book successfully!',
-        description: 'Please choose your ticket!',
-      });
+      if (!localStorage.getItem('token')) {
+        notification.error({
+          message: 'Book failed!',
+          description: 'You should login before book tour!',
+        });
+      } else {
+        notification.success({
+          message: 'Book successfully!',
+          description: 'Please choose your ticket!',
+        });
 
-      const bookingTour = {
-        title: detailTour.title,
-        duration: detailTour.duration,
-        maxPeople: detailTour.maxPeople,
-        date: bookingDate,
-        images: detailTour.tourImages,
-        tickets: {
-          adult: {
-            quantity: adultNumber,
-            price: 138,
+        const bookingTour = {
+          title: detailTour.title,
+          duration: detailTour.duration,
+          maxPeople: detailTour.maxPeople,
+          date: bookingDate,
+          images: detailTour.tourImages,
+          tickets: {
+            adult: {
+              quantity: adultNumber,
+              price: 138,
+            },
+            youth: {
+              quantity: youthNumber,
+              price: 128,
+            },
+            children: {
+              quantity: childrenNumber,
+              price: 50,
+            },
           },
-          youth: {
-            quantity: youthNumber,
-            price: 128,
-          },
-          children: {
-            quantity: childrenNumber,
-            price: 50,
-          },
-        },
-        total,
-      };
-      dispatch(bookTour(bookingTour));
+          total,
+        };
+
+        // dispatch(bookTour(bookingTour));
+        // console.log(bookingTour);
+
+        // Save local for temp
+        localStorage.setItem('bookingTour', JSON.stringify(bookingTour));
+
+        setTimeout(() => {
+          navigate(`/checkout/${id}`);
+          scrollTo(0, 0);
+        }, 2000);
+      }
     }
   };
 
