@@ -64,7 +64,7 @@ const CardTour = props => {
         </div>
 
         <Button
-          onClick={() => navigate(`/tours/${tour.id}`)}
+          onClick={() => navigate(`/detail/${tour.id}`)}
           type="link"
           className="card-tour__footer__button"
         >

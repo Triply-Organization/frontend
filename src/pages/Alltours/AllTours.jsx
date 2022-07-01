@@ -128,7 +128,7 @@ const AllTours = () => {
         <div className="all-tours">
           <div className="all-tours__header">
             <p>
-              <b>20</b> Tours
+              <b>{listFilter.length || listTours.length}</b> Tours
             </p>
 
             <div className="all-tours__header__sort">

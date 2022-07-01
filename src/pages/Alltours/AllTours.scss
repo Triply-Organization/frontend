@@ -7,8 +7,7 @@
 .all-tours {
   width: 1290px;
   height: fit-content;
-  margin: 0 auto;
-  margin-top: 80px;
+  margin: 90px auto;
 
   &__header {
     width: 100%;
@@ -22,12 +21,11 @@
     &__sort {
       display: flex;
       align-items: center;
-      gap: 1rem;
 
       & > div {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        margin-right: 1rem;
       }
 
       &__button {
