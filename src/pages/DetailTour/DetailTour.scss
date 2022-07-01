@@ -228,6 +228,11 @@ h3.detailTour__booking-heading {
     align-items: center;
     justify-content: space-between;
   }
+
+  & .ant-select.ant-select-single.ant-select-show-arrow {
+    min-width: 70px;
+    border: 1px solid #e5e5e5;
+  }
 }
 
 label.detailTour__booking-tickets-description {
@@ -238,11 +243,6 @@ label.detailTour__booking-tickets-description {
 
 span.detailTour__booking-tickets-price {
   font-weight: bold;
-}
-
-.ant-select.ant-select-single.ant-select-show-arrow {
-  min-width: 70px;
-  border: 1px solid #e5e5e5;
 }
 
 .detailTour__booking-footer {
