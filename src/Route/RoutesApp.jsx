@@ -35,7 +35,7 @@ const RoutesApp = () => {
         }
       >
         <Route index element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<Home />} loading />
+        <Route path="/home" element={<Home />} />
         <Route path="/tours">
           <Route index element={<AllTours />} loading />
           <Route path=":search" element={<AllTours />} loading />

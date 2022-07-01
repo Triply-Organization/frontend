@@ -3,7 +3,7 @@
   display: grid;
   width: 1200px;
   grid-template-columns: 1.5fr 1fr 1fr 1.5fr 0.5fr;
-  grid-template-areas: "destinations activity when guests submit";
+  grid-template-areas: 'destinations activity when guests submit';
   border-radius: 16px;
   background-color: #fff;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -14,22 +14,18 @@
 
   &__destinations {
     grid-area: destinations;
-    border-right: 0.5px solid #ccc;
   }
 
   &__activity {
     grid-area: activity;
-    border-right: 0.5px solid #ccc;
   }
 
   &__when {
     grid-area: when;
-    border-right: 0.5px solid #ccc;
   }
 
   &__guests {
     grid-area: guests;
-    border-right: 0.5px solid #ccc;
   }
 
   & .ant-form-item-control {
@@ -54,6 +50,7 @@
       align-items: center;
       gap: 16px;
       padding-left: 1rem;
+      border-right: 1px solid #dfdfdf;
 
       &__icon {
         font-size: 36px;
@@ -121,8 +118,8 @@
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 
     grid-template-areas:
-      "destinations destinations activity activity submit"
-      "when when guests guests submit";
+      'destinations destinations activity activity submit'
+      'when when guests guests submit';
 
     &__item {
       padding: 1rem;
@@ -152,11 +149,11 @@
     bottom: -20%;
     grid-template-columns: 1fr;
     grid-template-areas:
-      "destinations"
-      "activity"
-      "when"
-      "guests"
-      "submit";
+      'destinations'
+      'activity'
+      'when'
+      'guests'
+      'submit';
 
     &__item {
       padding: 1rem;

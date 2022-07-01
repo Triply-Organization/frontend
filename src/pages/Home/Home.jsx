@@ -28,11 +28,12 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    loading();
     Aos.init({
       duration: 1000,
     });
     Aos.refresh();
+
+    loading();
   }, []);
 
   const loadingContext = useLoadingContext();
