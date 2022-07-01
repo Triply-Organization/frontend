@@ -42,11 +42,11 @@ const RoutesApp = () => {
         </Route>
         <Route path="/my-tour" element={<MyTour />} />
         <Route path="/detail/:id" element={<DetailTour />} />
+        <Route path="confirmation/:id" element={<Confirmation />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="checkout/:id" element={<Checkout />} />
-      <Route path="confirmation/:id" element={<Confirmation />} />
 
       {/* <Route path="*" element={<NoMatch />} /> */}
     </Routes>

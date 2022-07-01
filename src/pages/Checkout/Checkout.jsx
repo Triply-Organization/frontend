@@ -19,6 +19,8 @@ const { Title } = Typography;
 const { Option } = Select;
 
 const Checkout = () => {
+  const checkoutData = JSON.parse(localStorage.getItem('bookingTour'));
+
   const [form] = Form.useForm();
   const onFinish = values => {
     const newValues = {
@@ -40,7 +42,7 @@ const Checkout = () => {
           <div className="ctn-checkout__left-ctn__title">
             <Title level={2}>Order</Title>
           </div>
-          <OrderDetail />
+          <OrderDetail data={checkoutData} />
         </div>
 
         <div className="ctn-checkout__right-ctn">
