@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import './Subnav.scss';
 
@@ -13,9 +14,9 @@ export default function Subnav(props) {
             {subnavItem.map((item, index) => {
               return (
                 <li className="header__subnav-item" key={index}>
-                  <a href="#" className="header__subnav-link">
+                  <Link to="#" className="header__subnav-link">
                     {item}
-                  </a>
+                  </Link>
                 </li>
               );
             })}

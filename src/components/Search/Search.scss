@@ -2,7 +2,7 @@
   height: 75px;
   display: grid;
   width: 1200px;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr 0.5fr;
+  grid-template-columns: 1.5fr 1fr 1fr 1.5fr 0.5fr;
   grid-template-areas: "destinations activity when guests submit";
   border-radius: 16px;
   background-color: #fff;
@@ -61,15 +61,17 @@
 
       & > div {
         width: 100%;
+        height: fit-content;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-self: center;
         transform: translateY(20%);
 
         & > b {
           font-size: 16px;
-          line-height: 5px;
           font-weight: 500;
+          line-height: 8px;
           margin-bottom: 0;
           display: block;
         }
@@ -96,8 +98,83 @@
     &__button {
       width: 100%;
       height: 100%;
-
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       border-radius: 0 16px 16px 0;
+    }
+  }
+}
+
+.select-guest-mul {
+  & .ant-select-selection-placeholder {
+    left: 0;
+  }
+}
+
+@media screen and (max-width: 1220px) {
+  .search-form {
+    width: 80%;
+    height: fit-content;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+    grid-template-areas:
+      "destinations destinations activity activity submit"
+      "when when guests guests submit";
+
+    &__item {
+      padding: 1rem;
+    }
+    &__destinations {
+      border-right: 0.5px solid #ccc;
+      border-bottom: 0.5px solid #ccc;
+    }
+
+    &__activity {
+      border-right: 0.5px solid #ccc;
+      border-bottom: 0.5px solid #ccc;
+    }
+
+    &__when {
+      border-right: 0.5px solid #ccc;
+    }
+
+    &__guests {
+      border-right: none;
+    }
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .search-form {
+    bottom: -20%;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "destinations"
+      "activity"
+      "when"
+      "guests"
+      "submit";
+
+    &__item {
+      padding: 1rem;
+      &__button {
+        border-radius: 0 0 16px 16px;
+        height: 50px;
+      }
+    }
+    &__destinations {
+      border-bottom: 0.5px solid #ccc;
+    }
+
+    &__activity {
+      border-bottom: 0.5px solid #ccc;
+    }
+
+    &__when {
+      border-bottom: 0.5px solid #ccc;
+      border-right: none !important;
     }
   }
 }

@@ -1,5 +1,6 @@
 .header__wrapper {
   position: fixed;
+  top: 0;
   background-color: #fff;
   width: 100%;
   display: flex;
@@ -7,6 +8,7 @@
   height: 90px;
   padding: 0 30px;
   transition: all 0.2s ease;
+  z-index: 999;
 
   &.header__wrapper--transition {
     height: 74px;

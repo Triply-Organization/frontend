@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import './Navbar.scss';
 import Subnav from './Subnav/Subnav';
@@ -17,8 +18,8 @@ export default function Navbar(props) {
                 onClick={() => handleSetActiveTab(index)}
                 key={index}
               >
-                <a
-                  href="#"
+                <Link
+                  to={`/${item.title}`}
                   className={
                     activeTab === index
                       ? 'header__navbar-link header__navbar-link--active'
@@ -26,7 +27,7 @@ export default function Navbar(props) {
                   }
                 >
                   {item.title}
-                </a>
+                </Link>
                 <Subnav subnavItem={item.subnav} />
               </li>
             </>
