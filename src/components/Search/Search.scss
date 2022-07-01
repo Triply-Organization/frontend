@@ -44,7 +44,7 @@
   &__item {
     margin: 0;
     height: 100%;
-    padding: 0 1rem;
+    padding: 0;
 
     &__select {
       width: 100%;
@@ -53,6 +53,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 16px;
+      padding-left: 1rem;
 
       &__icon {
         font-size: 36px;

@@ -4,6 +4,7 @@ import { Typography } from 'antd';
 import { Input } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { BsFacebook, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
 
 import logo from '../../assets/images/logo-white.png';
 import './Footer.scss';
@@ -37,6 +38,52 @@ export default function Footer() {
   ];
   return (
     <footer className="footer__wrapper">
+      <div className="section-4">
+        <div>
+          <p className="section-4__text">
+            Don&apos;t wait any longer. Contact us!
+          </p>
+          <a href="#" className="section-4__link">
+            +(84) 1800 - 333 5555
+          </a>
+        </div>
+        <div>
+          <p style={{ opacity: '0' }}>a</p>
+          <a href="#" className="section-4__link">
+            support@triply.com
+          </a>
+        </div>
+
+        <div className="section-4__follow-us">
+          <p className="section-4__text">Follow us</p>
+          <div className="section-4__wrapper-button">
+            <Button
+              className="section-4__button"
+              icon={<BsFacebook />}
+              shape="circle"
+              size="large"
+            />
+            <Button
+              className="section-4__button"
+              icon={<BsTwitter />}
+              shape="circle"
+              size="large"
+            />
+            <Button
+              className="section-4__button"
+              icon={<BsYoutube />}
+              size="large"
+              shape="circle"
+            />
+            <Button
+              className="section-4__button"
+              icon={<BsInstagram />}
+              size="large"
+              shape="circle"
+            />
+          </div>
+        </div>
+      </div>
       <div className="footer__upper">
         <div className="footer__info-wrapper">
           <div className="footer__heading footer__heading--center">

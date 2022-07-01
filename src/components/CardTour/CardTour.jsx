@@ -8,11 +8,13 @@ import {
 } from 'react-icons/ai';
 import { BsArrowRight } from 'react-icons/bs';
 import { GoLocation } from 'react-icons/go';
+import { useNavigate } from 'react-router-dom';
 
 import './CardTour.scss';
 
 const CardTour = props => {
   const { tour, tag } = props;
+  const navigate = useNavigate();
   return (
     <div className="card-tour">
       {tag && <div className="card-tour__tag">{tag}</div>}
@@ -61,7 +63,11 @@ const CardTour = props => {
           <b>${tour.price}.00</b>
         </div>
 
-        <Button type="link" className="card-tour__footer__button">
+        <Button
+          onClick={() => navigate(`/detail/${tour.id}`)}
+          type="link"
+          className="card-tour__footer__button"
+        >
           Explore
           <BsArrowRight />
         </Button>
