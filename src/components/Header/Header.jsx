@@ -197,7 +197,7 @@ export default function Header() {
           key: '2',
           label: (
             <Button type="primary" size="large">
-              {t('hello')}
+              {t('cta.login')}
             </Button>
           ),
         },
