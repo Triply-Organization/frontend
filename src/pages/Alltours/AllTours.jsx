@@ -1,4 +1,4 @@
-import { Button, Pagination, Select, Spin } from 'antd';
+import { Button, Pagination, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
   BsSortDown,
@@ -6,9 +6,11 @@ import {
   BsSortNumericDown,
   BsSortNumericDownAlt,
 } from 'react-icons/bs';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
+import { useLoadingContext } from 'react-router-loading';
 
-import { getListTours } from '../../app/toursSlice';
+// import { tourAPI } from '../../api/tourAPI';
+// import { getListTours } from '../../app/toursSlice';
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import CardTour from '../../components/CardTour/CardTour';
 import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
@@ -21,21 +23,23 @@ const AllTours = () => {
   const [typeSort, setTypeSort] = useState('price');
   const [isSortPriceDown, setSortPriceDown] = useState(true);
   const [isSortRatingDown, setSortRatingDown] = useState(true);
-  const [loadingDOM, setLoadingDOM] = useState(true);
 
   // Redux
-  const listTours = useSelector(state => state.tours.list);
-  const dispatch = useDispatch();
+  // const listTours = useSelector(state => state.tours.list);
+  // const dispatch = useDispatch();
 
   useEffect(() => {
-    if (listTours.length === 0) {
-      // dispatch(getListTours());
-    }
-
-    setTimeout(() => {
-      setLoadingDOM(false);
-    }, 600);
+    loading();
   }, []);
+
+  const loadingContext = useLoadingContext();
+
+  const loading = async () => {
+    //loading some data
+    // dispatch(getListTours());
+    setTimeout(() => loadingContext.done(), 600);
+    //call method to indicate that loading is done
+  };
 
   const data = [
     {
@@ -139,57 +143,56 @@ const AllTours = () => {
     console.log(page);
   };
   return (
-    <Spin spinning={loadingDOM}>
-      <div
-        style={{
-          marginTop: '90px',
-        }}>
-        <div className="breadcrumb-wrapper">
-          <ImageBreadcrumb
-            title={'All Tours'}
-            currentPageTitle={'ALL TOURS'}
-            beforePath={[{ title: 'HOME', path: '/' }]}
-            breadcrumbBg={breadcrumbBg}
-          />
-          <Search />
-        </div>
-
-        <div className="all-tours">
-          <div className="all-tours__header">
-            <p>
-              <b>20</b> Tours
-            </p>
-
-            <div className="all-tours__header__sort">
-              <div>
-                <p>Sort by</p>
-                {typeSort === 'price'
-                  ? renderIconSortPrice()
-                  : renderIconSortRating()}
-              </div>
-              <Select
-                defaultValue="price"
-                onChange={value => setTypeSort(value)}>
-                <Option value="price">Price</Option>
-                <Option value="rating">Rating</Option>
-              </Select>
-            </div>
-          </div>
-          <div className="all-tours__list-wrapper">
-            {data.map((tour, index) => (
-              <CardTour key={index} tour={tour} tag={'featured'} />
-            ))}
-          </div>
-          <Pagination
-            defaultCurrent={1}
-            total={data.length + 1}
-            onChange={onPagination}
-            defaultPageSize={6}
-            className="all-tours__pagination"
-          />
-        </div>
+    // <Spin spinning={loadingDOM}>
+    <div
+      style={{
+        marginTop: '90px',
+      }}
+    >
+      <div className="breadcrumb-wrapper">
+        <ImageBreadcrumb
+          title={'All Tours'}
+          currentPageTitle={'ALL TOURS'}
+          beforePath={[{ title: 'HOME', path: '/' }]}
+          breadcrumbBg={breadcrumbBg}
+        />
+        <Search />
       </div>
-    </Spin>
+
+      <div className="all-tours">
+        <div className="all-tours__header">
+          <p>
+            <b>20</b> Tours
+          </p>
+
+          <div className="all-tours__header__sort">
+            <div>
+              <p>Sort by</p>
+              {typeSort === 'price'
+                ? renderIconSortPrice()
+                : renderIconSortRating()}
+            </div>
+            <Select defaultValue="price" onChange={value => setTypeSort(value)}>
+              <Option value="price">Price</Option>
+              <Option value="rating">Rating</Option>
+            </Select>
+          </div>
+        </div>
+        <div className="all-tours__list-wrapper">
+          {data.map((tour, index) => (
+            <CardTour key={index} tour={tour} tag={'featured'} />
+          ))}
+        </div>
+        <Pagination
+          defaultCurrent={1}
+          total={data.length + 1}
+          onChange={onPagination}
+          defaultPageSize={6}
+          className="all-tours__pagination"
+        />
+      </div>
+    </div>
+    // </Spin>
   );
 };
 
