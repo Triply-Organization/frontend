@@ -6,6 +6,7 @@ import Header from '../components/Header/Header';
 import AllTours from '../pages/Alltours/AllTours';
 import Checkout from '../pages/Checkout/Checkout';
 import Confirmation from '../pages/Confirmation/Confirmation';
+import DetailTour from '../pages/DetailTour/DetailTour';
 import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
 import MyTour from '../pages/MyTour/MyTour';
@@ -28,6 +29,7 @@ const RoutesApp = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/tours" element={<AllTours />} />
         <Route path="/my-tour" element={<MyTour />} />
+        <Route path="/detail/:id" element={<DetailTour />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />

@@ -220,6 +220,14 @@ h3.detailTour__booking-heading {
   align-items: center;
   justify-content: space-between;
   margin: 4px 0;
+
+  & .ant-form-item-control-input-content {
+    flex: auto;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 label.detailTour__booking-tickets-description {
@@ -460,4 +468,17 @@ span.anticon.anticon-right.slick-arrow.slick-next {
 
 p.detailTour__booking-label {
   font-weight: bold;
+}
+
+.detailTour__loading {
+  position: fixed;
+  z-index: 9999;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #cccccc7a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
