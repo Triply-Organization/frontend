@@ -101,7 +101,7 @@ export default function Footer() {
             <Input
               className="footer__detail-input"
               size="large"
-              placeholder="Your email"
+              placeholder={t('cta.place_holder_input-email')}
             />
             <Button type="primary" size="large" className="footer__detail-btn">
               {t('cta.subscribe')}
