@@ -14,64 +14,78 @@ import './Search.scss';
 const { Option, OptGroup } = Select;
 
 const Search = props => {
-  const { form, onFinish } = props;
+  const { onFinish, destinations, services } = props;
   return (
-    <Form form={form} name="search" className="search-form" onFinish={onFinish}>
-      <Form.Item
-        name="destinations"
-        className="search-form__item search-form__destinations "
-      >
-        <div className="search-form__item__select">
-          <AiOutlineCompass className="search-form__item__select__icon" />
-          <div>
-            <b>Destinations</b>
+    <Form name="search" className="search-form" onFinish={onFinish}>
+      <div className="search-form__item__select">
+        <AiOutlineCompass className="search-form__item__select__icon" />
+        <div>
+          <b>Destinations</b>
+          <Form.Item
+            name="destinations"
+            className="search-form__item search-form__destinations "
+          >
             <Select
               bordered={false}
               placeholder={'Where are you going?'}
               showArrow
             >
               <OptGroup label="All destinations">
-                <Option value="jack">Vietnam</Option>
-                <Option value="lucy">USA</Option>
+                {destinations &&
+                  destinations.map((item, index) => (
+                    <Option key={index} value={item.id}>
+                      {item.name}
+                    </Option>
+                  ))}
               </OptGroup>
             </Select>
-          </div>
+          </Form.Item>
         </div>
-      </Form.Item>
+      </div>
 
-      <Form.Item
-        name="activity"
-        className="search-form__item search-form__activity"
-      >
-        <div className="search-form__item__select">
-          <AiOutlineDribbble className="search-form__item__select__icon" />
-          <div>
-            <b>Activity</b>
+      <div className="search-form__item__select">
+        <AiOutlineDribbble className="search-form__item__select__icon" />
+        <div>
+          <b>Services</b>
+          <Form.Item
+            name="services"
+            className="search-form__item search-form__activity"
+          >
             <Select bordered={false} placeholder={'All Activity'}>
               <OptGroup label="All Activity">
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
+                {services &&
+                  services.map((item, index) => (
+                    <Option key={index} value={item.id}>
+                      {item.name}
+                    </Option>
+                  ))}
               </OptGroup>
             </Select>
-          </div>
+          </Form.Item>
         </div>
-      </Form.Item>
+      </div>
 
-      <Form.Item name="when" className="search-form__item search-form__when">
-        <div className="search-form__item__select">
-          <AiOutlineCalendar className="search-form__item__select__icon" />
-          <div>
-            <b>When</b>
+      <div className="search-form__item__select">
+        <AiOutlineCalendar className="search-form__item__select__icon" />
+        <div>
+          <b>When</b>
+          <Form.Item
+            name="when"
+            className="search-form__item search-form__when"
+          >
             <DatePicker bordered={false} style={{ paddingLeft: 0 }} />
-          </div>
+          </Form.Item>
         </div>
-      </Form.Item>
+      </div>
 
-      <Form.Item name="guest" className="search-form__item search-form__guests">
-        <div className="search-form__item__select">
-          <AiOutlineUser className="search-form__item__select__icon" />
-          <div>
-            <b>Guests</b>
+      <div className="search-form__item__select">
+        <AiOutlineUser className="search-form__item__select__icon" />
+        <div>
+          <b>Guests</b>
+          <Form.Item
+            name="guest"
+            className="search-form__item search-form__guests"
+          >
             <Select
               className="select-guest-mul"
               mode="multiple"
@@ -84,9 +98,9 @@ const Search = props => {
               <Option value="young">Young</Option>
               <Option value="adult">Adult</Option>
             </Select>
-          </div>
+          </Form.Item>
         </div>
-      </Form.Item>
+      </div>
 
       <Form.Item className="search-form__item--submit">
         <Button
@@ -103,8 +117,9 @@ const Search = props => {
 };
 
 Search.propTypes = {
-  form: PropTypes.any,
   onFinish: PropTypes.func,
+  destinations: PropTypes.array,
+  services: PropTypes.array,
 };
 
 export default Search;
