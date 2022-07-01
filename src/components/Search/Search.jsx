@@ -27,6 +27,7 @@ const Search = props => {
           >
             <Select
               bordered={false}
+              style={{ border: 'none' }}
               placeholder={'Where are you going?'}
               showArrow
             >
@@ -51,7 +52,11 @@ const Search = props => {
             name="services"
             className="search-form__item search-form__activity"
           >
-            <Select bordered={false} placeholder={'All Activity'}>
+            <Select
+              bordered={false}
+              placeholder={'All Activity'}
+              style={{ border: 'none' }}
+            >
               <OptGroup label="All Activity">
                 {services &&
                   services.map((item, index) => (

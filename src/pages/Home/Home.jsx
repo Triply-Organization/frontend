@@ -1,15 +1,9 @@
 import { Button } from 'antd';
 import Aos from 'aos';
 import React, { useEffect } from 'react';
-import {
-  BsArrowRight,
-  BsFacebook,
-  BsInstagram,
-  BsTwitter,
-  BsYoutube,
-} from 'react-icons/bs';
+import { BsArrowRight } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import { getDestinationsServiceTours } from '../../app/toursSlice';
@@ -171,52 +165,6 @@ const Home = () => {
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
-        </div>
-      </div>
-      <div className="section-4">
-        <div className="section-4__1st">
-          <p className="section-4__text">
-            Don&apos;t wait any longer. Contact us!
-          </p>
-          <Link to="#" className="section-4__link">
-            +(84) 1800 - 333 5555
-          </Link>
-        </div>
-        <div className="section-4__2nd">
-          <p style={{ opacity: '0' }}>a</p>
-          <Link to="#" className="section-4__link">
-            support@triply.com
-          </Link>
-        </div>
-
-        <div className="section-4__follow-us">
-          <p className="section-4__text">Follow us</p>
-          <div className="section-4__wrapper-button">
-            <Button
-              className="section-4__button"
-              icon={<BsFacebook />}
-              shape="circle"
-              size="large"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsTwitter />}
-              shape="circle"
-              size="large"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsYoutube />}
-              size="large"
-              shape="circle"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsInstagram />}
-              size="large"
-              shape="circle"
-            />
-          </div>
         </div>
       </div>
     </div>
