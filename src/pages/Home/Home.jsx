@@ -1,6 +1,7 @@
 import { Button, Form, Spin } from 'antd';
 import Aos from 'aos';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   BsArrowRight,
   BsFacebook,
@@ -23,6 +24,8 @@ import './Home.scss';
 const Home = () => {
   const [formSearch] = Form.useForm();
   const [loadingDOM, setLoadingDOM] = useState(true);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     Aos.init({
@@ -62,7 +65,7 @@ const Home = () => {
             </h2>
             <h1>Discover the most engaging places</h1>
             <button data-aos="fade-right">
-              Explore Now
+              {t('cta.explore')}
               <BsArrowRight />
             </button>
           </div>
@@ -71,59 +74,56 @@ const Home = () => {
         <div className="section-2">
           <div className="section-2__title">
             <h2 className="section-subtitle" data-aos="fade-down">
-              Don&apos;t Miss
+              {t('home.offer.dont_miss')}
             </h2>
             <h1 className="section-title" data-aos="fade-up">
-              Specical Offers
+              {t('home.offer.special_offer')}
             </h1>
           </div>
           <div className="section-2__panel-voucher">
             <CardVoucher
               data-aos="fade-right"
               background={section2Banner1}
-              title={'Weekly Flash Deals'}
-              subTitle={'Up to 30% off'}
-              buttonContent={'View Deals'}
+              title={t('home.offer.item_1.title')}
+              subTitle={t('home.offer.item_1.sub_title')}
+              buttonContent={t('home.offer.item_1.btn')}
               buttonOnClick={() => {}}
             />
             <CardVoucher
               data-aos="fade-up"
               background={section2Banner2}
-              title={'Summer Escapes'}
-              subTitle={'Plan your next trip'}
-              buttonContent={'Learn more'}
+              title={t('home.offer.item_2.title')}
+              subTitle={t('home.offer.item_2.sub_title')}
+              buttonContent={t('home.offer.item_2.btn')}
               buttonOnClick={() => {}}
             />
             <CardVoucher
               data-aos="fade-left"
               background={section2Banner3}
-              title={'Exclusive Deals'}
-              subTitle={'Want to save up to 50%'}
-              buttonContent={'Subscribe Us'}
+              title={t('home.offer.item_3.title')}
+              subTitle={t('home.offer.item_3.sub_title')}
+              buttonContent={t('home.offer.item_3.btn')}
               buttonOnClick={() => {}}
             />
           </div>
           <div className="section-2__auth">
             <img src={section2Shape} alt="auth" />
             <div className="section-2__auth__typho">
-              <h2>Not a Member Yet?</h2>
-              <p>
-                Join us! Our members can access savings of up to 50% and earn
-                Trip Coins while booking.
-              </p>
+              <h2>{t('home.auth.title')}</h2>
+              <p>{t('home.auth.content')}</p>
               <div className="section-2__auth__control">
                 <Button
                   type="primary"
                   className="section-2__auth__control__btn"
                   data-aos="fade-left"
                 >
-                  Sign In <BsArrowRight />
+                  {t('cta.login')} <BsArrowRight />
                 </Button>
                 <Button
                   className="section-2__auth__control__btn"
                   data-aos="fade-right"
                 >
-                  Register <BsArrowRight />
+                  {t('cta.register')} <BsArrowRight />
                 </Button>
               </div>
             </div>
@@ -132,10 +132,10 @@ const Home = () => {
         <div className="section-3">
           <div className="section-2__title">
             <h2 className="section-subtitle" data-aos="fade-down">
-              What&apos;s new
+              {t('home.popular_tour.title')}
             </h2>
             <h1 className="section-title" data-aos="fade-up">
-              Popular Tours
+              {t('home.popular_tour.content')}
             </h1>
           </div>
           <div className="section-3__content-wrapper">
@@ -149,9 +149,7 @@ const Home = () => {
         </div>
         <div className="section-4">
           <div className="section-4__1st">
-            <p className="section-4__text">
-              Don&apos;t wait any longer. Contact us!
-            </p>
+            <p className="section-4__text">{t('home.banner.telephone')}</p>
             <Link to="#" className="section-4__link">
               +(84) 1800 - 333 5555
             </Link>
@@ -164,7 +162,7 @@ const Home = () => {
           </div>
 
           <div className="section-4__follow-us">
-            <p className="section-4__text">Follow us</p>
+            <p className="section-4__text">{t('home.banner.follow')}</p>
             <div className="section-4__wrapper-button">
               <Button
                 className="section-4__button"

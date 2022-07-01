@@ -21,146 +21,6 @@ import './Header.scss';
 import MobileNav from './MobileNav/MobileNav';
 import Navbar from './Navbar';
 
-const currency = (
-  <Menu
-    items={[
-      {
-        disabled: true,
-        key: '1',
-        label: (
-          <span className="header__currency-heading header__currency-item">
-            <span className="header__currency-abbre">Currency</span>
-          </span>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <span className="header__currency-item">
-            <span className="header__currency-abbre">USD</span>
-          </span>
-        ),
-      },
-      {
-        key: '3',
-        label: (
-          <span className="header__currency-item">
-            <span className="header__currency-abbre">VND</span>
-          </span>
-        ),
-      },
-    ]}
-  />
-);
-
-const language = (
-  <Menu
-    items={[
-      {
-        disabled: true,
-        key: '1',
-        label: (
-          <span className="header__language-heading header__language-item">
-            <span className="header__language-abbre">Language</span>
-          </span>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <span className="header__language-item">
-            <span className="header__language-icon"></span>
-            <span className="header__language-words">English</span>
-          </span>
-        ),
-      },
-      {
-        key: '3',
-        label: (
-          <span className="header__language-item">
-            <span className="header__language-words">Tiếng Việt</span>
-          </span>
-        ),
-      },
-    ]}
-  />
-);
-
-const userDataLogin = (
-  <Menu
-    items={[
-      {
-        disabled: true,
-        key: '1',
-        label: (
-          <span className="header__language-heading header__language-item">
-            <span className="header__language-abbre">Hi Vo Quoc Duy</span>
-          </span>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <span className="header__language-item">
-            <Link to={'/customer'} className="header__language-words">
-              My Tours
-            </Link>
-          </span>
-        ),
-      },
-      {
-        key: '3',
-        label: (
-          <span className="header__language-item">
-            <Link to={'#'} className="header__language-words">
-              My Reviews
-            </Link>
-          </span>
-        ),
-      },
-      {
-        key: '4',
-        label: (
-          <span className="header__language-item">
-            <Link to={'/login'} className="header__language-words">
-              Log Out
-            </Link>
-          </span>
-        ),
-      },
-    ]}
-  />
-);
-
-const userDataLoginMobile = [
-  { title: 'my tours', icon: <TbTicket /> },
-  {
-    title: 'my reviews',
-    icon: <MdFeedback />,
-  },
-  {
-    title: 'saved tour',
-    icon: <BsHeart />,
-    subnav: ['destination1', 'destination2', 'destination3'],
-  },
-  { title: 'logout', icon: <AiOutlineLogout /> },
-];
-
-const navItem = [
-  { title: 'home', icon: <AiOutlineHome />, subnav: [] },
-  {
-    title: 'tours',
-    icon: <TbTicket />,
-    subnav: ['tour1', 'tour2', 'tour3', 'tour4'],
-  },
-  {
-    title: 'destinations',
-    icon: <MdOutlinePlace />,
-    subnav: ['destination1', 'destination2', 'destination3'],
-  },
-  { title: 'contact', icon: <BsChatRightDots />, subnav: [] },
-];
-
 export default function Header() {
   // state set for active tab
   const [activeTab, setActiveTab] = useState(0);
@@ -172,6 +32,152 @@ export default function Header() {
   const [mobileNavStatus, setMobileNavStatus] = useState(false);
   const { t } = useTranslation();
 
+  const language = (
+    <Menu
+      items={[
+        {
+          disabled: true,
+          key: '1',
+          label: (
+            <span className="header__language-heading header__language-item">
+              <span className="header__language-abbre">Language</span>
+            </span>
+          ),
+        },
+        {
+          key: '2',
+          label: (
+            <span className="header__language-item">
+              <span className="header__language-icon"></span>
+              <span className="header__language-words">English</span>
+            </span>
+          ),
+        },
+        {
+          key: '3',
+          label: (
+            <span className="header__language-item">
+              <span className="header__language-words">Tiếng Việt</span>
+            </span>
+          ),
+        },
+      ]}
+    />
+  );
+
+  const userDataLogin = (
+    <Menu
+      items={[
+        {
+          disabled: true,
+          key: '1',
+          label: (
+            <span className="header__language-heading header__language-item">
+              <span className="header__language-abbre">Hi Vo Quoc Duy</span>
+            </span>
+          ),
+        },
+        {
+          key: '2',
+          label: (
+            <span className="header__language-item">
+              <Link to={'/customer'} className="header__language-words">
+                My Tours
+              </Link>
+            </span>
+          ),
+        },
+        {
+          key: '3',
+          label: (
+            <span className="header__language-item">
+              <Link to={'#'} className="header__language-words">
+                My Reviews
+              </Link>
+            </span>
+          ),
+        },
+        {
+          key: '4',
+          label: (
+            <span className="header__language-item">
+              <Link to={'/login'} className="header__language-words">
+                Log Out
+              </Link>
+            </span>
+          ),
+        },
+      ]}
+    />
+  );
+
+  //---------- User Data When Login ----------->
+  const userDataLoginMobile = [
+    { title: `${t('header.logged_in.tour')}`, icon: <TbTicket /> },
+    {
+      title: `${t('header.logged_in.review')}`,
+      icon: <MdFeedback />,
+    },
+    {
+      title: `${t('header.logged_in.save_tour')}`,
+      icon: <BsHeart />,
+      subnav: ['destination1', 'destination2', 'destination3'],
+    },
+    { title: `${t('cta.logout')}`, icon: <AiOutlineLogout /> },
+  ];
+
+  //--------------- Currency ----------------->
+  const currency = (
+    <Menu
+      items={[
+        {
+          disabled: true,
+          key: '1',
+          label: (
+            <span className="header__currency-heading header__currency-item">
+              <span className="header__currency-abbre">
+                {t('header.currency')}
+              </span>
+            </span>
+          ),
+        },
+        {
+          key: '2',
+          label: (
+            <span className="header__currency-item">
+              <span className="header__currency-abbre">USD</span>
+            </span>
+          ),
+        },
+        {
+          key: '3',
+          label: (
+            <span className="header__currency-item">
+              <span className="header__currency-abbre">VND</span>
+            </span>
+          ),
+        },
+      ]}
+    />
+  );
+
+  //--------------- Nav Item ----------------->
+  const navItem = [
+    { title: `${t('header.home')}`, icon: <AiOutlineHome />, subnav: [] },
+    {
+      title: `${t('header.tour')}`,
+      icon: <TbTicket />,
+      subnav: ['tour1', 'tour2', 'tour3', 'tour4'],
+    },
+    {
+      title: `${t('header.destination')}`,
+      icon: <MdOutlinePlace />,
+      subnav: ['destination1', 'destination2', 'destination3'],
+    },
+    { title: `${t('header.contact')}`, icon: <BsChatRightDots />, subnav: [] },
+  ];
+
+  //------------- User Not Login ------------>
   const userDataNoLogin = (
     <Menu
       items={[
@@ -180,7 +186,9 @@ export default function Header() {
           key: '1',
           label: (
             <span className="header__language-heading header__language-item">
-              <span className="header__language-abbre">My Account</span>
+              <span className="header__language-abbre">
+                {t('header.not_logged_in.my_account')}
+              </span>
             </span>
           ),
         },
