@@ -14,22 +14,18 @@
 
   &__destinations {
     grid-area: destinations;
-    border-right: 0.5px solid #ccc;
   }
 
   &__activity {
     grid-area: activity;
-    border-right: 0.5px solid #ccc;
   }
 
   &__when {
     grid-area: when;
-    border-right: 0.5px solid #ccc;
   }
 
   &__guests {
     grid-area: guests;
-    border-right: 0.5px solid #ccc;
   }
 
   & .ant-form-item-control {
@@ -44,7 +40,7 @@
   &__item {
     margin: 0;
     height: 100%;
-    padding: 0 1rem;
+    padding: 0;
 
     &__select {
       width: 100%;
@@ -53,6 +49,8 @@
       justify-content: space-between;
       align-items: center;
       gap: 16px;
+      padding-left: 1rem;
+      border-right: 1px solid #dfdfdf;
 
       &__icon {
         font-size: 36px;
