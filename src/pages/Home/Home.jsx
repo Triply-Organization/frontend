@@ -1,14 +1,12 @@
-import { Button, Form } from 'antd';
+import { Button } from 'antd';
 import Aos from 'aos';
 import React, { useEffect } from 'react';
-import {
-  BsArrowRight,
-  BsFacebook,
-  BsInstagram,
-  BsTwitter,
-  BsYoutube,
-} from 'react-icons/bs';
+import { BsArrowRight } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
+import { getDestinationsServiceTours } from '../../app/toursSlice';
 import section1Background from '../../assets/images/section-1-background.png';
 import section2Banner1 from '../../assets/images/section-2_banner-1.jpg';
 import section2Banner2 from '../../assets/images/section-2_banner-2.jpg';
@@ -20,14 +18,36 @@ import Search from '../../components/Search/Search';
 import './Home.scss';
 
 const Home = () => {
-  const [formSearch] = Form.useForm();
+  // Redux
+  const listTours = useSelector(state => state.tours.list);
+  const destinations = useSelector(state => state.tours.destinations);
+  const services = useSelector(state => state.tours.services);
+  const dispatch = useDispatch();
+
+  // React router
+  const navigate = useNavigate();
 
   useEffect(() => {
+    loading();
     Aos.init({
       duration: 1000,
     });
     Aos.refresh();
   }, []);
+
+  const loadingContext = useLoadingContext();
+
+  const loading = async () => {
+    //loading some data
+    if (
+      listTours.length === 0 ||
+      destinations.length === 0 ||
+      services.length === 0
+    )
+      dispatch(getDestinationsServiceTours());
+    //call method to indicate that loading is done
+    loadingContext.done();
+  };
 
   const tour = {
     image:
@@ -40,7 +60,7 @@ const Home = () => {
   };
 
   const onSearch = values => {
-    console.log(values);
+    navigate(`/tours?destinations=${values.destinations}`);
   };
 
   return (
@@ -62,7 +82,11 @@ const Home = () => {
             <BsArrowRight />
           </button>
         </div>
-        <Search form={formSearch} onFinish={onSearch} />
+        <Search
+          onFinish={onSearch}
+          destinations={destinations}
+          services={services}
+        />
       </div>
       <div className="section-2">
         <div className="section-2__title">
@@ -141,52 +165,6 @@ const Home = () => {
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
-        </div>
-      </div>
-      <div className="section-4">
-        <div className="section-4__1st">
-          <p className="section-4__text">
-            Don&apos;t wait any longer. Contact us!
-          </p>
-          <a href="#" className="section-4__link">
-            +(84) 1800 - 333 5555
-          </a>
-        </div>
-        <div className="section-4__2nd">
-          <p style={{ opacity: '0' }}>a</p>
-          <a href="#" className="section-4__link">
-            support@triply.com
-          </a>
-        </div>
-
-        <div className="section-4__follow-us">
-          <p className="section-4__text">Follow us</p>
-          <div className="section-4__wrapper-button">
-            <Button
-              className="section-4__button"
-              icon={<BsFacebook />}
-              shape="circle"
-              size="large"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsTwitter />}
-              shape="circle"
-              size="large"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsYoutube />}
-              size="large"
-              shape="circle"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsInstagram />}
-              size="large"
-              shape="circle"
-            />
-          </div>
         </div>
       </div>
     </div>

@@ -7,7 +7,6 @@ const { Option } = Select;
 
 const SelectCustom = props => {
   const { defaultValue, style, options, onChange, suffixIcon } = props;
-  console.log(props);
   return (
     <>
       <Select
@@ -35,7 +34,7 @@ const SelectCustom = props => {
 };
 
 SelectCustom.propTypes = {
-  defaultValue: PropTypes.array,
+  defaultValue: PropTypes.string,
   options: PropTypes.any,
   suffixIcon: PropTypes.any,
   onChange: PropTypes.func,

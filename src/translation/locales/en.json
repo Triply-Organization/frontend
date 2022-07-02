@@ -4,6 +4,8 @@
       "login": "Login",
       "logout": "Logout",
       "register": "Register",
+      "explore": "Explore Now",
+      "view": "View Map",
       "refresh": "Refresh",
       "save": "Save",
       "delete": "Delete",
@@ -34,6 +36,94 @@
       "add": "Add",
       "cancle": "Cancle",
       "update": "Update"
+    },
+
+    "header": {
+      "home": "Home",
+      "tour": "Tours",
+      "destination": "Destinations",
+      "contact": "Contact",
+      "currency": "Currency",
+
+      "logged_in": {
+        "tour": "My tours",
+        "review": "My Reviews",
+        "save_tour": "Saved Tour"
+      },
+
+      "not_logged_in": {
+        "my_account": "My Account"
+      }
+    },
+
+    "home": {
+      "offer": {
+        "dont_miss": "Don't Miss",
+        "special_offer": "Special Offers",
+        "item_1": {
+          "title": "Weekly Flash Deals",
+          "sub_title": "Up to 30% off",
+          "btn": "View Deals"
+        },
+        "item_2": {
+          "title": "Summer Escapes",
+          "sub_title": "Plan your next trip",
+          "btn": "Learn more"
+        },
+        "item_3": {
+          "title": "Exclusive Deals",
+          "sub_title": "Want to save up to 50%",
+          "btn": "Subscribe Us"
+        }
+      },
+      "auth": {
+        "title": "Not a Member Yet?",
+        "content": "Join us! Our members can access savings of up to 50% and earn Trip Coins while booking."
+      },
+      "popular_tour": {
+        "title": "What's New",
+        "content": "Popular Tours"
+      },
+      "banner": {
+        "telephone": "Don't wait any longer. Contact us!",
+        "follow": "Follow us"
+      }
+    },
+
+    "footer": {
+      "title": "Triply, makes it easy to find and book something you'll love to do. With access to the world's largest selection of high-quality experiences, there's always something new to discover, both near and far from home. From must-do moments to who-knew discoveries, see the familiar in a new way, or the unknown for the first time!",
+      "service": {
+        "title": "Our Service",
+        "item": {
+          "booking": "Booking",
+          "rental_car": "Rental car",
+          "hostel_world": "Hostel World",
+          "triago": "Triago",
+          "trip_advisor": "Trip Advisor"
+        }
+      },
+      "explore": {
+        "tilte": "Explore",
+        "item": {
+          "madrid": "Marid Tour",
+          "stockhome": "StockHome City",
+          "rome": "Rome City",
+          "shanghai": "Shanghai City",
+          "tokyo": "Tokyo"
+        }
+      },
+      "get_update": {
+        "title": "Get Update & More",
+        "content": "Subscribe to the free newsletter and stay up to date"
+      },
+      "copy_right": "Copyright © 2022 Triply. All Rights Reserved.",
+      "contact": {
+        "privacy": "Privacy",
+        "policy": "Policy",
+        "about_us": "About Us",
+        "faq": "FAQ",
+        "blog": "Blog"
+      }
     },
     
     "common": {

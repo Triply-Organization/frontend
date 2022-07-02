@@ -9,6 +9,11 @@
         }
     }
 
+    &__ticket-ctn {
+        display: flex;
+        flex-direction: column;
+    }
+
     .synthetic-price {
         text-align: right;
     }
