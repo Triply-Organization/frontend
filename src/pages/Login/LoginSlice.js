@@ -27,7 +27,7 @@ const loginSlice = createSlice({
     });
     builder.addCase(login.rejected, state => {
       state.loading = false;
-      message.error('Invalid email or password');
+      message.error({ content: 'Invalid email or password', key: 'failed' });
     });
     builder.addCase(login.fulfilled, (state, action) => {
       let data = action.payload;
@@ -36,7 +36,7 @@ const loginSlice = createSlice({
       if (data.status >= 200 && data.status < 300) {
         localStorage.setItem('token', data.data.data.token);
         state.user = data.data.data.data;
-        message.success('Login successfully!');
+        message.success({ content: 'Login successfully!', key: 'success' });
       }
     });
   },

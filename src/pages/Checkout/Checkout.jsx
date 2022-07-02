@@ -8,7 +8,7 @@ import {
   Select,
   Typography,
 } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import stripe from '../../assets/images/stripe-logo.png';
@@ -20,14 +20,39 @@ const { Option } = Select;
 
 const Checkout = () => {
   const checkoutData = JSON.parse(localStorage.getItem('bookingTour'));
-
+  console.log(checkoutData);
   const [form] = Form.useForm();
+  const [finalTotal, setFinalTotal] = useState(0);
+  const [discountValue, setDiscountValue] = useState(0);
+
   const onFinish = values => {
     const newValues = {
       ...values,
+      checkoutData,
+      finalTotal,
       name: ` ${values.first_name} ${values.last_name}`,
     };
     console.log('Received values of form: ', newValues);
+  };
+
+  const voucherDiscount = [
+    {
+      title: 'KAKA',
+      value: 10,
+    },
+    { title: 'HUHU', value: 20 },
+    { title: 'HAHA', value: 30 },
+  ];
+
+  const handleChangeFinalTotal = value => {
+    console.log(value);
+    setDiscountValue(value);
+    if (voucherDiscount && voucherDiscount.length > 0) {
+      setFinalTotal(checkoutData.total - (checkoutData.total * value) / 100);
+    }
+    // else if (!value) {
+    //   setFinalTotal(finalTotal);
+    // }
   };
   return (
     <>
@@ -42,7 +67,11 @@ const Checkout = () => {
           <div className="ctn-checkout__left-ctn__title">
             <Title level={2}>Order</Title>
           </div>
-          <OrderDetail data={checkoutData} />
+          <OrderDetail
+            data={checkoutData}
+            finalTotal={finalTotal}
+            discountValue={discountValue}
+          />
         </div>
 
         <div className="ctn-checkout__right-ctn">
@@ -56,7 +85,9 @@ const Checkout = () => {
               size="large"
               className="checkout-form"
               onFinish={onFinish}
-              initialValues={{ payment: 'stripe', amount_pay: '138' }}
+              initialValues={{
+                payment: 'stripe',
+              }}
             >
               <Form.Item
                 name="first_name"
@@ -111,12 +142,17 @@ const Checkout = () => {
                 <Input placeholder="Contact number" />
               </Form.Item>
 
-              <Form.Item
-                name="amount_pay"
-                label={<Title level={5}>Amount to Pay now </Title>}
-              >
+              <Title level={2} className="payment-title">
+                Payment Method
+              </Title>
+
+              <Form.Item name="payment">
                 <Radio.Group>
-                  <Radio value="138">$138.00</Radio>
+                  <Radio value="stripe">
+                    <div>
+                      <img className="stripe-img" src={stripe} alt="stripe" />
+                    </div>
+                  </Radio>
                 </Radio.Group>
               </Form.Item>
 
@@ -124,26 +160,20 @@ const Checkout = () => {
                 name="discount"
                 label={<Title level={5}>Apply your voucher to discount!</Title>}
               >
-                <Select allowClear mode="multiple">
-                  <Option value="voucher_1">KAKA</Option>
-                  <Option value="voucher_2">HUHU</Option>
-                  <Option value="voucher_3">HAHA</Option>
+                <Select
+                  allowClear
+                  onChange={handleChangeFinalTotal}
+                  placeholder="Choose your voucher"
+                >
+                  {voucherDiscount.map((item, index) => (
+                    <Option key={index} value={item.value}>
+                      {item.title}
+                    </Option>
+                  ))}
                 </Select>
               </Form.Item>
 
               <Divider />
-
-              <Title level={2} className="payment-title">
-                Payment Method
-              </Title>
-              <Form.Item name="payment">
-                <div>
-                  <img className="paypal-img" src={stripe} alt="stripe" />
-                  <Title level={5}>
-                    Continue complete order and Pay with Stripe
-                  </Title>
-                </div>
-              </Form.Item>
 
               <Form.Item
                 name="agreement"

@@ -196,12 +196,12 @@ export default function DetailTour() {
       {
         icon: <BiTimeFive />,
         title: 'duration',
-        detail: detailTour.duration,
+        detail: detailTour.duration + ' days',
       },
       {
         icon: <RiGroupLine />,
         title: 'max people',
-        detail: detailTour.maxPeople,
+        detail: detailTour.maxPeople + ' people',
       },
       {
         icon: <RiErrorWarningLine />,
@@ -253,15 +253,15 @@ export default function DetailTour() {
           tickets: {
             adult: {
               quantity: adultNumber,
-              price: 138,
+              price: adultNumber * detailTour.tickets[2].adult,
             },
             youth: {
               quantity: youthNumber,
-              price: 128,
+              price: youthNumber * detailTour.tickets[1].youth,
             },
             children: {
               quantity: childrenNumber,
-              price: 50,
+              price: childrenNumber * detailTour.tickets[0].children,
             },
           },
           total,
@@ -597,7 +597,7 @@ export default function DetailTour() {
                       htmlFor="tickets-section2"
                       className="detailTour__booking-tickets-description"
                     >
-                      Youth (13-17 years){' '}
+                      Youth (13-17 years)
                       <span className="detailTour__booking-tickets-price">
                         $
                         {detailTour.tickets && detailTour.tickets.length > 0
