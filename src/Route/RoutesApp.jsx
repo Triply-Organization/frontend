@@ -39,7 +39,7 @@ const RoutesApp = () => {
           </>
         }
       >
-        <Route index element={<Navigate to="/home" replace />} />
+        <Route index element={<Navigate to="/cms" replace />} />
         <Route path="/home" element={<Home />} />
         <Route path="/tours">
           <Route index element={<AllTours />} loading />
