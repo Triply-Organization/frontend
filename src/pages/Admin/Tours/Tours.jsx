@@ -1,6 +1,7 @@
 import { Breadcrumb, Button, Space, Table, Tag } from 'antd';
 import { Typography } from 'antd';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import './Tours.scss';
 
@@ -11,37 +12,50 @@ const columns = [
     title: 'Title',
     dataIndex: 'title',
     key: 'title',
-    render: text => <a>{text}</a>,
+    render: (_, record) => {
+      return (
+        <Link target="_blank" to={`/detail/${record.id}`}>
+          {record.title}
+        </Link>
+      );
+    },
+    // sorter: (a, b) => a.title.length - b.title.length,
   },
   {
     title: 'Customer',
     dataIndex: 'customer',
     key: 'customer',
+    // sorter: (a, b) => a.customer.length - b.customer.length,
   },
   {
     title: 'Duration',
     dataIndex: 'duration',
     key: 'duration',
+    // sorter: (a, b) => a.duration - b.duration,
   },
   {
     title: 'Max people',
     dataIndex: 'maxPeople',
     key: 'maxPeople',
+    // sorter: (a, b) => a.maxPeople - b.maxPeople,
   },
   {
     title: 'Min age',
     dataIndex: 'minAge',
     key: 'minAge',
+    // sorter: (a, b) => a.minAge - b.minAge,
   },
   {
     title: 'Price',
     dataIndex: 'price',
     key: 'price',
+    // sorter: (a, b) => a.price - b.price,
   },
   {
     title: 'Created at',
     dataIndex: 'createdAt',
     key: 'createdAt',
+    // sorter: (a, b) => a.createdAt - b.createdAt,
   },
   {
     title: 'Tag',
@@ -63,8 +77,16 @@ const columns = [
             </Tag>
           );
         }
+        case 'disabled': {
+          return (
+            <Tag color="magenta" key={tag}>
+              {tag.toUpperCase()}
+            </Tag>
+          );
+        }
       }
     },
+    // sorter: (a, b) => a.tag - b.tag,
   },
   {
     title: 'Action',
@@ -77,6 +99,12 @@ const columns = [
             <Button>Disable</Button>
           </Space>
         );
+      } else if (record.tag === 'disabled') {
+        return (
+          <Space size={'middle'}>
+            <Button type="primary">Able</Button>
+          </Space>
+        );
       } else {
         return <Button>Disable</Button>;
       }
@@ -86,10 +114,11 @@ const columns = [
 const data = [
   {
     key: '1',
-    title: 'du lich',
-    customer: 'duy',
+    id: 1,
+    title: 'a',
+    customer: 'q',
     duration: 4,
-    maxPeople: 5,
+    maxPeople: 52,
     minAge: 10,
     price: 10,
     createdAt: '1/1/2000',
@@ -97,23 +126,25 @@ const data = [
   },
   {
     key: '2',
-    title: 'du lich',
-    customer: 'duy',
-    duration: 4,
-    maxPeople: 5,
-    minAge: 10,
-    price: 10,
+    id: 2,
+    title: 'b',
+    customer: 'w',
+    duration: 12,
+    maxPeople: 54,
+    minAge: 11,
+    price: 33,
     createdAt: '1/1/2000',
-    tag: 'processing',
+    tag: 'disabled',
   },
   {
     key: '3',
-    title: 'du lich',
-    customer: 'duy',
-    duration: 4,
-    maxPeople: 5,
-    minAge: 10,
-    price: 10,
+    id: 3,
+    title: 'c',
+    customer: 'e',
+    duration: 33,
+    maxPeople: 55,
+    minAge: 2,
+    price: 44,
     createdAt: '1/1/2000',
     tag: 'approved',
   },
