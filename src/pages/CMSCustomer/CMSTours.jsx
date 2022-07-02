@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, DatePicker, Space, Table } from 'antd';
+import { Breadcrumb, Button, Space, Table } from 'antd';
 import React from 'react';
 import { AiOutlineDelete, AiOutlinePlus } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
@@ -131,8 +131,6 @@ const CMSTours = () => {
           ...rowSelection,
         }}
       />
-
-      <DatePicker disabledDate={'2022-07-02'} />
     </>
   );
 };

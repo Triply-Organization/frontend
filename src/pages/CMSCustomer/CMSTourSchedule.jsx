@@ -24,6 +24,8 @@ const CMSTourSchedule = () => {
     },
   ];
 
+  const { availableDay } = tour[0];
+
   const [formSetAvailableDay] = Form.useForm();
   const [isVisibleFormSetAvailableDay, setVisibleFormSetAvailableDay] =
     useState(false);
@@ -34,6 +36,12 @@ const CMSTourSchedule = () => {
     moment(new Date(), 'YYYY-MM-DD'),
   );
   const onSetAvailableDay = newValue => {
+    let infor = availableDay?.filter(
+      item => item.date === newValue.format('YYYY-MM-DD'),
+    );
+    if (infor && infor.length > 0)
+      formSetAvailableDay.setFieldsValue(infor[0].ticket);
+    else formSetAvailableDay.resetFields();
     setValueCalendar(newValue);
     setSelectedDay(newValue);
     setVisibleFormSetAvailableDay(true);
@@ -43,6 +51,11 @@ const CMSTourSchedule = () => {
     console.log({ ...value, date: valueCalendar.format(`YYYY-MM-DD`), id: id });
     formSetAvailableDay.resetFields();
   };
+
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current.valueOf() < Date.now();
+  }
 
   return (
     <>
@@ -109,6 +122,7 @@ const CMSTourSchedule = () => {
       <h2 style={{ marginBottom: '1rem' }}>Schedule</h2>
       <div className="wrapper-date-picker">
         <Calendar
+          disabledDate={disabledDate}
           onSelect={onSetAvailableDay}
           value={valueCalendar}
           dateCellRender={value => {
@@ -119,24 +133,30 @@ const CMSTourSchedule = () => {
                     <>
                       <p>
                         Ticket Children:{' '}
-                        {date.ticket.children.toLocaleString('en-US', {
-                          style: 'currency',
-                          currency: 'USD',
-                        })}
+                        <b>
+                          {date.ticket.children.toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                          })}
+                        </b>
                       </p>
                       <p>
                         Ticket Youth:{' '}
-                        {date.ticket.youth.toLocaleString('en-US', {
-                          style: 'currency',
-                          currency: 'USD',
-                        })}
+                        <b>
+                          {date.ticket.youth.toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                          })}
+                        </b>
                       </p>
                       <p>
                         Ticket Adult:{' '}
-                        {date.ticket.adult.toLocaleString('en-US', {
-                          style: 'currency',
-                          currency: 'USD',
-                        })}
+                        <b>
+                          {date.ticket.adult.toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                          })}
+                        </b>
                       </p>
                     </>
                   );

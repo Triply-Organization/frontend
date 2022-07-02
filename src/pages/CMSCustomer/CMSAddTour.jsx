@@ -11,14 +11,13 @@ import {
   Upload,
   message,
 } from 'antd';
-import React, { useState } from 'react';
-import {
-  AiOutlineInbox,
-  AiOutlineMinusCircle,
-  AiOutlinePlus,
-} from 'react-icons/ai';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { AiOutlineInbox, AiOutlinePlus } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { getDestinationsServiceTours } from '../../app/toursSlice';
 import './CMSAddTour.scss';
 
 const { TabPane } = Tabs;
@@ -29,7 +28,19 @@ const { Option } = Select;
 
 const CMSAddTour = () => {
   const [duration, setDuration] = useState(null);
+  const [coverImage, setCoverImage] = useState({});
+  const [galleryImage, setGalleryImage] = useState([]);
+  const destinations = useSelector(state => state.tours.destinations);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (destinations.length === 0) {
+      dispatch(getDestinationsServiceTours());
+
+      console.log(destinations.length);
+    }
+  }, []);
 
   const beforeUpload = file => {
     const isPNG = file.type === 'image/png';
@@ -43,9 +54,89 @@ const CMSAddTour = () => {
   };
 
   const onAddTour = values => {
-    console.log(values);
+    // Delete gallery image is removed
+    const resGallery = galleryImage.filter(function (o1) {
+      return values.tourImages.gallery.fileList.some(function (o2) {
+        console.log(o1.uid);
+        return o1.file.uid === o2.uid; // return the ones with equal id
+      });
+    });
+    // Convert tourplans to array
+    const propertyValues = Object.values(values.tourPlans);
+
+    const response = {
+      ...values,
+      tourImages: [{ ...coverImage }, ...resGallery],
+      tourPlans: propertyValues.map((item, index) => ({
+        ...item,
+        day: index + 1,
+      })),
+    };
+
+    console.log(response);
   };
 
+  const uploadCoverImage = async options => {
+    const { onSuccess, onError, file } = options;
+    console.log(`first`);
+
+    const fmData = new FormData();
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    };
+    fmData.append('image[]', file);
+    try {
+      const res = await axios.post(
+        'https://api.nhivo-rentcar.me/api/images/',
+        fmData,
+        config,
+      );
+      onSuccess('Ok');
+      const tempCoverImg = {
+        id: res.data.data[0]?.id,
+        type: 'COVER',
+        file,
+      };
+      setCoverImage(tempCoverImg);
+    } catch (err) {
+      console.log('Eroor: ', err);
+      onError({ err });
+    }
+  };
+
+  const uploadGalleryImage = async options => {
+    const { onSuccess, onError, file } = options;
+    console.log(`first`);
+
+    const fmData = new FormData();
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    };
+    fmData.append('image[]', file);
+    try {
+      const res = await axios.post(
+        'https://api.nhivo-rentcar.me/api/images/',
+        fmData,
+        config,
+      );
+      onSuccess('Ok');
+      const tempCoverImg = {
+        id: res.data.data[0]?.id,
+        type: 'GALLERY',
+        file,
+      };
+      setGalleryImage([...galleryImage, tempCoverImg]);
+    } catch (err) {
+      console.log('Eroor: ', err);
+      onError({ err });
+    }
+  };
   return (
     <>
       <Breadcrumb
@@ -183,6 +274,19 @@ const CMSAddTour = () => {
                   />
                 </Form.Item>
 
+                <Form.Item
+                  label="Servies"
+                  name="services"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Select your services of tour',
+                    },
+                  ]}
+                >
+                  <Select size="large" />
+                </Form.Item>
+
                 <Collapse
                   defaultActiveKey={['1']}
                   style={{ marginBottom: '1rem' }}
@@ -200,15 +304,9 @@ const CMSAddTour = () => {
                       ]}
                     >
                       <Dragger
-                        name="image"
-                        action="https://api.nhivo-rentcar.me/api/images/"
-                        headers={{
-                          Authorization: `Bearer ${localStorage.getItem(
-                            'token',
-                          )}`,
-                        }}
                         multiple={false}
                         maxCount={1}
+                        customRequest={uploadCoverImage}
                         beforeUpload={beforeUpload}
                         listType="picture"
                       >
@@ -231,15 +329,9 @@ const CMSAddTour = () => {
                       style={{ padding: '0 1rem' }}
                     >
                       <Dragger
-                        name="image-detail"
-                        action="https://api.nhivo-rentcar.me/api/images/"
-                        headers={{
-                          Authorization: `Bearer ${localStorage.getItem(
-                            'token',
-                          )}`,
-                        }}
                         multiple={true}
                         beforeUpload={beforeUpload}
+                        customRequest={uploadGalleryImage}
                         listType="picture"
                         maxCount={5}
                       >
@@ -300,52 +392,27 @@ const CMSAddTour = () => {
                             size="large"
                           />
                         </Form.Item>
+                        <Form.Item
+                          style={{ padding: '0 1rem' }}
+                          label="Description"
+                          name={['tourPlans', i + 1, 'destinations']}
+                          rules={[
+                            {
+                              required: true,
+                              message: `Please input Description your tour plan day ${
+                                i + 1
+                              }`,
+                            },
+                          ]}
+                        >
+                          <Select>
+                            {/* {destinations.map((item, index) => <Option value={item.id}>Jack</Option>)} */}
+                          </Select>
+                        </Form.Item>
                       </Panel>
                     );
                   })}
                 </Collapse>
-              </TabPane>
-              <TabPane tab="Services" key="3">
-                <Form.List name="services">
-                  {(fields, { add, remove }) => (
-                    <>
-                      {fields.map(({ key, name, ...restField }) => (
-                        <Space
-                          key={key}
-                          style={{
-                            display: 'flex',
-                            marginBottom: 8,
-                          }}
-                          align="baseline"
-                        >
-                          <Form.Item
-                            className="date-open-form"
-                            {...restField}
-                            name={[name, `${key}`]}
-                            fieldKey={[name, `${key}`]}
-                            rules={[
-                              {
-                                required: true,
-                                message: 'Missing last name',
-                              },
-                            ]}
-                          >
-                            <Input size="large" />
-                          </Form.Item>
-                          <AiOutlineMinusCircle
-                            onClick={() => remove(name)}
-                            style={{ fontSize: '18px' }}
-                          />
-                        </Space>
-                      ))}
-                      <Form.Item>
-                        <Button type="dashed" onClick={() => add()} block>
-                          More service
-                        </Button>
-                      </Form.Item>
-                    </>
-                  )}
-                </Form.List>
               </TabPane>
             </Tabs>
           </div>

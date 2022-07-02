@@ -1,6 +1,13 @@
 .wrapper-date-picker {
   width: 100%;
-  height: fit-content;
+  height: 100%;
   padding: 1rem;
   background-color: white;
+
+  & .ant-picker-cell-disabled:not(.ant-picker-cell-today) {
+    & .ant-picker-calendar-date-value {
+      color: red;
+      font-weight: bold;
+    }
+  }
 }
