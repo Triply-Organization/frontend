@@ -6,9 +6,9 @@ import { topbar } from 'react-router-loading';
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
 import AllTours from '../pages/Alltours/AllTours';
-import CMSAddTour from '../pages/CMSCustomer/CMSAddTour';
 import CMSCustomer from '../pages/CMSCustomer/CMSCustomer';
 import CMSDashBoard from '../pages/CMSCustomer/CMSDashBoard';
+import CMSHandleTour from '../pages/CMSCustomer/CMSHandleTour';
 import CMSTourSchedule from '../pages/CMSCustomer/CMSTourSchedule';
 import CMSTours from '../pages/CMSCustomer/CMSTours';
 import Checkout from '../pages/Checkout/Checkout';
@@ -56,7 +56,8 @@ const RoutesApp = () => {
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<CMSDashBoard />} />
         <Route path="tours" element={<CMSTours />} />
-        <Route path="add-tour" element={<CMSAddTour />} />
+        <Route path="add-tour" element={<CMSHandleTour />} />
+        <Route path="edit-tour/:id" element={<CMSHandleTour />} />
         <Route path="set-schedule/:id" element={<CMSTourSchedule />} />
       </Route>
       {/* <Route path="*" element={<NoMatch />} /> */}

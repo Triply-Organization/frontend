@@ -3,6 +3,7 @@ import {
   Button,
   Collapse,
   Form,
+  Image,
   Input,
   InputNumber,
   Select,
@@ -13,12 +14,17 @@ import {
 } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { AiOutlineInbox, AiOutlinePlus } from 'react-icons/ai';
+import {
+  AiOutlineDelete,
+  AiOutlineFormatPainter,
+  AiOutlineInbox,
+  AiOutlinePlus,
+} from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { getDestinationsServiceTours } from '../../app/toursSlice';
-import './CMSAddTour.scss';
+import './CMSHandleTour.scss';
 
 const { TabPane } = Tabs;
 const { TextArea } = Input;
@@ -30,9 +36,24 @@ const CMSAddTour = () => {
   const [duration, setDuration] = useState(null);
   const [coverImage, setCoverImage] = useState({});
   const [galleryImage, setGalleryImage] = useState([]);
+  const [type, setType] = useState('');
   const destinations = useSelector(state => state.tours.destinations);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const fakeGallery = [
+    {
+      id: 1,
+      src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      name: 'nameoftheimage.png',
+    },
+    {
+      id: 2,
+      src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      name: 'nameoftheimag2.png',
+    },
+  ];
 
   useEffect(() => {
     if (destinations.length === 0) {
@@ -41,6 +62,11 @@ const CMSAddTour = () => {
       console.log(destinations.length);
     }
   }, []);
+
+  useEffect(() => {
+    if (location.pathname.includes('add-tour')) setType('add');
+    else setType('edit');
+  }, [location.pathname]);
 
   const beforeUpload = file => {
     const isPNG = file.type === 'image/png';
@@ -179,11 +205,17 @@ const CMSAddTour = () => {
                 <Button
                   type="primary"
                   size="large"
-                  icon={<AiOutlinePlus />}
+                  icon={
+                    type === 'add' ? (
+                      <AiOutlinePlus />
+                    ) : (
+                      <AiOutlineFormatPainter />
+                    )
+                  }
                   htmlType="submit"
                   className="form-tour__control-header__btn"
                 >
-                  Add now
+                  {type === 'add' ? 'Add now' : 'Update'}
                 </Button>
                 <Button
                   size="large"
@@ -322,6 +354,27 @@ const CMSAddTour = () => {
                           interface.
                         </p>
                       </Dragger>
+
+                      {type === 'edit' && (
+                        <div className="tour-image-wrapper">
+                          <div className="tour-image-wrapper__item">
+                            <Space>
+                              <Image
+                                height={48}
+                                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                                alt=""
+                              />
+                              <p>nameoftheimage.png</p>
+                            </Space>
+
+                            <Button
+                              danger
+                              type="text"
+                              icon={<AiOutlineDelete />}
+                            />
+                          </div>
+                        </div>
+                      )}
                     </Form.Item>
                     <Form.Item
                       label="Gallery"
@@ -346,6 +399,35 @@ const CMSAddTour = () => {
                           will help people understand your tour.
                         </p>
                       </Dragger>
+
+                      {type === 'edit' && (
+                        <div className="tour-image-wrapper">
+                          {fakeGallery.map((item, index) => (
+                            <div
+                              className="tour-image-wrapper__item"
+                              key={index}
+                            >
+                              <Space>
+                                <Image
+                                  height={48}
+                                  src={item.src}
+                                  alt={item.name}
+                                />
+                                <p>{item.name}</p>
+                              </Space>
+
+                              <Button
+                                danger
+                                type="text"
+                                onClick={() => {
+                                  console.log(item.id);
+                                }}
+                                icon={<AiOutlineDelete />}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </Form.Item>
                   </Panel>
                 </Collapse>

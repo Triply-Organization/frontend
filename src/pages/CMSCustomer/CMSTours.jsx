@@ -8,9 +8,9 @@ import './CMSTours.scss';
 const CMSTours = () => {
   const navigate = useNavigate();
   // Handle
-  const onEditTour = tour => {
-    console.log(tour);
-  };
+  // const onEditTour = tour => {
+  //   console.log(tour);
+  // };
 
   // Config table
   const data = [
@@ -60,7 +60,10 @@ const CMSTours = () => {
       key: 'x',
       render: (_, record) => (
         <Space>
-          <Button type="ghost" onClick={() => onEditTour(record)}>
+          <Button
+            type="ghost"
+            onClick={() => navigate(`/cms/edit-tour/${record.id}`)}
+          >
             Edit
           </Button>
           <Button
