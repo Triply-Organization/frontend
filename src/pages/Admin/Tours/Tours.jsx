@@ -19,7 +19,7 @@ const columns = [
         </Link>
       );
     },
-    // sorter: (a, b) => a.title.length - b.title.length,
+    sorter: (a, b) => a.title - b.title,
   },
   {
     title: 'Customer',
@@ -176,7 +176,7 @@ export default function Tours() {
             display: 'flex',
           }}
         >
-          <Table columns={columns} dataSource={data} />
+          <Table bordered columns={columns} dataSource={data} />
         </Space>
       </div>
     </>
