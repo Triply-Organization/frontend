@@ -115,7 +115,31 @@ const CMSTourSchedule = () => {
             return tour.map(item => {
               return item.availableDay.map(date => {
                 if (date.date === value.format('YYYY-MM-DD')) {
-                  return item.title;
+                  return (
+                    <>
+                      <p>
+                        Ticket Children:{' '}
+                        {date.ticket.children.toLocaleString('en-US', {
+                          style: 'currency',
+                          currency: 'USD',
+                        })}
+                      </p>
+                      <p>
+                        Ticket Youth:{' '}
+                        {date.ticket.youth.toLocaleString('en-US', {
+                          style: 'currency',
+                          currency: 'USD',
+                        })}
+                      </p>
+                      <p>
+                        Ticket Adult:{' '}
+                        {date.ticket.adult.toLocaleString('en-US', {
+                          style: 'currency',
+                          currency: 'USD',
+                        })}
+                      </p>
+                    </>
+                  );
                 }
               });
             });
