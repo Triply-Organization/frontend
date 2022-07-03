@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
-
-/* eslint-disable react/prop-types */
 import { Button } from 'antd';
 import { Typography } from 'antd';
+import { PropTypes } from 'prop-types';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaBars } from 'react-icons/fa';
 import { VscChromeClose } from 'react-icons/vsc';
 import { Link } from 'react-router-dom';
@@ -12,10 +11,12 @@ import './MobileNav.scss';
 
 const { Title } = Typography;
 export default function MobileNav(props) {
+  const { t } = useTranslation();
   const {
     mobileNavStatus,
     onChangeNavbarStatus,
     navItem,
+    // eslint-disable-next-line no-unused-vars
     userDataLoginMobile,
   } = props;
   useEffect(() => {
@@ -50,14 +51,14 @@ export default function MobileNav(props) {
 
         <div className="mobileNav__account">
           <Title className="mobileNav__account-heading" level={4}>
-            My account
+            {t('mobileNav.my_account')}
           </Title>
           <div className="mobileNav__account-btn">
             <Button type="primary" size="large">
-              Sign Up
+              {t('mobileNav.login')}
             </Button>
             <Button type="default" size="large">
-              Register
+              {t('mobileNav.register')}
             </Button>
           </div>
         </div>
@@ -98,3 +99,10 @@ export default function MobileNav(props) {
     </div>
   );
 }
+
+MobileNav.propTypes = {
+  mobileNavStatus: PropTypes.any,
+  onChangeNavbarStatus: PropTypes.func,
+  navItem: PropTypes.array,
+  userDataLoginMobile: PropTypes.array,
+};

@@ -196,7 +196,7 @@ export default function Header() {
           key: '2',
           label: (
             <Button type="primary" size="large">
-              {t('cta.login')}
+              <Link to="/login">{t('cta.login')}</Link>
             </Button>
           ),
         },
@@ -204,7 +204,7 @@ export default function Header() {
           key: '3',
           label: (
             <Button type="default" size="large">
-              {t('cta.register')}
+              <Link to="/register">{t('cta.register')}</Link>
             </Button>
           ),
         },
