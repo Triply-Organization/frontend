@@ -8,6 +8,7 @@ import Header from '../components/Header/Header';
 import AllTours from '../pages/Alltours/AllTours';
 import Checkout from '../pages/Checkout/Checkout';
 import Confirmation from '../pages/Confirmation/Confirmation';
+import DetailTour from '../pages/DetailTour/DetailTour';
 import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
 import MyTour from '../pages/MyTour/MyTour';
@@ -35,13 +36,17 @@ const RoutesApp = () => {
       >
         <Route index element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/tours" element={<AllTours />} loading />
+        <Route path="/tours">
+          <Route index element={<AllTours />} loading />
+          <Route path=":search" element={<AllTours />} loading />
+        </Route>
         <Route path="/my-tour" element={<MyTour />} />
+        <Route path="/detail/:id" element={<DetailTour />} />
+        <Route path="confirmation/:id" element={<Confirmation />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="checkout/:id" element={<Checkout />} />
-      <Route path="confirmation/:id" element={<Confirmation />} />
 
       {/* <Route path="*" element={<NoMatch />} /> */}
     </Routes>

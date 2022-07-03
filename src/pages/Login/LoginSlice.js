@@ -31,6 +31,7 @@ const loginSlice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       let data = action.payload;
+      console.log(data);
       state.loading = false;
       if (data.status >= 200 && data.status < 300) {
         localStorage.setItem('token', data.data.data.token);

@@ -169,6 +169,41 @@ a.footer__low-link {
   }
 }
 
+.section-4 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 90px;
+  margin: 0 auto;
+  background-image: url('../../assets/images/background-home.png');
+  background: #f9f4f0;
+  background-repeat: no-repeat;
+
+  &__link {
+    font-size: 30px;
+  }
+  &__text {
+    font-size: 16px;
+    color: #999;
+  }
+  &__follow-us {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__wrapper-button {
+    display: flex;
+    gap: 1rem;
+  }
+  &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 @media (max-width: 1000px) {
   .footer__upper {
     grid-template-rows: 1fr 1fr;
