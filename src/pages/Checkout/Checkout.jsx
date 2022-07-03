@@ -9,7 +9,9 @@ import {
   Typography,
 } from 'antd';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { checkout } from '../../app/checkoutSlice';
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import stripe from '../../assets/images/stripe-logo.png';
 import { ImageBreadcrumb, OrderDetail } from '../../components';
@@ -20,19 +22,26 @@ const { Option } = Select;
 
 const Checkout = () => {
   const checkoutData = JSON.parse(localStorage.getItem('bookingTour'));
-  console.log(checkoutData);
   const [form] = Form.useForm();
-  const [finalTotal, setFinalTotal] = useState(0);
+  const [finalTotal, setFinalTotal] = useState(checkoutData.total);
   const [discountValue, setDiscountValue] = useState(0);
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.checkout.loading);
+  // const url = useSelector(state => state.checkout.data);
 
   const onFinish = values => {
     const newValues = {
-      ...values,
-      checkoutData,
-      finalTotal,
-      name: ` ${values.first_name} ${values.last_name}`,
+      email: values.email,
+      tourId: checkoutData.id,
+      date: checkoutData.date,
+      orderDetails: 1,
+      amount: finalTotal,
+      currency: 'usd',
+      phone: values.phone,
+      name: `${values.first_name} ${values.last_name}`,
     };
     console.log('Received values of form: ', newValues);
+    dispatch(checkout(newValues));
   };
 
   const voucherDiscount = [
@@ -49,10 +58,9 @@ const Checkout = () => {
     setDiscountValue(value);
     if (voucherDiscount && voucherDiscount.length > 0) {
       setFinalTotal(checkoutData.total - (checkoutData.total * value) / 100);
+    } else if (!value) {
+      setFinalTotal(checkoutData.total);
     }
-    // else if (!value) {
-    //   setFinalTotal(finalTotal);
-    // }
   };
   return (
     <>
@@ -194,6 +202,7 @@ const Checkout = () => {
 
               <Form.Item>
                 <Button
+                  loading={loading}
                   htmlType="submit"
                   type="primary"
                   className="button-checkout-page"

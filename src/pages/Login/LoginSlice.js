@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
 
-import { userAPI } from '../../api/userApi';
+import { userAPI } from '../../api/userAPI';
 
 export const login = createAsyncThunk('user/login', async params => {
   const res = await userAPI.login(params);

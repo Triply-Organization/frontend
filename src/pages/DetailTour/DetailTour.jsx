@@ -10,6 +10,7 @@ import {
   Progress,
   Rate,
   Spin,
+  Typography,
   notification,
 } from 'antd';
 import { Collapse } from 'antd';
@@ -26,11 +27,13 @@ import { RiGroupLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { bookTour, getDetailTour } from '../../app/toursSlice';
+import { getDetailTour } from '../../app/toursSlice';
 import CardTour from '../../components/CardTour/CardTour';
+import { orderTour } from './../../app/orderSlice';
 import './DetailTour.scss';
 
 const { Panel } = Collapse;
+const { Text } = Typography;
 
 const relatedTour = [
   {
@@ -167,24 +170,59 @@ const userReviews = [
   },
 ];
 
-const disabledDate = current => {
-  // Can not select days before today and today
-  return current && current < moment().endOf('day');
-};
-
 export default function DetailTour() {
   let navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
   const detailTour = useSelector(state => state.tours.tour);
   const loadingState = useSelector(state => state.tours.loading);
+  const availableDate = useSelector(state => state.tours.tour.availableDate);
+  const priceDate = useSelector(state => state.tours.tour.priceFollowDate);
   const [bookingDate, setBookingDate] = useState('');
   const [adultNumber, setAdultNumber] = useState(0);
   const [youthNumber, setYouthNumber] = useState(0);
   const [childrenNumber, setChildrenNumber] = useState(0);
+  const [children, setChildren] = useState({});
+  const [adult, setAdult] = useState({});
+  const [youth, setYouth] = useState({});
   const [total, setTotal] = useState(0);
+  const [priceFollowDate, setPriceFollowDate] = useState([]);
 
-  console.log(detailTour);
+  // console.log(detailTour);
+  // console.log(priceFollowDate);
+
+  const handleChangePrice = (value, unique) => {
+    console.log('price', value, unique);
+    console.log(value * unique.price);
+    setTotal(total + value * unique.price);
+    switch (unique.type) {
+      case 'adult':
+        setAdult({ priceListId: unique.id, amount: value });
+        setAdultNumber(value);
+        break;
+      case 'young':
+        setYouth({ priceListId: unique.id, amount: value });
+        setYouthNumber(value);
+        break;
+      case 'children':
+        setChildren({ priceListId: unique.id, amount: value });
+        setChildrenNumber(value);
+    }
+  };
+
+  const disabledDate = current => {
+    return availableDate.find(date => {
+      return date !== moment(current).format('YYYY-MM-DD');
+    });
+  };
+
+  const handleDatePickerChange = (date, dateString) => {
+    const result = priceDate.filter(item =>
+      item.startDate.includes(dateString),
+    );
+    setPriceFollowDate(result);
+    setBookingDate(dateString);
+  };
 
   const detailTourItem = useMemo(() => {
     return [
@@ -221,7 +259,15 @@ export default function DetailTour() {
   }, []);
 
   // validate booking
-  const handleSubmit = () => {
+  const handleSubmit = values => {
+    const request = {
+      children: children,
+      adult: adult,
+      youth: youth,
+      discountID: null,
+    };
+
+    console.log(moment(values.date).format('YYYY-MM-DD'));
     if (!bookingDate) {
       notification.error({
         message: 'Book failed!',
@@ -244,52 +290,22 @@ export default function DetailTour() {
           description: 'Please choose your ticket!',
         });
 
-        const bookingTour = {
-          title: detailTour.title,
-          duration: detailTour.duration,
-          maxPeople: detailTour.maxPeople,
-          date: bookingDate,
-          images: detailTour.tourImages,
-          tickets: {
-            adult: {
-              quantity: adultNumber,
-              price: adultNumber * detailTour.tickets[2].adult,
-            },
-            youth: {
-              quantity: youthNumber,
-              price: youthNumber * detailTour.tickets[1].youth,
-            },
-            children: {
-              quantity: childrenNumber,
-              price: childrenNumber * detailTour.tickets[0].children,
-            },
-          },
-          total,
-        };
+        dispatch(orderTour(request));
+        // navigate(`/checkout/${id}`);
 
         // dispatch(bookTour(bookingTour));
         // console.log(bookingTour);
 
         // Save local for temp
-        localStorage.setItem('bookingTour', JSON.stringify(bookingTour));
+        // localStorage.setItem('bookingTour', JSON.stringify(bookingTour));
 
-        setTimeout(() => {
-          navigate(`/checkout/${id}`);
-          scrollTo(0, 0);
-        }, 2000);
+        // setTimeout(() => {
+        //   navigate(`/checkout/${id}`);
+        //   scrollTo(0, 0);
+        // }, 2000);
       }
     }
   };
-
-  useEffect(() => {
-    if (detailTour.tourPlans) {
-      setTotal(
-        adultNumber * detailTour.tickets[2].adult +
-          youthNumber * detailTour.tickets[1].youth +
-          childrenNumber * detailTour.tickets[0].children,
-      );
-    }
-  }, [adultNumber, youthNumber, childrenNumber]);
 
   return (
     <section className="detailTour">
@@ -405,7 +421,7 @@ export default function DetailTour() {
                             <span className="detailTour__plan-heading">
                               <GoLocation className="detailTour__plan-icon" />
                               <span className="detailTour__plan-heading-word">
-                                Day {item.day}{' '}
+                                Day {item.day}
                                 <span className="detailTour__place-words">
                                   {item.destination}
                                 </span>
@@ -547,98 +563,57 @@ export default function DetailTour() {
             <div className="detailTour__booking">
               <h3 className="detailTour__booking-heading">Book This Tour</h3>
               <Form
-                initialValues={{ ticket: 0 }}
+                onFinish={handleSubmit}
                 autoComplete="off"
+                initialValues={{ adult: 0, young: 0, children: 0 }}
                 className="detailTour__booking-form"
               >
-                <Form.Item className="detailTour__booking-date">
-                  <p className="detailTour__booking-label">From:</p>
+                <p className="detailTour__booking-label">From:</p>
+                <Form.Item className="detailTour__booking-date" name="date">
                   <DatePicker
                     disabledDate={disabledDate}
-                    onChange={(date, dateString) => {
-                      setBookingDate(dateString);
-                    }}
-                    format="DD/MM/YYYY"
+                    onChange={handleDatePickerChange}
+                    format="YYYY-MM-DD"
                     className="detailTour__booking-date-input"
                   />
                 </Form.Item>
                 <div className="detailTour__booking-tickets">
                   <p className="detailTour__booking-label">Tickets:</p>
-                  <Form.Item
-                    className="detailTour__booking-tickets-section"
-                    name="ticket"
-                  >
-                    <label
-                      htmlFor="tickets-section1"
-                      className="detailTour__booking-tickets-description"
-                    >
-                      Adult (18+ years){' '}
-                      <span className="detailTour__booking-tickets-price">
-                        $
-                        {detailTour.tickets && detailTour.tickets.length > 0
-                          ? detailTour.tickets[2].adult
-                          : 0}
-                        .00
-                      </span>
-                    </label>
-                    <InputNumber
-                      id="tickets-section1"
-                      onChange={e => setAdultNumber(e)}
-                      value={adultNumber}
-                      min={0}
-                      max={10}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    className="detailTour__booking-tickets-section"
-                    name="ticket"
-                  >
-                    <label
-                      htmlFor="tickets-section2"
-                      className="detailTour__booking-tickets-description"
-                    >
-                      Youth (13-17 years)
-                      <span className="detailTour__booking-tickets-price">
-                        $
-                        {detailTour.tickets && detailTour.tickets.length > 0
-                          ? detailTour.tickets[1].youth
-                          : 0}
-                        .00
-                      </span>
-                    </label>
-                    <InputNumber
-                      value={youthNumber}
-                      onChange={e => setYouthNumber(e)}
-                      id="tickets-section2"
-                      min={0}
-                      max={10}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    className="detailTour__booking-tickets-section"
-                    name="ticket"
-                  >
-                    <label
-                      htmlFor="tickets-section3"
-                      className="detailTour__booking-tickets-description"
-                    >
-                      Children (0-12 years){' '}
-                      <span className="detailTour__booking-tickets-price">
-                        $
-                        {detailTour.tickets && detailTour.tickets.length > 0
-                          ? detailTour.tickets[0].children
-                          : 0}
-                        .00
-                      </span>
-                    </label>
-                    <InputNumber
-                      value={childrenNumber}
-                      onChange={e => setChildrenNumber(e)}
-                      id="tickets-section3"
-                      min={0}
-                      max={10}
-                    />
-                  </Form.Item>
+
+                  {priceFollowDate && priceFollowDate.length > 0
+                    ? priceFollowDate.map(item =>
+                        item.ticket.map(e => {
+                          return (
+                            <>
+                              <div className="inputNumber-style">
+                                <p>
+                                  {e.type === 'adult'
+                                    ? 'Adult (18+ years)'
+                                    : e.type === 'young'
+                                    ? 'Youth (13-17 years)'
+                                    : 'Children (0-12 years)'}
+                                </p>
+
+                                <Text strong>${e.price} :</Text>
+                              </div>
+                              <Form.Item
+                                key={e.id}
+                                className="detailTour__booking-tickets-section"
+                                name={e.type}
+                              >
+                                <InputNumber
+                                  min={0}
+                                  max={10}
+                                  onChange={values =>
+                                    handleChangePrice(values, e)
+                                  }
+                                />
+                              </Form.Item>
+                            </>
+                          );
+                        }),
+                      )
+                    : 'Please choose the date!'}
                 </div>
                 <div className="detailTour__booking-footer">
                   <div className="detailTour__booking-count">
@@ -649,9 +624,9 @@ export default function DetailTour() {
                       ${total}.00
                     </span>
                   </div>
-                  <Form.Item htmlType="submit">
+                  <Form.Item>
                     <Button
-                      onClick={handleSubmit}
+                      htmlType="submit"
                       className="detailTour__booking-btn"
                       type="primary"
                       size="large"

@@ -9,6 +9,7 @@ import './Confirmation.scss';
 const { Title, Text } = Typography;
 
 const Confirmation = () => {
+  const checkoutData = JSON.parse(localStorage.getItem('bookingTour'));
   return (
     <>
       <ImageBreadcrumb
@@ -45,7 +46,7 @@ const Confirmation = () => {
           <div className="ctn-confirmation__order-details__title">
             <Title level={3}>ORDER DETAILS</Title>
           </div>
-          <OrderDetail />
+          <OrderDetail data={checkoutData} />
         </div>
       </div>
     </>

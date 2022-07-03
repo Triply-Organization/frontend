@@ -13,12 +13,6 @@ const initialState = {
   booking: {},
 };
 
-export const bookTour = createAsyncThunk('tours/booking', async params => {
-  // const res = await tourAPI.getTourById(params)
-  // return res
-  console.log(params);
-});
-
 export const getDetailTour = createAsyncThunk('tours/detail', async params => {
   const res = await tourAPI.getTourById(params);
   return res;
@@ -100,20 +94,16 @@ const toursSlice = createSlice({
     builder.addCase(getDetailTour.fulfilled, (state, action) => {
       let data = action.payload;
       state.loading = false;
-      state.tour = data.data.data;
+      let priceDate = [];
+      let temp = [];
+      priceDate = data.data.data.schedule.map(item => item);
+      temp = data.data.data.schedule.map(item => item.startDate);
+      state.tour = {
+        ...data.data.data,
+        availableDate: temp,
+        priceFollowDate: priceDate,
+      };
     });
-    // builder.addCase(bookTour.pending, state => {
-    //   state.loading = true;
-    // });
-    // builder.addCase(bookTour.rejected, state => {
-    //   state.loading = false;
-    //   message.error('Can not connect to server. Please check your internet');
-    // });
-    // builder.addCase(bookTour.fulfilled, (state, action) => {
-    //   let data = action.payload;
-    //   state.loading = false;
-    //   console.log(data)
-    // });
   },
 });
 

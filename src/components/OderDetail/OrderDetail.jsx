@@ -8,7 +8,7 @@ const { Title, Text } = Typography;
 
 const OrderDetail = props => {
   const { data, finalTotal, discountValue } = props;
-  console.log(data);
+
   return (
     <>
       <Divider />
