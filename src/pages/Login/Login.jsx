@@ -1,9 +1,9 @@
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Typography } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import LanguageSelect from '../../components/LanguageSelect/LanguageSelect';
 import './Login.scss';
@@ -12,14 +12,28 @@ import { login } from './LoginSlice';
 const { Title, Text } = Typography;
 
 const Login = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const loading = useSelector(state => state.login.loading);
+  const user = JSON.parse(localStorage.getItem('user')) || null;
   const [form] = Form.useForm();
   const onFinish = values => {
     dispatch(login(values));
     form.resetFields();
   };
+
+  useEffect(() => {
+    if (user && user.roles) {
+      if (user.roles.role === 'ROLE_USER') {
+        navigate('/home');
+      } else if (user.roles.role === 'ROLE_ADMIN') {
+        navigate('/admin');
+      } else if (user.roles.role === 'ROLE_CUSTOMER') {
+        navigate('/cms');
+      }
+    }
+  }, [user]);
 
   return (
     <div className="ctn ctn-login">

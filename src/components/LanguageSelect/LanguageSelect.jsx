@@ -27,7 +27,7 @@ const LanguageSelect = () => {
 
   return (
     <Select
-      defaultValue={languageOptions[1].key}
+      defaultValue={i18n.language}
       options={languageOptions}
       onChange={changeLanguage}
     />

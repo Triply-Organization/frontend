@@ -11,6 +11,11 @@ import './MobileNav.scss';
 
 const { Title } = Typography;
 export default function MobileNav(props) {
+  const user = JSON.parse(localStorage.getItem('user')) || null;
+  const token = localStorage.getItem('token');
+
+  console.log(user);
+  console.log(token);
   const { t } = useTranslation();
   const {
     mobileNavStatus,
@@ -49,37 +54,43 @@ export default function MobileNav(props) {
           </button>
         </div>
 
-        <div className="mobileNav__account">
-          <Title className="mobileNav__account-heading" level={4}>
-            {t('mobileNav.my_account')}
-          </Title>
-          <div className="mobileNav__account-btn">
-            <Button type="primary" size="large">
-              {t('mobileNav.login')}
-            </Button>
-            <Button type="default" size="large">
-              {t('mobileNav.register')}
-            </Button>
+        {token ? (
+          <div className="mobileNav__account">
+            <Title className="mobileNav__account-heading" level={4}>
+              Hi {user.name}
+            </Title>
+            <ul className="mobileNav__list">
+              {userDataLoginMobile.map((item, index) => {
+                return (
+                  <li
+                    onClick={item.onClick}
+                    className="mobileNav__item"
+                    key={index}
+                  >
+                    <Link to={item.link} className="mobileNav__link">
+                      <span className="mobileNav__icon">{item.icon}</span>
+                      <span className="mobileNav__words">{item.title}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
-        </div>
-
-        {/* <div className="mobileNav__account">
-          <Title className="mobileNav__account-heading" level={4}>
-            Hi Duy Vo
-          </Title>
-          <ul className="mobileNav__list">
-            {userDataLoginMobile.map((item, index) => {
-              return (
-                <li className="mobileNav__item" key={index}>
-                  <a href="#" className="mobileNav__link">
-                    <span className="mobileNav__icon">{item.icon}</span>
-                    <span className="mobileNav__words">{item.title}</span>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div> */}
+        ) : (
+          <div className="mobileNav__account">
+            <Title className="mobileNav__account-heading" level={4}>
+              {t('mobileNav.my_account')}
+            </Title>
+            <div className="mobileNav__account-btn">
+              <Button type="primary" size="large">
+                {t('mobileNav.login')}
+              </Button>
+              <Button type="default" size="large">
+                {t('mobileNav.register')}
+              </Button>
+            </div>
+          </div>
+        )}
 
         <div className="mobileNav__list-wrapper">
           <ul className="mobileNav__list">
