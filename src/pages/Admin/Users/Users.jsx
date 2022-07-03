@@ -1,54 +1,93 @@
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Breadcrumb, Button, Form, Input, Space, Table } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+  Avatar,
+  Breadcrumb,
+  Button,
+  Form,
+  Input,
+  Select,
+  Space,
+  Table,
+} from 'antd';
 import { Typography } from 'antd';
+import { Modal } from 'antd';
 import React, { useState } from 'react';
 
 import ModalForm from '../../../components/ModalForm/ModalForm';
 import './Users.scss';
 
-const { Title } = Typography;
+const { Option } = Select;
 
-const data = [
-  {
-    name: 'a',
-    key: '1',
-    avatar:
-      'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
-    email: '123@gmail.com',
-    phone: '0123123123',
-    address: '123 ASD BVCX',
-  },
-  {
-    name: 'b',
-    key: '2',
-    avatar: null,
-    email: '542@gmail.com',
-    phone: '012438123',
-    address: '142 ASD BVCX',
-  },
-  {
-    name: 'c',
-    key: '3',
-    avatar:
-      'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
-    email: '55555@gmail.com',
-    phone: '01234333223',
-    address: '554 ASD BVCX',
-  },
-];
+const { confirm } = Modal;
+
+const { Title } = Typography;
 
 export default function Users() {
   const [isShowModalAdd, setShowModalAdd] = useState(false);
   const [isShowModalEdit, setShowModalEdit] = useState(false);
-  const formAddUser = Form.useFormInstance();
-  const formEditUser = Form.useFormInstance();
+  // Set current row value
+  const [currentValue, setCurrentValue] = useState(false);
+  const [formAddUser] = Form.useForm();
+  const [formEditUser] = Form.useForm();
+
+  // HANDLE ADD NEW USER
+  const handleAddNewUser = () => {
+    formAddUser
+      .validateFields()
+      .then(val => {
+        console.log(val);
+        // HANDLE LOGIC ADD NEW USER
+      })
+      .catch(err => console.log(err));
+  };
+
+  // HANDLE OPEN EDIT FORM
+  const handleOpenEditForm = record => {
+    setShowModalEdit(true);
+    setCurrentValue(record);
+  };
+
+  const showConfirm = record => {
+    confirm({
+      title: 'Warning!',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Do you really want to delete this account?',
+
+      onOk() {
+        // HANDLE DELETE ACCOUNT
+        console.log(record);
+      },
+
+      // onCancel() {
+      //   console.log('Cancel');
+      // },
+    });
+  };
+
+  // HANDLE EDIT ROLE USER
+  const handleEditRoleUser = () => {
+    formEditUser
+      .validateFields()
+      .then(val => {
+        // HANDLE LOGIC EDIT ROLE USER
+        console.log(val, currentValue);
+      })
+      .catch(err => console.log(err));
+  };
+
+  // HANDLE CLOSE EDIT ROLE FORM
+  const handleCloseEditRoleForm = () => {
+    setShowModalEdit(false);
+    formEditUser.resetFields();
+  };
 
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      // sorter: (a, b) => a.title - b.title,
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: 'Avatar',
@@ -63,39 +102,64 @@ export default function Users() {
           />
         );
       },
-      // sorter: (a, b) => a.customer.length - b.customer.length,
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      // sorter: (a, b) => a.duration - b.duration,
     },
     {
       title: 'Phone',
       dataIndex: 'phone',
       key: 'phone',
-      // sorter: (a, b) => a.maxPeople - b.maxPeople,
     },
     {
       title: 'Address',
       dataIndex: 'address',
       key: 'address',
-      // sorter: (a, b) => a.minAge - b.minAge,
     },
     {
       title: 'Action',
       key: 'action',
-      render: () => {
+      render: (_, record) => {
         return (
           <Space size={'middle'}>
-            <Button type="primary" onClick={() => setShowModalEdit(true)}>
-              Edit
+            <Button type="primary" onClick={() => handleOpenEditForm(record)}>
+              Edit role
             </Button>
-            <Button>Delete</Button>
+            <Button onClick={() => showConfirm(record)}>Delete</Button>
           </Space>
         );
       },
+    },
+  ];
+
+  const data = [
+    {
+      name: 'a',
+      key: '1',
+      avatar:
+        'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
+      email: '123@gmail.com',
+      phone: '0123123123',
+      address: '123 ASD BVCX',
+    },
+    {
+      name: 'b',
+      key: '2',
+      avatar: null,
+      email: '542@gmail.com',
+      phone: '012438123',
+      address: '142 ASD BVCX',
+    },
+    {
+      name: 'c',
+      key: '3',
+      avatar:
+        'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
+      email: '55555@gmail.com',
+      phone: '01234333223',
+      address: '554 ASD BVCX',
     },
   ];
 
@@ -106,9 +170,10 @@ export default function Users() {
         modalTitle="Add new user"
         formName="add-new-user"
         isVisible={isShowModalAdd}
-        handleOk={() => console.log(123)}
+        handleOk={handleAddNewUser}
         handleCancel={() => setShowModalAdd(false)}
         okText="Add"
+        afterClose={() => formAddUser.resetFields()}
         // defaultValue={productToEdit}
       >
         <Form.Item
@@ -123,9 +188,6 @@ export default function Users() {
         >
           <Input />
         </Form.Item>
-        <Form.Item name="avatar" label="Avatar">
-          <Input type="file" />
-        </Form.Item>
         <Form.Item
           name="email"
           label="Email"
@@ -133,6 +195,10 @@ export default function Users() {
             {
               required: true,
               message: 'Please input the user email!',
+            },
+            {
+              pattern: new RegExp('/S+@S+.S+/'),
+              message: 'Enter a valid email address!',
             },
           ]}
         >
@@ -146,9 +212,13 @@ export default function Users() {
               required: true,
               message: 'Please input the user phone!',
             },
+            {
+              pattern: /^(?:\d*)$/,
+              message: 'Input should contain just number!',
+            },
           ]}
         >
-          <Input type="tel" />
+          <Input />
         </Form.Item>
         <Form.Item
           name="address"
@@ -166,64 +236,28 @@ export default function Users() {
       {/* MODAL EDIT */}
       <ModalForm
         form={formEditUser}
-        modalTitle="Edit user"
+        modalTitle="Edit user's role"
         formName="edit-user"
         isVisible={isShowModalEdit}
-        handleOk={() => console.log(123)}
-        handleCancel={() => setShowModalEdit(false)}
-        okText="Add"
+        handleOk={handleEditRoleUser}
+        handleCancel={handleCloseEditRoleForm}
+        okText="Edit"
         // defaultValue={productToEdit}
       >
         <Form.Item
-          name="name"
-          label="Name"
           rules={[
             {
               required: true,
-              message: 'Please input the user name!',
+              message: 'Please choose the role!',
             },
           ]}
+          name="role"
+          label="Role"
         >
-          <Input />
-        </Form.Item>
-        <Form.Item name="avatar" label="Avatar">
-          <Input type="file" />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user email!',
-            },
-          ]}
-        >
-          <Input type="email" />
-        </Form.Item>
-        <Form.Item
-          name="phone"
-          label="Phone"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user phone!',
-            },
-          ]}
-        >
-          <Input type="tel" />
-        </Form.Item>
-        <Form.Item
-          name="address"
-          label="Address"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user address!',
-            },
-          ]}
-        >
-          <Input />
+          <Select>
+            <Option value="ROLE_ADMIN">Admin</Option>
+            <Option value="ROLE_CUSTOMER">Customer</Option>
+          </Select>
         </Form.Item>
       </ModalForm>
       <Breadcrumb

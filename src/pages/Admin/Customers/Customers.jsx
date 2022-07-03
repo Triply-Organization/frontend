@@ -8,35 +8,6 @@ import './Customers.scss';
 
 const { Title } = Typography;
 
-const data = [
-  {
-    name: 'a',
-    key: '1',
-    avatar:
-      'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
-    email: '123@gmail.com',
-    phone: '0123123123',
-    address: '123 ASD BVCX',
-  },
-  {
-    name: 'b',
-    key: '2',
-    avatar: null,
-    email: '542@gmail.com',
-    phone: '012438123',
-    address: '142 ASD BVCX',
-  },
-  {
-    name: 'c',
-    key: '3',
-    avatar:
-      'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
-    email: '55555@gmail.com',
-    phone: '01234333223',
-    address: '554 ASD BVCX',
-  },
-];
-
 export default function Customers() {
   const [isShowModalAdd, setShowModalAdd] = useState(false);
   const [isShowModalEdit, setShowModalEdit] = useState(false);
@@ -96,6 +67,35 @@ export default function Customers() {
           </Space>
         );
       },
+    },
+  ];
+
+  const data = [
+    {
+      name: 'a',
+      key: '1',
+      avatar:
+        'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
+      email: '123@gmail.com',
+      phone: '0123123123',
+      address: '123 ASD BVCX',
+    },
+    {
+      name: 'b',
+      key: '2',
+      avatar: null,
+      email: '542@gmail.com',
+      phone: '012438123',
+      address: '142 ASD BVCX',
+    },
+    {
+      name: 'c',
+      key: '3',
+      avatar:
+        'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
+      email: '55555@gmail.com',
+      phone: '01234333223',
+      address: '554 ASD BVCX',
     },
   ];
 

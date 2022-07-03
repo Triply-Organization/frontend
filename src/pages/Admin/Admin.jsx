@@ -46,7 +46,12 @@ export default function Admin() {
         onCollapse={value => setCollapsed(value)}
       >
         <img src={logo} alt="logo" className="logo" />
-        <Menu theme="dark" selectedKeys={[url]} mode="inline">
+        <Menu
+          inlineCollapsed={true}
+          theme="dark"
+          selectedKeys={[url]}
+          mode="inline"
+        >
           <Menu.Item key="dashboard" icon={<PieChartOutlined />}>
             <Link to="dashboard">Dashboard</Link>
           </Menu.Item>

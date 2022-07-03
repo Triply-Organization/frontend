@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Form, Modal } from 'antd';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const ModalForm = props => {
   const {
@@ -10,18 +10,18 @@ const ModalForm = props => {
     isVisible,
     handleOk,
     handleCancel,
-    defaultValue,
+    // defaultValue,
     children,
     ...prop
   } = props;
 
-  useEffect(() => {
-    if (defaultValue) {
-      form.setFieldsValue({
-        ...defaultValue,
-      });
-    }
-  }, [defaultValue, form]);
+  // useEffect(() => {
+  //   if (defaultValue) {
+  //     form.setFieldsValue({
+  //       ...defaultValue,
+  //     });
+  //   }
+  // }, [defaultValue, form]);
 
   return (
     <Modal
