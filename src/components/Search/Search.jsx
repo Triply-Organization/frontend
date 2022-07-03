@@ -14,9 +14,9 @@ import './Search.scss';
 const { Option, OptGroup } = Select;
 
 const Search = props => {
-  const { onFinish, destinations, services } = props;
+  const { onFinish, destinations, services, form } = props;
   return (
-    <Form name="search" className="search-form" onFinish={onFinish}>
+    <Form name="search" className="search-form" onFinish={onFinish} form={form}>
       <div className="search-form__item__select">
         <AiOutlineCompass className="search-form__item__select__icon" />
         <div>
@@ -88,7 +88,7 @@ const Search = props => {
         <div>
           <b>Guests</b>
           <Form.Item
-            name="guests"
+            name="guests[]"
             className="search-form__item search-form__guests"
           >
             <Select
@@ -99,9 +99,9 @@ const Search = props => {
               style={{ padding: 0 }}
               placeholder="Whose ticket?"
             >
-              <Option value="children">Children</Option>
-              <Option value="young">Young</Option>
-              <Option value="adult">Adult</Option>
+              <Option value="3">Children</Option>
+              <Option value="2">Young</Option>
+              <Option value="1">Adult</Option>
             </Select>
           </Form.Item>
         </div>
@@ -125,6 +125,7 @@ Search.propTypes = {
   onFinish: PropTypes.func,
   destinations: PropTypes.array,
   services: PropTypes.array,
+  form: PropTypes.any,
 };
 
 export default Search;

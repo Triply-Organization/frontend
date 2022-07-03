@@ -1,5 +1,6 @@
 import { Button } from 'antd';
 import Aos from 'aos';
+import moment from 'moment';
 import React, { useEffect } from 'react';
 import { BsArrowRight } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,26 +64,29 @@ const Home = () => {
   const onSearch = values => {
     const searchParams = {};
     if (values.destinations) {
-      searchParams.destinations = values.destinations;
+      searchParams.destination = values.destinations;
     }
     if (values.services) {
-      searchParams.services = values.services;
+      searchParams.service = values.services;
     }
 
     if (values.when) {
-      searchParams.when = values.when;
+      searchParams.startDate = moment(values.when).format('YYYY-MM-DD');
     }
 
     if (values.guests) {
-      searchParams.guests = values.guests;
+      searchParams['guests[]'] = values['guests[]'];
     }
 
-    if (searchParams)
+    if (searchParams) {
       navigate({
         pathname: '/tours',
-        search: createSearchParams(searchParams).toString(),
+        search: createSearchParams({
+          ...searchParams,
+          orderBy: 'asc',
+        }).toString(),
       });
-    else navigate('/tours');
+    } else navigate('/tours');
   };
 
   return (
@@ -112,12 +116,8 @@ const Home = () => {
       </div>
       <div className="section-2">
         <div className="section-2__title">
-          <h2 className="section-subtitle" data-aos="fade-down">
-            Don&apos;t Miss
-          </h2>
-          <h1 className="section-title" data-aos="fade-up">
-            Specical Offers
-          </h1>
+          <h2 className="section-subtitle">Don&apos;t Miss</h2>
+          <h1 className="section-title">Specical Offers</h1>
         </div>
         <div className="section-2__panel-voucher">
           <CardVoucher
