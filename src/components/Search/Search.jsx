@@ -88,7 +88,7 @@ const Search = props => {
         <div>
           <b>Guests</b>
           <Form.Item
-            name="guest"
+            name="guests"
             className="search-form__item search-form__guests"
           >
             <Select

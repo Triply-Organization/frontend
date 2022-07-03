@@ -63,12 +63,13 @@ const toursSlice = createSlice({
         state.destinations = data.data.destinations;
         state.services = data.data.services;
 
-        const res = data.data.tours.map(item => ({
-          ...item,
-          name: item.title,
-          image: item.tourImages,
-        }));
-        state.list = res;
+        // const res = data.data.tours.map(item => ({
+        //   ...item,
+        //   name: item.title,
+        //   image: item.tourImages,
+        // }));
+        // state.list = res;
+        console.log(data.data);
       }
     });
 

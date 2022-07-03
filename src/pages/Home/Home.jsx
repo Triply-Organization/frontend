@@ -3,7 +3,7 @@ import Aos from 'aos';
 import React, { useEffect } from 'react';
 import { BsArrowRight } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import { getDestinationsServiceTours } from '../../app/toursSlice';
@@ -61,7 +61,28 @@ const Home = () => {
   };
 
   const onSearch = values => {
-    navigate(`/tours?destinations=${values.destinations}`);
+    const searchParams = {};
+    if (values.destinations) {
+      searchParams.destinations = values.destinations;
+    }
+    if (values.services) {
+      searchParams.services = values.services;
+    }
+
+    if (values.when) {
+      searchParams.when = values.when;
+    }
+
+    if (values.guests) {
+      searchParams.guests = values.guests;
+    }
+
+    if (searchParams)
+      navigate({
+        pathname: '/tours',
+        search: createSearchParams(searchParams).toString(),
+      });
+    else navigate('/tours');
   };
 
   return (
