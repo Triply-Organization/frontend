@@ -5,9 +5,6 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineHome } from 'react-icons/ai';
 import { AiOutlineLogout } from 'react-icons/ai';
-import { BsChatRightDots } from 'react-icons/bs';
-import { BsHeart } from 'react-icons/bs';
-import { MdOutlinePlace } from 'react-icons/md';
 import { MdFeedback } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
@@ -98,12 +95,6 @@ export default function Header() {
       link: '/',
     },
     {
-      title: `${t('header.logged_in.save_tour')}`,
-      icon: <BsHeart />,
-      subnav: ['destination1', 'destination2', 'destination3'],
-      link: '/',
-    },
-    {
       title: `${t('cta.logout')}`,
       icon: <AiOutlineLogout />,
       link: '/login',
@@ -157,20 +148,8 @@ export default function Header() {
     {
       title: `${t('header.tour')}`,
       icon: <TbTicket />,
-      subnav: ['tour1', 'tour2', 'tour3', 'tour4'],
-      to: 'tours',
-    },
-    {
-      title: `${t('header.destination')}`,
-      icon: <MdOutlinePlace />,
-      subnav: ['destination1', 'destination2', 'destination3'],
-      to: 'destination',
-    },
-    {
-      title: `${t('header.contact')}`,
-      icon: <BsChatRightDots />,
       subnav: [],
-      to: 'contact',
+      to: 'tours',
     },
   ];
 
