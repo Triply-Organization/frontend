@@ -11,6 +11,7 @@ const initialState = {
   listFilter: [],
   loading: false,
   booking: {},
+  totalTours: 0,
 };
 
 export const getDetailTour = createAsyncThunk('tours/detail', async params => {
@@ -56,12 +57,24 @@ const toursSlice = createSlice({
       if (data.status === 'success') {
         state.destinations = data.data.destinations;
         state.services = data.data.services;
+        state.totalTours = data.data.totalTours;
 
-        const res = data.data.tours.map(item => ({
-          ...item,
-          name: item.title,
-          image: item.tourImages,
-        }));
+        const res = data.data.tours.map(item => {
+          return {
+            id: item.id,
+            duration: item.duration,
+            maxPeople: item.maxPeople,
+            name: item.title,
+            image: item.tourImages,
+            maxPrice: Math.max(
+              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
+            ),
+            minPrice: Math.min(
+              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
+            ),
+            tourDestination: item.destination.map(item => item.destination)[0],
+          };
+        });
         state.list = res;
       }
     });
@@ -75,14 +88,30 @@ const toursSlice = createSlice({
     });
     builder.addCase(getToursByFilter.fulfilled, (state, action) => {
       state.loading = false;
-      let { data } = action.payload.data;
-      const res = data.tours.map(item => ({
-        ...item,
-        name: item.title,
-        image: item.tourImages,
-      }));
+      let { data } = action.payload;
+      if (data.status === 'success') {
+        state.destinations = data.data.destinations;
+        state.services = data.data.services;
+        state.totalTours = data.data.totalTours;
 
-      state.listFilter = res;
+        const res = data.data.tours.map(item => {
+          return {
+            id: item.id,
+            duration: item.duration,
+            maxPeople: item.maxPeople,
+            name: item.title,
+            image: item.tourImages,
+            maxPrice: Math.max(
+              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
+            ),
+            minPrice: Math.min(
+              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
+            ),
+            tourDestination: item.destination.map(item => item.destination)[0],
+          };
+        });
+        state.listFilter = res;
+      }
     });
     builder.addCase(getDetailTour.pending, state => {
       state.loading = true;
