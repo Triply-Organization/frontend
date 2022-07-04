@@ -1,25 +1,85 @@
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Breadcrumb, Button, Form, Input, Space, Table } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+  Avatar,
+  Breadcrumb,
+  Button,
+  Col,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Space,
+  Table,
+} from 'antd';
 import { Typography } from 'antd';
-import React, { useState } from 'react';
+import Search from 'antd/lib/input/Search';
+import React, { useEffect, useState } from 'react';
+import { useLoadingContext } from 'react-router-loading';
 
 import ModalForm from '../../../components/ModalForm/ModalForm';
 import './Customers.scss';
 
+const { confirm } = Modal;
 const { Title } = Typography;
 
 export default function Customers() {
   const [isShowModalAdd, setShowModalAdd] = useState(false);
-  const [isShowModalEdit, setShowModalEdit] = useState(false);
-  const formAddUser = Form.useFormInstance();
-  const formEditUser = Form.useFormInstance();
+  const [formAddNewCustomer] = Form.useForm();
+  const loadingContext = useLoadingContext();
+
+  const loading = async () => {
+    //loading some data
+
+    //call method to indicate that loading is done
+    loadingContext.done();
+  };
+
+  useEffect(() => {
+    loading();
+  }, []);
+
+  // HANDLE ADD NEW CUSTOMER
+  const handleAddNewCustomer = () => {
+    formAddNewCustomer
+      .validateFields()
+      .then(val => {
+        // HANDLE LOGIC ADD NEW CUSTOMER
+        console.log(val);
+
+        setShowModalAdd(false);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const showConfirm = record => {
+    confirm({
+      title: 'Do you Want to delete these items?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Some descriptions',
+
+      onOk() {
+        // HANDLE DELETE CUSTOMER ACCOUNT
+        console.log(record);
+      },
+
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
+  // HANDLE SEARCH CUSTOMER
+  const handleSearchCustomer = val => {
+    console.log(val);
+  };
 
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      // sorter: (a, b) => a.title - b.title,
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: 'Avatar',
@@ -34,36 +94,29 @@ export default function Customers() {
           />
         );
       },
-      // sorter: (a, b) => a.customer.length - b.customer.length,
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      // sorter: (a, b) => a.duration - b.duration,
     },
     {
       title: 'Phone',
       dataIndex: 'phone',
       key: 'phone',
-      // sorter: (a, b) => a.maxPeople - b.maxPeople,
     },
     {
       title: 'Address',
       dataIndex: 'address',
       key: 'address',
-      // sorter: (a, b) => a.minAge - b.minAge,
     },
     {
       title: 'Action',
       key: 'action',
-      render: () => {
+      render: (_, record) => {
         return (
           <Space size={'middle'}>
-            <Button type="primary" onClick={() => setShowModalEdit(true)}>
-              Edit
-            </Button>
-            <Button>Delete</Button>
+            <Button onClick={() => showConfirm(record)}>Delete</Button>
           </Space>
         );
       },
@@ -102,76 +155,16 @@ export default function Customers() {
   return (
     <div className="customer__wrapper">
       <ModalForm
-        form={formAddUser}
+        form={formAddNewCustomer}
         modalTitle="Add new customer"
         formName="add-new-customer"
         isVisible={isShowModalAdd}
-        handleOk={() => console.log(123)}
+        handleOk={handleAddNewCustomer}
         handleCancel={() => setShowModalAdd(false)}
         okText="Add"
-        // defaultValue={productToEdit}
-      >
-        <Form.Item
-          name="name"
-          label="Name"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the customer name!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item name="avatar" label="Avatar">
-          <Input type="file" />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the customer email!',
-            },
-          ]}
-        >
-          <Input type="email" />
-        </Form.Item>
-        <Form.Item
-          name="phone"
-          label="Phone"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the customer phone!',
-            },
-          ]}
-        >
-          <Input type="tel" />
-        </Form.Item>
-        <Form.Item
-          name="address"
-          label="Address"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the customer address!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-      </ModalForm>
-      {/* MODAL EDIT */}
-      <ModalForm
-        form={formEditUser}
-        modalTitle="Edit user"
-        formName="edit-user"
-        isVisible={isShowModalEdit}
-        handleOk={() => console.log(123)}
-        handleCancel={() => setShowModalEdit(false)}
-        okText="Add"
+        afterClose={() => {
+          formAddNewCustomer.resetFields();
+        }}
         // defaultValue={productToEdit}
       >
         <Form.Item
@@ -186,9 +179,6 @@ export default function Customers() {
         >
           <Input />
         </Form.Item>
-        <Form.Item name="avatar" label="Avatar">
-          <Input type="file" />
-        </Form.Item>
         <Form.Item
           name="email"
           label="Email"
@@ -196,6 +186,10 @@ export default function Customers() {
             {
               required: true,
               message: 'Please input the user email!',
+            },
+            {
+              type: 'email',
+              message: 'Enter a valid email address!',
             },
           ]}
         >
@@ -209,9 +203,13 @@ export default function Customers() {
               required: true,
               message: 'Please input the user phone!',
             },
+            {
+              pattern: /^(?:\d*)$/,
+              message: 'Input should contain just number!',
+            },
           ]}
         >
-          <Input type="tel" />
+          <Input />
         </Form.Item>
         <Form.Item
           name="address"
@@ -232,7 +230,7 @@ export default function Customers() {
         }}
       >
         <Breadcrumb.Item>
-          <Title level={3}>Users</Title>
+          <Title level={3}>Customers</Title>
         </Breadcrumb.Item>
       </Breadcrumb>
       <div
@@ -249,14 +247,30 @@ export default function Customers() {
             display: 'flex',
           }}
         >
-          <Button
-            type="primary"
-            size="large"
-            onClick={() => setShowModalAdd(true)}
-          >
-            Add new customer
-          </Button>
-          <Table columns={columns} dataSource={data} />
+          <Row>
+            <Col span={4}>
+              <Button
+                type="primary"
+                size="large"
+                onClick={() => setShowModalAdd(true)}
+              >
+                Add new customer
+              </Button>
+            </Col>
+            <Col span={10} offset={10}>
+              <Search
+                placeholder="Search customer's email..."
+                size="large"
+                onSearch={val => handleSearchCustomer(val)}
+                enterButton
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Table columns={columns} dataSource={data} />
+            </Col>
+          </Row>
         </Space>
       </div>
     </div>

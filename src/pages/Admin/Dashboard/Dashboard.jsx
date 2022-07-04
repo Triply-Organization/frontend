@@ -5,8 +5,9 @@ import {
 } from '@ant-design/icons';
 import { Area } from '@ant-design/plots';
 import { Column } from '@ant-design/plots';
-import { Breadcrumb, Col, Row, Space, Statistic } from 'antd';
+import { Breadcrumb, Col, DatePicker, Row, Space, Statistic } from 'antd';
 import { Typography } from 'antd';
+import moment from 'moment';
 import React, { useEffect } from 'react';
 import { useLoadingContext } from 'react-router-loading';
 
@@ -16,6 +17,10 @@ const { Title } = Typography;
 
 export function Dashboard() {
   const loadingContext = useLoadingContext();
+
+  const disabledDate = current => {
+    return current > moment().endOf('uea');
+  };
 
   const loading = async () => {
     //loading some data
@@ -199,7 +204,7 @@ export function Dashboard() {
             <Col span={8}>
               <Statistic
                 className="admin__dashboard-statistic"
-                title="Total orders"
+                title="Total booking"
                 value={1128}
                 prefix={<DollarOutlined />}
               />
@@ -210,6 +215,23 @@ export function Dashboard() {
                 title="Total tours"
                 value={1128}
                 prefix={<EnvironmentOutlined />}
+              />
+            </Col>
+          </Row>
+          <Row
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <Col>
+              <DatePicker
+                onChange={e => {
+                  console.log(e);
+                }}
+                defaultValue={moment()}
+                disabledDate={disabledDate}
+                picker="month"
               />
             </Col>
           </Row>

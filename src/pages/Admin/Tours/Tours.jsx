@@ -10,6 +10,26 @@ import './Tours.scss';
 const { Title } = Typography;
 
 export default function Tours() {
+  // GET PAGINATION ...
+
+  // GET TOUR DATA
+
+  // Handle Approve Tour
+  const handleApproveTour = record => {
+    console.log('APPROVE: ', record);
+  };
+
+  //Handle disable tour
+  const handleDisableTour = record => {
+    console.log('DISABLE: ', record);
+  };
+
+  // Handle able tour
+  const handleAbleTour = record => {
+    console.log('ABLE: ', record);
+  };
+
+  // Set loading context for PAGE
   const loadingContext = useLoadingContext();
 
   const loading = async () => {
@@ -110,20 +130,28 @@ export default function Tours() {
         if (record.tag === 'processing') {
           return (
             <Space size={'middle'}>
-              <Button type="primary">Approved</Button>
-              <Button style={{ background: '#bb0606d4', color: '#fff' }}>
-                Disable
+              <Button type="primary" onClick={() => handleApproveTour(record)}>
+                Approved
               </Button>
+              <Button onClick={() => handleDisableTour(record)}>Disable</Button>
             </Space>
           );
         } else if (record.tag === 'disabled') {
           return (
             <Space size={'middle'}>
-              <Button type="ghost">Able</Button>
+              <Button
+                onClick={() => handleAbleTour(record)}
+                type="ghost"
+                style={{ background: '#008000b3', color: '#fff' }}
+              >
+                Able
+              </Button>
             </Space>
           );
         } else {
-          return <Button>Disable</Button>;
+          return (
+            <Button onClick={() => handleDisableTour(record)}>Disable</Button>
+          );
         }
       },
     },
@@ -290,7 +318,7 @@ export default function Tours() {
           <Table
             size="large"
             pagination={{
-              defaultPageSize: 6,
+              // defaultPageSize: 6,
               showSizeChanger: false,
               onChange: e => {
                 console.log(e);

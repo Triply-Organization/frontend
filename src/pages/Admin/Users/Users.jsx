@@ -4,15 +4,19 @@ import {
   Avatar,
   Breadcrumb,
   Button,
+  Col,
   Form,
   Input,
+  Row,
   Select,
   Space,
   Table,
 } from 'antd';
 import { Typography } from 'antd';
 import { Modal } from 'antd';
-import React, { useState } from 'react';
+import Search from 'antd/lib/input/Search';
+import React, { useEffect, useState } from 'react';
+import { useLoadingContext } from 'react-router-loading';
 
 import ModalForm from '../../../components/ModalForm/ModalForm';
 import './Users.scss';
@@ -30,6 +34,18 @@ export default function Users() {
   const [currentValue, setCurrentValue] = useState(false);
   const [formAddUser] = Form.useForm();
   const [formEditUser] = Form.useForm();
+  const loadingContext = useLoadingContext();
+
+  const loading = async () => {
+    //loading some data
+
+    //call method to indicate that loading is done
+    loadingContext.done();
+  };
+
+  useEffect(() => {
+    loading();
+  }, []);
 
   // HANDLE ADD NEW USER
   const handleAddNewUser = () => {
@@ -38,6 +54,8 @@ export default function Users() {
       .then(val => {
         console.log(val);
         // HANDLE LOGIC ADD NEW USER
+
+        setShowModalAdd(false);
       })
       .catch(err => console.log(err));
   };
@@ -63,6 +81,11 @@ export default function Users() {
       //   console.log('Cancel');
       // },
     });
+  };
+
+  // HANDLE SEARCH USER EMAIL
+  const handleSearchUser = value => {
+    console.log(value);
   };
 
   // HANDLE EDIT ROLE USER
@@ -197,7 +220,7 @@ export default function Users() {
               message: 'Please input the user email!',
             },
             {
-              pattern: new RegExp('/S+@S+.S+/'),
+              type: 'email',
               message: 'Enter a valid email address!',
             },
           ]}
@@ -283,14 +306,30 @@ export default function Users() {
             display: 'flex',
           }}
         >
-          <Button
-            type="primary"
-            size="large"
-            onClick={() => setShowModalAdd(true)}
-          >
-            Add new user
-          </Button>
-          <Table columns={columns} dataSource={data} />
+          <Row>
+            <Col span={4}>
+              <Button
+                type="primary"
+                size="large"
+                onClick={() => setShowModalAdd(true)}
+              >
+                Add new user
+              </Button>
+            </Col>
+            <Col span={10} offset={10}>
+              <Search
+                placeholder="Search user's email..."
+                size="large"
+                onSearch={val => handleSearchUser(val)}
+                enterButton
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Table columns={columns} dataSource={data} />
+            </Col>
+          </Row>
         </Space>
       </div>
     </div>

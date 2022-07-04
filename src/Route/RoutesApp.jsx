@@ -57,11 +57,11 @@ const RoutesApp = () => {
         <Route path="confirmation/:id" element={<Confirmation />} />
       </Route>
       <Route path="/admin" element={<Admin />}>
-        <Route index element={<Dashboard />} />
+        <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} loading />
         <Route path="tours" element={<Tours />} loading />
-        <Route path="users" element={<Users />} />
-        <Route path="customers" element={<Customers />} />
+        <Route path="users" element={<Users />} loading />
+        <Route path="customers" element={<Customers loading />} />
         <Route path="reviews" element={<h1>Reviews</h1>} />
       </Route>
       <Route path="/login" element={<Login />} />
