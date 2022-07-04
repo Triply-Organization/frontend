@@ -15,6 +15,7 @@ const { Option, OptGroup } = Select;
 
 const Search = props => {
   const { onFinish, destinations, services, form } = props;
+
   return (
     <Form name="search" className="search-form" onFinish={onFinish} form={form}>
       <div className="search-form__item__select">
@@ -26,6 +27,7 @@ const Search = props => {
             className="search-form__item search-form__destinations "
           >
             <Select
+              allowClear
               bordered={false}
               style={{ border: 'none' }}
               placeholder={'Where are you going?'}
@@ -53,6 +55,7 @@ const Search = props => {
             className="search-form__item search-form__activity"
           >
             <Select
+              allowClear
               bordered={false}
               placeholder={'All Activity'}
               style={{ border: 'none' }}
@@ -78,7 +81,11 @@ const Search = props => {
             name="when"
             className="search-form__item search-form__when"
           >
-            <DatePicker bordered={false} style={{ paddingLeft: 0 }} />
+            <DatePicker
+              bordered={false}
+              style={{ paddingLeft: 0 }}
+              allowClear
+            />
           </Form.Item>
         </div>
       </div>
@@ -99,9 +106,9 @@ const Search = props => {
               style={{ padding: 0 }}
               placeholder="Whose ticket?"
             >
-              <Option value="3">Children</Option>
-              <Option value="2">Young</Option>
               <Option value="1">Adult</Option>
+              <Option value="2">Young</Option>
+              <Option value="3">Children</Option>
             </Select>
           </Form.Item>
         </div>
