@@ -8,6 +8,7 @@ import Header from '../components/Header/Header';
 import Admin from '../pages/Admin/Admin';
 import Customers from '../pages/Admin/Customers/Customers';
 import { Dashboard } from '../pages/Admin/Dashboard/Dashboard';
+import Reviews from '../pages/Admin/Reviews/Reviews';
 import Tours from '../pages/Admin/Tours/Tours';
 import Users from '../pages/Admin/Users/Users';
 import AllTours from '../pages/Alltours/AllTours';
@@ -62,7 +63,7 @@ const RoutesApp = () => {
         <Route path="tours" element={<Tours />} loading />
         <Route path="users" element={<Users />} loading />
         <Route path="customers" element={<Customers loading />} />
-        <Route path="reviews" element={<h1>Reviews</h1>} />
+        <Route path="reviews" element={<Reviews loading />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />

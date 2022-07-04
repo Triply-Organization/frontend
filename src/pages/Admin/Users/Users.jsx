@@ -19,7 +19,6 @@ import React, { useEffect, useState } from 'react';
 import { useLoadingContext } from 'react-router-loading';
 
 import ModalForm from '../../../components/ModalForm/ModalForm';
-import './Users.scss';
 
 const { Option } = Select;
 

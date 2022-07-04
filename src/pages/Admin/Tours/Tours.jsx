@@ -5,8 +5,6 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import './Tours.scss';
-
 const { Title } = Typography;
 
 export default function Tours() {

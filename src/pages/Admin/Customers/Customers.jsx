@@ -18,15 +18,14 @@ import React, { useEffect, useState } from 'react';
 import { useLoadingContext } from 'react-router-loading';
 
 import ModalForm from '../../../components/ModalForm/ModalForm';
-import './Customers.scss';
 
 const { confirm } = Modal;
 const { Title } = Typography;
 
 export default function Customers() {
+  const loadingContext = useLoadingContext();
   const [isShowModalAdd, setShowModalAdd] = useState(false);
   const [formAddNewCustomer] = Form.useForm();
-  const loadingContext = useLoadingContext();
 
   const loading = async () => {
     //loading some data
@@ -54,9 +53,9 @@ export default function Customers() {
 
   const showConfirm = record => {
     confirm({
-      title: 'Do you Want to delete these items?',
+      title: 'Do you really want to delete this account?',
       icon: <ExclamationCircleOutlined />,
-      content: 'Some descriptions',
+      content: 'Warning!',
 
       onOk() {
         // HANDLE DELETE CUSTOMER ACCOUNT

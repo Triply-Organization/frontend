@@ -18,10 +18,6 @@ const { Title } = Typography;
 export function Dashboard() {
   const loadingContext = useLoadingContext();
 
-  const disabledDate = current => {
-    return current > moment().endOf('uea');
-  };
-
   const loading = async () => {
     //loading some data
 
@@ -32,6 +28,11 @@ export function Dashboard() {
   useEffect(() => {
     loading();
   }, []);
+
+  const disabledDate = current => {
+    return current > moment().endOf('year');
+  };
+
   const lineData = [
     {
       month: '1',
@@ -231,7 +232,7 @@ export function Dashboard() {
                 }}
                 defaultValue={moment()}
                 disabledDate={disabledDate}
-                picker="month"
+                picker="year"
               />
             </Col>
           </Row>
