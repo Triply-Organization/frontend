@@ -95,34 +95,31 @@ const toursSlice = createSlice({
     builder.addCase(getToursByFilter.fulfilled, (state, action) => {
       state.loading = false;
       let { data } = action.payload;
-      if (data.status === 'success') {
-        state.destinations = data.data.destinations;
-        state.services = data.data.services;
-        state.totalTours = data.data.totalTours;
+      state.destinations = data.data.destinations;
+      state.services = data.data.services;
+      state.totalTours = data.data.totalTours;
+      console.log(data.data.tours);
 
-        if (data.data.tours) {
-          const res = data.data.tours.map(item => {
-            return {
-              id: item.id,
-              duration: item.duration,
-              maxPeople: item.maxPeople,
-              name: item.title,
-              image: item.tourImages,
-              maxPrice: Math.max(
-                ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
-              ),
-              minPrice: Math.min(
-                ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
-              ),
-              tourDestination: item.destination.map(
-                item => item.destination,
-              )[0],
-            };
-          });
-          state.listFilter = res;
-        } else {
-          state.listFilter = [];
-        }
+      if (data.data.tours) {
+        const res = data.data.tours.map(item => {
+          return {
+            id: item.id,
+            duration: item.duration,
+            maxPeople: item.maxPeople,
+            name: item.title,
+            image: item.tourImages,
+            maxPrice: Math.max(
+              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
+            ),
+            minPrice: Math.min(
+              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
+            ),
+            tourDestination: item.destination.map(item => item.destination)[0],
+          };
+        });
+        state.listFilter = res;
+      } else {
+        state.listFilter = [];
       }
     });
     builder.addCase(getDetailTour.pending, state => {
