@@ -1,0 +1,21 @@
+.ant-statistic.admin__dashboard-statistic {
+  padding: 15px 20px;
+  background: #fff;
+
+  span.ant-statistic-content-value-int {
+    margin-left: 12px;
+  }
+}
+
+.admin__dashboard-line-chart {
+  background: #fff;
+}
+
+canvas {
+  padding: 20px;
+}
+
+h5.ant-typography.admin__dashboard-heading {
+  margin: 24px 0 40px;
+  text-transform: capitalize;
+}

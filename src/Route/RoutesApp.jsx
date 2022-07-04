@@ -5,6 +5,11 @@ import { topbar } from 'react-router-loading';
 
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
+import Admin from '../pages/Admin/Admin';
+import Customers from '../pages/Admin/Customers/Customers';
+import { Dashboard } from '../pages/Admin/Dashboard/Dashboard';
+import Tours from '../pages/Admin/Tours/Tours';
+import Users from '../pages/Admin/Users/Users';
 import AllTours from '../pages/Alltours/AllTours';
 import CMSCustomer from '../pages/CMSCustomer/CMSCustomer';
 import CMSDashBoard from '../pages/CMSCustomer/CMSDashBoard';
@@ -50,6 +55,13 @@ const RoutesApp = () => {
         <Route path="/my-tour" element={<MyTour />} />
         <Route path="/detail/:id" element={<DetailTour />} />
         <Route path="confirmation/:id" element={<Confirmation />} />
+      </Route>
+      <Route path="/admin" element={<Admin />}>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="tours" element={<Tours />} />
+        <Route path="users" element={<Users />} />
+        <Route path="customers" element={<Customers />} />
+        <Route path="reviews" element={<h1>Reviews</h1>} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
