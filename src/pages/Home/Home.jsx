@@ -1,14 +1,13 @@
-import { Button, Form } from 'antd';
+import { Button } from 'antd';
 import Aos from 'aos';
+import moment from 'moment';
 import React, { useEffect } from 'react';
-import {
-  BsArrowRight,
-  BsFacebook,
-  BsInstagram,
-  BsTwitter,
-  BsYoutube,
-} from 'react-icons/bs';
+import { BsArrowRight } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
+import { getDestinationsServiceTours } from '../../app/toursSlice';
 import section1Background from '../../assets/images/section-1-background.png';
 import section2Banner1 from '../../assets/images/section-2_banner-1.jpg';
 import section2Banner2 from '../../assets/images/section-2_banner-2.jpg';
@@ -20,14 +19,37 @@ import Search from '../../components/Search/Search';
 import './Home.scss';
 
 const Home = () => {
-  const [formSearch] = Form.useForm();
+  // Redux
+  const listTours = useSelector(state => state.tours.list);
+  const destinations = useSelector(state => state.tours.destinations);
+  const services = useSelector(state => state.tours.services);
+  const dispatch = useDispatch();
+
+  // React router
+  const navigate = useNavigate();
 
   useEffect(() => {
     Aos.init({
-      duration: 1500,
+      duration: 1000,
     });
     Aos.refresh();
+
+    loading();
   }, []);
+
+  const loadingContext = useLoadingContext();
+
+  const loading = async () => {
+    //loading some data
+    if (
+      listTours.length === 0 ||
+      destinations.length === 0 ||
+      services.length === 0
+    )
+      dispatch(getDestinationsServiceTours());
+    //call method to indicate that loading is done
+    loadingContext.done();
+  };
 
   const tour = {
     image:
@@ -40,7 +62,31 @@ const Home = () => {
   };
 
   const onSearch = values => {
-    console.log(values);
+    const searchParams = {};
+    if (values.destinations) {
+      searchParams.destination = values.destinations;
+    }
+    if (values.services) {
+      searchParams.service = values.services;
+    }
+
+    if (values.when) {
+      searchParams.startDate = moment(values.when).format('YYYY-MM-DD');
+    }
+
+    if (values.guests) {
+      searchParams['guests[]'] = values['guests[]'];
+    }
+
+    if (searchParams) {
+      navigate({
+        pathname: '/tours',
+        search: createSearchParams({
+          ...searchParams,
+          orderBy: 'asc',
+        }).toString(),
+      });
+    } else navigate('/tours');
   };
 
   return (
@@ -56,16 +102,20 @@ const Home = () => {
           <h2 className="section-subtitle" data-aos="fade-right">
             Natural beauty
           </h2>
-          <h1 data-aos="fade-up">Discover the most engaging places</h1>
+          <h1>Discover the most engaging places</h1>
           <button data-aos="fade-right">
             Explore Now
             <BsArrowRight />
           </button>
         </div>
-        <Search form={formSearch} onFinish={onSearch} />
+        <Search
+          onFinish={onSearch}
+          destinations={destinations}
+          services={services}
+        />
       </div>
       <div className="section-2">
-        <div className="section-2__title" data-aos="fade-down">
+        <div className="section-2__title">
           <h2 className="section-subtitle">Don&apos;t Miss</h2>
           <h1 className="section-title">Specical Offers</h1>
         </div>
@@ -104,10 +154,17 @@ const Home = () => {
               Coins while booking.
             </p>
             <div className="section-2__auth__control">
-              <Button type="primary" className="section-2__auth__control__btn">
+              <Button
+                type="primary"
+                className="section-2__auth__control__btn"
+                data-aos="fade-left"
+              >
                 Sign In <BsArrowRight />
               </Button>
-              <Button className="section-2__auth__control__btn">
+              <Button
+                className="section-2__auth__control__btn"
+                data-aos="fade-right"
+              >
                 Register <BsArrowRight />
               </Button>
             </div>
@@ -115,63 +172,21 @@ const Home = () => {
         </div>
       </div>
       <div className="section-3">
-        <div className="section-2__title" data-aos="fade-down">
-          <h2 className="section-subtitle">What&apos;s new</h2>
-          <h1 className="section-title">Popular Tours</h1>
+        <div className="section-2__title">
+          <h2 className="section-subtitle" data-aos="fade-down">
+            What&apos;s new
+          </h2>
+          <h1 className="section-title" data-aos="fade-up">
+            Popular Tours
+          </h1>
         </div>
-        <div className="section-3__content-wrapper" data-aos="zoom-in">
+        <div className="section-3__content-wrapper">
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
           <CardTour tour={tour} tag={'featured'} />
-        </div>
-      </div>
-      <div className="section-4">
-        <div>
-          <p className="section-4__text">
-            Don&apos;t wait any longer. Contact us!
-          </p>
-          <a href="#" className="section-4__link">
-            +(84) 1800 - 333 5555
-          </a>
-        </div>
-        <div>
-          <p style={{ opacity: '0' }}>a</p>
-          <a href="#" className="section-4__link">
-            support@triply.com
-          </a>
-        </div>
-
-        <div className="section-4__follow-us">
-          <p className="section-4__text">Follow us</p>
-          <div className="section-4__wrapper-button">
-            <Button
-              className="section-4__button"
-              icon={<BsFacebook />}
-              shape="circle"
-              size="large"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsTwitter />}
-              shape="circle"
-              size="large"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsYoutube />}
-              size="large"
-              shape="circle"
-            />
-            <Button
-              className="section-4__button"
-              icon={<BsInstagram />}
-              size="large"
-              shape="circle"
-            />
-          </div>
         </div>
       </div>
     </div>

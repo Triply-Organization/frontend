@@ -1,0 +1,106 @@
+.setting-account-ctn {
+  width: 100%;
+  height: fit-content;
+  background-image: url(../../assets/images/background-home.png);
+  padding: 90px 0;
+}
+
+.setting-account-wrapper {
+  width: 1290px;
+  height: fit-content;
+  margin: 90px auto;
+  margin-bottom: 0px;
+  border: 1px solid #f1f1f1;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    border-bottom: 1px solid #f1f1f1;
+
+    & h3 {
+      font-weight: bold;
+    }
+
+    & p {
+      color: #aaa;
+    }
+  }
+
+  &__content {
+    padding: 2rem;
+    border-bottom: 1px solid #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    &__image {
+      & h4 {
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+
+      &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &__info-wrapper {
+          & p {
+            color: #aaa;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+
+    &__google {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      border: 1px solid var(--primary);
+      border-radius: 8px;
+      padding: 1rem;
+      background-color: #f9f4f0;
+    }
+
+    &__form {
+      & .ant-form-item-label {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.setting-account-danger {
+  width: 1290px;
+  height: fit-content;
+  margin: 0 auto;
+  margin-top: 2rem;
+  border: 1px solid #f1f1f1;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  &__header {
+    border-bottom: 1px solid #f1f1f1;
+    padding: 2rem;
+    & h3 {
+      font-weight: bold;
+      color: crimson;
+    }
+  }
+
+  &__content {
+    padding: 2rem;
+
+    & p {
+      margin-bottom: 0.5rem;
+    }
+  }
+}

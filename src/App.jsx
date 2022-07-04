@@ -1,10 +1,20 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import './App.css';
-import CMSCustomer from './pages/CMSCustomer/CMSCustomer';
+import './App.scss';
+import RoutesApp from './Route/RoutesApp';
+import { store } from './app/store';
+import './translation';
 
 function App() {
-  return <CMSCustomer />;
+  return (
+    <Provider store={store}>
+      <Router>
+        <RoutesApp />
+      </Router>
+    </Provider>
+  );
 }
 
 export default App;
