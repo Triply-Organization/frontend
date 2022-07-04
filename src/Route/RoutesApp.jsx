@@ -18,6 +18,7 @@ import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
 import MyTour from '../pages/MyTour/MyTour';
 import Register from '../pages/Register/Register';
+import SettingAccount from '../pages/SettingAccount/SettingAccount';
 
 const RoutesApp = () => {
   topbar.config({
@@ -41,6 +42,7 @@ const RoutesApp = () => {
       >
         <Route index element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/setting-account/:id" element={<SettingAccount />} />
         <Route path="/tours">
           <Route index element={<AllTours />} loading />
           <Route path=":search" element={<AllTours />} loading />
