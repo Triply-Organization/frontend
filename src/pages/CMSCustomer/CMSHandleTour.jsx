@@ -13,6 +13,7 @@ import {
   message,
 } from 'antd';
 import axios from 'axios';
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import {
   AiOutlineDelete,
@@ -36,8 +37,10 @@ const CMSAddTour = () => {
   const [duration, setDuration] = useState(null);
   const [coverImage, setCoverImage] = useState({});
   const [galleryImage, setGalleryImage] = useState([]);
+  const [galleryImageOnChange, setGalleryImageonChange] = useState({});
   const [type, setType] = useState('');
   const destinations = useSelector(state => state.tours.destinations);
+  const services = useSelector(state => state.tours.services);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,10 +59,11 @@ const CMSAddTour = () => {
   ];
 
   useEffect(() => {
-    if (destinations.length === 0) {
+    if (
+      (destinations && destinations.length === 0) ||
+      (services && services.length === 0)
+    ) {
       dispatch(getDestinationsServiceTours());
-
-      console.log(destinations.length);
     }
   }, []);
 
@@ -80,32 +84,46 @@ const CMSAddTour = () => {
   };
 
   const onAddTour = values => {
-    // Delete gallery image is removed
-    const resGallery = galleryImage.filter(function (o1) {
-      return values.tourImages.gallery.fileList.some(function (o2) {
-        console.log(o1.uid);
-        return o1.file.uid === o2.uid; // return the ones with equal id
-      });
-    });
     // Convert tourplans to array
     const propertyValues = Object.values(values.tourPlans);
+    let resGallery = [];
 
-    const response = {
-      ...values,
-      tourImages: [{ ...coverImage }, ...resGallery],
-      tourPlans: propertyValues.map((item, index) => ({
-        ...item,
-        day: index + 1,
-      })),
-    };
+    if (!_.isEmpty(galleryImage)) {
+      // console.log(galleryImageOnChange);
+      // Delete gallery image is removed
+      resGallery = galleryImage.filter(function (o1) {
+        return galleryImageOnChange.fileList.some(function (o2) {
+          // console.log(galleryImage);
+          return o1.file.uid === o2.uid; // return the ones with equal id
+        });
+      });
+    }
 
-    console.log(response);
+    if (_.isEmpty(resGallery)) {
+      const response = {
+        ...values,
+        tourImages: [coverImage, ...galleryImage],
+        tourPlans: propertyValues.map((item, index) => ({
+          ...item,
+          day: index + 1,
+        })),
+      };
+      console.log(response);
+    } else {
+      const response = {
+        ...values,
+        tourImages: [{ ...coverImage }, ...resGallery],
+        tourPlans: propertyValues.map((item, index) => ({
+          ...item,
+          day: index + 1,
+        })),
+      };
+      console.log(response);
+    }
   };
 
   const uploadCoverImage = async options => {
     const { onSuccess, onError, file } = options;
-    console.log(`first`);
-
     const fmData = new FormData();
     const config = {
       headers: {
@@ -135,7 +153,6 @@ const CMSAddTour = () => {
 
   const uploadGalleryImage = async options => {
     const { onSuccess, onError, file } = options;
-    console.log(`first`);
 
     const fmData = new FormData();
     const config = {
@@ -281,9 +298,9 @@ const CMSAddTour = () => {
                     ]}
                   >
                     <Select size="large" style={{ width: 200 }}>
-                      <Option value="0">0</Option>
-                      <Option value="12">12</Option>
-                      <Option value="18">18</Option>
+                      <Option value={0}>0</Option>
+                      <Option value={12}>12</Option>
+                      <Option value={18}>18</Option>
                     </Select>
                   </Form.Item>
                 </Space>
@@ -316,7 +333,15 @@ const CMSAddTour = () => {
                     },
                   ]}
                 >
-                  <Select size="large" />
+                  <Select size="large">
+                    {services.map((item, index) => {
+                      return (
+                        <Option key={index} value={item.id}>
+                          {item.name}
+                        </Option>
+                      );
+                    })}
+                  </Select>
                 </Form.Item>
 
                 <Collapse
@@ -328,12 +353,6 @@ const CMSAddTour = () => {
                       style={{ padding: '0 1rem' }}
                       label="Cover image"
                       name={['tourImages', 'cover']}
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please input your tour cover image',
-                        },
-                      ]}
                     >
                       <Dragger
                         multiple={false}
@@ -386,6 +405,7 @@ const CMSAddTour = () => {
                         beforeUpload={beforeUpload}
                         customRequest={uploadGalleryImage}
                         listType="picture"
+                        onChange={e => setGalleryImageonChange(e)}
                         maxCount={5}
                       >
                         <p className="ant-upload-drag-icon">
@@ -457,6 +477,29 @@ const CMSAddTour = () => {
                         </Form.Item>
                         <Form.Item
                           style={{ padding: '0 1rem' }}
+                          label="Destination"
+                          name={['tourPlans', i + 1, 'destinations']}
+                          rules={[
+                            {
+                              required: true,
+                              message: `Please input Description your tour plan day ${
+                                i + 1
+                              }`,
+                            },
+                          ]}
+                        >
+                          <Select size="large">
+                            {destinations.map((item, index) => {
+                              return (
+                                <Option key={index} value={item.id}>
+                                  {item.name}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </Form.Item>
+                        <Form.Item
+                          style={{ padding: '0 1rem' }}
                           label="Description"
                           name={['tourPlans', i + 1, 'description']}
                           rules={[
@@ -473,23 +516,6 @@ const CMSAddTour = () => {
                             rows={3}
                             size="large"
                           />
-                        </Form.Item>
-                        <Form.Item
-                          style={{ padding: '0 1rem' }}
-                          label="Description"
-                          name={['tourPlans', i + 1, 'destinations']}
-                          rules={[
-                            {
-                              required: true,
-                              message: `Please input Description your tour plan day ${
-                                i + 1
-                              }`,
-                            },
-                          ]}
-                        >
-                          <Select>
-                            {/* {destinations.map((item, index) => <Option value={item.id}>Jack</Option>)} */}
-                          </Select>
                         </Form.Item>
                       </Panel>
                     );
