@@ -45,7 +45,7 @@ const RoutesApp = () => {
           </>
         }
       >
-        <Route index element={<Navigate to="/cms" replace />} />
+        <Route index element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />} />
         <Route path="/setting-account/:id" element={<SettingAccount />} />
         <Route path="/tours">
