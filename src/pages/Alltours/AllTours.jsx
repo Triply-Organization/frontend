@@ -2,6 +2,7 @@
 import {
   Button,
   Collapse,
+  Empty,
   Form,
   Pagination,
   Rate,
@@ -284,27 +285,39 @@ const AllTours = () => {
             </Tag>
           )}
         </div>
-        <div className="all-tours__list-wrapper">
-          {listFilter.length === 0 &&
-            listTours.map((tour, index) => (
+        {listFilter.length === 0 ? (
+          <div className="all-tours__list-wrapper">
+            {listTours.map((tour, index) => (
               <Skeleton key={index} loading={loadingCallAPI} active>
                 <CardTour key={index} tour={tour} />
               </Skeleton>
             ))}
-          {listFilter.length > 0 &&
-            listFilter.map((tour, index) => (
+          </div>
+        ) : (
+          <Empty description={'No tour'} style={{ width: '100%' }} />
+        )}
+
+        {listFilter.length > 0 ? (
+          <div className="all-tours__list-wrapper">
+            {listTours.map((tour, index) => (
               <Skeleton key={index} loading={loadingCallAPI} active>
                 <CardTour key={index} tour={tour} />
               </Skeleton>
             ))}
-        </div>
-        <Pagination
-          defaultCurrent={1}
-          total={totalTours}
-          onChange={page => setPage(page)}
-          defaultPageSize={6}
-          className="all-tours__pagination"
-        />
+          </div>
+        ) : (
+          <Empty description={'No tour'} style={{ width: '100%' }} />
+        )}
+
+        {totalTours > 6 && (
+          <Pagination
+            defaultCurrent={1}
+            total={totalTours}
+            onChange={page => setPage(page)}
+            defaultPageSize={6}
+            className="all-tours__pagination"
+          />
+        )}
       </div>
     </div>
     // </Spin>
