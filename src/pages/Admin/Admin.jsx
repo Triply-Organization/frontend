@@ -20,6 +20,11 @@ export default function Admin() {
   const location = useLocation();
   const [url, setUrl] = useState(location.pathname.slice(7));
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  };
+
   useEffect(() => {
     if (location.pathname.includes('dashboard')) {
       setUrl('dashboard');
@@ -69,7 +74,11 @@ export default function Admin() {
           <Menu.Item key="reviews" icon={<CommentOutlined />}>
             <Link to="reviews">Reviews</Link>
           </Menu.Item>
-          <Menu.Item key="logout" icon={<LoginOutlined />}>
+          <Menu.Item
+            onClick={handleLogout}
+            key="logout"
+            icon={<LoginOutlined />}
+          >
             <Link to="/login">Logout</Link>
           </Menu.Item>
         </Menu>
