@@ -15,7 +15,6 @@ const { Option, OptGroup } = Select;
 
 const Search = props => {
   const { onFinish, destinations, services, form } = props;
-
   return (
     <Form name="search" className="search-form" onFinish={onFinish} form={form}>
       <div className="search-form__item__select">
