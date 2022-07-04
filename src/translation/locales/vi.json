@@ -320,6 +320,50 @@
       "order_timeslot": "$t(order_timeslot.{{value}})",
       "order_history_action": "$t(order_history_action.{{action}})",
       "delivery_status": "$t(delivery_status.{{status}})"
+    },
+    "mobileNav": {
+      "my_account": "Tài khoản của tôi",
+      "login": "Đăng nhập",
+      "register": "Đăng ký" 
+    },
+    "login":{
+      "welcome_back": "Chào mừng trở lại",
+      "first_time_travel": "Lần đầu bạn đi du lịch?",
+      "register_now": "Đăng ký ngay!",
+      "email_required": "Xin hãy nhập email!",
+      "email_invalid": "Email không hợp lệ!",
+      "pw_required": "Xin hãy nhập mật khẩu!",
+      "login": "Đăng nhập",
+      "password": "Mật khẩu"
+    },
+    "register": {
+      "give_us_more_info": "Hãy nhập thêm thông tin",
+      "come_here_for": "Mục đích tạo tài khoản",
+      "create_account": "Tạo tài khoản",
+      "email_required": "Xin hãy nhập email!",
+      "confirmed_password": "Xác nhận mật khẩu",
+      "password":"Mật khẩu",
+      "email_invalid": "Email không hợp lệ!",
+      "pw_required": "Xin hãy nhập mật khẩu!",
+      "pw_invalid": "Tối thiểu tám ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt",
+      "pw_confirmed": "Xin hãy nhập lại mật khẩu!",
+      "pw_confirmed_invalid": "Mật khẩu vừa nhập không khớp với mật khẩu ở trên!",
+      "name":"Họ tên",
+      "phone": "Số điện thoại",
+      "name_required":"Xin hãy nhập tên của bạn!",
+      "address":"Địa chỉ",
+      "phone_required": "Xin hãy nhập số điện thoại của bạn!",
+      "phone_invalid": "Trường này yêu cầu số!",
+      "already_have_account": "Đã có tài khoản?",
+      "next": "Tiếp theo",
+      "you_want_to_be": "Bạn muốn trở thành?",
+      "select_role_required": "Xin hãy chọn vai trò tài khoản của bạn!",
+      "you_go_here_for": "Bạn đến đây để...",
+      "become_a_traveler": "Trở thành một du khách",
+      "to_marketing_your_tour": "Để kinh doanh tour du lịch",
+      "prev": "Trước đó",
+      "register":"Đăng ký",
+      "nickname": "Bạn muốn những người khác gọi bạn bằng tên gì?"
     }
   }
   

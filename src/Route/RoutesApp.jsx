@@ -11,6 +11,11 @@ import { Dashboard } from '../pages/Admin/Dashboard/Dashboard';
 import Tours from '../pages/Admin/Tours/Tours';
 import Users from '../pages/Admin/Users/Users';
 import AllTours from '../pages/Alltours/AllTours';
+import CMSCustomer from '../pages/CMSCustomer/CMSCustomer';
+import CMSDashBoard from '../pages/CMSCustomer/CMSDashBoard';
+import CMSHandleTour from '../pages/CMSCustomer/CMSHandleTour';
+import CMSTourSchedule from '../pages/CMSCustomer/CMSTourSchedule';
+import CMSTours from '../pages/CMSCustomer/CMSTours';
 import Checkout from '../pages/Checkout/Checkout';
 import Confirmation from '../pages/Confirmation/Confirmation';
 import DetailTour from '../pages/DetailTour/DetailTour';
@@ -40,7 +45,7 @@ const RoutesApp = () => {
           </>
         }
       >
-        <Route index element={<Navigate to="/home" replace />} />
+        <Route index element={<Navigate to="/cms" replace />} />
         <Route path="/home" element={<Home />} />
         <Route path="/setting-account/:id" element={<SettingAccount />} />
         <Route path="/tours">
@@ -62,7 +67,14 @@ const RoutesApp = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="checkout/:id" element={<Checkout />} />
-
+      <Route path="/cms" element={<CMSCustomer />}>
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<CMSDashBoard />} />
+        <Route path="tours" element={<CMSTours />} />
+        <Route path="add-tour" element={<CMSHandleTour />} />
+        <Route path="edit-tour/:id" element={<CMSHandleTour />} />
+        <Route path="set-schedule/:id" element={<CMSTourSchedule />} />
+      </Route>
       {/* <Route path="*" element={<NoMatch />} /> */}
     </Routes>
   );
