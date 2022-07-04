@@ -1,30 +1,47 @@
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Typography } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import LanguageSelect from '../../components/LanguageSelect/LanguageSelect';
 import './Login.scss';
 import { login } from './LoginSlice';
 
 const { Title, Text } = Typography;
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const loading = useSelector(state => state.login.loading);
+  const user = JSON.parse(localStorage.getItem('user')) || null;
   const [form] = Form.useForm();
   const onFinish = values => {
     dispatch(login(values));
     form.resetFields();
   };
 
+  useEffect(() => {
+    if (user && user.roles) {
+      if (user.roles.role === 'ROLE_USER') {
+        navigate('/home');
+      } else if (user.roles.role === 'ROLE_ADMIN') {
+        navigate('/admin');
+      } else if (user.roles.role === 'ROLE_CUSTOMER') {
+        navigate('/cms');
+      }
+    }
+  }, [user]);
+
   return (
     <div className="ctn ctn-login">
       <div className="ctn-login__login-form">
         <div className="ctn-login__login-form__title">
-          <Title level={2}>Welcome back</Title>
-          <Text strong>First time travel ?</Text>{' '}
-          <Link to="/register">Register now!</Link>
+          <Title level={2}>{t('login.welcome_back')}</Title>
+          <Text strong>{t('login.first_time_travel')}</Text>{' '}
+          <Link to="/register">{t('login.register_now')}</Link>
         </div>
         <Form
           name="normal_login"
@@ -39,11 +56,11 @@ const Login = () => {
             rules={[
               {
                 type: 'email',
-                message: 'The input is not valid E-mail!',
+                message: `${t('login.email_invalid')}`,
               },
               {
                 required: true,
-                message: 'Please input your Email!',
+                message: `${t('login.email_required')}`,
               },
             ]}
           >
@@ -57,14 +74,14 @@ const Login = () => {
             rules={[
               {
                 required: true,
-                message: 'Please input your Password!',
+                message: `${t('login.pw_required')}`,
               },
             ]}
           >
             <Input
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
-              placeholder="Password"
+              placeholder={t('login.password')}
             />
           </Form.Item>
 
@@ -75,12 +92,14 @@ const Login = () => {
               htmlType="submit"
               className="login-form-button"
             >
-              Log in
+              {t('login.login')}
             </Button>
           </Form.Item>
+          <div className="ctn-login__multi-language">
+            <LanguageSelect />
+          </div>
         </Form>
       </div>
-      .
     </div>
   );
 };

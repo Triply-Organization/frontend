@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import { PropTypes } from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -26,3 +26,7 @@ export default function Subnav(props) {
     </>
   );
 }
+
+Subnav.propTypes = {
+  subnavItem: PropTypes.array,
+};

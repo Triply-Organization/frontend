@@ -9,6 +9,20 @@
   height: fit-content;
   margin: 90px auto;
 
+  &__filter {
+    margin-bottom: 1rem;
+    & .ant-collapse-header {
+      padding: 1rem 0 !important;
+    }
+
+    &__item {
+      & .ant-rate-star {
+        margin-right: 0;
+        color: #00d084;
+      }
+    }
+  }
+
   &__header {
     width: 100%;
     display: flex;
@@ -25,7 +39,6 @@
       & > div {
         display: flex;
         align-items: center;
-        margin-right: 1rem;
       }
 
       &__button {
@@ -44,6 +57,7 @@
     margin-bottom: 1rem;
 
     width: 100%;
+    min-height: 100vh;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
