@@ -7,7 +7,7 @@ import { AiOutlineHome } from 'react-icons/ai';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { MdFeedback } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.png';
 import LanguageSelect from './../LanguageSelect/LanguageSelect';
@@ -25,7 +25,7 @@ export default function Header() {
   // state set for mobileNav status
   const [mobileNavStatus, setMobileNavStatus] = useState(false);
   const { t } = useTranslation();
-
+  const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
   const handleLogout = () => {
@@ -205,7 +205,7 @@ export default function Header() {
       }
     >
       <div className="header__left-side">
-        <div className="header__logo-wrapper">
+        <div className="header__logo-wrapper" onClick={() => navigate('/home')}>
           <img src={logo} alt="logo" className="header__logo" />
         </div>
         {width < 1023 ? null : (
