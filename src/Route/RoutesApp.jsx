@@ -67,6 +67,8 @@ const RoutesApp = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="checkout/:id" element={<Checkout />} />
+      <Route path="confirmation/:id" element={<Confirmation />} />
+
       <Route path="/cms" element={<CMSCustomer />}>
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<CMSDashBoard />} />

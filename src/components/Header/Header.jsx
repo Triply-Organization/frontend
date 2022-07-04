@@ -148,18 +148,30 @@ export default function Header() {
 
   //--------------- Nav Item ----------------->
   const navItem = [
-    { title: `${t('header.home')}`, icon: <AiOutlineHome />, subnav: [] },
+    {
+      title: `${t('header.home')}`,
+      icon: <AiOutlineHome />,
+      subnav: [],
+      to: 'home',
+    },
     {
       title: `${t('header.tour')}`,
       icon: <TbTicket />,
       subnav: ['tour1', 'tour2', 'tour3', 'tour4'],
+      to: 'tours',
     },
     {
       title: `${t('header.destination')}`,
       icon: <MdOutlinePlace />,
       subnav: ['destination1', 'destination2', 'destination3'],
+      to: 'destination',
     },
-    { title: `${t('header.contact')}`, icon: <BsChatRightDots />, subnav: [] },
+    {
+      title: `${t('header.contact')}`,
+      icon: <BsChatRightDots />,
+      subnav: [],
+      to: 'contact',
+    },
   ];
 
   //------------- User Not Login ------------>
