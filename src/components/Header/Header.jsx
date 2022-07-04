@@ -26,7 +26,6 @@ export default function Header() {
   const [mobileNavStatus, setMobileNavStatus] = useState(false);
   const { t } = useTranslation();
 
-  const user = JSON.parse(localStorage.getItem('user')) || null;
   const token = localStorage.getItem('token');
 
   const handleLogout = () => {
@@ -38,13 +37,12 @@ export default function Header() {
     <Menu
       items={[
         {
-          disabled: true,
           key: '1',
           label: (
-            <span className="header__language-heading header__language-item">
-              <span className="header__language-abbre">
-                Hi {user && user.name}
-              </span>
+            <span className="header__language-item">
+              <Link to="/setting-account/1" className="header__language-words">
+                My profile
+              </Link>
             </span>
           ),
         },
@@ -52,7 +50,7 @@ export default function Header() {
           key: '2',
           label: (
             <span className="header__language-item">
-              <Link to="#" className="header__language-words">
+              <Link to="/my-tours" className="header__language-words">
                 {t('header.logged_in.tour')}
               </Link>
             </span>
@@ -60,16 +58,6 @@ export default function Header() {
         },
         {
           key: '3',
-          label: (
-            <span className="header__language-item">
-              <Link to="#" className="header__language-words">
-                {t('header.logged_in.review')}
-              </Link>
-            </span>
-          ),
-        },
-        {
-          key: '4',
           label: (
             <span className="header__language-item">
               <Link
