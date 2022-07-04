@@ -39,6 +39,14 @@ export const getToursByFilter = createAsyncThunk(
   },
 );
 
+export const createTour = createAsyncThunk(
+  'tours/create-tour',
+  async params => {
+    const res = await tourAPI.createTour(params);
+    return res;
+  },
+);
+
 const toursSlice = createSlice({
   name: 'tour',
   initialState,
@@ -132,6 +140,18 @@ const toursSlice = createSlice({
         availableDate: temp,
         priceFollowDate: priceDate,
       };
+    });
+
+    builder.addCase(createTour.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(createTour.rejected, state => {
+      state.loading = false;
+      message.error('Can not connect to server. Please check your internet');
+    });
+    builder.addCase(createTour.fulfilled, (state, action) => {
+      state.loading = false;
+      console.log(action);
     });
   },
 });

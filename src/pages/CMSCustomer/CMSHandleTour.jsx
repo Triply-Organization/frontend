@@ -24,7 +24,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { getDestinationsServiceTours } from '../../app/toursSlice';
+import { createTour, getDestinationsServiceTours } from '../../app/toursSlice';
 import './CMSHandleTour.scss';
 
 const { TabPane } = Tabs;
@@ -99,27 +99,15 @@ const CMSAddTour = () => {
       });
     }
 
-    if (_.isEmpty(resGallery)) {
-      const response = {
-        ...values,
-        tourImages: [coverImage, ...galleryImage],
-        tourPlans: propertyValues.map((item, index) => ({
-          ...item,
-          day: index + 1,
-        })),
-      };
-      console.log(response);
-    } else {
-      const response = {
-        ...values,
-        tourImages: [{ ...coverImage }, ...resGallery],
-        tourPlans: propertyValues.map((item, index) => ({
-          ...item,
-          day: index + 1,
-        })),
-      };
-      console.log(response);
-    }
+    const response = {
+      ...values,
+      tourImages: [{ ...coverImage }, ...resGallery],
+      tourPlans: propertyValues.map((item, index) => ({
+        ...item,
+        day: index + 1,
+      })),
+    };
+    dispatch(createTour(response));
   };
 
   const uploadCoverImage = async options => {
