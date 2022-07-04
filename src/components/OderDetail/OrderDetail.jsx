@@ -1,4 +1,5 @@
 import { Col, Divider, Image, Row, Typography } from 'antd';
+import moment from 'moment';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 
@@ -9,19 +10,21 @@ const { Title, Text } = Typography;
 const OrderDetail = props => {
   const { data, finalTotal, discountValue } = props;
 
+  console.log(data);
+
   return (
     <>
       <Divider />
       <div className="checkout-info-display">
         <Row gutter={8}>
           <Col lg={8} md={6} sm={6} xs={0}>
-            <Image width={150} src={data.images[1].path} />
+            <Image width={150} src={data.imageTour.path} />
           </Col>
           <Col lg={12} md={15} sm={15} xs={18}>
-            <Title level={4}>{data.title}</Title>
+            <Title level={4}>{data.tourTitle}</Title>
             <section>
               <Text strong>Date: </Text>
-              <Text>{data.date}</Text>
+              <Text>{moment(data.startDay.date).format('YYYY-MM-DD')}</Text>
             </section>
             <section>
               <Text strong>Time: </Text>
@@ -33,35 +36,37 @@ const OrderDetail = props => {
               <Text strong>Ticket:</Text>
             </section>
             <section className="checkout-info-display__ticket-ctn">
-              {data.tickets.adult.quantity ? (
+              {data.tickets.adult ? (
                 <span>
                   <Text>Adult: </Text>
                   <Text strong>
-                    ${data.tickets.adult.price} x {data.tickets.adult.quantity}
+                    ${data.tickets.adult.priceTick} x{' '}
+                    {data.tickets.adult.amount}
                   </Text>
                 </span>
               ) : null}
-              {data.tickets.youth.quantity ? (
+              {data.tickets.youth ? (
                 <span>
                   <Text>Youth</Text>
                   <Text strong>
-                    ${data.tickets.youth.price} x {data.tickets.youth.quantity}
+                    ${data.tickets.youth.priceTick} x{' '}
+                    {data.tickets.youth.amount}
                   </Text>
                 </span>
               ) : null}
-              {data.tickets.children.quantity ? (
+              {data.tickets.children ? (
                 <span>
                   <Text>Children: </Text>
                   <Text strong>
-                    ${data.tickets.children.price} x
-                    {data.tickets.children.quantity}
+                    ${data.tickets.children.priceTick} x
+                    {data.tickets.children.amount}
                   </Text>
                 </span>
               ) : null}
             </section>
           </Col>
           <Col lg={4} md={3} sm={3} xs={6}>
-            <Title level={5}>${data.total}</Title>
+            <Title level={5}>${data.subTotal}</Title>
           </Col>
         </Row>
         <Divider />
@@ -81,14 +86,14 @@ const OrderDetail = props => {
           </Col>
           <Col lg={4} md={3} sm={3} xs={6}>
             <section>
-              <Text strong>${data.total}</Text>
+              <Text strong>${data.subTotal}</Text>
             </section>
             <section>
               <Text strong>{discountValue ? `-${discountValue}%` : '0%'}</Text>
             </section>
             <section>
               <Title level={4} className="result-payment">
-                ${!finalTotal ? data.total : finalTotal}
+                ${!finalTotal ? data.subTotal : finalTotal}
               </Title>
             </section>
           </Col>

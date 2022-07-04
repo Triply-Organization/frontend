@@ -11,6 +11,7 @@ import {
   Rate,
   Spin,
   Typography,
+  message,
   notification,
 } from 'antd';
 import { Collapse } from 'antd';
@@ -29,11 +30,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { getDetailTour } from '../../app/toursSlice';
 import CardTour from '../../components/CardTour/CardTour';
-import { orderTour } from './../../app/orderSlice';
+import { booking } from './../../app/orderSlice';
 import './DetailTour.scss';
 
 const { Panel } = Collapse;
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 const relatedTour = [
   {
@@ -178,41 +179,56 @@ export default function DetailTour() {
   const loadingState = useSelector(state => state.tours.loading);
   const availableDate = useSelector(state => state.tours.tour.availableDate);
   const priceDate = useSelector(state => state.tours.tour.priceFollowDate);
+  const dataCheckout = useSelector(state => state.order.checkout);
   const [bookingDate, setBookingDate] = useState('');
-  const [adultNumber, setAdultNumber] = useState(0);
-  const [youthNumber, setYouthNumber] = useState(0);
-  const [childrenNumber, setChildrenNumber] = useState(0);
+  const [adultNumber, setAdultNumber] = useState({
+    value: 0,
+    price: 0,
+  });
+  const [youthNumber, setYouthNumber] = useState({
+    value: 0,
+    price: 0,
+  });
+  const [childrenNumber, setChildrenNumber] = useState({
+    value: 0,
+    price: 0,
+  });
   const [children, setChildren] = useState({});
   const [adult, setAdult] = useState({});
   const [youth, setYouth] = useState({});
   const [total, setTotal] = useState(0);
   const [priceFollowDate, setPriceFollowDate] = useState([]);
 
-  // console.log(detailTour);
-  // console.log(priceFollowDate);
+  useEffect(() => {
+    setTotal(
+      adultNumber.value * adultNumber.price +
+        youthNumber.value * youthNumber.price +
+        childrenNumber.value * childrenNumber.price,
+    );
+  }, [adultNumber, youthNumber, childrenNumber]);
+
+  console.log(detailTour);
+  localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
 
   const handleChangePrice = (value, unique) => {
-    console.log('price', value, unique);
-    console.log(value * unique.price);
-    setTotal(total + value * unique.price);
     switch (unique.type) {
       case 'adult':
         setAdult({ priceListId: unique.id, amount: value });
-        setAdultNumber(value);
+        setAdultNumber({ value, price: unique.price });
         break;
-      case 'young':
+      case 'youth':
         setYouth({ priceListId: unique.id, amount: value });
-        setYouthNumber(value);
+        setYouthNumber({ value, price: unique.price });
         break;
       case 'children':
         setChildren({ priceListId: unique.id, amount: value });
-        setChildrenNumber(value);
+        setChildrenNumber({ value, price: unique.price });
     }
   };
 
   const disabledDate = current => {
-    return availableDate.find(date => {
-      return date !== moment(current).format('YYYY-MM-DD');
+    return !availableDate.find(date => {
+      return date === moment(current).format('YYYY-MM-DD');
     });
   };
 
@@ -267,10 +283,9 @@ export default function DetailTour() {
       discountID: null,
     };
 
-    console.log(moment(values.date).format('YYYY-MM-DD'));
     if (!bookingDate) {
       notification.error({
-        message: 'Book failed!',
+        error: 'Book failed!',
         description: 'Please choose the day!',
       });
     } else if (adultNumber === 0 && youthNumber === 0 && childrenNumber === 0) {
@@ -287,22 +302,13 @@ export default function DetailTour() {
       } else {
         notification.success({
           message: 'Book successfully!',
-          description: 'Please choose your ticket!',
         });
-
-        dispatch(orderTour(request));
-        // navigate(`/checkout/${id}`);
-
-        // dispatch(bookTour(bookingTour));
-        // console.log(bookingTour);
-
-        // Save local for temp
-        // localStorage.setItem('bookingTour', JSON.stringify(bookingTour));
-
-        // setTimeout(() => {
-        //   navigate(`/checkout/${id}`);
-        //   scrollTo(0, 0);
-        // }, 2000);
+        console.log(request);
+        dispatch(booking(request));
+        // console.log(dataCheckout);
+        setTimeout(() => {
+          navigate(`/checkout/${id}`);
+        }, 1500);
       }
     }
   };
@@ -563,9 +569,10 @@ export default function DetailTour() {
             <div className="detailTour__booking">
               <h3 className="detailTour__booking-heading">Book This Tour</h3>
               <Form
+                layout="horizontal"
                 onFinish={handleSubmit}
                 autoComplete="off"
-                initialValues={{ adult: 0, young: 0, children: 0 }}
+                initialValues={{ adult: 0, youth: 0, children: 0 }}
                 className="detailTour__booking-form"
               >
                 <p className="detailTour__booking-label">From:</p>
@@ -586,13 +593,13 @@ export default function DetailTour() {
                           return (
                             <>
                               <div className="inputNumber-style">
-                                <p>
+                                <Text strong level={5}>
                                   {e.type === 'adult'
                                     ? 'Adult (18+ years)'
-                                    : e.type === 'young'
+                                    : e.type === 'youth'
                                     ? 'Youth (13-17 years)'
                                     : 'Children (0-12 years)'}
-                                </p>
+                                </Text>
 
                                 <Text strong>${e.price} :</Text>
                               </div>
