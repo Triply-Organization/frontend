@@ -9,7 +9,6 @@ import {
   Tooltip,
   Typography,
 } from 'antd';
-import moment from 'moment';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -32,30 +31,30 @@ const Checkout = () => {
   const loading = useSelector(state => state.checkout.loading);
 
   console.log(checkoutData);
-  console.log(checkoutData.subTotal);
   const onFinish = values => {
     const newValues = {
-      email: values.email,
+      orderId: checkoutData.id,
       tourId: checkoutData.tourId,
-      date: moment(checkoutData.startDay.date).format('YYYY-MM-DD'),
-      orderDetails: checkoutData.id,
-      amount: finalTotal,
+      scheduleId: checkoutData.scheduleId,
+      totalPrice: finalTotal,
+      discountPrice: values.discount,
+      taxPrice: checkoutData.tax.percent,
       currency: 'usd',
       phone: values.phone,
+      tourName: checkoutData.tourTitle,
+      email: values.email,
       name: `${values.first_name} ${values.last_name}`,
     };
 
     dispatch(checkout(newValues));
   };
 
-  const voucherDiscount = [
-    {
-      title: 'KAKA',
-      value: 10,
-    },
-    { title: 'HUHU', value: 20 },
-    { title: 'HAHA', value: 30 },
-  ];
+  const voucherDiscount = checkoutData.voucher.map(item => {
+    return {
+      title: item.code,
+      value: item.discount,
+    };
+  });
 
   const handleChangeFinalTotal = value => {
     console.log(value);

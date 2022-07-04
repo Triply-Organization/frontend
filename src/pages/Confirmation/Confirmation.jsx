@@ -13,6 +13,7 @@ const { Title, Text } = Typography;
 const Confirmation = () => {
   const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
   const navigate = useNavigate();
+  console.log(checkoutData);
 
   const handleBackToHome = () => {
     navigate('/');
@@ -29,14 +30,14 @@ const Confirmation = () => {
       <div className="ctn ctn-confirmation">
         <div className="ctn-confirmation__notification">
           <Result
-            status={checkoutData.status === 'unpaid' ? 'warning' : 'success'}
+            status={checkoutData.status !== 'unpaid' ? 'warning' : 'success'}
             title={
-              checkoutData.status === 'unpaid'
+              checkoutData.status !== 'unpaid'
                 ? 'Your Order is not Purchased'
                 : 'Successfully Purchased'
             }
             subTitle={
-              checkoutData.status === 'unpaid'
+              checkoutData.status !== 'unpaid'
                 ? 'Please payment your order'
                 : 'Your order is completed and received, and a confirmation email was sent to you. You will pay the full amount later. Thank you!'
             }

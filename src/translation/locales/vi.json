@@ -155,6 +155,7 @@
       "action": "Action",
       "history": "History",
       "supplier_number": "{{number}} suppliers",
+      "price": "{{val, currency(currency: VNĐ)}}",
       "asc": "Thấp đến cao",
       "desc": "Cao đến thấp"
     },

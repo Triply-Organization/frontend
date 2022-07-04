@@ -179,6 +179,7 @@ export default function DetailTour() {
   const loadingState = useSelector(state => state.tours.loading);
   const availableDate = useSelector(state => state.tours.tour.availableDate);
   const priceDate = useSelector(state => state.tours.tour.priceFollowDate);
+  const relatedTours = useSelector(state => state.tours.tour.relatedTour);
   const dataCheckout = useSelector(state => state.order.checkout);
   const [bookingDate, setBookingDate] = useState('');
   const [adultNumber, setAdultNumber] = useState({
@@ -207,7 +208,8 @@ export default function DetailTour() {
     );
   }, [adultNumber, youthNumber, childrenNumber]);
 
-  console.log(detailTour);
+  console.log(relatedTours);
+
   localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
 
   const handleChangePrice = (value, unique) => {
@@ -280,7 +282,7 @@ export default function DetailTour() {
       children: children,
       adult: adult,
       youth: youth,
-      discountID: null,
+      currency: 'usd',
     };
 
     if (!bookingDate) {
@@ -453,11 +455,11 @@ export default function DetailTour() {
                 draggable={true}
                 slidesToShow={2}
               >
-                {relatedTour.map((item, index) => {
+                {relatedTour?.map(item => {
                   return (
                     <>
                       <div className="detailTour__relatedTour-item">
-                        <CardTour tour={item} key={index} />
+                        <CardTour tour={item} key={item.id} />
                       </div>
                     </>
                   );
