@@ -100,23 +100,29 @@ const toursSlice = createSlice({
         state.services = data.data.services;
         state.totalTours = data.data.totalTours;
 
-        const res = data.data.tours.map(item => {
-          return {
-            id: item.id,
-            duration: item.duration,
-            maxPeople: item.maxPeople,
-            name: item.title,
-            image: item.tourImages,
-            maxPrice: Math.max(
-              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
-            ),
-            minPrice: Math.min(
-              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
-            ),
-            tourDestination: item.destination.map(item => item.destination)[0],
-          };
-        });
-        state.listFilter = res;
+        if (data.data.tours) {
+          const res = data.data.tours.map(item => {
+            return {
+              id: item.id,
+              duration: item.duration,
+              maxPeople: item.maxPeople,
+              name: item.title,
+              image: item.tourImages,
+              maxPrice: Math.max(
+                ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
+              ),
+              minPrice: Math.min(
+                ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
+              ),
+              tourDestination: item.destination.map(
+                item => item.destination,
+              )[0],
+            };
+          });
+          state.listFilter = res;
+        } else {
+          state.listFilter = [];
+        }
       }
     });
     builder.addCase(getDetailTour.pending, state => {
