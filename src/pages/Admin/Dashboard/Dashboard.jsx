@@ -7,13 +7,26 @@ import { Area } from '@ant-design/plots';
 import { Column } from '@ant-design/plots';
 import { Breadcrumb, Col, Row, Space, Statistic } from 'antd';
 import { Typography } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLoadingContext } from 'react-router-loading';
 
 import './Dashboard.scss';
 
 const { Title } = Typography;
 
 export function Dashboard() {
+  const loadingContext = useLoadingContext();
+
+  const loading = async () => {
+    //loading some data
+
+    //call method to indicate that loading is done
+    loadingContext.done();
+  };
+
+  useEffect(() => {
+    loading();
+  }, []);
   const lineData = [
     {
       month: '1',
@@ -203,7 +216,7 @@ export function Dashboard() {
           <Row gutter={16}>
             <Col span={24} className="admin__dashboard-line-chart">
               <Title className="admin__dashboard-heading" level={5}>
-                total commission
+                total commission per month
               </Title>
               <Area {...lineConfig} />
             </Col>
@@ -211,7 +224,7 @@ export function Dashboard() {
           <Row gutter={16}>
             <Col span={24} className="admin__dashboard-line-chart">
               <Title className="admin__dashboard-heading" level={5}>
-                total booking
+                total booking per month
               </Title>
               <Column {...columnConfig} />
             </Col>
