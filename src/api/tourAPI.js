@@ -26,4 +26,11 @@ export const tourAPI = {
     const url = `/tours${decodeURIComponent(params)}`;
     return axiosClient.get(url);
   },
+
+  addSchedule(params, id) {
+    const url = `/schedules/${id}`;
+    return axiosClient.post(url, params, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+  },
 };
