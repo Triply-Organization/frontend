@@ -2,3 +2,10 @@ img.logo {
   width: 100%;
   padding: 20px;
 }
+
+span.ant-breadcrumb-link {
+  h3.ant-typography {
+    font-size: 2rem;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+}

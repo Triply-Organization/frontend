@@ -1,12 +1,22 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Col, Rate, Row, Space, Table } from 'antd';
+import {
+  Breadcrumb,
+  Button,
+  Col,
+  Rate,
+  Row,
+  Space,
+  Table,
+  Typography,
+} from 'antd';
 import Search from 'antd/lib/input/Search';
 import confirm from 'antd/lib/modal/confirm';
-import Title from 'antd/lib/skeleton/Title';
 import React, { useEffect } from 'react';
 import { useLoadingContext } from 'react-router-loading';
 
 import './Reviews.scss';
+
+const { Title } = Typography;
 
 export default function Reviews() {
   const loadingContext = useLoadingContext();
@@ -151,7 +161,7 @@ export default function Reviews() {
         }}
       >
         <Breadcrumb.Item>
-          <Title level={3}>REVIEWS</Title>
+          <Title level={3}>Reviews</Title>
         </Breadcrumb.Item>
       </Breadcrumb>
       <div
