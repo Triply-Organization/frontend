@@ -13,7 +13,6 @@ import {
   Spin,
   Typography,
   message,
-  notification,
 } from 'antd';
 import { Collapse } from 'antd';
 import { DatePicker } from 'antd';
@@ -37,87 +36,6 @@ import './DetailTour.scss';
 const { Panel } = Collapse;
 const { Text } = Typography;
 
-const userReviews = [
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-];
-
 export default function DetailTour() {
   let navigate = useNavigate();
   const { id } = useParams();
@@ -128,6 +46,7 @@ export default function DetailTour() {
   const priceDate = useSelector(state => state.tours.tour.priceFollowDate);
   const relatedTours = useSelector(state => state.tours.tour.relatedTour);
   const dataCheckout = useSelector(state => state.order.checkout);
+  const bookingStatus = useSelector(state => state.order.status);
   const [bookingDate, setBookingDate] = useState('');
   const [adultNumber, setAdultNumber] = useState({
     value: 0,
@@ -173,6 +92,34 @@ export default function DetailTour() {
     }
   };
 
+  const userReviews = detailTour.reviews?.map(item => {
+    console.log(item);
+    return {
+      name: item.name,
+      avatar: item.avatar,
+      date: item.createdAt,
+      rating: [
+        {
+          title: 'location',
+          point: item.rating.location,
+        },
+        {
+          title: 'services',
+          point: item.rating.services,
+        },
+        {
+          title: 'price',
+          point: item.rating.price,
+        },
+        {
+          title: 'rooms',
+          point: item.rating.rooms,
+        },
+      ],
+      comment: item.comment,
+    };
+  });
+
   const reviews = [
     {
       title: 'location',
@@ -201,11 +148,16 @@ export default function DetailTour() {
   };
 
   const handleDatePickerChange = (date, dateString) => {
-    const result = priceDate.filter(item =>
-      item.startDate.includes(dateString),
-    );
-    setPriceFollowDate(result);
-    setBookingDate(dateString);
+    if (dateString) {
+      const result = priceDate.filter(item =>
+        item.startDate.includes(dateString),
+      );
+      setPriceFollowDate(result);
+      setBookingDate(dateString);
+    } else {
+      setPriceFollowDate([]);
+      setBookingDate('');
+    }
   };
 
   const detailTourItem = useMemo(() => {
@@ -252,28 +204,18 @@ export default function DetailTour() {
     };
 
     if (!bookingDate) {
-      notification.error({
-        error: 'Book failed!',
-        description: 'Please choose the day!',
-      });
+      message.error('Book failed. Please choose the day!');
     } else if (adultNumber === 0 && youthNumber === 0 && childrenNumber === 0) {
-      notification.error({
-        message: 'Book failed!',
-        description: 'Please choose your ticket!',
+      message.error({
+        content: 'Book failed. Please choose your ticket!',
+        key: 'failed',
       });
     } else {
       if (!localStorage.getItem('token')) {
-        notification.error({
-          message: 'Book failed!',
-          description: 'You should login before book tour!',
-        });
+        message.error('Book failed. You should login before book tour!');
       } else {
-        notification.success({
-          message: 'Book successfully!',
-        });
-        console.log(request);
+        message.success('Book successfully!');
         dispatch(booking(request));
-        // console.log(dataCheckout);
         setTimeout(() => {
           navigate(`/checkout/${id}`);
         }, 1500);
@@ -419,7 +361,7 @@ export default function DetailTour() {
                 autoplay
                 className="detailTour__relatedTour-carousel"
                 draggable={true}
-                slidesToShow={2}
+                slidesToShow={1}
               >
                 {relatedTours && relatedTours.length > 0 ? (
                   relatedTours?.map(item => {
@@ -483,7 +425,7 @@ export default function DetailTour() {
                 </div>
               </div>
               <div className="detailTour__review-detail-wrapper">
-                {userReviews.map((item, index) => {
+                {userReviews?.map((item, index) => {
                   return (
                     <>
                       <div
@@ -526,8 +468,7 @@ export default function DetailTour() {
                             })}
                           </div>
                           <p className="detailTour__review-item-comment">
-                            This is exactly what i was looking for, thank you so
-                            much for these tutorials
+                            {item.comment}
                           </p>
                         </div>
                       </div>

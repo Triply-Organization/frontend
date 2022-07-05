@@ -25,8 +25,6 @@ const Confirmation = () => {
     localStorage.removeItem('bookingInfo');
   };
 
-  console.log(id);
-
   useEffect(() => {
     dispatch(getConfirmInfo(id));
   }, []);
