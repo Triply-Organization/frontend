@@ -41,7 +41,7 @@ const Checkout = () => {
       totalPrice: finalTotal,
       discountPrice: values.discount,
       taxPrice: checkoutData.tax.percent,
-      currency: 'usd',
+      currency: localStorage.getItem('currencyItem').toLowerCase(),
       phone: values.phone,
       tourName: checkoutData.tourTitle,
       email: values.email,

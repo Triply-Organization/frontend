@@ -5,6 +5,7 @@ import {
   Avatar,
   Button,
   Carousel,
+  Empty,
   Form,
   InputNumber,
   Progress,
@@ -34,61 +35,7 @@ import { booking } from './../../app/orderSlice';
 import './DetailTour.scss';
 
 const { Panel } = Collapse;
-const { Text, Title } = Typography;
-
-const relatedTour = [
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-];
-
-const reviews = [
-  {
-    title: 'location',
-    point: 4.38,
-  },
-  {
-    title: 'services',
-    point: 4.5,
-  },
-  {
-    title: 'price',
-    point: 4.24,
-  },
-  {
-    title: 'rooms',
-    point: 4.3,
-  },
-];
+const { Text } = Typography;
 
 const userReviews = [
   {
@@ -208,9 +155,6 @@ export default function DetailTour() {
     );
   }, [adultNumber, youthNumber, childrenNumber]);
 
-  console.log(relatedTours);
-  console.log(detailTour);
-
   localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
 
   const handleChangePrice = (value, unique) => {
@@ -229,6 +173,27 @@ export default function DetailTour() {
     }
   };
 
+  const reviews = [
+    {
+      title: 'location',
+      point: detailTour.rating?.location,
+    },
+    {
+      title: 'services',
+      point: detailTour.rating?.services,
+    },
+    {
+      title: 'price',
+      point: detailTour.rating?.price,
+    },
+    {
+      title: 'rooms',
+      point: detailTour.rating?.rooms,
+    },
+  ];
+
+  console.log(detailTour);
+
   const disabledDate = current => {
     return !availableDate.find(date => {
       return date === moment(current).format('YYYY-MM-DD');
@@ -245,11 +210,11 @@ export default function DetailTour() {
 
   const detailTourItem = useMemo(() => {
     return [
-      {
-        icon: <AiOutlineDollar />,
-        title: 'price',
-        detail: detailTour.price,
-      },
+      // {
+      //   icon: <AiOutlineDollar />,
+      //   title: 'price',
+      //   detail: detailTour.price,
+      // },
       {
         icon: <BiTimeFive />,
         title: 'duration',
@@ -456,15 +421,19 @@ export default function DetailTour() {
                 draggable={true}
                 slidesToShow={2}
               >
-                {relatedTour?.map(item => {
-                  return (
-                    <>
-                      <div className="detailTour__relatedTour-item">
-                        <CardTour tour={item} key={item.id} />
-                      </div>
-                    </>
-                  );
-                })}
+                {relatedTours && relatedTours.length > 0 ? (
+                  relatedTours?.map(item => {
+                    return (
+                      <>
+                        <div className="detailTour__relatedTour-item">
+                          <CardTour tour={item} key={item.id} />
+                        </div>
+                      </>
+                    );
+                  })
+                ) : (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                )}
               </Carousel>
             </div>
             <div className="detailTour__review-wrapper">
@@ -474,7 +443,7 @@ export default function DetailTour() {
                   <div className="detailTour__review-overall-words">
                     <div className="detailTour__review-overall-point">
                       <span className="detailTour__review-overall-average">
-                        4.28
+                        {detailTour.rating?.avg}
                       </span>
                       <span className="detailTour__review-overall-pattern">
                         /5
@@ -630,9 +599,7 @@ export default function DetailTour() {
                     <span className="detailTour__booking-count-words">
                       Total:
                     </span>
-                    <span className="detailTour__booking-total">
-                      ${total}.00
-                    </span>
+                    <span className="detailTour__booking-total">${total}</span>
                   </div>
                   <Form.Item>
                     <Button

@@ -4,11 +4,15 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "jsc -p jsconfig.prod.json && vite build",
     "preview": "vite preview",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:watch-all": "jest --watchAll",
+    "test--coverage": "jest --coverage",
+    "test--coverage-all": "jest --coverage ."
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -36,6 +40,9 @@
     "sunflower-antd": "^1.0.0-beta.3"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^14.2.1",
     "@trivago/prettier-plugin-sort-imports": "^3.2.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
@@ -44,6 +51,7 @@
     "eslint": "^8.18.0",
     "eslint-plugin-react": "^7.30.1",
     "husky": "^8.0.1",
+    "jest": "^28.1.2",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "sass": "^1.53.0",
