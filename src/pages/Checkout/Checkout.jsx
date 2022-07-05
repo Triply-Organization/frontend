@@ -6,6 +6,7 @@ import {
   Input,
   Radio,
   Select,
+  Tooltip,
   Typography,
 } from 'antd';
 import React, { useState } from 'react';
@@ -13,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { checkout } from '../../app/checkoutSlice';
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
+import paypal from '../../assets/images/paypal-logo.png';
 import stripe from '../../assets/images/stripe-logo.png';
 import { ImageBreadcrumb, OrderDetail } from '../../components';
 import './Checkout.scss';
@@ -21,45 +23,51 @@ const { Title } = Typography;
 const { Option } = Select;
 
 const Checkout = () => {
-  const checkoutData = JSON.parse(localStorage.getItem('bookingTour'));
+  const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
   const [form] = Form.useForm();
-  const [finalTotal, setFinalTotal] = useState(checkoutData.total);
+  const [finalTotal, setFinalTotal] = useState(checkoutData.subTotal);
+  const [idVoucher, setIdVoucher] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.checkout.loading);
-  // const url = useSelector(state => state.checkout.data);
 
+  console.log(checkoutData);
   const onFinish = values => {
     const newValues = {
-      email: values.email,
-      tourId: checkoutData.id,
-      date: checkoutData.date,
-      orderDetails: 1,
-      amount: finalTotal,
+      orderId: checkoutData.id,
+      tourId: checkoutData.tourId,
+      voucherId: +idVoucher,
+      scheduleId: checkoutData.scheduleId,
+      totalPrice: finalTotal,
+      discountPrice: values.discount,
+      taxPrice: checkoutData.tax.percent,
       currency: 'usd',
       phone: values.phone,
+      tourName: checkoutData.tourTitle,
+      email: values.email,
       name: `${values.first_name} ${values.last_name}`,
     };
-    console.log('Received values of form: ', newValues);
+    console.log(newValues);
+
     dispatch(checkout(newValues));
   };
 
-  const voucherDiscount = [
-    {
-      title: 'KAKA',
-      value: 10,
-    },
-    { title: 'HUHU', value: 20 },
-    { title: 'HAHA', value: 30 },
-  ];
-
-  const handleChangeFinalTotal = value => {
-    console.log(value);
+  const voucherDiscount = checkoutData.voucher.map(item => {
+    return {
+      id: item.id,
+      title: item.code,
+      value: item.discount,
+    };
+  });
+  const handleChangeFinalTotal = (value, name) => {
+    setIdVoucher(name.key);
     setDiscountValue(value);
     if (voucherDiscount && voucherDiscount.length > 0) {
-      setFinalTotal(checkoutData.total - (checkoutData.total * value) / 100);
+      setFinalTotal(
+        checkoutData.subTotal - (checkoutData.subTotal * value) / 100,
+      );
     } else if (!value) {
-      setFinalTotal(checkoutData.total);
+      setFinalTotal(checkoutData.subTotal);
     }
   };
   return (
@@ -73,7 +81,7 @@ const Checkout = () => {
       <div className="ctn ctn-checkout">
         <div className="ctn-checkout__left-ctn">
           <div className="ctn-checkout__left-ctn__title">
-            <Title level={2}>Order</Title>
+            <Title level={2}>Order #{checkoutData.id}</Title>
           </div>
           <OrderDetail
             data={checkoutData}
@@ -95,6 +103,7 @@ const Checkout = () => {
               onFinish={onFinish}
               initialValues={{
                 payment: 'stripe',
+                discount: 0,
               }}
             >
               <Form.Item
@@ -161,6 +170,13 @@ const Checkout = () => {
                       <img className="stripe-img" src={stripe} alt="stripe" />
                     </div>
                   </Radio>
+                  <Radio value="paypal" disabled>
+                    <Tooltip title="System will update later">
+                      <div>
+                        <img className="paypal-img" src={paypal} alt="paypal" />
+                      </div>
+                    </Tooltip>
+                  </Radio>
                 </Radio.Group>
               </Form.Item>
 
@@ -173,8 +189,8 @@ const Checkout = () => {
                   onChange={handleChangeFinalTotal}
                   placeholder="Choose your voucher"
                 >
-                  {voucherDiscount.map((item, index) => (
-                    <Option key={index} value={item.value}>
+                  {voucherDiscount.map(item => (
+                    <Option name={item.id} key={item.id} value={item.value}>
                       {item.title}
                     </Option>
                   ))}

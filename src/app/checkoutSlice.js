@@ -36,7 +36,6 @@ const checkoutSlice = createSlice({
     builder.addCase(checkout.fulfilled, (state, action) => {
       state.loading = false;
       state.data = action.payload.data.data[0].checkoutURL;
-      // console.log(action.payload.data.data[0].checkoutURL);
       window.open(action.payload.data.data[0].checkoutURL);
       message.success({ content: 'Check out successfull!', key: 'success' });
     });

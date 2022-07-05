@@ -1,5 +1,7 @@
-import { Result, Typography } from 'antd';
+import { Button, Result, Typography } from 'antd';
+import moment from 'moment';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import { OrderDetail } from '../../components';
@@ -9,7 +11,14 @@ import './Confirmation.scss';
 const { Title, Text } = Typography;
 
 const Confirmation = () => {
-  const checkoutData = JSON.parse(localStorage.getItem('bookingTour'));
+  const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
+  const navigate = useNavigate();
+  console.log(checkoutData);
+
+  const handleBackToHome = () => {
+    navigate('/');
+    localStorage.removeItem('bookingInfo');
+  };
   return (
     <>
       <ImageBreadcrumb
@@ -21,24 +30,37 @@ const Confirmation = () => {
       <div className="ctn ctn-confirmation">
         <div className="ctn-confirmation__notification">
           <Result
-            status="success"
-            title="Successfully Purchased"
-            subTitle="Your order is completed and received, and a confirmation email was sent to you. You will pay the full amount later. Thank you!"
+            status={checkoutData.status !== 'unpaid' ? 'warning' : 'success'}
+            title={
+              checkoutData.status !== 'unpaid'
+                ? 'Your Order is not Purchased'
+                : 'Successfully Purchased'
+            }
+            subTitle={
+              checkoutData.status !== 'unpaid'
+                ? 'Please payment your order'
+                : 'Your order is completed and received, and a confirmation email was sent to you. You will pay the full amount later. Thank you!'
+            }
+            extra={[
+              <Button type="primary" key="console" onClick={handleBackToHome}>
+                Back to Home
+              </Button>,
+            ]}
           />
         </div>
         <div className="ctn-confirmation__order-info">
           <div className="ctn-confirmation__order-info__content">
             <div>
               <Text strong>Order number:</Text>
-              {'220630-060956147'}
+              {checkoutData.id}
             </div>
             <div>
               <Text strong>Date:</Text>
-              {'2022-07-02 12:00'}
+              {moment(checkoutData.startDay.date).format('YYYY-MM-DD')}
             </div>
             <div>
               <Text strong>Total:</Text>
-              {'$100.00'}
+              {checkoutData.subTotal}
             </div>
           </div>
         </div>
