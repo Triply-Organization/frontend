@@ -16,13 +16,13 @@ const OrderDetail = props => {
       <div className="checkout-info-display">
         <Row gutter={8}>
           <Col lg={8} md={6} sm={6} xs={0}>
-            <Image width={150} src={data.imageTour.path} />
+            <Image width={150} src={data.imageTour?.path} />
           </Col>
           <Col lg={12} md={15} sm={15} xs={18}>
             <Title level={4}>{data.tourTitle}</Title>
             <section>
               <Text strong>Date: </Text>
-              <Text>{moment(data.startDay.date).format('YYYY-MM-DD')}</Text>
+              <Text>{moment(data.startDay?.date).format('YYYY-MM-DD')}</Text>
             </section>
             <section>
               <Text strong>Time: </Text>
@@ -34,7 +34,7 @@ const OrderDetail = props => {
               <Text strong>Ticket:</Text>
             </section>
             <section className="checkout-info-display__ticket-ctn">
-              {data.tickets.adult ? (
+              {data.tickets?.adult ? (
                 <span>
                   <Text>Adult: </Text>
                   <Text strong>
@@ -43,7 +43,7 @@ const OrderDetail = props => {
                   </Text>
                 </span>
               ) : null}
-              {data.tickets.youth ? (
+              {data.tickets?.youth ? (
                 <span>
                   <Text>Youth</Text>
                   <Text strong>
@@ -52,7 +52,7 @@ const OrderDetail = props => {
                   </Text>
                 </span>
               ) : null}
-              {data.tickets.children ? (
+              {data.tickets?.children ? (
                 <span>
                   <Text>Children: </Text>
                   <Text strong>
@@ -84,10 +84,14 @@ const OrderDetail = props => {
           </Col>
           <Col lg={4} md={3} sm={3} xs={6}>
             <section>
-              <Text strong>${data.subTotal}</Text>
+              <Text strong>${data?.subTotal}</Text>
             </section>
             <section>
-              <Text strong>{discountValue ? `-${discountValue}%` : '0%'}</Text>
+              <Text strong>
+                {data?.bill?.discount
+                  ? `-${data?.bill?.discount}%`
+                  : `-${discountValue}%`}
+              </Text>
             </section>
             <section>
               <Title level={4} className="result-payment">

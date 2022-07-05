@@ -1,18 +1,20 @@
 import {
   Button,
   Checkbox,
+  Col,
   Divider,
   Form,
   Input,
   Radio,
-  Select,
+  Row,
   Tooltip,
   Typography,
+  message,
 } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { checkout } from '../../app/checkoutSlice';
+import { checkout, getVoucherInfo } from '../../app/checkoutSlice';
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import paypal from '../../assets/images/paypal-logo.png';
 import stripe from '../../assets/images/stripe-logo.png';
@@ -20,26 +22,26 @@ import { ImageBreadcrumb, OrderDetail } from '../../components';
 import './Checkout.scss';
 
 const { Title } = Typography;
-const { Option } = Select;
 
 const Checkout = () => {
   const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
-  const [form] = Form.useForm();
   const [finalTotal, setFinalTotal] = useState(checkoutData.subTotal);
-  const [idVoucher, setIdVoucher] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
-  const dispatch = useDispatch();
+  const [voucherVal, setVoucherVal] = useState('');
   const loading = useSelector(state => state.checkout.loading);
+  const voucherData = useSelector(state => state.checkout.voucher);
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const filterTimeout = useRef(null);
 
-  console.log(checkoutData);
   const onFinish = values => {
-    const newValues = {
+    const valueWithoutVoucher = {
       orderId: checkoutData.id,
       tourId: checkoutData.tourId,
-      voucherId: +idVoucher,
+      voucherId: null,
       scheduleId: checkoutData.scheduleId,
       totalPrice: finalTotal,
-      discountPrice: values.discount,
+      discountPrice: 0,
       taxPrice: checkoutData.tax.percent,
       currency: localStorage.getItem('currencyItem').toLowerCase(),
       phone: values.phone,
@@ -47,29 +49,65 @@ const Checkout = () => {
       email: values.email,
       name: `${values.first_name} ${values.last_name}`,
     };
-    console.log(newValues);
-
-    dispatch(checkout(newValues));
-  };
-
-  const voucherDiscount = checkoutData.voucher.map(item => {
-    return {
-      id: item.id,
-      title: item.code,
-      value: item.discount,
+    const newValues = {
+      orderId: checkoutData.id,
+      tourId: checkoutData.tourId,
+      voucherId: voucherData.id,
+      scheduleId: checkoutData.scheduleId,
+      totalPrice: finalTotal,
+      discountPrice: voucherData.discount,
+      taxPrice: checkoutData.tax.percent,
+      currency: localStorage.getItem('currencyItem').toLowerCase(),
+      phone: values.phone,
+      tourName: checkoutData.tourTitle,
+      email: values.email,
+      name: `${values.first_name} ${values.last_name}`,
     };
-  });
-  const handleChangeFinalTotal = (value, name) => {
-    setIdVoucher(name.key);
-    setDiscountValue(value);
-    if (voucherDiscount && voucherDiscount.length > 0) {
-      setFinalTotal(
-        checkoutData.subTotal - (checkoutData.subTotal * value) / 100,
-      );
-    } else if (!value) {
-      setFinalTotal(checkoutData.subTotal);
+    if (voucherData.remain !== 0) {
+      if (!values.discount) {
+        console.log(valueWithoutVoucher);
+        dispatch(checkout(valueWithoutVoucher));
+      } else {
+        console.log(newValues);
+        dispatch(checkout(newValues));
+      }
+    } else {
+      message.error('Your voucher is expired!');
     }
   };
+
+  useEffect(() => {
+    setDiscountValue(voucherData.discount);
+    if (voucherData.discount) {
+      setFinalTotal(
+        checkoutData.subTotal -
+          (checkoutData.subTotal * voucherData.discount) / 100,
+      );
+    } else if (!voucherData.discount) {
+      setFinalTotal(checkoutData.subTotal);
+    }
+  }, [voucherData]);
+
+  const handleChangInputVoucher = e => {
+    if (filterTimeout.current) {
+      clearTimeout(filterTimeout.current);
+    }
+
+    if (!e) return setVoucherVal('');
+
+    filterTimeout.current = setTimeout(() => {
+      setVoucherVal(e.target.value);
+    }, 500);
+  };
+
+  const handleClickVoucherButton = () => {
+    console.log(voucherVal);
+    const req = {
+      code: voucherVal,
+    };
+    dispatch(getVoucherInfo(req));
+  };
+
   return (
     <>
       <ImageBreadcrumb
@@ -103,7 +141,6 @@ const Checkout = () => {
               onFinish={onFinish}
               initialValues={{
                 payment: 'stripe',
-                discount: 0,
               }}
             >
               <Form.Item
@@ -183,18 +220,26 @@ const Checkout = () => {
               <Form.Item
                 name="discount"
                 label={<Title level={5}>Apply your voucher to discount!</Title>}
+                rules={[
+                  {
+                    pattern: /^[A-Z]*$/,
+                    message: "Please uppercase the voucher's code",
+                  },
+                ]}
               >
-                <Select
-                  allowClear
-                  onChange={handleChangeFinalTotal}
-                  placeholder="Choose your voucher"
-                >
-                  {voucherDiscount.map(item => (
-                    <Option name={item.id} key={item.id} value={item.value}>
-                      {item.title}
-                    </Option>
-                  ))}
-                </Select>
+                <Row gutter={8}>
+                  <Col span={19}>
+                    <Form.Item name="discount" noStyle>
+                      <Input
+                        placeholder="VOUCHER CODE"
+                        onChange={handleChangInputVoucher}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={5}>
+                    <Button onClick={handleClickVoucherButton}>Apply</Button>
+                  </Col>
+                </Row>
               </Form.Item>
 
               <Divider />
