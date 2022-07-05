@@ -60,25 +60,6 @@ const toursSlice = createSlice({
       if (data.status === 'success') {
         state.destinations = data.data.destinations;
         state.services = data.data.services;
-        state.totalTours = data.data.totalTours;
-
-        const res = data.data.tours.map(item => {
-          return {
-            id: item.id,
-            duration: item.duration,
-            maxPeople: item.maxPeople,
-            name: item.title,
-            image: item.tourImages,
-            maxPrice: Math.max(
-              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
-            ),
-            minPrice: Math.min(
-              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
-            ),
-            tourDestination: item.destination.map(item => item.destination)[0],
-          };
-        });
-        state.list = res;
       }
     });
 
@@ -103,6 +84,7 @@ const toursSlice = createSlice({
         const res = data.data.tours.map(item => {
           return {
             id: item.id,
+            rating: item.rating?.avg,
             duration: item.duration,
             maxPeople: item.maxPeople,
             name: item.title,
