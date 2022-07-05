@@ -1,13 +1,16 @@
 import { Breadcrumb, Calendar, Form, InputNumber } from 'antd';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
+import { clearIdTourJustCreate } from '../../app/toursSlice';
 import FormModal from '../../components/FormModal/FormModal';
 import './CMSTourSchedule.scss';
 
 const CMSTourSchedule = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const tour = [
     {
       title: 'Vung tau',
@@ -25,6 +28,10 @@ const CMSTourSchedule = () => {
   ];
 
   const { availableDay } = tour[0];
+
+  useEffect(() => {
+    dispatch(clearIdTourJustCreate());
+  }, []);
 
   const [formSetAvailableDay] = Form.useForm();
   const [isVisibleFormSetAvailableDay, setVisibleFormSetAvailableDay] =

@@ -12,6 +12,7 @@ const initialState = {
   loading: false,
   booking: {},
   totalTours: 0,
+  idTourJustCreated: null,
 };
 
 export const getDetailTour = createAsyncThunk('tours/detail', async params => {
@@ -50,7 +51,11 @@ export const createTour = createAsyncThunk(
 const toursSlice = createSlice({
   name: 'tour',
   initialState,
-  reducers: {},
+  reducers: {
+    clearIdTourJustCreate: state => {
+      state.idTourJustCreated = null;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(getDestinationsServiceTours.pending, state => {
       state.loading = true;
@@ -150,10 +155,12 @@ const toursSlice = createSlice({
       message.error('Can not connect to server. Please check your internet');
     });
     builder.addCase(createTour.fulfilled, (state, action) => {
+      const { data } = action.payload;
       state.loading = false;
-      console.log(action);
+      state.idTourJustCreated = data.data.id;
     });
   },
 });
 
+export const { clearIdTourJustCreate } = toursSlice.actions;
 export default toursSlice;

@@ -41,9 +41,12 @@ const CMSAddTour = () => {
   const [type, setType] = useState('');
   const destinations = useSelector(state => state.tours.destinations);
   const services = useSelector(state => state.tours.services);
+  const idTourJustCreated = useSelector(state => state.tours.idTourJustCreated);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [form] = Form.useForm();
 
   const fakeGallery = [
     {
@@ -72,6 +75,16 @@ const CMSAddTour = () => {
     else setType('edit');
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (idTourJustCreated) {
+      message.success({
+        content: 'Create tour successful',
+        key: 'create-tour',
+      });
+      navigate(`/cms/set-schedule/${idTourJustCreated}`);
+    }
+  }, [idTourJustCreated]);
+
   const beforeUpload = file => {
     const isPNG = file.type === 'image/png';
     const isJPG = file.type === 'image/jpeg';
@@ -98,7 +111,6 @@ const CMSAddTour = () => {
         });
       });
     }
-
     const response = {
       ...values,
       tourImages: [{ ...coverImage }, ...resGallery],
@@ -107,6 +119,7 @@ const CMSAddTour = () => {
         day: index + 1,
       })),
     };
+    form.resetFields();
     dispatch(createTour(response));
   };
 
@@ -184,6 +197,7 @@ const CMSAddTour = () => {
         <Breadcrumb.Item>Add Tour</Breadcrumb.Item>
       </Breadcrumb>
       <Form
+        form={form}
         className="form-tour"
         name="form-tour"
         onFinish={onAddTour}
@@ -321,7 +335,7 @@ const CMSAddTour = () => {
                     },
                   ]}
                 >
-                  <Select size="large">
+                  <Select size="large" mode="multiple">
                     {services.map((item, index) => {
                       return (
                         <Option key={index} value={item.id}>
@@ -466,7 +480,7 @@ const CMSAddTour = () => {
                         <Form.Item
                           style={{ padding: '0 1rem' }}
                           label="Destination"
-                          name={['tourPlans', i + 1, 'destinations']}
+                          name={['tourPlans', i + 1, 'destination']}
                           rules={[
                             {
                               required: true,

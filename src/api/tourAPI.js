@@ -12,7 +12,7 @@ export const tourAPI = {
   },
 
   createTour(params) {
-    const url = `/booking`;
+    const url = `/tours/`;
     return axiosClient.post(url, params, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
