@@ -15,6 +15,7 @@ import { TbTicket } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.png';
+import CurrencySelect from '../CurrencySelect/CurrencySelect';
 import SelectCustom from '../Select/SelectCustom';
 import LanguageSelect from './../LanguageSelect/LanguageSelect';
 import './Header.scss';
@@ -275,26 +276,9 @@ export default function Header() {
         ) : (
           <>
             <div className="header__multi-currency">
-              <Dropdown
-                overlayClassName="header__multi-currency-dropdown"
-                overlay={currency}
-                placement="bottomRight"
-                arrow
-              >
-                <Button className="header__multi-currency-container">
-                  USD
-                </Button>
-              </Dropdown>
+              <CurrencySelect />
             </div>
             <div className="header__multi-lang-wrapper">
-              {/* <Dropdown overlay={language} placement="bottomRight" arrow>
-                <Button className="header__multi-lang-btn">
-                  <span className="header__multi-lang-icon">
-                    <GrLanguage />
-                  </span>
-                  <span className="header__multi-lang-words">EN</span>
-                </Button>
-              </Dropdown> */}
               <LanguageSelect />
             </div>
 

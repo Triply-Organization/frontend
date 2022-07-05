@@ -5,6 +5,7 @@ import {
   Avatar,
   Button,
   Carousel,
+  Empty,
   Form,
   InputNumber,
   Progress,
@@ -179,7 +180,7 @@ export default function DetailTour() {
   const loadingState = useSelector(state => state.tours.loading);
   const availableDate = useSelector(state => state.tours.tour.availableDate);
   const priceDate = useSelector(state => state.tours.tour.priceFollowDate);
-  const relatedTours = useSelector(state => state.tours.tour.relatedTour);
+  const relatedTours = useSelector(state => state.tours.tour.relatedTours);
   const dataCheckout = useSelector(state => state.order.checkout);
   const [bookingDate, setBookingDate] = useState('');
   const [adultNumber, setAdultNumber] = useState({
@@ -207,9 +208,6 @@ export default function DetailTour() {
         childrenNumber.value * childrenNumber.price,
     );
   }, [adultNumber, youthNumber, childrenNumber]);
-
-  console.log(relatedTours);
-  console.log(detailTour);
 
   localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
 
@@ -245,11 +243,11 @@ export default function DetailTour() {
 
   const detailTourItem = useMemo(() => {
     return [
-      {
-        icon: <AiOutlineDollar />,
-        title: 'price',
-        detail: detailTour.price,
-      },
+      // {
+      //   icon: <AiOutlineDollar />,
+      //   title: 'price',
+      //   detail: detailTour.price,
+      // },
       {
         icon: <BiTimeFive />,
         title: 'duration',
@@ -456,15 +454,19 @@ export default function DetailTour() {
                 draggable={true}
                 slidesToShow={2}
               >
-                {relatedTour?.map(item => {
-                  return (
-                    <>
-                      <div className="detailTour__relatedTour-item">
-                        <CardTour tour={item} key={item.id} />
-                      </div>
-                    </>
-                  );
-                })}
+                {relatedTours && relatedTours.length > 0 ? (
+                  relatedTours?.map(item => {
+                    return (
+                      <>
+                        <div className="detailTour__relatedTour-item">
+                          <CardTour tour={item} key={item.id} />
+                        </div>
+                      </>
+                    );
+                  })
+                ) : (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                )}
               </Carousel>
             </div>
             <div className="detailTour__review-wrapper">
@@ -630,9 +632,7 @@ export default function DetailTour() {
                     <span className="detailTour__booking-count-words">
                       Total:
                     </span>
-                    <span className="detailTour__booking-total">
-                      ${total}.00
-                    </span>
+                    <span className="detailTour__booking-total">${total}</span>
                   </div>
                   <Form.Item>
                     <Button
