@@ -49,7 +49,10 @@ const toursSlice = createSlice({
     });
     builder.addCase(getDestinationsServiceTours.rejected, state => {
       state.loading = false;
-      message.error('Can not connect to server. Please check your internet');
+      message.error({
+        content: 'Can not connect to server. Please check your internet',
+        key: 'tour-rejected',
+      });
     });
     builder.addCase(getDestinationsServiceTours.fulfilled, (state, action) => {
       state.loading = false;
@@ -84,16 +87,19 @@ const toursSlice = createSlice({
     });
     builder.addCase(getToursByFilter.rejected, state => {
       state.loading = false;
-      message.error('Can not connect to server. Please check your internet');
+      message.error({
+        content: 'Can not connect to server. Please check your internet',
+        key: 'tour-rejected',
+      });
     });
     builder.addCase(getToursByFilter.fulfilled, (state, action) => {
       state.loading = false;
       let { data } = action.payload;
-      if (data.status === 'success') {
-        state.destinations = data.data.destinations;
-        state.services = data.data.services;
-        state.totalTours = data.data.totalTours;
+      state.destinations = data.data.destinations;
+      state.services = data.data.services;
+      state.totalTours = data.data.totalTours;
 
+      if (data.data.tours) {
         const res = data.data.tours.map(item => {
           return {
             id: item.id,
@@ -111,6 +117,8 @@ const toursSlice = createSlice({
           };
         });
         state.listFilter = res;
+      } else {
+        state.listFilter = [];
       }
     });
     builder.addCase(getDetailTour.pending, state => {
@@ -118,7 +126,10 @@ const toursSlice = createSlice({
     });
     builder.addCase(getDetailTour.rejected, state => {
       state.loading = false;
-      message.error('Can not connect to server. Please check your internet');
+      message.error({
+        content: 'Can not connect to server. Please check your internet',
+        key: 'tour-rejected',
+      });
     });
     builder.addCase(getDetailTour.fulfilled, (state, action) => {
       let data = action.payload;
