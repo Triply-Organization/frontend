@@ -1,5 +1,5 @@
 import { axiosClient } from './config/axiosClient';
-import { fakeAxios } from './config/fakeAxios';
+import { fakeTourAxios } from './config/fakeToursAxios';
 
 export const adminAPI = {
   getBooking(year) {
@@ -21,7 +21,16 @@ export const adminAPI = {
   },
 
   getOverall() {
-    const url = `booking`;
-    return fakeAxios.get(url);
+    const url = `statistical/`;
+    return axiosClient.get(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+  },
+
+  getTours() {
+    const url = `tours`;
+    return fakeTourAxios.get(url);
   },
 };

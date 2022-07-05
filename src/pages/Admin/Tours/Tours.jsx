@@ -91,41 +91,41 @@ export default function Tours() {
       sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
     },
     {
-      title: 'Tag',
-      key: 'tag',
-      dataIndex: 'tag',
-      render: tag => {
-        switch (tag) {
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'status',
+      render: status => {
+        switch (status) {
           case 'processing': {
             return (
-              <Tag color="volcano" key={tag}>
-                {tag.toUpperCase()}
+              <Tag color="volcano" key={status}>
+                {status.toUpperCase()}
               </Tag>
             );
           }
           case 'approved': {
             return (
-              <Tag color="cyan" key={tag}>
-                {tag.toUpperCase()}
+              <Tag color="cyan" key={status}>
+                {status.toUpperCase()}
               </Tag>
             );
           }
           case 'disabled': {
             return (
-              <Tag color="magenta" key={tag}>
-                {tag.toUpperCase()}
+              <Tag color="magenta" key={status}>
+                {status.toUpperCase()}
               </Tag>
             );
           }
         }
       },
-      sorter: (a, b) => a.tag.localeCompare(b.tag),
+      sorter: (a, b) => a.status.localeCompare(b.status),
     },
     {
       title: 'Action',
       key: 'action',
       render: (_, record) => {
-        if (record.tag === 'processing') {
+        if (record.status === 'processing') {
           return (
             <Space size={'middle'}>
               <Button type="primary" onClick={() => handleApproveTour(record)}>
@@ -134,7 +134,7 @@ export default function Tours() {
               <Button onClick={() => handleDisableTour(record)}>Disable</Button>
             </Space>
           );
-        } else if (record.tag === 'disabled') {
+        } else if (record.status === 'disabled') {
           return (
             <Space size={'middle'}>
               <Button
@@ -164,8 +164,8 @@ export default function Tours() {
       maxPeople: 52,
       minAge: 10,
       price: 10,
-      createdAt: '1-11-2019',
-      tag: 'processing',
+      createdAt: moment('2022-07-05 02:06:24').format('DD/MM/YYYY'),
+      status: 'processing',
     },
     {
       key: '2',
@@ -177,7 +177,7 @@ export default function Tours() {
       minAge: 11,
       price: 33,
       createdAt: '1-3-2019',
-      tag: 'disabled',
+      status: 'disabled',
     },
     {
       key: '3',
@@ -189,7 +189,7 @@ export default function Tours() {
       minAge: 2,
       price: 44,
       createdAt: '1-2-2019',
-      tag: 'approved',
+      status: 'approved',
     },
     {
       key: '4',
@@ -201,7 +201,7 @@ export default function Tours() {
       minAge: 10,
       price: 10,
       createdAt: '11-2-2019',
-      tag: 'processing',
+      status: 'processing',
     },
     {
       key: '5',
@@ -213,7 +213,7 @@ export default function Tours() {
       minAge: 11,
       price: 33,
       createdAt: '9-3-2019',
-      tag: 'disabled',
+      status: 'disabled',
     },
     {
       key: '6',
@@ -225,7 +225,7 @@ export default function Tours() {
       minAge: 2,
       price: 44,
       createdAt: '13-5-2020',
-      tag: 'approved',
+      status: 'approved',
     },
     {
       key: '7',
@@ -237,7 +237,7 @@ export default function Tours() {
       minAge: 10,
       price: 10,
       createdAt: '11-11-2019',
-      tag: 'processing',
+      status: 'processing',
     },
     {
       key: '8',
@@ -249,7 +249,7 @@ export default function Tours() {
       minAge: 11,
       price: 33,
       createdAt: '3-3-2019',
-      tag: 'disabled',
+      status: 'disabled',
     },
     {
       key: '9',
@@ -261,7 +261,7 @@ export default function Tours() {
       minAge: 2,
       price: 44,
       createdAt: '11-2-2019',
-      tag: 'approved',
+      status: 'approved',
     },
     {
       key: '10',
@@ -273,7 +273,7 @@ export default function Tours() {
       minAge: 2,
       price: 44,
       createdAt: '1-2-2019',
-      tag: 'approved',
+      status: 'approved',
     },
     {
       key: '11',
@@ -285,7 +285,7 @@ export default function Tours() {
       minAge: 2,
       price: 44,
       createdAt: '2-2-2019',
-      tag: 'approved',
+      status: 'approved',
     },
   ];
   return (

@@ -9,6 +9,7 @@ import { Breadcrumb, Col, DatePicker, Row, Space, Spin, Statistic } from 'antd';
 import { Typography } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import CountUp from 'react-countup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
@@ -30,7 +31,6 @@ export function Dashboard() {
   const lineData = useSelector(state => state.admin.totalCommissionData);
   const isLoading = useSelector(state => state.admin.loading);
   const overall = useSelector(state => state.admin.overall);
-  console.log(overall);
   const loadingContext = useLoadingContext();
 
   // FLAG TO PREVENT FIRST RENDER OF USE EFFECT
@@ -87,11 +87,13 @@ export function Dashboard() {
   const lineConfig = {
     data: lineData,
     xField: 'month',
-    yField: 'commission',
+    yField: 'value',
+    seriesField: 'type',
     xAxis: {
       label: {
         formatter: v => `${v}/${year}`,
       },
+      range: [0, 1],
     },
     yAxis: {
       label: {
@@ -152,16 +154,17 @@ export function Dashboard() {
               <Statistic
                 className="admin__dashboard-statistic"
                 title="Total users"
-                value={overall.totalUsers}
                 prefix={<UserOutlined />}
+                value={overall.totalUsers}
+                formatter={v => <CountUp end={v} duration={0.8} />}
               />
             </Col>
             <Col span={8}>
               <Statistic
                 className="admin__dashboard-statistic"
                 title="Total booking"
-                value={overall.totalBooking}
-                suffix="$"
+                value={overall.totalUsers}
+                formatter={v => <CountUp end={v} duration={0.8} />}
                 prefix={<DollarOutlined />}
               />
             </Col>
@@ -170,6 +173,7 @@ export function Dashboard() {
                 className="admin__dashboard-statistic"
                 title="Total tours"
                 value={overall.totalTours}
+                formatter={v => <CountUp end={v} duration={0.8} />}
                 prefix={<EnvironmentOutlined />}
               />
             </Col>

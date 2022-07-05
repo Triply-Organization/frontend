@@ -7,6 +7,7 @@ export const getTotalBooking = createAsyncThunk(
   'admin/total-booking',
   async year => {
     const res = await adminAPI.getBooking(year);
+    console.log(res.data);
     return res.data;
   },
 );
@@ -21,6 +22,11 @@ export const getTotalCommission = createAsyncThunk(
 
 export const getOverall = createAsyncThunk('admin/overall', async () => {
   const res = await adminAPI.getOverall();
+  return res.data;
+});
+
+export const getTours = createAsyncThunk('admin/tours', async () => {
+  const res = await adminAPI.getTours();
   return res.data[0];
 });
 
@@ -28,6 +34,7 @@ let initialState = {
   totalBookingData: [],
   totalCommissionData: [],
   overall: [],
+  tours: [],
   loading: false,
 };
 
@@ -74,12 +81,13 @@ const adminSlice = createSlice({
       if (data.status === 'success') {
         const responseData = data.data;
         const lineData = [];
+        console.log(responseData);
         for (const [key, val] of Object.entries(responseData)) {
-          lineData.push({
-            month: key,
-            commission: val.usd,
-          });
+          for (const [key1, val1] of Object.entries(val)) {
+            lineData.push({ month: key, value: val1, type: key1 });
+          }
         }
+        // console.log(lineData);
         state.totalCommissionData = lineData;
       }
     });
@@ -97,6 +105,19 @@ const adminSlice = createSlice({
       if (data.status === 'success') {
         state.overall = { ...data.data.overall };
       }
+    });
+
+    // GET TOURS
+    builder.addCase(getTours.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(getTours.rejected, state => {
+      state.loading = false;
+      message.error('Something went wrong! Could not get overall information');
+    });
+    builder.addCase(getTours.fulfilled, (state, action) => {
+      state.loading = false;
+      console.log(action.payload);
     });
   },
 });
