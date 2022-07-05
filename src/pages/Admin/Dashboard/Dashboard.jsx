@@ -125,7 +125,13 @@ export function Dashboard() {
     },
   };
   return (
-    <Spin tip="loading..." spinning={isLoading}>
+    <Spin
+      tip="loading..."
+      spinning={isLoading}
+      style={{
+        marginTop: '100px',
+      }}
+    >
       <Breadcrumb
         style={{
           margin: '16px 0',
