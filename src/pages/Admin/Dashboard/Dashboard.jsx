@@ -5,10 +5,11 @@ import {
 } from '@ant-design/icons';
 import { Area } from '@ant-design/plots';
 import { Column } from '@ant-design/plots';
-import { Breadcrumb, Col, DatePicker, Row, Space, Statistic } from 'antd';
+import { Breadcrumb, Col, DatePicker, Row, Space, Spin, Statistic } from 'antd';
 import { Typography } from 'antd';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import './Dashboard.scss';
@@ -16,14 +17,40 @@ import './Dashboard.scss';
 const { Title } = Typography;
 
 export function Dashboard() {
+  const [isLoading, setIsLoading] = useState(false);
   const loadingContext = useLoadingContext();
+
+  const [searchParams, setSearchParams] = useSearchParams({});
+  const [year, setYear] = useState(
+    searchParams.get('year') || moment().format('YYYY'),
+  );
 
   const loading = async () => {
     //loading some data
+    if (
+      searchParams.get('year') &&
+      searchParams.get('year') <= moment().format('YYYY')
+    ) {
+      console.log('CO PARAMS: ');
+      // CALL DATA
+    } else {
+      console.log('KHONG CO PARAMS');
+      setSearchParams({ year });
+      // CALL DATA
+    }
 
     //call method to indicate that loading is done
     loadingContext.done();
   };
+
+  useEffect(() => {
+    setSearchParams({ year });
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, [year]);
 
   useEffect(() => {
     loading();
@@ -169,7 +196,7 @@ export function Dashboard() {
     },
   };
   return (
-    <>
+    <Spin tip="loading..." spinning={isLoading}>
       <Breadcrumb
         style={{
           margin: '16px 0',
@@ -228,9 +255,9 @@ export function Dashboard() {
             <Col>
               <DatePicker
                 onChange={e => {
-                  console.log(e);
+                  setYear(e.format('YYYY'));
                 }}
-                defaultValue={moment()}
+                defaultValue={moment(year)}
                 disabledDate={disabledDate}
                 picker="year"
               />
@@ -254,6 +281,6 @@ export function Dashboard() {
           </Row>
         </Space>
       </div>
-    </>
+    </Spin>
   );
 }
