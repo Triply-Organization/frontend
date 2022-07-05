@@ -1,10 +1,19 @@
 .my-tour {
-  margin: 90px auto;
-  padding: 0 1rem;
-  &__title {
-    font-size: 36px;
+  margin: 120px auto;
+  width: 1290px;
+  background-color: white;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  padding: 2rem;
+  &__price {
+    font-size: 26px;
     font-weight: bolder;
-    text-align: center;
-    margin-bottom: 1rem;
+    color: var(--primary);
+  }
+
+  & .ant-list-item-extra {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }
