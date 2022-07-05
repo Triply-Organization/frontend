@@ -9,7 +9,13 @@
     "format": "prettier --write .",
     "prepare": "husky install",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "test--coverage": "jest --coverage"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -36,7 +42,6 @@
     "sunflower-antd": "^1.0.0-beta.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.6",
     "@babel/preset-env": "^7.18.6",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
