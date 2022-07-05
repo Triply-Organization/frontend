@@ -26,6 +26,7 @@ const Checkout = () => {
   const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
   const [form] = Form.useForm();
   const [finalTotal, setFinalTotal] = useState(checkoutData.subTotal);
+  const [idVoucher, setIdVoucher] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.checkout.loading);
@@ -35,6 +36,7 @@ const Checkout = () => {
     const newValues = {
       orderId: checkoutData.id,
       tourId: checkoutData.tourId,
+      voucherId: +idVoucher,
       scheduleId: checkoutData.scheduleId,
       totalPrice: finalTotal,
       discountPrice: values.discount,
@@ -45,19 +47,20 @@ const Checkout = () => {
       email: values.email,
       name: `${values.first_name} ${values.last_name}`,
     };
+    console.log(newValues);
 
     dispatch(checkout(newValues));
   };
 
   const voucherDiscount = checkoutData.voucher.map(item => {
     return {
+      id: item.id,
       title: item.code,
       value: item.discount,
     };
   });
-
-  const handleChangeFinalTotal = value => {
-    console.log(value);
+  const handleChangeFinalTotal = (value, name) => {
+    setIdVoucher(name.key);
     setDiscountValue(value);
     if (voucherDiscount && voucherDiscount.length > 0) {
       setFinalTotal(
@@ -100,6 +103,7 @@ const Checkout = () => {
               onFinish={onFinish}
               initialValues={{
                 payment: 'stripe',
+                discount: 0,
               }}
             >
               <Form.Item
@@ -185,8 +189,8 @@ const Checkout = () => {
                   onChange={handleChangeFinalTotal}
                   placeholder="Choose your voucher"
                 >
-                  {voucherDiscount.map((item, index) => (
-                    <Option key={index} value={item.value}>
+                  {voucherDiscount.map(item => (
+                    <Option name={item.id} key={item.id} value={item.value}>
                       {item.title}
                     </Option>
                   ))}

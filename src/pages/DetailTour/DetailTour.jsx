@@ -209,6 +209,7 @@ export default function DetailTour() {
   }, [adultNumber, youthNumber, childrenNumber]);
 
   console.log(relatedTours);
+  console.log(detailTour);
 
   localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
 
