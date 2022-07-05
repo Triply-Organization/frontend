@@ -96,7 +96,6 @@ const adminSlice = createSlice({
       const data = action.payload;
       if (data.status === 'success') {
         state.overall = { ...data.data.overall };
-        console.log(123);
       }
     });
   },

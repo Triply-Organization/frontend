@@ -62,8 +62,8 @@ const RoutesApp = () => {
         <Route path="dashboard" element={<Dashboard />} loading />
         <Route path="tours" element={<Tours />} loading />
         <Route path="users" element={<Users />} loading />
-        <Route path="customers" element={<Customers loading />} />
-        <Route path="reviews" element={<Reviews loading />} />
+        <Route path="customers" element={<Customers />} loading />
+        <Route path="reviews" element={<Reviews />} loading />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />

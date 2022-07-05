@@ -70,6 +70,7 @@ export function Dashboard() {
       dispatch(getTotalCommission(year));
       dispatch(getTotalBooking(year));
     }
+    setSearchParams({ year });
   }, [year]);
 
   useEffect(() => {
@@ -112,16 +113,12 @@ export function Dashboard() {
     },
     xAxis: {
       label: {
-        autoHide: true,
-        autoRotate: false,
+        formatter: v => `${v}/${year}`,
       },
     },
-    meta: {
-      month: {
-        alias: 'month',
-      },
-      bookingNumber: {
-        alias: 'bookingNumber',
+    yAxis: {
+      label: {
+        formatter: v => `${v}`,
       },
     },
   };

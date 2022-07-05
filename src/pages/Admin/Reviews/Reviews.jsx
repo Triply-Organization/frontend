@@ -151,7 +151,7 @@ export default function Reviews() {
         }}
       >
         <Breadcrumb.Item>
-          <Title level={3}>Tours</Title>
+          <Title level={3}>REVIEWS</Title>
         </Breadcrumb.Item>
       </Breadcrumb>
       <div
