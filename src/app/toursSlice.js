@@ -143,7 +143,7 @@ const toursSlice = createSlice({
         ...data.data.data,
         availableDate: temp,
         priceFollowDate: priceDate,
-        relatedTours: relatedTours,
+        relatedTour: relatedTours,
       };
     });
   },

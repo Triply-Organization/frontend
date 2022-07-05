@@ -37,60 +37,6 @@ import './DetailTour.scss';
 const { Panel } = Collapse;
 const { Text, Title } = Typography;
 
-const relatedTour = [
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-];
-
-const reviews = [
-  {
-    title: 'location',
-    point: 4.38,
-  },
-  {
-    title: 'services',
-    point: 4.5,
-  },
-  {
-    title: 'price',
-    point: 4.24,
-  },
-  {
-    title: 'rooms',
-    point: 4.3,
-  },
-];
-
 const userReviews = [
   {
     name: 'elicia',
@@ -180,7 +126,7 @@ export default function DetailTour() {
   const loadingState = useSelector(state => state.tours.loading);
   const availableDate = useSelector(state => state.tours.tour.availableDate);
   const priceDate = useSelector(state => state.tours.tour.priceFollowDate);
-  const relatedTours = useSelector(state => state.tours.tour.relatedTours);
+  const relatedTours = useSelector(state => state.tours.tour.relatedTour);
   const dataCheckout = useSelector(state => state.order.checkout);
   const [bookingDate, setBookingDate] = useState('');
   const [adultNumber, setAdultNumber] = useState({
@@ -226,6 +172,27 @@ export default function DetailTour() {
         setChildrenNumber({ value, price: unique.price });
     }
   };
+
+  const reviews = [
+    {
+      title: 'location',
+      point: detailTour.rating?.location,
+    },
+    {
+      title: 'services',
+      point: detailTour.rating?.services,
+    },
+    {
+      title: 'price',
+      point: detailTour.rating?.price,
+    },
+    {
+      title: 'rooms',
+      point: detailTour.rating?.rooms,
+    },
+  ];
+
+  console.log(detailTour);
 
   const disabledDate = current => {
     return !availableDate.find(date => {
@@ -476,7 +443,7 @@ export default function DetailTour() {
                   <div className="detailTour__review-overall-words">
                     <div className="detailTour__review-overall-point">
                       <span className="detailTour__review-overall-average">
-                        4.28
+                        {detailTour.rating?.avg}
                       </span>
                       <span className="detailTour__review-overall-pattern">
                         /5
