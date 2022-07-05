@@ -108,7 +108,8 @@ const CMSTourSchedule = () => {
         title={`Set price of tickets for ${selectedDay.format('YYYY-MM-DD')}`}
         visible={isVisibleFormSetAvailableDay}
         onCreate={onFinish}
-        onCancel={() => setVisibleFormSetAvailableDay(false)}>
+        onCancel={() => setVisibleFormSetAvailableDay(false)}
+      >
         <Form.Item name={'children'} label="Children (0 - 12 years)">
           <InputNumber min={0} style={{ width: '100%' }} />
         </Form.Item>
@@ -126,14 +127,16 @@ const CMSTourSchedule = () => {
               required: true,
               message: 'Please input remain of ticket!',
             },
-          ]}>
+          ]}
+        >
           <InputNumber min={0} style={{ width: '100%' }} />
         </Form.Item>
       </FormModal>
       <Breadcrumb
         style={{
           margin: '16px 0',
-        }}>
+        }}
+      >
         <Breadcrumb.Item>
           <Link to="/home">Home</Link>
         </Breadcrumb.Item>

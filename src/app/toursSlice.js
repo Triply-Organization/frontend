@@ -48,7 +48,6 @@ export const createTour = createAsyncThunk(
   },
 );
 
-
 const toursSlice = createSlice({
   name: 'tour',
   initialState,
