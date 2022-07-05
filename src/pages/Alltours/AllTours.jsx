@@ -2,6 +2,7 @@
 import {
   Button,
   Collapse,
+  Empty,
   Form,
   Pagination,
   Rate,
@@ -57,10 +58,6 @@ const AllTours = () => {
   // USE EFFECT
   useEffect(() => {
     const loading = async () => {
-      //loading some data
-      if (listTours.length === 0 || destinations.length === 0 || services === 0)
-        dispatch(getDestinationsServiceTours());
-
       let temp = {
         destination: searchParams.get('destination'),
         'guests[]': searchParams.getAll('guests'),
@@ -151,12 +148,10 @@ const AllTours = () => {
       searchParams['guests[]'] = values['guests[]'];
     }
 
-    if (!_.isEmpty(searchParams)) {
+    if (searchParams) {
       let o = Object.fromEntries(
         Object.entries(searchParams).filter(([x, v]) => v != null),
       );
-      console.log(searchParams);
-      console.log(o);
 
       setCurrentSearch(o);
       setSearchParams({
@@ -237,7 +232,7 @@ const AllTours = () => {
             <Form
               className="all-tours__filter__item"
               layout={'vertical'}
-              onValuesChange={onFilter}
+              onValuesChange={_.debounce(onFilter, 300)}
             >
               <Form.Item name="filter_by_price" label="Price">
                 <Slider
@@ -284,27 +279,28 @@ const AllTours = () => {
             </Tag>
           )}
         </div>
-        <div className="all-tours__list-wrapper">
-          {listFilter.length === 0 &&
-            listTours.map((tour, index) => (
+
+        {listFilter.length > 0 ? (
+          <div className="all-tours__list-wrapper">
+            {listFilter.map((tour, index) => (
               <Skeleton key={index} loading={loadingCallAPI} active>
                 <CardTour key={index} tour={tour} />
               </Skeleton>
             ))}
-          {listFilter.length > 0 &&
-            listFilter.map((tour, index) => (
-              <Skeleton key={index} loading={loadingCallAPI} active>
-                <CardTour key={index} tour={tour} />
-              </Skeleton>
-            ))}
-        </div>
-        <Pagination
-          defaultCurrent={1}
-          total={totalTours}
-          onChange={page => setPage(page)}
-          defaultPageSize={6}
-          className="all-tours__pagination"
-        />
+          </div>
+        ) : (
+          <Empty description={'No tour'} style={{ width: '100%' }} />
+        )}
+
+        {totalTours > 6 && (
+          <Pagination
+            defaultCurrent={1}
+            total={totalTours}
+            onChange={page => setPage(page)}
+            defaultPageSize={6}
+            className="all-tours__pagination"
+          />
+        )}
       </div>
     </div>
     // </Spin>

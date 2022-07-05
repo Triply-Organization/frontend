@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { PropTypes } from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -37,3 +38,9 @@ export default function Navbar(props) {
     </nav>
   );
 }
+
+Navbar.propTypes = {
+  activeTab: PropTypes.any,
+  handleSetActiveTab: PropTypes.func,
+  navItem: PropTypes.array,
+};

@@ -34,7 +34,7 @@ import { booking } from './../../app/orderSlice';
 import './DetailTour.scss';
 
 const { Panel } = Collapse;
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 const relatedTour = [
   {

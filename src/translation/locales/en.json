@@ -321,6 +321,50 @@
       "order_timeslot": "$t(order_timeslot.{{value}})",
       "order_history_action": "$t(order_history_action.{{action}})",
       "delivery_status": "$t(delivery_status.{{status}})"
+    },
+    "mobileNav": {
+      "my_account": "My Account",
+      "login": "Login",
+      "register": "Register" 
+    },
+    "login":{
+      "welcome_back": "Welcome Back",
+      "first_time_travel": "First time travel?",
+      "register_now": "Register now!",
+      "email_required": "Please input your Email!",
+      "email_invalid": "The input is not valid E-mail!",
+      "pw_required": "Please input your Password!",
+      "login": "Login",
+      "password": "Password"
+    },
+    "register": {
+      "give_us_more_info": "Give us more info",
+      "come_here_for": "Come here for?",
+      "create_account": "Create account",
+      "password":"Password",
+      "confirmed_password": "Confirmed Password",
+      "email_required": "Please input your Email!",
+      "email_invalid": "The input is not valid E-mail!",
+      "pw_required": "Please input your Password!",
+      "pw_invalid": "Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+      "pw_confirmed": "Please confirm your password!",
+      "pw_confirmed_invalid": "The two passwords that you entered do not match!",
+      "name":"Name",
+      "name_required":"Please input your nickname!",
+      "address":"Address",
+      "phone": "Phone Number",
+      "phone_required": "Please input your phone number!",
+      "phone_invalid": "Input should contain just number!",
+      "already_have_account": "Already have account?",
+      "next": "Next",
+      "you_want_to_be": "You want to be?",
+      "select_role_required": "Please select your role!",
+      "you_go_here_for": "You go here for...",
+      "become_a_traveler": "Become a traveler",
+      "to_marketing_your_tour": "To marketing you tour",
+      "prev": "Prev",
+      "register":"Register",
+      "nickname": "What do you want others to call you?"
     }
   }
   
