@@ -9,16 +9,32 @@ import { Breadcrumb, Col, DatePicker, Row, Space, Spin, Statistic } from 'antd';
 import { Typography } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
+import {
+  getOverall,
+  getTotalBooking,
+  getTotalCommission,
+} from '../../../app/AdminSlice';
 import './Dashboard.scss';
 
 const { Title } = Typography;
 
 export function Dashboard() {
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  // DATA FOR BOOKING CHART
+  const columnData = useSelector(state => state.admin.totalBookingData);
+  // DATA FOR COMMISSION CHART
+  const lineData = useSelector(state => state.admin.totalCommissionData);
+  const isLoading = useSelector(state => state.admin.loading);
+  const overall = useSelector(state => state.admin.overall);
+  console.log(overall);
   const loadingContext = useLoadingContext();
+
+  // FLAG TO PREVENT FIRST RENDER OF USE EFFECT
+  const [flag, setFlag] = useState(0);
 
   const [searchParams, setSearchParams] = useSearchParams({});
   const [year, setYear] = useState(
@@ -31,148 +47,62 @@ export function Dashboard() {
       searchParams.get('year') &&
       searchParams.get('year') <= moment().format('YYYY')
     ) {
-      console.log('CO PARAMS: ');
+      console.log('CO PARAMS');
       // CALL DATA
+      dispatch(getTotalBooking(year));
+      dispatch(getTotalCommission(year));
     } else {
       console.log('KHONG CO PARAMS');
       setSearchParams({ year });
       // CALL DATA
+      dispatch(getTotalBooking(year));
+      dispatch(getTotalCommission(year));
     }
+
+    dispatch(getOverall());
 
     //call method to indicate that loading is done
     loadingContext.done();
   };
 
   useEffect(() => {
-    setSearchParams({ year });
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
+    if (flag !== 0) {
+      dispatch(getTotalCommission(year));
+      dispatch(getTotalBooking(year));
+    }
   }, [year]);
 
   useEffect(() => {
     loading();
+
+    // PREVENT RECALL DISPATCH FROM PREVIOUS USE EFFECT
+    setFlag(state => state + 1);
   }, []);
 
   const disabledDate = current => {
     return current > moment().endOf('year');
   };
 
-  const lineData = [
-    {
-      month: '1',
-      commission: 10,
-    },
-    {
-      month: '2',
-      commission: 12,
-    },
-    {
-      month: '3',
-      commission: 2.08,
-    },
-    {
-      month: '4',
-      commission: 2.2,
-    },
-    {
-      month: '5',
-      commission: 2.38,
-    },
-    {
-      month: '6',
-      commission: 2.59,
-    },
-    {
-      month: '7',
-      commission: 2.63,
-    },
-    {
-      month: '8',
-      commission: 2.67,
-    },
-    {
-      month: '9',
-      commission: 2.64,
-    },
-    {
-      month: '10',
-      commission: 2.5,
-    },
-    {
-      month: '11',
-      commission: 2.31,
-    },
-    {
-      month: '12',
-      commission: 2.04,
-    },
-  ];
   const lineConfig = {
     data: lineData,
     xField: 'month',
     yField: 'commission',
     xAxis: {
-      range: [0, 1],
+      label: {
+        formatter: v => `${v}/${year}`,
+      },
+    },
+    yAxis: {
+      label: {
+        formatter: v => `$${v}`,
+      },
     },
   };
 
-  const columnData = [
-    {
-      month: '1',
-      bookingNumber: 38,
-    },
-    {
-      month: '2',
-      bookingNumber: 52,
-    },
-    {
-      month: '3',
-      bookingNumber: 61,
-    },
-    {
-      month: '4',
-      bookingNumber: 145,
-    },
-    {
-      month: '5',
-      bookingNumber: 48,
-    },
-    {
-      month: '6',
-      bookingNumber: 38,
-    },
-    {
-      month: '7',
-      bookingNumber: 38,
-    },
-    {
-      month: '8',
-      bookingNumber: 38,
-    },
-    {
-      month: '9',
-      bookingNumber: 38,
-    },
-    {
-      month: '10',
-      bookingNumber: 38,
-    },
-    {
-      month: '11',
-      bookingNumber: 38,
-    },
-    {
-      month: '12',
-      bookingNumber: 900,
-    },
-  ];
   const columnConfig = {
     data: columnData,
     xField: 'month',
-    yField: 'bookingNumber',
+    yField: 'booking',
     label: {
       position: 'middle',
       style: {
@@ -225,7 +155,7 @@ export function Dashboard() {
               <Statistic
                 className="admin__dashboard-statistic"
                 title="Total users"
-                value={1128}
+                value={overall.totalUsers}
                 prefix={<UserOutlined />}
               />
             </Col>
@@ -233,7 +163,8 @@ export function Dashboard() {
               <Statistic
                 className="admin__dashboard-statistic"
                 title="Total booking"
-                value={1128}
+                value={overall.totalBooking}
+                suffix="$"
                 prefix={<DollarOutlined />}
               />
             </Col>
@@ -241,7 +172,7 @@ export function Dashboard() {
               <Statistic
                 className="admin__dashboard-statistic"
                 title="Total tours"
-                value={1128}
+                value={overall.totalTours}
                 prefix={<EnvironmentOutlined />}
               />
             </Col>
@@ -260,6 +191,7 @@ export function Dashboard() {
                 defaultValue={moment(year)}
                 disabledDate={disabledDate}
                 picker="year"
+                allowClear={false}
               />
             </Col>
           </Row>
