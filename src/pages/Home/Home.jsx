@@ -103,7 +103,7 @@ const Home = () => {
             Natural beauty
           </h2>
           <h1>Discover the most engaging places</h1>
-          <button data-aos="fade-right">
+          <button data-aos="fade-right" onClick={() => navigate('/tours')}>
             Explore Now
             <BsArrowRight />
           </button>
@@ -126,7 +126,7 @@ const Home = () => {
             title={'Weekly Flash Deals'}
             subTitle={'Up to 30% off'}
             buttonContent={'View Deals'}
-            buttonOnClick={() => {}}
+            buttonOnClick={() => navigate('/tours')}
           />
           <CardVoucher
             data-aos="fade-up"
@@ -134,7 +134,7 @@ const Home = () => {
             title={'Summer Escapes'}
             subTitle={'Plan your next trip'}
             buttonContent={'Learn more'}
-            buttonOnClick={() => {}}
+            buttonOnClick={() => navigate('/tours')}
           />
           <CardVoucher
             data-aos="fade-left"
@@ -142,7 +142,7 @@ const Home = () => {
             title={'Exclusive Deals'}
             subTitle={'Want to save up to 50%'}
             buttonContent={'Subscribe Us'}
-            buttonOnClick={() => {}}
+            buttonOnClick={() => navigate('/tours')}
           />
         </div>
         <div className="section-2__auth">
@@ -156,6 +156,7 @@ const Home = () => {
             <div className="section-2__auth__control">
               <Button
                 type="primary"
+                onClick={() => navigate('/login')}
                 className="section-2__auth__control__btn"
                 data-aos="fade-left"
               >
@@ -164,6 +165,7 @@ const Home = () => {
               <Button
                 className="section-2__auth__control__btn"
                 data-aos="fade-right"
+                onClick={() => navigate('/register')}
               >
                 Register <BsArrowRight />
               </Button>
