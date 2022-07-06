@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useStepsForm } from 'sunflower-antd';
 
+import { register } from '../../app/registerSlice';
 import LanguageSelect from '../../components/LanguageSelect/LanguageSelect';
 import './Register.scss';
-import { register } from './RegisterSlice';
 
 const { Option } = Select;
 const { Title } = Typography;
