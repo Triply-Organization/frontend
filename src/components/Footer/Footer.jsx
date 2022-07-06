@@ -6,6 +6,8 @@ import { message } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsFacebook, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
+import { FcTwoSmartphones } from 'react-icons/fc';
+import { MdAlternateEmail } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/images/logo-white.png';
@@ -44,18 +46,24 @@ export default function Footer() {
   return (
     <footer className="footer__wrapper">
       <div className="section-4">
-        <div>
+        <div className="section-4__contact-wrapper">
           <p className="section-4__text">
             Don&apos;t wait any longer. Contact us!
           </p>
           <a href="#" className="section-4__link">
-            +(84) 1800 - 333 5555
+            <span className="section-4__link-icon">
+              <FcTwoSmartphones />
+            </span>{' '}
+            <span className="section-4__link-words">+(84) 1800 - 333 5555</span>
           </a>
         </div>
-        <div>
+        <div className="section-4__contact-wrapper">
           <p style={{ opacity: '0' }}>a</p>
           <a href="#" className="section-4__link">
-            support@triply.com
+            <span className="section-4__link-icon">
+              <MdAlternateEmail />
+            </span>{' '}
+            <span className="section-4__link-words">support@triply.com</span>
           </a>
         </div>
 
