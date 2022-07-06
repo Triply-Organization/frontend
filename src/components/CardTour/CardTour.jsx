@@ -14,6 +14,8 @@ import './CardTour.scss';
 
 const CardTour = props => {
   const { tour, tag } = props;
+  const currencyString = localStorage.getItem('currencyString') || 'en-US';
+  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const navigate = useNavigate();
   return (
     <div className="card-tour">
@@ -61,14 +63,14 @@ const CardTour = props => {
         <div>
           <p>From USD</p>
           <b>
-            {tour?.minPrice?.toLocaleString('en-US', {
+            {tour?.minPrice?.toLocaleString(`${currencyString}`, {
               style: 'currency',
-              currency: 'USD',
+              currency: `${currencyItem}`,
             })}{' '}
             -{' '}
-            {tour?.maxPrice?.toLocaleString('en-US', {
+            {tour?.maxPrice?.toLocaleString(`${currencyString}`, {
               style: 'currency',
-              currency: 'USD',
+              currency: `${currencyItem}`,
             })}
           </b>
         </div>

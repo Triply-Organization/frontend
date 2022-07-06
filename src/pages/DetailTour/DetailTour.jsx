@@ -5,12 +5,14 @@ import {
   Avatar,
   Button,
   Carousel,
+  Empty,
   Form,
   InputNumber,
   Progress,
   Rate,
   Spin,
   Typography,
+  message,
   notification,
 } from 'antd';
 import { Collapse } from 'antd';
@@ -29,146 +31,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { getDetailTour } from '../../app/toursSlice';
 import CardTour from '../../components/CardTour/CardTour';
-import { orderTour } from './../../app/orderSlice';
+import { booking } from './../../app/orderSlice';
 import './DetailTour.scss';
 
 const { Panel } = Collapse;
 const { Text } = Typography;
-
-const relatedTour = [
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-];
-
-const reviews = [
-  {
-    title: 'location',
-    point: 4.38,
-  },
-  {
-    title: 'services',
-    point: 4.5,
-  },
-  {
-    title: 'price',
-    point: 4.24,
-  },
-  {
-    title: 'rooms',
-    point: 4.3,
-  },
-];
-
-const userReviews = [
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-];
 
 export default function DetailTour() {
   let navigate = useNavigate();
@@ -178,59 +45,129 @@ export default function DetailTour() {
   const loadingState = useSelector(state => state.tours.loading);
   const availableDate = useSelector(state => state.tours.tour.availableDate);
   const priceDate = useSelector(state => state.tours.tour.priceFollowDate);
+  const relatedTours = useSelector(state => state.tours.tour.relatedTour);
+  const dataCheckout = useSelector(state => state.order.checkout);
+  const bookingStatus = useSelector(state => state.order.status);
   const [bookingDate, setBookingDate] = useState('');
-  const [adultNumber, setAdultNumber] = useState(0);
-  const [youthNumber, setYouthNumber] = useState(0);
-  const [childrenNumber, setChildrenNumber] = useState(0);
+  const [adultNumber, setAdultNumber] = useState({
+    value: 0,
+    price: 0,
+  });
+  const [youthNumber, setYouthNumber] = useState({
+    value: 0,
+    price: 0,
+  });
+  const [childrenNumber, setChildrenNumber] = useState({
+    value: 0,
+    price: 0,
+  });
   const [children, setChildren] = useState({});
   const [adult, setAdult] = useState({});
   const [youth, setYouth] = useState({});
   const [total, setTotal] = useState(0);
   const [priceFollowDate, setPriceFollowDate] = useState([]);
 
-  // console.log(detailTour);
-  // console.log(priceFollowDate);
+  useEffect(() => {
+    setTotal(
+      adultNumber.value * adultNumber.price +
+        youthNumber.value * youthNumber.price +
+        childrenNumber.value * childrenNumber.price,
+    );
+  }, [adultNumber, youthNumber, childrenNumber]);
+
+  localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
 
   const handleChangePrice = (value, unique) => {
-    console.log('price', value, unique);
-    console.log(value * unique.price);
-    setTotal(total + value * unique.price);
     switch (unique.type) {
       case 'adult':
         setAdult({ priceListId: unique.id, amount: value });
-        setAdultNumber(value);
+        setAdultNumber({ value, price: unique.price });
         break;
-      case 'young':
+      case 'youth':
         setYouth({ priceListId: unique.id, amount: value });
-        setYouthNumber(value);
+        setYouthNumber({ value, price: unique.price });
         break;
       case 'children':
         setChildren({ priceListId: unique.id, amount: value });
-        setChildrenNumber(value);
+        setChildrenNumber({ value, price: unique.price });
     }
   };
 
+  const userReviews = detailTour.reviews?.map(item => {
+    console.log(item);
+    return {
+      name: item.name,
+      avatar: item.avatar,
+      date: item.createdAt,
+      rating: [
+        {
+          title: 'location',
+          point: item.rating.location,
+        },
+        {
+          title: 'services',
+          point: item.rating.services,
+        },
+        {
+          title: 'price',
+          point: item.rating.price,
+        },
+        {
+          title: 'rooms',
+          point: item.rating.rooms,
+        },
+      ],
+      comment: item.comment,
+    };
+  });
+
+  const reviews = [
+    {
+      title: 'location',
+      point: detailTour.rating?.location,
+    },
+    {
+      title: 'services',
+      point: detailTour.rating?.services,
+    },
+    {
+      title: 'price',
+      point: detailTour.rating?.price,
+    },
+    {
+      title: 'rooms',
+      point: detailTour.rating?.rooms,
+    },
+  ];
+
+  console.log(detailTour);
+
   const disabledDate = current => {
-    return availableDate.find(date => {
-      return date !== moment(current).format('YYYY-MM-DD');
+    return !availableDate.find(date => {
+      return date === moment(current).format('YYYY-MM-DD');
     });
   };
 
   const handleDatePickerChange = (date, dateString) => {
-    const result = priceDate.filter(item =>
-      item.startDate.includes(dateString),
-    );
-    setPriceFollowDate(result);
-    setBookingDate(dateString);
+    if (dateString) {
+      const result = priceDate.filter(item =>
+        item.startDate.includes(dateString),
+      );
+      setPriceFollowDate(result);
+      setBookingDate(dateString);
+    } else {
+      setPriceFollowDate([]);
+      setBookingDate('');
+    }
   };
 
   const detailTourItem = useMemo(() => {
     return [
-      {
-        icon: <AiOutlineDollar />,
-        title: 'price',
-        detail: detailTour.price,
-      },
+      // {
+      //   icon: <AiOutlineDollar />,
+      //   title: 'price',
+      //   detail: detailTour.price,
+      // },
       {
         icon: <BiTimeFive />,
         title: 'duration',
@@ -264,10 +201,9 @@ export default function DetailTour() {
       children: children,
       adult: adult,
       youth: youth,
-      discountID: null,
+      currency: 'usd',
     };
 
-    console.log(moment(values.date).format('YYYY-MM-DD'));
     if (!bookingDate) {
       notification.error({
         message: 'Book failed!',
@@ -289,20 +225,10 @@ export default function DetailTour() {
           message: 'Book successfully!',
           description: 'Please choose your ticket!',
         });
-
-        dispatch(orderTour(request));
-        // navigate(`/checkout/${id}`);
-
-        // dispatch(bookTour(bookingTour));
-        // console.log(bookingTour);
-
-        // Save local for temp
-        // localStorage.setItem('bookingTour', JSON.stringify(bookingTour));
-
-        // setTimeout(() => {
-        //   navigate(`/checkout/${id}`);
-        //   scrollTo(0, 0);
-        // }, 2000);
+        dispatch(booking(request));
+        setTimeout(() => {
+          navigate(`/checkout/${id}`);
+        }, 1500);
       }
     }
   };
@@ -445,17 +371,21 @@ export default function DetailTour() {
                 autoplay
                 className="detailTour__relatedTour-carousel"
                 draggable={true}
-                slidesToShow={2}
+                slidesToShow={1}
               >
-                {relatedTour.map((item, index) => {
-                  return (
-                    <>
-                      <div className="detailTour__relatedTour-item">
-                        <CardTour tour={item} key={index} />
-                      </div>
-                    </>
-                  );
-                })}
+                {relatedTours && relatedTours.length > 0 ? (
+                  relatedTours?.map(item => {
+                    return (
+                      <>
+                        <div className="detailTour__relatedTour-item">
+                          <CardTour tour={item} key={item.id} />
+                        </div>
+                      </>
+                    );
+                  })
+                ) : (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                )}
               </Carousel>
             </div>
             <div className="detailTour__review-wrapper">
@@ -465,7 +395,7 @@ export default function DetailTour() {
                   <div className="detailTour__review-overall-words">
                     <div className="detailTour__review-overall-point">
                       <span className="detailTour__review-overall-average">
-                        4.28
+                        {detailTour.rating?.avg}
                       </span>
                       <span className="detailTour__review-overall-pattern">
                         /5
@@ -505,7 +435,7 @@ export default function DetailTour() {
                 </div>
               </div>
               <div className="detailTour__review-detail-wrapper">
-                {userReviews.map((item, index) => {
+                {userReviews?.map((item, index) => {
                   return (
                     <>
                       <div
@@ -548,8 +478,7 @@ export default function DetailTour() {
                             })}
                           </div>
                           <p className="detailTour__review-item-comment">
-                            This is exactly what i was looking for, thank you so
-                            much for these tutorials
+                            {item.comment}
                           </p>
                         </div>
                       </div>
@@ -563,9 +492,10 @@ export default function DetailTour() {
             <div className="detailTour__booking">
               <h3 className="detailTour__booking-heading">Book This Tour</h3>
               <Form
+                layout="horizontal"
                 onFinish={handleSubmit}
                 autoComplete="off"
-                initialValues={{ adult: 0, young: 0, children: 0 }}
+                initialValues={{ adult: 0, youth: 0, children: 0 }}
                 className="detailTour__booking-form"
               >
                 <p className="detailTour__booking-label">From:</p>
@@ -586,13 +516,13 @@ export default function DetailTour() {
                           return (
                             <>
                               <div className="inputNumber-style">
-                                <p>
+                                <Text strong level={5}>
                                   {e.type === 'adult'
                                     ? 'Adult (18+ years)'
-                                    : e.type === 'young'
+                                    : e.type === 'youth'
                                     ? 'Youth (13-17 years)'
                                     : 'Children (0-12 years)'}
-                                </p>
+                                </Text>
 
                                 <Text strong>${e.price} :</Text>
                               </div>
@@ -620,9 +550,7 @@ export default function DetailTour() {
                     <span className="detailTour__booking-count-words">
                       Total:
                     </span>
-                    <span className="detailTour__booking-total">
-                      ${total}.00
-                    </span>
+                    <span className="detailTour__booking-total">${total}</span>
                   </div>
                   <Form.Item>
                     <Button

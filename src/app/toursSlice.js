@@ -115,15 +115,28 @@ const toursSlice = createSlice({
     });
     builder.addCase(getDetailTour.fulfilled, (state, action) => {
       let data = action.payload;
+      console.log(action.payload);
       state.loading = false;
       let priceDate = [];
       let temp = [];
+      let relatedTours = [];
       priceDate = data.data.data.schedule.map(item => item);
       temp = data.data.data.schedule.map(item => item.startDate);
+      relatedTours = data.data.data.relatedTour.map(item => ({
+        id: item.id,
+        image: item.tourImages,
+        name: item.title,
+        duration: item.duration,
+        maxPeople: item.maxPeople,
+        tourDestination: item.destination[0].destination,
+        minPrice: item.schedule[0].ticket[2].price,
+        maxPrice: item.schedule[0].ticket[0].price,
+      }));
       state.tour = {
         ...data.data.data,
         availableDate: temp,
         priceFollowDate: priceDate,
+        relatedTour: relatedTours,
       };
     });
   },

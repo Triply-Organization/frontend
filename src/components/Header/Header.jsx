@@ -10,6 +10,7 @@ import { TbTicket } from 'react-icons/tb';
 import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.png';
+import CurrencySelect from '../CurrencySelect/CurrencySelect';
 import LanguageSelect from './../LanguageSelect/LanguageSelect';
 import './Header.scss';
 import MobileNav from './MobileNav/MobileNav';
@@ -89,41 +90,6 @@ export default function Header() {
       onClick: handleLogout,
     },
   ];
-
-  //--------------- Currency ----------------->
-  const currency = (
-    <Menu
-      items={[
-        {
-          disabled: true,
-          key: '1',
-          label: (
-            <span className="header__currency-heading header__currency-item">
-              <span className="header__currency-abbre">
-                {t('header.currency')}
-              </span>
-            </span>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <span className="header__currency-item">
-              <span className="header__currency-abbre">USD</span>
-            </span>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <span className="header__currency-item">
-              <span className="header__currency-abbre">VND</span>
-            </span>
-          ),
-        },
-      ]}
-    />
-  );
 
   //--------------- Nav Item ----------------->
   const navItem = [
@@ -227,16 +193,7 @@ export default function Header() {
         ) : (
           <>
             <div className="header__multi-currency">
-              <Dropdown
-                overlayClassName="header__multi-currency-dropdown"
-                overlay={currency}
-                placement="bottomRight"
-                arrow
-              >
-                <Button className="header__multi-currency-container">
-                  USD
-                </Button>
-              </Dropdown>
+              <CurrencySelect />
             </div>
             <div className="header__multi-lang-wrapper">
               <LanguageSelect />
