@@ -33,4 +33,17 @@ export const tourAPI = {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
   },
+
+  getToursOfCustomer() {
+    const url = `/tours/customerTour`;
+    return axiosClient.get(url, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+  },
+  getScheduleOfTour(id) {
+    const url = `/schedules/${id}`;
+    return axiosClient.get(url, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+  },
 };

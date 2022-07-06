@@ -70,12 +70,12 @@ const RoutesApp = () => {
       <Route path="confirmation/:id" element={<Confirmation />} />
 
       <Route path="/cms" element={<CMSCustomer />}>
-        <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<CMSDashBoard />} />
-        <Route path="tours" element={<CMSTours />} />
-        <Route path="add-tour" element={<CMSHandleTour />} />
-        <Route path="edit-tour/:id" element={<CMSHandleTour />} />
-        <Route path="set-schedule/:id" element={<CMSTourSchedule />} />
+        <Route index element={<Navigate to="dashboard" replace />} loading />
+        <Route path="dashboard" element={<CMSDashBoard />} loading />
+        <Route path="tours" element={<CMSTours />} loading />
+        <Route path="add-tour" element={<CMSHandleTour />} loading />
+        <Route path="edit-tour/:id" element={<CMSHandleTour />} loading />
+        <Route path="set-schedule/:id" element={<CMSTourSchedule />} loading />
       </Route>
       {/* <Route path="*" element={<NoMatch />} /> */}
     </Routes>

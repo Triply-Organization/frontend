@@ -1,37 +1,62 @@
 import { Breadcrumb, Button, Space, Table } from 'antd';
-import React from 'react';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlinePlus } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
+import { tourAPI } from '../../api/tourAPI';
 import './CMSTours.scss';
 
 const CMSTours = () => {
   const navigate = useNavigate();
+  const [data, setData] = useState();
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const loadingContext = useLoadingContext();
   // Handle
   // const onEditTour = tour => {
   //   console.log(tour);
   // };
 
-  // Config table
-  const data = [
-    {
-      id: '1',
-      title: 'Caño Cristales River Trip',
-      destination: 'Bryce Canyon National Park, USA',
-      duration: 4,
-      availableDay: 4,
-      max_people: 40,
-      min_age: 13,
-      price: 100,
-    },
-  ];
+  // const deleteTour = () => {
+
+  // }
+
+  useEffect(() => {
+    const loading = async () => {
+      try {
+        const response = await tourAPI.getToursOfCustomer();
+
+        const tempData = response.data.data.map(item => ({
+          id: item.id,
+          key: item.id,
+          title: item.title,
+          destination: item.destination[0],
+          duration: item.duration,
+          availableDay: item.schedule,
+          max_people: item.maxPeople,
+          min_age: item.minAge,
+          createdAt: moment(item.createdAt.date).format('YYYY-MM-DD'),
+        }));
+        setData(tempData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loading();
+    loadingContext.done();
+  }, []);
 
   const columns = [
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      render: text => <Button type="link">{text}</Button>,
+      render: text => (
+        <Button type="link" style={{ padding: '0' }}>
+          {text}
+        </Button>
+      ),
     },
     {
       title: 'Destination',
@@ -44,15 +69,16 @@ const CMSTours = () => {
       key: 'duration',
     },
     {
-      title: 'Price',
-      dataIndex: 'price',
-      key: 'price',
-    },
-    {
       title: 'Available Day',
       dataIndex: 'availableDay',
       key: 'availableDay',
+      width: 150,
       render: text => `${text} day`,
+    },
+    {
+      title: 'Created At',
+      dataIndex: 'createdAt',
+      key: 'price',
     },
     {
       title: 'Action',
@@ -77,14 +103,13 @@ const CMSTours = () => {
     },
   ];
 
+  const onSelectChange = newSelectedRowKeys => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows,
-      );
-    },
+    selectedRowKeys,
+    onChange: onSelectChange,
   };
 
   return (
@@ -127,12 +152,10 @@ const CMSTours = () => {
         pagination={{
           defaultPageSize: 10,
           showSizeChanger: true,
-          pageSizeOptions: ['10', '20', '30'],
+          hideOnSinglePage: true,
+          total: data?.length,
         }}
-        rowSelection={{
-          type: 'checkbox',
-          ...rowSelection,
-        }}
+        rowSelection={rowSelection}
       />
     </>
   );

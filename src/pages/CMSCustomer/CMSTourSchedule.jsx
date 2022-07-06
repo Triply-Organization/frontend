@@ -4,6 +4,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
 import { tourAPI } from '../../api/tourAPI';
 import { clearIdTourJustCreate } from '../../app/toursSlice';
@@ -13,28 +14,7 @@ import './CMSTourSchedule.scss';
 const CMSTourSchedule = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const tour = [
-    {
-      title: 'Vung tau',
-      availableDay: [
-        {
-          date: '2022-07-02',
-          ticket: {
-            children: 0,
-            youth: 20,
-            adult: 20,
-          },
-        },
-      ],
-    },
-  ];
-
-  const { availableDay } = tour[0];
-
-  useEffect(() => {
-    dispatch(clearIdTourJustCreate());
-  }, []);
-
+  const [availableDay, setAvailableDay] = useState();
   const [formSetAvailableDay] = Form.useForm();
   const [isVisibleFormSetAvailableDay, setVisibleFormSetAvailableDay] =
     useState(false);
@@ -44,13 +24,38 @@ const CMSTourSchedule = () => {
   const [selectedDay, setSelectedDay] = useState(
     moment(new Date(), 'YYYY-MM-DD'),
   );
+  const loadingContext = useLoadingContext();
+  useEffect(() => {
+    const loading = async () => {
+      dispatch(clearIdTourJustCreate());
+      try {
+        const response = await tourAPI.getScheduleOfTour(id);
+        const listSchedule = Object.values(response.data.data).filter(item =>
+          _.isObject(item),
+        );
+        setAvailableDay(listSchedule);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loading();
+    loadingContext.done();
+  }, []);
+
   const onSetAvailableDay = newValue => {
     let infor = availableDay?.filter(
-      item => item.date === newValue.format('YYYY-MM-DD'),
+      item => item.dateStart === newValue.format('YYYY-MM-DD'),
     );
-    if (infor && infor.length > 0)
-      formSetAvailableDay.setFieldsValue(infor[0].ticket);
-    else formSetAvailableDay.resetFields();
+
+    if (infor && infor.length > 0) {
+      let listTicket = Object.assign({}, infor[0]?.ticket);
+      formSetAvailableDay.setFieldsValue({
+        children: listTicket[0].price,
+        youth: listTicket[1].price,
+        adult: listTicket[2].price,
+        remain: infor[0].remain,
+      });
+    } else formSetAvailableDay.resetFields();
     setValueCalendar(newValue);
     setSelectedDay(newValue);
     setVisibleFormSetAvailableDay(true);
@@ -77,7 +82,17 @@ const CMSTourSchedule = () => {
           },
           id,
         )
-        .then(() => {
+        .then(async () => {
+          try {
+            const response = await tourAPI.getScheduleOfTour(id);
+            const listSchedule = Object.values(response.data.data).filter(
+              item => _.isObject(item),
+            );
+            setAvailableDay(listSchedule);
+          } catch (error) {
+            console.log(error);
+          }
+
           message.success({
             content: 'Add ticket for this day successful',
             key: 'add-schedule',
@@ -152,15 +167,15 @@ const CMSTourSchedule = () => {
           onSelect={onSetAvailableDay}
           value={valueCalendar}
           dateCellRender={value => {
-            return tour.map(item => {
-              return item.availableDay.map(date => {
-                if (date.date === value.format('YYYY-MM-DD')) {
+            if (availableDay && availableDay.length)
+              return availableDay.map(date => {
+                if (date.dateStart === value.format('YYYY-MM-DD')) {
                   return (
                     <>
                       <p>
                         Ticket Children:{' '}
                         <b>
-                          {date.ticket.children.toLocaleString('en-US', {
+                          {date.ticket[0].price.toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'USD',
                           })}
@@ -169,7 +184,7 @@ const CMSTourSchedule = () => {
                       <p>
                         Ticket Youth:{' '}
                         <b>
-                          {date.ticket.youth.toLocaleString('en-US', {
+                          {date.ticket[1].price.toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'USD',
                           })}
@@ -178,7 +193,7 @@ const CMSTourSchedule = () => {
                       <p>
                         Ticket Adult:{' '}
                         <b>
-                          {date.ticket.adult.toLocaleString('en-US', {
+                          {date.ticket[2].price.toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'USD',
                           })}
@@ -188,7 +203,6 @@ const CMSTourSchedule = () => {
                   );
                 }
               });
-            });
           }}
         />
       </div>

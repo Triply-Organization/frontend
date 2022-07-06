@@ -22,9 +22,14 @@ import {
   AiOutlinePlus,
 } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
-import { createTour, getDestinationsServiceTours } from '../../app/toursSlice';
+import {
+  createTour,
+  getDestinationsServiceTours,
+  getDetailTour,
+} from '../../app/toursSlice';
 import './CMSHandleTour.scss';
 
 const { TabPane } = Tabs;
@@ -42,24 +47,14 @@ const CMSAddTour = () => {
   const destinations = useSelector(state => state.tours.destinations);
   const services = useSelector(state => state.tours.services);
   const idTourJustCreated = useSelector(state => state.tours.idTourJustCreated);
+  const tour = useSelector(state => state.tours.tour);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const loadingContext = useLoadingContext();
+  const { id } = useParams();
 
   const [form] = Form.useForm();
-
-  const fakeGallery = [
-    {
-      id: 1,
-      src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      name: 'nameoftheimage.png',
-    },
-    {
-      id: 2,
-      src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      name: 'nameoftheimag2.png',
-    },
-  ];
 
   useEffect(() => {
     if (
@@ -68,12 +63,36 @@ const CMSAddTour = () => {
     ) {
       dispatch(getDestinationsServiceTours());
     }
+    loadingContext.done();
   }, []);
 
   useEffect(() => {
-    if (location.pathname.includes('add-tour')) setType('add');
-    else setType('edit');
+    const loadingData = async () => {
+      if (location.pathname.includes('add-tour')) {
+        setType('add');
+      } else {
+        setType('edit');
+        dispatch(getDetailTour(id));
+      }
+    };
+    loadingData();
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (location.pathname.includes('edit-tour') && !_.isEmpty(tour)) {
+      const informationTour = {
+        title: tour.title,
+        duration: tour.duration,
+        maxPeople: tour.maxPeople,
+        minAge: tour.minAge,
+        overview: tour.overView,
+        services: tour.services.map(item => parseInt(item.id)),
+      };
+      form.setFieldsValue(informationTour);
+    }
+  }, [tour]);
+
+  console.log(tour);
 
   useEffect(() => {
     if (idTourJustCreated) {
@@ -86,14 +105,19 @@ const CMSAddTour = () => {
   }, [idTourJustCreated]);
 
   const beforeUpload = file => {
-    const isPNG = file.type === 'image/png';
-    const isJPG = file.type === 'image/jpeg';
-    if (!isPNG && !isJPG) {
-      message.error(`${file.name} is not a png/jpg file`);
-      return Upload.LIST_IGNORE;
-    } else {
-      return true;
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
     }
+
+    const isLt2M = file.size / 1024 / 1024 < 10;
+
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!');
+    }
+
+    return isJpgOrPng && isLt2M;
   };
 
   const onAddTour = values => {
@@ -142,7 +166,7 @@ const CMSAddTour = () => {
       onSuccess('Ok');
       const tempCoverImg = {
         id: res.data.data[0]?.id,
-        type: 'COVER',
+        type: 'cover',
         file,
       };
       setCoverImage(tempCoverImg);
@@ -172,7 +196,7 @@ const CMSAddTour = () => {
       onSuccess('Ok');
       const tempCoverImg = {
         id: res.data.data[0]?.id,
-        type: 'GALLERY',
+        type: 'gallery',
         file,
       };
       setGalleryImage([...galleryImage, tempCoverImg]);
@@ -205,21 +229,23 @@ const CMSAddTour = () => {
         autoComplete="off"
       >
         <div className="form-tour__content__left">
-          <Form.Item
-            name="title"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your tour title!',
-              },
-            ]}
-          >
-            <div className="form-tour__control-header">
+          <div className="form-tour__control-header">
+            <Form.Item
+              name="title"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your tour title!',
+                },
+              ]}
+            >
               <Input
                 size="large"
                 placeholder="Tour title"
-                style={{ width: '30%' }}
+                style={{ width: '500px' }}
               />
+            </Form.Item>
+            <Form.Item>
               <Space>
                 <Button
                   type="primary"
@@ -244,8 +270,8 @@ const CMSAddTour = () => {
                   Cancel
                 </Button>
               </Space>
-            </div>
-          </Form.Item>
+            </Form.Item>
+          </div>
 
           <div className="card-container">
             <Tabs type="card">
@@ -338,7 +364,7 @@ const CMSAddTour = () => {
                   <Select size="large" mode="multiple">
                     {services.map((item, index) => {
                       return (
-                        <Option key={index} value={item.id}>
+                        <Option key={index} value={parseInt(item.id)}>
                           {item.name}
                         </Option>
                       );
@@ -376,24 +402,32 @@ const CMSAddTour = () => {
                         </p>
                       </Dragger>
 
-                      {type === 'edit' && (
+                      {type === 'edit' && !_.isEmpty(tour) && (
                         <div className="tour-image-wrapper">
-                          <div className="tour-image-wrapper__item">
-                            <Space>
-                              <Image
-                                height={48}
-                                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                                alt=""
-                              />
-                              <p>nameoftheimage.png</p>
-                            </Space>
+                          {tour.tourImages.map((item, index) => {
+                            if (item.type === 'cover')
+                              return (
+                                <div
+                                  className="tour-image-wrapper__item"
+                                  key={index}
+                                >
+                                  <Space>
+                                    <Image
+                                      height={48}
+                                      src={item.path}
+                                      alt={item.id}
+                                    />
+                                    <p>Old cover image</p>
+                                  </Space>
 
-                            <Button
-                              danger
-                              type="text"
-                              icon={<AiOutlineDelete />}
-                            />
-                          </div>
+                                  <Button
+                                    danger
+                                    type="text"
+                                    icon={<AiOutlineDelete />}
+                                  />
+                                </div>
+                              );
+                          })}
                         </div>
                       )}
                     </Form.Item>
@@ -424,30 +458,34 @@ const CMSAddTour = () => {
 
                       {type === 'edit' && (
                         <div className="tour-image-wrapper">
-                          {fakeGallery.map((item, index) => (
-                            <div
-                              className="tour-image-wrapper__item"
-                              key={index}
-                            >
-                              <Space>
-                                <Image
-                                  height={48}
-                                  src={item.src}
-                                  alt={item.name}
-                                />
-                                <p>{item.name}</p>
-                              </Space>
+                          {tour.tourImages.map((item, index) => {
+                            if (item.type === 'gallery') {
+                              return (
+                                <div
+                                  className="tour-image-wrapper__item"
+                                  key={index}
+                                >
+                                  <Space>
+                                    <Image
+                                      height={48}
+                                      src={item.path}
+                                      alt={item.id}
+                                    />
+                                    <p>Old gallery image</p>
+                                  </Space>
 
-                              <Button
-                                danger
-                                type="text"
-                                onClick={() => {
-                                  console.log(item.id);
-                                }}
-                                icon={<AiOutlineDelete />}
-                              />
-                            </div>
-                          ))}
+                                  <Button
+                                    danger
+                                    type="text"
+                                    onClick={() => {
+                                      console.log(item.id);
+                                    }}
+                                    icon={<AiOutlineDelete />}
+                                  />
+                                </div>
+                              );
+                            }
+                          })}
                         </div>
                       )}
                     </Form.Item>
