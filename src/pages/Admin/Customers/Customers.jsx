@@ -26,8 +26,9 @@ const { Title } = Typography;
 export default function Customers() {
   const dispatch = useDispatch();
 
-  const isLoading = useSelector(state => state.admin.customersData.loading);
+  const isLoading = useSelector(state => state.admin.loading);
   const totalPages = useSelector(state => state.admin.customersData.totalPages);
+  const customersData = useSelector(state => state.admin.usersData.users);
   const totalCustomers = useSelector(
     state => state.admin.customersData.totalCustomers,
   );
@@ -35,6 +36,9 @@ export default function Customers() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [page, setPage] = useState(searchParams.get('page') || 1);
+
+  // FLAG PREVENT CALL API TWICE
+  const [flag, setFlag] = useState(0);
 
   const loadingContext = useLoadingContext();
 
@@ -52,6 +56,14 @@ export default function Customers() {
   useEffect(() => {
     loading();
   }, []);
+
+  useEffect(() => {
+    if (flag !== 0) {
+      setSearchParams({ page });
+      console.log('GET ALL CUSTOMERS WHEN CHANGE PAGE');
+      // dispatch(getAllCustomers(location.search));
+    }
+  }, [page]);
 
   const showConfirm = record => {
     confirm({

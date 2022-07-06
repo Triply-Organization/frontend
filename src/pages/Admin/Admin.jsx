@@ -4,6 +4,7 @@ import {
   LoginOutlined,
   PieChartOutlined,
   UserOutlined,
+  UsergroupAddOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { useEffect, useState } from 'react';
@@ -63,14 +64,12 @@ export default function Admin() {
           <Menu.Item key="tours" icon={<EnvironmentOutlined />}>
             <Link to="tours">Tours</Link>
           </Menu.Item>
-          <Menu.SubMenu key="account" title="Account" icon={<UserOutlined />}>
-            <Menu.Item key="users">
-              <Link to="users">Users</Link>
-            </Menu.Item>
-            <Menu.Item key="customers">
-              <Link to="customers">Customers</Link>
-            </Menu.Item>
-          </Menu.SubMenu>
+          <Menu.Item key="users" icon={<UserOutlined />}>
+            <Link to="users">Users</Link>
+          </Menu.Item>
+          <Menu.Item key="customers" icon={<UsergroupAddOutlined />}>
+            <Link to="customers">Customers</Link>
+          </Menu.Item>
           <Menu.Item key="reviews" icon={<CommentOutlined />}>
             <Link to="reviews">Reviews</Link>
           </Menu.Item>

@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import { getAllUsers } from '../../../app/AdminSlice';
+import { deleteUser, getAllUsers } from '../../../app/AdminSlice';
 import ModalForm from '../../../components/ModalForm/ModalForm';
 
 const { Option } = Select;
@@ -32,8 +32,10 @@ const { Title } = Typography;
 export default function Users() {
   const dispatch = useDispatch();
   // const usersData = useSelector(state => state.admin.usersData.users)
-  const isLoading = useSelector(state => state.admin.usersData.loading);
+  const isLoading = useSelector(state => state.admin.loading);
   const totalUsers = useSelector(state => state.admin.usersData.totalUsers);
+  const usersData = useSelector(state => state.admin.usersData.users);
+  const totalPages = useSelector(state => state.admin.usersData.totalPages);
 
   // const [isShowModalAdd, setShowModalAdd] = useState(false);
   const [isShowModalEdit, setShowModalEdit] = useState(false);
@@ -57,8 +59,7 @@ export default function Users() {
     if (!searchParams.get('page')) {
       setSearchParams({ page });
     }
-    // dispatch(getAllUsers(location.search));
-    console.log('GET ALL USERS WHEN FIRST COME');
+    dispatch(getAllUsers(location.search));
     //call method to indicate that loading is done
     loadingContext.done();
   };
@@ -72,7 +73,7 @@ export default function Users() {
     if (flag !== 0) {
       setSearchParams({ page });
       console.log('GET ALL USERS WHEN CHANGE PAGE');
-      // dispatch(getAllUsers(location.search));
+      dispatch(getAllUsers(location.search));
     }
   }, [page]);
 
@@ -90,7 +91,13 @@ export default function Users() {
 
       onOk() {
         // HANDLE DELETE ACCOUNT
-        console.log(record);
+        // console.log(record)
+        dispatch(
+          deleteUser({
+            id: record.id,
+            searchParams: location.search,
+          }),
+        );
       },
 
       // onCancel() {
@@ -168,40 +175,11 @@ export default function Users() {
     },
   ];
 
-  const data = [
-    {
-      name: 'a',
-      key: '1',
-      avatar:
-        'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
-      email: '123@gmail.com',
-      phone: '0123123123',
-      address: '123 ASD BVCX',
-    },
-    {
-      name: 'b',
-      key: '2',
-      avatar: null,
-      email: '542@gmail.com',
-      phone: '012438123',
-      address: '142 ASD BVCX',
-    },
-    {
-      name: 'c',
-      key: '3',
-      avatar:
-        'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
-      email: '55555@gmail.com',
-      phone: '01234333223',
-      address: '554 ASD BVCX',
-    },
-  ];
-
   return (
     <Spin
       tip="loading..."
-      spinning={false}
-      // spinning={isLoading}
+      // spinning={false}
+      spinning={isLoading}
       style={{
         marginTop: '100px',
       }}
@@ -262,6 +240,7 @@ export default function Users() {
                 pagination={{
                   current: page,
                   total: totalUsers,
+                  totalPages: totalPages,
                   pageSize: 6,
                   showSizeChanger: false,
                   onChange: e => {
@@ -269,7 +248,7 @@ export default function Users() {
                   },
                 }}
                 columns={columns}
-                dataSource={data}
+                dataSource={usersData}
               />
             </Col>
           </Row>

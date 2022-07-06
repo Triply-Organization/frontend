@@ -47,12 +47,10 @@ export function Dashboard() {
       searchParams.get('year') &&
       searchParams.get('year') <= moment().format('YYYY')
     ) {
-      console.log('CO PARAMS');
       // CALL DATA
       dispatch(getTotalBooking(year));
       dispatch(getTotalCommission(year));
     } else {
-      console.log('KHONG CO PARAMS');
       setSearchParams({ year });
       // CALL DATA
       dispatch(getTotalBooking(year));

@@ -58,7 +58,7 @@ const RoutesApp = () => {
         <Route path="confirmation/:id" element={<Confirmation />} />
       </Route>
       <Route path="/admin" element={<Admin />}>
-        <Route index element={<Navigate to="/admin/dashboard" replace />} />
+        <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} loading />
         <Route path="tours" element={<Tours />} loading />
         <Route path="users" element={<Users />} loading />

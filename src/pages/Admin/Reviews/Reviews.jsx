@@ -9,9 +9,9 @@ import {
   Table,
   Typography,
 } from 'antd';
-import Search from 'antd/lib/input/Search';
 import confirm from 'antd/lib/modal/confirm';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import './Reviews.scss';
@@ -21,21 +21,32 @@ const { Title } = Typography;
 export default function Reviews() {
   const loadingContext = useLoadingContext();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [page, setPage] = useState(searchParams.get('page') || 1);
+  // FLAG PREVENT CALL API TWICE
+  const [flag, setFlag] = useState(0);
+
   const loading = async () => {
     //loading some data
-
+    if (!searchParams.get('page')) {
+      setSearchParams({ page });
+    }
     //call method to indicate that loading is done
     loadingContext.done();
   };
 
   useEffect(() => {
     loading();
+    setFlag(flag + 1);
   }, []);
 
-  // HANDLE SEARCH USER
-  const handleSearchUser = val => {
-    console.log(val);
-  };
+  useEffect(() => {
+    if (flag !== 0) {
+      setSearchParams({ page });
+      // dispatch(getTours(location.search));
+    }
+  }, [page]);
 
   // HANDLE SHOW CONFIRM
   const showConfirm = record => {
@@ -48,10 +59,6 @@ export default function Reviews() {
         // HANDLE DELETE ACCOUNT
         console.log(record);
       },
-
-      // onCancel() {
-      //   console.log('Cancel');
-      // },
     });
   };
 
@@ -179,24 +186,16 @@ export default function Reviews() {
           }}
         >
           <Row>
-            <Col span={8}>
-              <Search
-                placeholder="Search user's email..."
-                size="large"
-                onSearch={val => handleSearchUser(val)}
-                enterButton
-              />
-            </Col>
-          </Row>
-          <Row>
             <Col span={24}>
               <Table
                 size="large"
                 pagination={{
-                  // defaultPageSize: 6,
+                  current: page,
+                  //  total: totalReviews,
+                  pageSize: 6,
                   showSizeChanger: false,
                   onChange: e => {
-                    console.log(e);
+                    setPage(e);
                   },
                 }}
                 bordered

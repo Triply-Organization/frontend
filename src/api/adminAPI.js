@@ -46,8 +46,8 @@ export const adminAPI = {
     });
   },
 
-  getAllUsers() {
-    const url = `/admin/manager/users`;
+  getAllUsers(params) {
+    const url = `/admin/manager/users${params}`;
     return axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -55,8 +55,17 @@ export const adminAPI = {
     });
   },
 
-  getAllCustomers() {
-    const url = `/admin/manager/customers`;
+  deleteUser(params) {
+    const url = `/admin/manager/users/${params}`;
+    return axiosClient.delete(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+  },
+
+  getAllCustomers(params) {
+    const url = `/admin/manager/customers${params}`;
     return axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,

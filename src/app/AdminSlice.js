@@ -30,23 +30,35 @@ export const getTours = createAsyncThunk('admin/tours', async params => {
   return res.data;
 });
 
-export const getAllUsers = createAsyncThunk('admin/get-all-users', async () => {
-  const res = await adminAPI.getAllUsers();
-  return res.data;
-});
-
-export const getAllCustomers = createAsyncThunk(
-  'admin/get-all-customers',
-  async () => {
-    const res = await adminAPI.getAllCustomers();
-    return res.data;
-  },
-);
-
 export const updateTourStatus = createAsyncThunk(
   'admin/update-tour-status',
   async params => {
     const res = await adminAPI.updateTours(params.id, params.request);
+    return res.data;
+  },
+);
+
+export const getAllUsers = createAsyncThunk(
+  'admin/get-all-users',
+  async params => {
+    const res = await adminAPI.getAllUsers(params);
+    return res.data;
+  },
+);
+
+export const deleteUser = createAsyncThunk(
+  'admin/delete-user',
+  async (params, thunkAPI) => {
+    const res = await adminAPI.deleteUser(params.id);
+    thunkAPI.dispatch(getAllUsers(params.searchParams));
+    return res;
+  },
+);
+
+export const getAllCustomers = createAsyncThunk(
+  'admin/get-all-customers',
+  async params => {
+    const res = await adminAPI.getAllCustomers(params);
     return res.data;
   },
 );
@@ -189,10 +201,8 @@ const adminSlice = createSlice({
       message.error('Something went wrong! Could not get users data');
     });
     builder.addCase(getAllUsers.fulfilled, (state, action) => {
-      console.log('fulfilled');
       state.loading = false;
       const data = action.payload;
-      console.log(data);
       if (data.status === 'success') {
         // console.log();
         const users = [];
@@ -245,6 +255,19 @@ const adminSlice = createSlice({
           customers,
         };
       }
+    });
+
+    // DELETE USER
+    builder.addCase(deleteUser.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(deleteUser.rejected, state => {
+      state.loading = false;
+      message.error('Something went wrong! Could not update tour status');
+    });
+    builder.addCase(deleteUser.fulfilled, state => {
+      state.loading = false;
+      message.success('Delete user account successfully');
     });
   },
 });

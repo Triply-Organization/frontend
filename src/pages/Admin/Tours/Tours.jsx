@@ -17,6 +17,7 @@ export default function Tours() {
   const dispatch = useDispatch();
   const tours = useSelector(state => state.admin.toursData.tours);
   const isLoading = useSelector(state => state.admin.loading);
+  const totalPages = useSelector(state => state.admin.toursData.totalPages);
   const totalTours = useSelector(state => state.admin.toursData.totalTours);
 
   // const page = useSelector();
@@ -67,6 +68,12 @@ export default function Tours() {
     //loading some data
     if (!searchParams.get('page')) {
       setSearchParams({ page });
+    } else {
+      console.log(totalPages);
+      if (searchParams.get('page') > totalPages) {
+        // setSearchParams({ page: totalPages });
+        console.log(totalPages);
+      }
     }
 
     dispatch(getTours(location.search));
