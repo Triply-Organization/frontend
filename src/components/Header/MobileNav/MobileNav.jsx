@@ -14,8 +14,6 @@ export default function MobileNav(props) {
   const user = JSON.parse(localStorage.getItem('user')) || null;
   const token = localStorage.getItem('token');
 
-  console.log(user);
-  console.log(token);
   const { t } = useTranslation();
   const {
     mobileNavStatus,

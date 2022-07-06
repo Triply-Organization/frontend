@@ -116,7 +116,7 @@ const CMSAddTour = () => {
     fmData.append('image[]', file);
     try {
       const res = await axios.post(
-        'https://api.nhivo-rentcar.me/api/images/',
+        import.meta.env.VITE_SERVER_BASE_URL,
         fmData,
         config,
       );
@@ -147,7 +147,7 @@ const CMSAddTour = () => {
     fmData.append('image[]', file);
     try {
       const res = await axios.post(
-        'https://api.nhivo-rentcar.me/api/images/',
+        import.meta.env.VITE_SERVER_BASE_URL,
         fmData,
         config,
       );
