@@ -253,7 +253,7 @@ export default function Customers() {
         }}
       >
         <Breadcrumb.Item>
-          <Title level={3}>Customers</Title>
+          <Title level={3}>Users</Title>
         </Breadcrumb.Item>
       </Breadcrumb>
       <div

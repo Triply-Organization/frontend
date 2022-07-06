@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
 
-import { userAPI } from '../../api/userApi';
+import { userAPI } from '../api/userAPI';
 
 export const register = createAsyncThunk('user/register', async params => {
   const res = await userAPI.register(params);
@@ -22,11 +22,11 @@ const registerSlice = createSlice({
     });
     builder.addCase(register.rejected, state => {
       state.loading = false;
-      message.error('Email has already used!');
+      message.error({ content: 'Email has already used!', key: 'failed' });
     });
     builder.addCase(register.fulfilled, state => {
       state.loading = false;
-      message.success('Register successfull!');
+      message.success({ content: 'Register successfull!', key: 'success' });
     });
   },
 });

@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { login } from '../../app/loginSlice';
 import LanguageSelect from '../../components/LanguageSelect/LanguageSelect';
 import './Login.scss';
-import { login } from './LoginSlice';
 
 const { Title, Text } = Typography;
 

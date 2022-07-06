@@ -53,7 +53,7 @@ const RoutesApp = () => {
           <Route index element={<AllTours />} loading />
           <Route path=":search" element={<AllTours />} loading />
         </Route>
-        <Route path="/my-tour" element={<MyTour />} />
+        <Route path="/my-tours" element={<MyTour />} />
         <Route path="/detail/:id" element={<DetailTour />} />
         <Route path="confirmation/:id" element={<Confirmation />} />
       </Route>
@@ -68,6 +68,8 @@ const RoutesApp = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="checkout/:id" element={<Checkout />} />
+      <Route path="confirmation/:id" element={<Confirmation />} />
+
       <Route path="/cms" element={<CMSCustomer />}>
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<CMSDashBoard />} />

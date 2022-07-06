@@ -5,11 +5,14 @@ import {
   Avatar,
   Button,
   Carousel,
+  Empty,
   Form,
   InputNumber,
   Progress,
   Rate,
   Spin,
+  Typography,
+  message,
   notification,
 } from 'antd';
 import { Collapse } from 'antd';
@@ -26,151 +29,13 @@ import { RiGroupLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { bookTour, getDetailTour } from '../../app/toursSlice';
+import { getDetailTour } from '../../app/toursSlice';
 import CardTour from '../../components/CardTour/CardTour';
+import { booking } from './../../app/orderSlice';
 import './DetailTour.scss';
 
 const { Panel } = Collapse;
-
-const relatedTour = [
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-];
-
-const reviews = [
-  {
-    title: 'location',
-    point: 4.38,
-  },
-  {
-    title: 'services',
-    point: 4.5,
-  },
-  {
-    title: 'price',
-    point: 4.24,
-  },
-  {
-    title: 'rooms',
-    point: 4.3,
-  },
-];
-
-const userReviews = [
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-];
-
-const disabledDate = current => {
-  // Can not select days before today and today
-  return current && current < moment().endOf('day');
-};
+const { Text } = Typography;
 
 export default function DetailTour() {
   let navigate = useNavigate();
@@ -178,30 +43,140 @@ export default function DetailTour() {
   const dispatch = useDispatch();
   const detailTour = useSelector(state => state.tours.tour);
   const loadingState = useSelector(state => state.tours.loading);
+  const availableDate = useSelector(state => state.tours.tour.availableDate);
+  const priceDate = useSelector(state => state.tours.tour.priceFollowDate);
+  const relatedTours = useSelector(state => state.tours.tour.relatedTour);
+  const dataCheckout = useSelector(state => state.order.checkout);
+  const bookingStatus = useSelector(state => state.order.status);
   const [bookingDate, setBookingDate] = useState('');
-  const [adultNumber, setAdultNumber] = useState(0);
-  const [youthNumber, setYouthNumber] = useState(0);
-  const [childrenNumber, setChildrenNumber] = useState(0);
+  const [adultNumber, setAdultNumber] = useState({
+    value: 0,
+    price: 0,
+  });
+  const [youthNumber, setYouthNumber] = useState({
+    value: 0,
+    price: 0,
+  });
+  const [childrenNumber, setChildrenNumber] = useState({
+    value: 0,
+    price: 0,
+  });
+  const [children, setChildren] = useState({});
+  const [adult, setAdult] = useState({});
+  const [youth, setYouth] = useState({});
   const [total, setTotal] = useState(0);
+  const [priceFollowDate, setPriceFollowDate] = useState([]);
+
+  useEffect(() => {
+    setTotal(
+      adultNumber.value * adultNumber.price +
+        youthNumber.value * youthNumber.price +
+        childrenNumber.value * childrenNumber.price,
+    );
+  }, [adultNumber, youthNumber, childrenNumber]);
+
+  localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
+
+  const handleChangePrice = (value, unique) => {
+    switch (unique.type) {
+      case 'adult':
+        setAdult({ priceListId: unique.id, amount: value });
+        setAdultNumber({ value, price: unique.price });
+        break;
+      case 'youth':
+        setYouth({ priceListId: unique.id, amount: value });
+        setYouthNumber({ value, price: unique.price });
+        break;
+      case 'children':
+        setChildren({ priceListId: unique.id, amount: value });
+        setChildrenNumber({ value, price: unique.price });
+    }
+  };
+
+  const userReviews = detailTour.reviews?.map(item => {
+    console.log(item);
+    return {
+      name: item.name,
+      avatar: item.avatar,
+      date: item.createdAt,
+      rating: [
+        {
+          title: 'location',
+          point: item.rating.location,
+        },
+        {
+          title: 'services',
+          point: item.rating.services,
+        },
+        {
+          title: 'price',
+          point: item.rating.price,
+        },
+        {
+          title: 'rooms',
+          point: item.rating.rooms,
+        },
+      ],
+      comment: item.comment,
+    };
+  });
+
+  const reviews = [
+    {
+      title: 'location',
+      point: detailTour.rating?.location,
+    },
+    {
+      title: 'services',
+      point: detailTour.rating?.services,
+    },
+    {
+      title: 'price',
+      point: detailTour.rating?.price,
+    },
+    {
+      title: 'rooms',
+      point: detailTour.rating?.rooms,
+    },
+  ];
 
   console.log(detailTour);
 
+  const disabledDate = current => {
+    return !availableDate.find(date => {
+      return date === moment(current).format('YYYY-MM-DD');
+    });
+  };
+
+  const handleDatePickerChange = (date, dateString) => {
+    if (dateString) {
+      const result = priceDate.filter(item =>
+        item.startDate.includes(dateString),
+      );
+      setPriceFollowDate(result);
+      setBookingDate(dateString);
+    } else {
+      setPriceFollowDate([]);
+      setBookingDate('');
+    }
+  };
+
   const detailTourItem = useMemo(() => {
     return [
-      {
-        icon: <AiOutlineDollar />,
-        title: 'price',
-        detail: detailTour.price,
-      },
+      // {
+      //   icon: <AiOutlineDollar />,
+      //   title: 'price',
+      //   detail: detailTour.price,
+      // },
       {
         icon: <BiTimeFive />,
         title: 'duration',
-        detail: detailTour.duration,
+        detail: detailTour.duration + ' days',
       },
       {
         icon: <RiGroupLine />,
         title: 'max people',
-        detail: detailTour.maxPeople,
+        detail: detailTour.maxPeople + ' people',
       },
       {
         icon: <RiErrorWarningLine />,
@@ -221,7 +196,14 @@ export default function DetailTour() {
   }, []);
 
   // validate booking
-  const handleSubmit = () => {
+  const handleSubmit = values => {
+    const request = {
+      children: children,
+      adult: adult,
+      youth: youth,
+      currency: 'usd',
+    };
+
     if (!bookingDate) {
       notification.error({
         message: 'Book failed!',
@@ -243,53 +225,13 @@ export default function DetailTour() {
           message: 'Book successfully!',
           description: 'Please choose your ticket!',
         });
-
-        const bookingTour = {
-          title: detailTour.title,
-          duration: detailTour.duration,
-          maxPeople: detailTour.maxPeople,
-          date: bookingDate,
-          images: detailTour.tourImages,
-          tickets: {
-            adult: {
-              quantity: adultNumber,
-              price: 138,
-            },
-            youth: {
-              quantity: youthNumber,
-              price: 128,
-            },
-            children: {
-              quantity: childrenNumber,
-              price: 50,
-            },
-          },
-          total,
-        };
-
-        // dispatch(bookTour(bookingTour));
-        // console.log(bookingTour);
-
-        // Save local for temp
-        localStorage.setItem('bookingTour', JSON.stringify(bookingTour));
-
+        dispatch(booking(request));
         setTimeout(() => {
           navigate(`/checkout/${id}`);
-          scrollTo(0, 0);
-        }, 2000);
+        }, 1500);
       }
     }
   };
-
-  useEffect(() => {
-    if (detailTour.tourPlans) {
-      setTotal(
-        adultNumber * detailTour.tickets[2].adult +
-          youthNumber * detailTour.tickets[1].youth +
-          childrenNumber * detailTour.tickets[0].children,
-      );
-    }
-  }, [adultNumber, youthNumber, childrenNumber]);
 
   return (
     <section className="detailTour">
@@ -405,7 +347,7 @@ export default function DetailTour() {
                             <span className="detailTour__plan-heading">
                               <GoLocation className="detailTour__plan-icon" />
                               <span className="detailTour__plan-heading-word">
-                                Day {item.day}{' '}
+                                Day {item.day}
                                 <span className="detailTour__place-words">
                                   {item.destination}
                                 </span>
@@ -429,17 +371,21 @@ export default function DetailTour() {
                 autoplay
                 className="detailTour__relatedTour-carousel"
                 draggable={true}
-                slidesToShow={2}
+                slidesToShow={1}
               >
-                {relatedTour.map((item, index) => {
-                  return (
-                    <>
-                      <div className="detailTour__relatedTour-item">
-                        <CardTour tour={item} key={index} />
-                      </div>
-                    </>
-                  );
-                })}
+                {relatedTours && relatedTours.length > 0 ? (
+                  relatedTours?.map(item => {
+                    return (
+                      <>
+                        <div className="detailTour__relatedTour-item">
+                          <CardTour tour={item} key={item.id} />
+                        </div>
+                      </>
+                    );
+                  })
+                ) : (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                )}
               </Carousel>
             </div>
             <div className="detailTour__review-wrapper">
@@ -449,7 +395,7 @@ export default function DetailTour() {
                   <div className="detailTour__review-overall-words">
                     <div className="detailTour__review-overall-point">
                       <span className="detailTour__review-overall-average">
-                        4.28
+                        {detailTour.rating?.avg}
                       </span>
                       <span className="detailTour__review-overall-pattern">
                         /5
@@ -489,7 +435,7 @@ export default function DetailTour() {
                 </div>
               </div>
               <div className="detailTour__review-detail-wrapper">
-                {userReviews.map((item, index) => {
+                {userReviews?.map((item, index) => {
                   return (
                     <>
                       <div
@@ -532,8 +478,7 @@ export default function DetailTour() {
                             })}
                           </div>
                           <p className="detailTour__review-item-comment">
-                            This is exactly what i was looking for, thank you so
-                            much for these tutorials
+                            {item.comment}
                           </p>
                         </div>
                       </div>
@@ -547,111 +492,69 @@ export default function DetailTour() {
             <div className="detailTour__booking">
               <h3 className="detailTour__booking-heading">Book This Tour</h3>
               <Form
-                initialValues={{ ticket: 0 }}
+                layout="horizontal"
+                onFinish={handleSubmit}
                 autoComplete="off"
+                initialValues={{ adult: 0, youth: 0, children: 0 }}
                 className="detailTour__booking-form"
               >
-                <Form.Item className="detailTour__booking-date">
-                  <p className="detailTour__booking-label">From:</p>
+                <p className="detailTour__booking-label">From:</p>
+                <Form.Item className="detailTour__booking-date" name="date">
                   <DatePicker
                     disabledDate={disabledDate}
-                    onChange={(date, dateString) => {
-                      setBookingDate(dateString);
-                    }}
-                    format="DD/MM/YYYY"
+                    onChange={handleDatePickerChange}
+                    format="YYYY-MM-DD"
                     className="detailTour__booking-date-input"
                   />
                 </Form.Item>
                 <div className="detailTour__booking-tickets">
                   <p className="detailTour__booking-label">Tickets:</p>
-                  <Form.Item
-                    className="detailTour__booking-tickets-section"
-                    name="ticket"
-                  >
-                    <label
-                      htmlFor="tickets-section1"
-                      className="detailTour__booking-tickets-description"
-                    >
-                      Adult (18+ years){' '}
-                      <span className="detailTour__booking-tickets-price">
-                        $
-                        {detailTour.tickets && detailTour.tickets.length > 0
-                          ? detailTour.tickets[2].adult
-                          : 0}
-                        .00
-                      </span>
-                    </label>
-                    <InputNumber
-                      id="tickets-section1"
-                      onChange={e => setAdultNumber(e)}
-                      value={adultNumber}
-                      min={0}
-                      max={10}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    className="detailTour__booking-tickets-section"
-                    name="ticket"
-                  >
-                    <label
-                      htmlFor="tickets-section2"
-                      className="detailTour__booking-tickets-description"
-                    >
-                      Youth (13-17 years){' '}
-                      <span className="detailTour__booking-tickets-price">
-                        $
-                        {detailTour.tickets && detailTour.tickets.length > 0
-                          ? detailTour.tickets[1].youth
-                          : 0}
-                        .00
-                      </span>
-                    </label>
-                    <InputNumber
-                      value={youthNumber}
-                      onChange={e => setYouthNumber(e)}
-                      id="tickets-section2"
-                      min={0}
-                      max={10}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    className="detailTour__booking-tickets-section"
-                    name="ticket"
-                  >
-                    <label
-                      htmlFor="tickets-section3"
-                      className="detailTour__booking-tickets-description"
-                    >
-                      Children (0-12 years){' '}
-                      <span className="detailTour__booking-tickets-price">
-                        $
-                        {detailTour.tickets && detailTour.tickets.length > 0
-                          ? detailTour.tickets[0].children
-                          : 0}
-                        .00
-                      </span>
-                    </label>
-                    <InputNumber
-                      value={childrenNumber}
-                      onChange={e => setChildrenNumber(e)}
-                      id="tickets-section3"
-                      min={0}
-                      max={10}
-                    />
-                  </Form.Item>
+
+                  {priceFollowDate && priceFollowDate.length > 0
+                    ? priceFollowDate.map(item =>
+                        item.ticket.map(e => {
+                          return (
+                            <>
+                              <div className="inputNumber-style">
+                                <Text strong level={5}>
+                                  {e.type === 'adult'
+                                    ? 'Adult (18+ years)'
+                                    : e.type === 'youth'
+                                    ? 'Youth (13-17 years)'
+                                    : 'Children (0-12 years)'}
+                                </Text>
+
+                                <Text strong>${e.price} :</Text>
+                              </div>
+                              <Form.Item
+                                key={e.id}
+                                className="detailTour__booking-tickets-section"
+                                name={e.type}
+                              >
+                                <InputNumber
+                                  min={0}
+                                  max={10}
+                                  onChange={values =>
+                                    handleChangePrice(values, e)
+                                  }
+                                />
+                              </Form.Item>
+                            </>
+                          );
+                        }),
+                      )
+                    : 'Please choose the date!'}
                 </div>
                 <div className="detailTour__booking-footer">
                   <div className="detailTour__booking-count">
                     <span className="detailTour__booking-count-words">
                       Total:
                     </span>
-                    <span className="detailTour__booking-total">
-                      ${total}.00
-                    </span>
+                    <span className="detailTour__booking-total">${total}</span>
                   </div>
-                  <Form.Item htmlType="submit">
+                  <Form.Item>
                     <Button
-                      onClick={handleSubmit}
+                      htmlType="submit"
                       className="detailTour__booking-btn"
                       type="primary"
                       size="large"

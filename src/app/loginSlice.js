@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
 
-import { userAPI } from '../../api/userApi';
+import { userAPI } from '../api/userAPI';
 
 export const login = createAsyncThunk('user/login', async params => {
   const res = await userAPI.login(params);
@@ -30,7 +30,7 @@ const loginSlice = createSlice({
     });
     builder.addCase(login.rejected, state => {
       state.loading = false;
-      message.error('Invalid email or password');
+      message.error({ content: 'Invalid email or password', key: 'failed' });
     });
     builder.addCase(login.fulfilled, (state, action) => {
       let data = action.payload;
@@ -39,7 +39,7 @@ const loginSlice = createSlice({
         localStorage.setItem('token', data.data.data.token);
         localStorage.setItem('user', JSON.stringify(data.data.data.data));
         state.user = data.data.data.data;
-        message.success('Login successfully!');
+        message.success({ content: 'Login successfully!', key: 'success' });
       }
     });
   },

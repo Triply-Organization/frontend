@@ -255,7 +255,6 @@ export default function Tours() {
       },
     },
   ];
-
   return (
     <Spin
       spinning={isLoading}

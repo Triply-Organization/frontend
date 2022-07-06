@@ -1,14 +1,34 @@
-import { Result, Typography } from 'antd';
-import React from 'react';
+import { Button, Result, Typography } from 'antd';
+import moment from 'moment';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import { OrderDetail } from '../../components';
 import { ImageBreadcrumb } from '../../components/';
+import { getConfirmInfo } from './../../app/checkoutSlice';
 import './Confirmation.scss';
 
 const { Title, Text } = Typography;
 
 const Confirmation = () => {
+  const { id } = useParams();
+  const confirmInfo = useSelector(state => state.checkout.confirmationData);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  console.log(confirmInfo);
+
+  const handleBackToHome = () => {
+    navigate('/');
+    localStorage.removeItem('bookingInfo');
+  };
+
+  useEffect(() => {
+    dispatch(getConfirmInfo(id));
+  }, []);
+
   return (
     <>
       <ImageBreadcrumb
@@ -20,24 +40,37 @@ const Confirmation = () => {
       <div className="ctn ctn-confirmation">
         <div className="ctn-confirmation__notification">
           <Result
-            status="success"
-            title="Successfully Purchased"
-            subTitle="Your order is completed and received, and a confirmation email was sent to you. You will pay the full amount later. Thank you!"
+            status={confirmInfo.status === 'unpaid' ? 'warning' : 'success'}
+            title={
+              confirmInfo.status === 'unpaid'
+                ? 'Your Order is not Purchased'
+                : 'Successfully Purchased'
+            }
+            subTitle={
+              confirmInfo.status === 'unpaid'
+                ? 'Please payment your order'
+                : 'Your order is completed and received, and a confirmation email was sent to you. You will pay the full amount later. Thank you!'
+            }
+            extra={[
+              <Button type="primary" key="console" onClick={handleBackToHome}>
+                Back to Home
+              </Button>,
+            ]}
           />
         </div>
         <div className="ctn-confirmation__order-info">
           <div className="ctn-confirmation__order-info__content">
             <div>
               <Text strong>Order number:</Text>
-              {'220630-060956147'}
+              {confirmInfo.id}
             </div>
             <div>
               <Text strong>Date:</Text>
-              {'2022-07-02 12:00'}
+              {moment(confirmInfo.startDay?.date).format('YYYY-MM-DD')}
             </div>
             <div>
-              <Text strong>Total:</Text>
-              {'$100.00'}
+              <Text strong>Total after VAT:</Text>
+              {confirmInfo.bill?.totalPrice}
             </div>
           </div>
         </div>
@@ -45,7 +78,7 @@ const Confirmation = () => {
           <div className="ctn-confirmation__order-details__title">
             <Title level={3}>ORDER DETAILS</Title>
           </div>
-          <OrderDetail />
+          <OrderDetail data={confirmInfo} />
         </div>
       </div>
     </>

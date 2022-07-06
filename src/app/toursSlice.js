@@ -14,12 +14,6 @@ const initialState = {
   totalTours: 0,
 };
 
-export const bookTour = createAsyncThunk('tours/booking', async params => {
-  // const res = await tourAPI.getTourById(params)
-  // return res
-  console.log(params);
-});
-
 export const getDetailTour = createAsyncThunk('tours/detail', async params => {
   const res = await tourAPI.getTourById(params);
   return res;
@@ -55,7 +49,10 @@ const toursSlice = createSlice({
     });
     builder.addCase(getDestinationsServiceTours.rejected, state => {
       state.loading = false;
-      message.error('Can not connect to server. Please check your internet');
+      message.error({
+        content: 'Can not connect to server. Please check your internet',
+        key: 'tour-rejected',
+      });
     });
     builder.addCase(getDestinationsServiceTours.fulfilled, (state, action) => {
       state.loading = false;
@@ -63,25 +60,6 @@ const toursSlice = createSlice({
       if (data.status === 'success') {
         state.destinations = data.data.destinations;
         state.services = data.data.services;
-        state.totalTours = data.data.totalTours;
-
-        const res = data.data.tours.map(item => {
-          return {
-            id: item.id,
-            duration: item.duration,
-            maxPeople: item.maxPeople,
-            name: item.title,
-            image: item.tourImages,
-            maxPrice: Math.max(
-              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
-            ),
-            minPrice: Math.min(
-              ...item.schedule.map(s => s.ticket.map(t => t.price))[0],
-            ),
-            tourDestination: item.destination.map(item => item.destination)[0],
-          };
-        });
-        state.list = res;
       }
     });
 
@@ -90,19 +68,23 @@ const toursSlice = createSlice({
     });
     builder.addCase(getToursByFilter.rejected, state => {
       state.loading = false;
-      message.error('Can not connect to server. Please check your internet');
+      message.error({
+        content: 'Can not connect to server. Please check your internet',
+        key: 'tour-rejected',
+      });
     });
     builder.addCase(getToursByFilter.fulfilled, (state, action) => {
       state.loading = false;
       let { data } = action.payload;
-      if (data.status === 'success') {
-        state.destinations = data.data.destinations;
-        state.services = data.data.services;
-        state.totalTours = data.data.totalTours;
+      state.destinations = data.data.destinations;
+      state.services = data.data.services;
+      state.totalTours = data.data.totalTours;
 
+      if (data.data.tours) {
         const res = data.data.tours.map(item => {
           return {
             id: item.id,
+            rating: item.rating?.avg,
             duration: item.duration,
             maxPeople: item.maxPeople,
             name: item.title,
@@ -117,6 +99,8 @@ const toursSlice = createSlice({
           };
         });
         state.listFilter = res;
+      } else {
+        state.listFilter = [];
       }
     });
     builder.addCase(getDetailTour.pending, state => {
@@ -124,25 +108,37 @@ const toursSlice = createSlice({
     });
     builder.addCase(getDetailTour.rejected, state => {
       state.loading = false;
-      message.error('Can not connect to server. Please check your internet');
+      message.error({
+        content: 'Can not connect to server. Please check your internet',
+        key: 'tour-rejected',
+      });
     });
     builder.addCase(getDetailTour.fulfilled, (state, action) => {
       let data = action.payload;
+      console.log(action.payload);
       state.loading = false;
-      state.tour = data.data.data;
+      let priceDate = [];
+      let temp = [];
+      let relatedTours = [];
+      priceDate = data.data.data.schedule.map(item => item);
+      temp = data.data.data.schedule.map(item => item.startDate);
+      relatedTours = data.data.data.relatedTour.map(item => ({
+        id: item.id,
+        image: item.tourImages,
+        name: item.title,
+        duration: item.duration,
+        maxPeople: item.maxPeople,
+        tourDestination: item.destination[0].destination,
+        minPrice: item.schedule[0].ticket[2].price,
+        maxPrice: item.schedule[0].ticket[0].price,
+      }));
+      state.tour = {
+        ...data.data.data,
+        availableDate: temp,
+        priceFollowDate: priceDate,
+        relatedTour: relatedTours,
+      };
     });
-    // builder.addCase(bookTour.pending, state => {
-    //   state.loading = true;
-    // });
-    // builder.addCase(bookTour.rejected, state => {
-    //   state.loading = false;
-    //   message.error('Can not connect to server. Please check your internet');
-    // });
-    // builder.addCase(bookTour.fulfilled, (state, action) => {
-    //   let data = action.payload;
-    //   state.loading = false;
-    //   console.log(data)
-    // });
   },
 });
 

@@ -3,6 +3,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import loginSlice from '../pages/Login/LoginSlice';
 import registerSlice from '../pages/Register/RegisterSlice';
 import adminSlice from './AdminSlice';
+import checkoutSlice from './checkoutSlice';
+import orderSlice from './orderSlice';
 import toursSlice from './toursSlice';
 
 export const store = configureStore({
@@ -11,5 +13,7 @@ export const store = configureStore({
     register: registerSlice.reducer,
     tours: toursSlice.reducer,
     admin: adminSlice.reducer,
+    checkout: checkoutSlice.reducer,
+    order: orderSlice.reducer,
   },
 });
