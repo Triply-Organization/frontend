@@ -33,7 +33,6 @@ export default function Users() {
   const dispatch = useDispatch();
   // const usersData = useSelector(state => state.admin.usersData.users)
   const isLoading = useSelector(state => state.admin.usersData.loading);
-  const totalPages = useSelector(state => state.admin.usersData.totalPages);
   const totalUsers = useSelector(state => state.admin.usersData.totalUsers);
 
   // const [isShowModalAdd, setShowModalAdd] = useState(false);
@@ -201,7 +200,8 @@ export default function Users() {
   return (
     <Spin
       tip="loading..."
-      spinning={isLoading}
+      spinning={false}
+      // spinning={isLoading}
       style={{
         marginTop: '100px',
       }}
@@ -260,9 +260,9 @@ export default function Users() {
               <Table
                 size="large"
                 pagination={{
-                  totalPages,
+                  current: page,
                   total: totalUsers,
-                  defaultCurrent: page,
+                  pageSize: 6,
                   showSizeChanger: false,
                   onChange: e => {
                     setPage(e);

@@ -28,7 +28,9 @@ export default function Customers() {
 
   const isLoading = useSelector(state => state.admin.customersData.loading);
   const totalPages = useSelector(state => state.admin.customersData.totalPages);
-  const totalUsers = useSelector(state => state.admin.customersData.totalUsers);
+  const totalCustomers = useSelector(
+    state => state.admin.customersData.totalCustomers,
+  );
   // const usersData = useSelector(state => state.admin.usersData.users)
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -149,7 +151,8 @@ export default function Customers() {
   return (
     <Spin
       tip="loading..."
-      spinning={isLoading}
+      spinning={false}
+      // spinning={isLoading}
       style={{
         marginTop: '100px',
       }}
@@ -182,9 +185,9 @@ export default function Customers() {
               <Table
                 size="large"
                 pagination={{
-                  totalPages,
-                  total: totalUsers,
-                  defaultCurrent: page,
+                  current: page,
+                  total: totalCustomers,
+                  pageSize: 6,
                   showSizeChanger: false,
                   onChange: e => {
                     setPage(e);

@@ -17,7 +17,6 @@ export default function Tours() {
   const dispatch = useDispatch();
   const tours = useSelector(state => state.admin.toursData.tours);
   const isLoading = useSelector(state => state.admin.loading);
-  const totalPages = useSelector(state => state.admin.toursData.totalPages);
   const totalTours = useSelector(state => state.admin.toursData.totalTours);
 
   // const page = useSelector();
@@ -66,16 +65,6 @@ export default function Tours() {
 
   const loading = async () => {
     //loading some data
-
-    // if (searchParams.get('page')) {
-    //   console.log('CO PARAM');
-    //   // IF HAS SEARCH PARAMS
-    // } else {
-    //   // IF HAS NO SEARCH PARAMS
-    //   console.log('KHONG CO PARAM');
-    //   setSearchParams({ page });
-    // }
-
     if (!searchParams.get('page')) {
       setSearchParams({ page });
     }
@@ -284,10 +273,9 @@ export default function Tours() {
           <Table
             size="large"
             pagination={{
-              // defaultPageSize: 6,
-              totalPages,
+              current: page,
               total: totalTours,
-              defaultCurrent: page,
+              pageSize: 6,
               showSizeChanger: false,
               onChange: e => {
                 setPage(e);
