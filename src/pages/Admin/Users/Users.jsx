@@ -7,7 +7,6 @@ import {
   Button,
   Col,
   Form,
-  Input,
   Row,
   Select,
   Space,
@@ -16,7 +15,6 @@ import {
 } from 'antd';
 import { Typography } from 'antd';
 import { Modal } from 'antd';
-import Search from 'antd/lib/input/Search';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
@@ -34,11 +32,11 @@ const { Title } = Typography;
 export default function Users() {
   const dispatch = useDispatch();
   // const usersData = useSelector(state => state.admin.usersData.users)
-  const isLoading = useSelector(state => state.admin.loading);
-  const totalPages = useSelector(state => state.admin.totalPages);
-  const totalUsers = useSelector(state => state.admin.totalUsers);
+  const isLoading = useSelector(state => state.admin.usersData.loading);
+  const totalPages = useSelector(state => state.admin.usersData.totalPages);
+  const totalUsers = useSelector(state => state.admin.usersData.totalUsers);
 
-  const [isShowModalAdd, setShowModalAdd] = useState(false);
+  // const [isShowModalAdd, setShowModalAdd] = useState(false);
   const [isShowModalEdit, setShowModalEdit] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -51,7 +49,7 @@ export default function Users() {
 
   // Set current row value
   const [currentValue, setCurrentValue] = useState(false);
-  const [formAddUser] = Form.useForm();
+  // const [formAddUser] = Form.useForm();
   const [formEditUser] = Form.useForm();
   const loadingContext = useLoadingContext();
 
@@ -78,18 +76,6 @@ export default function Users() {
       // dispatch(getAllUsers(location.search));
     }
   }, [page]);
-  // HANDLE ADD NEW USER
-  const handleAddNewUser = () => {
-    formAddUser
-      .validateFields()
-      .then(val => {
-        console.log(val);
-        // HANDLE LOGIC ADD NEW USER
-
-        setShowModalAdd(false);
-      })
-      .catch(err => console.log(err));
-  };
 
   // HANDLE OPEN EDIT FORM
   const handleOpenEditForm = record => {
@@ -112,11 +98,6 @@ export default function Users() {
       //   console.log('Cancel');
       // },
     });
-  };
-
-  // HANDLE SEARCH USER EMAIL
-  const handleSearchUser = value => {
-    console.log(value);
   };
 
   // HANDLE EDIT ROLE USER
@@ -225,74 +206,6 @@ export default function Users() {
         marginTop: '100px',
       }}
     >
-      <ModalForm
-        form={formAddUser}
-        modalTitle="Add new user"
-        formName="add-new-user"
-        isVisible={isShowModalAdd}
-        handleOk={handleAddNewUser}
-        handleCancel={() => setShowModalAdd(false)}
-        okText="Add"
-        afterClose={() => formAddUser.resetFields()}
-        // defaultValue={productToEdit}
-      >
-        <Form.Item
-          name="name"
-          label="Name"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user name!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user email!',
-            },
-            {
-              type: 'email',
-              message: 'Enter a valid email address!',
-            },
-          ]}
-        >
-          <Input type="email" />
-        </Form.Item>
-        <Form.Item
-          name="phone"
-          label="Phone"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user phone!',
-            },
-            {
-              pattern: /^(?:\d*)$/,
-              message: 'Input should contain just number!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="address"
-          label="Address"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user address!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-      </ModalForm>
       {/* MODAL EDIT */}
       <ModalForm
         form={formEditUser}
@@ -302,7 +215,6 @@ export default function Users() {
         handleOk={handleEditRoleUser}
         handleCancel={handleCloseEditRoleForm}
         okText="Edit"
-        // defaultValue={productToEdit}
       >
         <Form.Item
           rules={[
@@ -344,30 +256,10 @@ export default function Users() {
           }}
         >
           <Row>
-            <Col span={4}>
-              <Button
-                type="primary"
-                size="large"
-                onClick={() => setShowModalAdd(true)}
-              >
-                Add new user
-              </Button>
-            </Col>
-            <Col span={10} offset={10}>
-              <Search
-                placeholder="Search user's email..."
-                size="large"
-                onSearch={val => handleSearchUser(val)}
-                enterButton
-              />
-            </Col>
-          </Row>
-          <Row>
             <Col span={24}>
               <Table
                 size="large"
                 pagination={{
-                  // defaultPageSize: 6,
                   totalPages,
                   total: totalUsers,
                   defaultCurrent: page,

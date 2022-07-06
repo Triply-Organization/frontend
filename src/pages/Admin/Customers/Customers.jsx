@@ -6,8 +6,6 @@ import {
   Breadcrumb,
   Button,
   Col,
-  Form,
-  Input,
   Modal,
   Row,
   Space,
@@ -15,14 +13,12 @@ import {
   Table,
 } from 'antd';
 import { Typography } from 'antd';
-import Search from 'antd/lib/input/Search';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import { getAllUsers } from '../../../app/AdminSlice';
-import ModalForm from '../../../components/ModalForm/ModalForm';
+import { getAllCustomers } from '../../../app/AdminSlice';
 
 const { confirm } = Modal;
 const { Title } = Typography;
@@ -30,14 +26,13 @@ const { Title } = Typography;
 export default function Customers() {
   const dispatch = useDispatch();
 
-  const isLoading = useSelector(state => state.admin.loading);
+  const isLoading = useSelector(state => state.admin.customersData.loading);
+  const totalPages = useSelector(state => state.admin.customersData.totalPages);
+  const totalUsers = useSelector(state => state.admin.customersData.totalUsers);
   // const usersData = useSelector(state => state.admin.usersData.users)
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [isShowModalAdd, setShowModalAdd] = useState(false);
   const [page, setPage] = useState(searchParams.get('page') || 1);
-
-  const [formAddNewCustomer] = Form.useForm();
 
   const loadingContext = useLoadingContext();
 
@@ -47,7 +42,7 @@ export default function Customers() {
       setSearchParams({ page });
     }
 
-    // dispatch(getAllUsers(location.search));
+    // dispatch(getAllCustomers(location.search));
     //call method to indicate that loading is done
     loadingContext.done();
   };
@@ -55,19 +50,6 @@ export default function Customers() {
   useEffect(() => {
     loading();
   }, []);
-
-  // HANDLE ADD NEW CUSTOMER
-  const handleAddNewCustomer = () => {
-    formAddNewCustomer
-      .validateFields()
-      .then(val => {
-        // HANDLE LOGIC ADD NEW CUSTOMER
-        console.log(val);
-
-        setShowModalAdd(false);
-      })
-      .catch(err => console.log(err));
-  };
 
   const showConfirm = record => {
     confirm({
@@ -84,11 +66,6 @@ export default function Customers() {
         console.log('Cancel');
       },
     });
-  };
-
-  // HANDLE SEARCH CUSTOMER
-  const handleSearchCustomer = val => {
-    console.log(val);
   };
 
   const columns = [
@@ -177,83 +154,13 @@ export default function Customers() {
         marginTop: '100px',
       }}
     >
-      <ModalForm
-        form={formAddNewCustomer}
-        modalTitle="Add new customer"
-        formName="add-new-customer"
-        isVisible={isShowModalAdd}
-        handleOk={handleAddNewCustomer}
-        handleCancel={() => setShowModalAdd(false)}
-        okText="Add"
-        afterClose={() => {
-          formAddNewCustomer.resetFields();
-        }}
-        // defaultValue={productToEdit}
-      >
-        <Form.Item
-          name="name"
-          label="Name"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user name!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user email!',
-            },
-            {
-              type: 'email',
-              message: 'Enter a valid email address!',
-            },
-          ]}
-        >
-          <Input type="email" />
-        </Form.Item>
-        <Form.Item
-          name="phone"
-          label="Phone"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user phone!',
-            },
-            {
-              pattern: /^(?:\d*)$/,
-              message: 'Input should contain just number!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="address"
-          label="Address"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user address!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-      </ModalForm>
       <Breadcrumb
         style={{
           margin: '16px 0',
         }}
       >
         <Breadcrumb.Item>
-          <Title level={3}>Users</Title>
+          <Title level={3}>Customers</Title>
         </Breadcrumb.Item>
       </Breadcrumb>
       <div
@@ -271,27 +178,21 @@ export default function Customers() {
           }}
         >
           <Row>
-            <Col span={4}>
-              <Button
-                type="primary"
-                size="large"
-                onClick={() => setShowModalAdd(true)}
-              >
-                Add new customer
-              </Button>
-            </Col>
-            <Col span={10} offset={10}>
-              <Search
-                placeholder="Search customer's email..."
-                size="large"
-                onSearch={val => handleSearchCustomer(val)}
-                enterButton
-              />
-            </Col>
-          </Row>
-          <Row>
             <Col span={24}>
-              <Table columns={columns} dataSource={data} />
+              <Table
+                size="large"
+                pagination={{
+                  totalPages,
+                  total: totalUsers,
+                  defaultCurrent: page,
+                  showSizeChanger: false,
+                  onChange: e => {
+                    setPage(e);
+                  },
+                }}
+                columns={columns}
+                dataSource={data}
+              />
             </Col>
           </Row>
         </Space>

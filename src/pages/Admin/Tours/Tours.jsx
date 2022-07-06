@@ -31,36 +31,31 @@ export default function Tours() {
 
   // Handle Approve Tour
   const handleApproveTour = record => {
-    console.log('APPROVE: ');
-
-    console.log('DISPATCH APPROVE: ', record.id);
     const request = {
       status: 'enable',
     };
+    console.log('DISPATCH APPROVE: ', record.id);
+    console.log(request);
     // console.log(request);
     dispatch(updateTourStatus({ id: record.id, request }));
   };
 
   //Handle disable tour
   const handleDisableTour = record => {
-    console.log('DISABLE: ', record);
-
-    console.log('DISPATCH DISABLED: ', record.id);
     const request = {
       status: 'disabled',
     };
+    console.log('DISPATCH DISABLED: ', record.id);
     console.log(request);
     dispatch(updateTourStatus({ id: record.id, request }));
   };
 
   // Handle able tour
   const handleEnableTour = record => {
-    console.log('ABLE: ', record);
-
-    console.log('DISPATCH ENABLE: ', record.id);
     const request = {
       status: 'enable',
     };
+    console.log('DISPATCH ENABLE: ', record.id);
     console.log(request);
     // console.log(request);
     dispatch(updateTourStatus({ id: record.id, request }));
