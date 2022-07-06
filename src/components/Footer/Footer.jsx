@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { Button } from 'antd';
+import { Button, Form } from 'antd';
 import { Typography } from 'antd';
 import { Input } from 'antd';
+import { message } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsFacebook, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/images/logo-white.png';
 import './Footer.scss';
@@ -36,6 +38,9 @@ export default function Footer() {
     `${t('footer.explore.item.shanghai')}`,
     `${t('footer.explore.item.tokyo')}`,
   ];
+
+  const [formFollowByEmail] = Form.useForm();
+  const navigate = useNavigate();
   return (
     <footer className="footer__wrapper">
       <div className="section-4">
@@ -145,14 +150,41 @@ export default function Footer() {
             {t('footer.get_update.content')}
           </p>
           <div className="footer__detail-form">
-            <Input
-              className="footer__detail-input"
-              size="large"
-              placeholder={t('cta.place_holder_input-email')}
-            />
-            <Button type="primary" size="large" className="footer__detail-btn">
-              {t('cta.subscribe')}
-            </Button>
+            <Form
+              form={formFollowByEmail}
+              onFinish={e => {
+                console.log(e);
+                formFollowByEmail.resetFields();
+                message.success(
+                  `Thank ${e.followByEmail} for signing up. We will always send you the latest rides`,
+                );
+              }}
+            >
+              <Form.Item
+                name="followByEmail"
+                rules={[
+                  {
+                    required: true,
+                    type: 'email',
+                    message: 'The input is not valid E-mail!',
+                  },
+                ]}
+              >
+                <Input
+                  className="footer__detail-input"
+                  size="large"
+                  placeholder={t('cta.place_holder_input-email')}
+                />
+              </Form.Item>
+              <Button
+                type="primary"
+                size="large"
+                htmlType="submit"
+                className="footer__detail-btn"
+              >
+                {t('cta.subscribe')}
+              </Button>
+            </Form>
           </div>
         </div>
       </div>

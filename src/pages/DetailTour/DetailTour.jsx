@@ -35,142 +35,7 @@ import { booking } from './../../app/orderSlice';
 import './DetailTour.scss';
 
 const { Panel } = Collapse;
-const { Text, Title } = Typography;
-
-const relatedTour = [
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-  {
-    image: 'https://stylecaster.com/wp-content/uploads/2016/09/travel.jpg',
-    name: 'Discover Island asdasdasd',
-    duration: 5,
-    maxPeople: 50,
-    destination: 'Long Xuyen, USA',
-    price: 69,
-  },
-];
-
-const reviews = [
-  {
-    title: 'location',
-    point: 4.38,
-  },
-  {
-    title: 'services',
-    point: 4.5,
-  },
-  {
-    title: 'price',
-    point: 4.24,
-  },
-  {
-    title: 'rooms',
-    point: 4.3,
-  },
-];
-
-const userReviews = [
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-  {
-    name: 'elicia',
-    avatar:
-      'https://th.bing.com/th/id/OIP.RUFnG2jQpshf7k4OQH0FEAHaFm?pid=ImgDet&rs=1',
-    date: '11/11/2022',
-    rating: [
-      {
-        title: 'location',
-        point: 3,
-      },
-      {
-        title: 'services',
-        point: 2,
-      },
-      {
-        title: 'price',
-        point: 4,
-      },
-      {
-        title: 'room',
-        point: 5,
-      },
-    ],
-    comment:
-      'This is exactly what i was looking for, thank you so much for these tutorials',
-  },
-];
+const { Text } = Typography;
 
 export default function DetailTour() {
   let navigate = useNavigate();
@@ -180,8 +45,9 @@ export default function DetailTour() {
   const loadingState = useSelector(state => state.tours.loading);
   const availableDate = useSelector(state => state.tours.tour.availableDate);
   const priceDate = useSelector(state => state.tours.tour.priceFollowDate);
-  const relatedTours = useSelector(state => state.tours.tour.relatedTours);
+  const relatedTours = useSelector(state => state.tours.tour.relatedTour);
   const dataCheckout = useSelector(state => state.order.checkout);
+  const bookingStatus = useSelector(state => state.order.status);
   const [bookingDate, setBookingDate] = useState('');
   const [adultNumber, setAdultNumber] = useState({
     value: 0,
@@ -200,6 +66,52 @@ export default function DetailTour() {
   const [youth, setYouth] = useState({});
   const [total, setTotal] = useState(0);
   const [priceFollowDate, setPriceFollowDate] = useState([]);
+
+  const userReviews = detailTour.reviews?.map(item => {
+    return {
+      name: item.name,
+      avatar: item.avatar,
+      date: item.createdAt,
+      rating: [
+        {
+          title: 'location',
+          point: item.rating.location,
+        },
+        {
+          title: 'services',
+          point: item.rating.services,
+        },
+        {
+          title: 'price',
+          point: item.rating.price,
+        },
+        {
+          title: 'rooms',
+          point: item.rating.rooms,
+        },
+      ],
+      comment: item.comment,
+    };
+  });
+
+  const reviews = [
+    {
+      title: 'location',
+      point: detailTour.rating?.location,
+    },
+    {
+      title: 'services',
+      point: detailTour.rating?.services,
+    },
+    {
+      title: 'price',
+      point: detailTour.rating?.price,
+    },
+    {
+      title: 'rooms',
+      point: detailTour.rating?.rooms,
+    },
+  ];
 
   useEffect(() => {
     setTotal(
@@ -234,11 +146,16 @@ export default function DetailTour() {
   };
 
   const handleDatePickerChange = (date, dateString) => {
-    const result = priceDate.filter(item =>
-      item.startDate.includes(dateString),
-    );
-    setPriceFollowDate(result);
-    setBookingDate(dateString);
+    if (dateString) {
+      const result = priceDate.filter(item =>
+        item.startDate.includes(dateString),
+      );
+      setPriceFollowDate(result);
+      setBookingDate(dateString);
+    } else {
+      setPriceFollowDate([]);
+      setBookingDate('');
+    }
   };
 
   const detailTourItem = useMemo(() => {
@@ -304,9 +221,7 @@ export default function DetailTour() {
         notification.success({
           message: 'Book successfully!',
         });
-        console.log(request);
         dispatch(booking(request));
-        // console.log(dataCheckout);
         setTimeout(() => {
           navigate(`/checkout/${id}`);
         }, 1500);
@@ -452,7 +367,7 @@ export default function DetailTour() {
                 autoplay
                 className="detailTour__relatedTour-carousel"
                 draggable={true}
-                slidesToShow={2}
+                slidesToShow={1}
               >
                 {relatedTours && relatedTours.length > 0 ? (
                   relatedTours?.map(item => {
@@ -476,7 +391,7 @@ export default function DetailTour() {
                   <div className="detailTour__review-overall-words">
                     <div className="detailTour__review-overall-point">
                       <span className="detailTour__review-overall-average">
-                        4.28
+                        {detailTour.rating?.avg}
                       </span>
                       <span className="detailTour__review-overall-pattern">
                         /5
@@ -516,7 +431,7 @@ export default function DetailTour() {
                 </div>
               </div>
               <div className="detailTour__review-detail-wrapper">
-                {userReviews.map((item, index) => {
+                {userReviews?.map((item, index) => {
                   return (
                     <>
                       <div
@@ -559,8 +474,7 @@ export default function DetailTour() {
                             })}
                           </div>
                           <p className="detailTour__review-item-comment">
-                            This is exactly what i was looking for, thank you so
-                            much for these tutorials
+                            {item.comment}
                           </p>
                         </div>
                       </div>

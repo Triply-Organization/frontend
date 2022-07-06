@@ -1,11 +1,13 @@
 import { Button, Col, Form, Input, Row, Select, Steps, Typography } from 'antd';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useStepsForm } from 'sunflower-antd';
 
+import { register } from '../../app/registerSlice';
+import LanguageSelect from '../../components/LanguageSelect/LanguageSelect';
 import './Register.scss';
-import { register } from './RegisterSlice';
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -14,6 +16,8 @@ const { Step } = Steps;
 const Register = () => {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.register.loading);
+
+  const { t } = useTranslation();
 
   const { form, current, gotoStep, stepsProps, formProps, submit } =
     useStepsForm({
@@ -34,11 +38,11 @@ const Register = () => {
         rules={[
           {
             type: 'email',
-            message: 'The input is not valid E-mail!',
+            message: `${t('register.email_invalid')}`,
           },
           {
             required: true,
-            message: 'Please input your E-mail!',
+            message: `${t('register.email_required')}`,
           },
         ]}
       >
@@ -47,17 +51,16 @@ const Register = () => {
 
       <Form.Item
         name="password"
-        label="Password"
+        label={t('register.password')}
         rules={[
           {
             required: true,
-            message: 'Please input your password!',
+            message: `${t('register.pw_required')}`,
           },
           {
             pattern:
               '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$',
-            message:
-              'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character',
+            message: `${t('register.pw_invalid')}`,
           },
         ]}
         hasFeedback
@@ -67,13 +70,13 @@ const Register = () => {
 
       <Form.Item
         name="confirm"
-        label="Confirm Password"
+        label={t('register.confirmed_password')}
         dependencies={['password']}
         hasFeedback
         rules={[
           {
             required: true,
-            message: 'Please confirm your password!',
+            message: `${t('register.pw_confirmed')}`,
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
@@ -82,7 +85,7 @@ const Register = () => {
               }
 
               return Promise.reject(
-                new Error('The two passwords that you entered do not match!'),
+                new Error(`${t('register.pw_confirmed_invalid')}`),
               );
             },
           }),
@@ -95,12 +98,12 @@ const Register = () => {
         <Col xxl={12} sm={12} xs={24}>
           <Form.Item
             name="name"
-            label="Name"
-            tooltip="What do you want others to call you?"
+            label={t('register.name')}
+            tooltip={t('register.nickname')}
             rules={[
               {
                 required: true,
-                message: 'Please input your nickname!',
+                message: `${t('register.name_required')}`,
                 whitespace: true,
               },
             ]}
@@ -109,7 +112,7 @@ const Register = () => {
           </Form.Item>
         </Col>
         <Col xxl={12} sm={12} xs={24}>
-          <Form.Item name="address" label="Address">
+          <Form.Item name="address" label={t('register.address')}>
             <Input />
           </Form.Item>
         </Col>
@@ -117,15 +120,15 @@ const Register = () => {
 
       <Form.Item
         name="phone"
-        label="Phone Number"
+        label={t('register.phone')}
         rules={[
           {
             pattern: /^(?:\d*)$/,
-            message: 'Input should contain just number!',
+            message: `${t('register.phone_invalid')}`,
           },
           {
             required: true,
-            message: 'Please input your phone number!',
+            message: `${t('register.phone_required')}`,
           },
         ]}
       >
@@ -143,9 +146,9 @@ const Register = () => {
           className="register-form-next"
           type="primary"
         >
-          Next
+          {t('register.next')}
         </Button>
-        <Link to="/login">Already have account?</Link>
+        <Link to="/login"> {t('register.already_have_account')}</Link>
       </Form.Item>
     </>,
 
@@ -155,17 +158,19 @@ const Register = () => {
         rules={[
           {
             required: true,
-            message: 'Please select role!',
+            message: `${t('register.select_role_required')}`,
           },
         ]}
       >
         <Select
           size="large"
-          placeholder="You go here for ..."
+          placeholder={t('register.you_go_here_for')}
           style={{ borderRadius: '1rem' }}
         >
-          <Option value="ROLE_USER">Be come a traveler</Option>
-          <Option value="ROLE_CUSTOMER">To marketing your tour</Option>
+          <Option value="ROLE_USER">{t('register.become_a_traveler')}</Option>
+          <Option value="ROLE_CUSTOMER">
+            {t('register.to_marketing_your_tour')}
+          </Option>
         </Select>
       </Form.Item>
 
@@ -174,7 +179,7 @@ const Register = () => {
           className="register-form-prev"
           onClick={() => gotoStep(current - 1)}
         >
-          Prev
+          {t('register.prev')}
         </Button>
         <Button
           loading={loading}
@@ -184,7 +189,7 @@ const Register = () => {
           }}
           className="register-form-submit"
         >
-          Register
+          {t('register.register')}
         </Button>
       </Form.Item>
     </>,
@@ -192,10 +197,10 @@ const Register = () => {
 
   const steps = [
     {
-      title: 'Give us your info',
+      title: `${t('register.give_us_more_info')}`,
     },
     {
-      title: 'Come here for ?',
+      title: `${t('register.come_here_for')}`,
     },
   ];
 
@@ -228,7 +233,9 @@ const Register = () => {
         </Steps>
         <div className="ctn-register__register-form__title">
           <Title level={2}>
-            {current === 0 ? ' Create account' : ' You want to be ?'}
+            {current === 0
+              ? `${t('register.create_account')}`
+              : `${t('register.you_want_to_be')}`}
           </Title>
         </div>
         <Form
@@ -243,6 +250,9 @@ const Register = () => {
         >
           {formList[current]}
         </Form>
+        <div className="ctn-register__multi-language">
+          <LanguageSelect />
+        </div>
       </div>
     </div>
   );

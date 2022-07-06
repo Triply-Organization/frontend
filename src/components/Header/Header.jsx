@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { UserOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu } from 'antd';
 import { Avatar } from 'antd';
@@ -6,17 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineHome } from 'react-icons/ai';
 import { AiOutlineLogout } from 'react-icons/ai';
-import { BsChatRightDots } from 'react-icons/bs';
-import { BsHeart } from 'react-icons/bs';
-import { GrLanguage } from 'react-icons/gr';
-import { MdOutlinePlace } from 'react-icons/md';
 import { MdFeedback } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.png';
 import CurrencySelect from '../CurrencySelect/CurrencySelect';
-import SelectCustom from '../Select/SelectCustom';
 import LanguageSelect from './../LanguageSelect/LanguageSelect';
 import './Header.scss';
 import MobileNav from './MobileNav/MobileNav';
@@ -32,49 +26,24 @@ export default function Header() {
   // state set for mobileNav status
   const [mobileNavStatus, setMobileNavStatus] = useState(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
-  const language = (
-    <Menu
-      items={[
-        {
-          disabled: true,
-          key: '1',
-          label: (
-            <span className="header__language-heading header__language-item">
-              <span className="header__language-abbre">Language</span>
-            </span>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <span className="header__language-item">
-              <span className="header__language-icon"></span>
-              <span className="header__language-words">English</span>
-            </span>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <span className="header__language-item">
-              <span className="header__language-words">Tiếng Việt</span>
-            </span>
-          ),
-        },
-      ]}
-    />
-  );
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  };
 
   const userDataLogin = (
     <Menu
       items={[
         {
-          disabled: true,
           key: '1',
           label: (
-            <span className="header__language-heading header__language-item">
-              <span className="header__language-abbre">Hi Vo Quoc Duy</span>
+            <span className="header__language-item">
+              <Link to="/setting-account/1" className="header__language-words">
+                My profile
+              </Link>
             </span>
           ),
         },
@@ -82,8 +51,8 @@ export default function Header() {
           key: '2',
           label: (
             <span className="header__language-item">
-              <Link to={'/customer'} className="header__language-words">
-                My Tours
+              <Link to="/my-tours" className="header__language-words">
+                {t('header.logged_in.tour')}
               </Link>
             </span>
           ),
@@ -92,18 +61,12 @@ export default function Header() {
           key: '3',
           label: (
             <span className="header__language-item">
-              <Link to={'#'} className="header__language-words">
-                My Reviews
-              </Link>
-            </span>
-          ),
-        },
-        {
-          key: '4',
-          label: (
-            <span className="header__language-item">
-              <Link to={'/login'} className="header__language-words">
-                Log Out
+              <Link
+                onClick={handleLogout}
+                to="/login"
+                className="header__language-words"
+              >
+                {t('cta.logout')}
               </Link>
             </span>
           ),
@@ -114,53 +77,19 @@ export default function Header() {
 
   //---------- User Data When Login ----------->
   const userDataLoginMobile = [
-    { title: `${t('header.logged_in.tour')}`, icon: <TbTicket /> },
+    { title: `${t('header.logged_in.tour')}`, icon: <TbTicket />, link: '/' },
     {
       title: `${t('header.logged_in.review')}`,
       icon: <MdFeedback />,
+      link: '/',
     },
     {
-      title: `${t('header.logged_in.save_tour')}`,
-      icon: <BsHeart />,
-      subnav: ['destination1', 'destination2', 'destination3'],
+      title: `${t('cta.logout')}`,
+      icon: <AiOutlineLogout />,
+      link: '/login',
+      onClick: handleLogout,
     },
-    { title: `${t('cta.logout')}`, icon: <AiOutlineLogout /> },
   ];
-
-  //--------------- Currency ----------------->
-  const currency = (
-    <Menu
-      items={[
-        {
-          disabled: true,
-          key: '1',
-          label: (
-            <span className="header__currency-heading header__currency-item">
-              <span className="header__currency-abbre">
-                {t('header.currency')}
-              </span>
-            </span>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <span className="header__currency-item">
-              <span className="header__currency-abbre">USD</span>
-            </span>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <span className="header__currency-item">
-              <span className="header__currency-abbre">VND</span>
-            </span>
-          ),
-        },
-      ]}
-    />
-  );
 
   //--------------- Nav Item ----------------->
   const navItem = [
@@ -173,20 +102,8 @@ export default function Header() {
     {
       title: `${t('header.tour')}`,
       icon: <TbTicket />,
-      subnav: ['tour1', 'tour2', 'tour3', 'tour4'],
-      to: 'tours',
-    },
-    {
-      title: `${t('header.destination')}`,
-      icon: <MdOutlinePlace />,
-      subnav: ['destination1', 'destination2', 'destination3'],
-      to: 'destination',
-    },
-    {
-      title: `${t('header.contact')}`,
-      icon: <BsChatRightDots />,
       subnav: [],
-      to: 'contact',
+      to: 'tours',
     },
   ];
 
@@ -209,7 +126,7 @@ export default function Header() {
           key: '2',
           label: (
             <Button type="primary" size="large">
-              {t('cta.login')}
+              <Link to="/login">{t('cta.login')}</Link>
             </Button>
           ),
         },
@@ -217,7 +134,7 @@ export default function Header() {
           key: '3',
           label: (
             <Button type="default" size="large">
-              {t('cta.register')}
+              <Link to="/register">{t('cta.register')}</Link>
             </Button>
           ),
         },
@@ -254,7 +171,7 @@ export default function Header() {
       }
     >
       <div className="header__left-side">
-        <div className="header__logo-wrapper">
+        <div className="header__logo-wrapper" onClick={() => navigate('/home')}>
           <img src={logo} alt="logo" className="header__logo" />
         </div>
         {width < 1023 ? null : (
@@ -282,26 +199,28 @@ export default function Header() {
               <LanguageSelect />
             </div>
 
-            <div className="header__account-wrapper">
-              <Dropdown
-                overlay={userDataNoLogin}
-                overlayClassName="header__account-dropdown"
-                placement="bottomRight"
-                arrow
-              >
-                <div className="header__account-icon">
-                  <Avatar icon={<UserOutlined />} />
-                </div>
-              </Dropdown>
-            </div>
-
-            {/* <div className="header__account-wrapper">
-              <Dropdown overlay={userDataLogin} placement="bottomRight" arrow>
-                <div className="header__account-icon">
-                  <Avatar icon={<UserOutlined />} />
-                </div>
-              </Dropdown>
-            </div> */}
+            {token ? (
+              <div className="header__account-wrapper">
+                <Dropdown overlay={userDataLogin} placement="bottomRight" arrow>
+                  <div className="header__account-icon">
+                    <Avatar icon={<UserOutlined />} />
+                  </div>
+                </Dropdown>
+              </div>
+            ) : (
+              <div className="header__account-wrapper">
+                <Dropdown
+                  overlay={userDataNoLogin}
+                  overlayClassName="header__account-dropdown"
+                  placement="bottomRight"
+                  arrow
+                >
+                  <div className="header__account-icon">
+                    <Avatar icon={<UserOutlined />} />
+                  </div>
+                </Dropdown>
+              </div>
+            )}
           </>
         )}
       </div>

@@ -26,7 +26,7 @@
   position: relative;
 
   background-color: var(--background-color);
-  background-image: url("../../assets/images/background-home.png");
+  background-image: url('../../assets/images/background-home.png');
   background-repeat: no-repeat;
   background-size: contain;
 
@@ -134,7 +134,7 @@
   padding: 100px 0;
   margin: 0 auto;
   background-color: var(--background-color);
-  background-image: url("../../assets/images/background-home.png");
+  background-image: url('../../assets/images/background-home.png');
   background-repeat: no-repeat;
 
   &__content-wrapper {
@@ -208,47 +208,7 @@
   }
 }
 
-@media screen and (max-width: 1220px) {
-  .section-1 {
-    .search-form {
-      width: 80%;
-      height: fit-content;
-      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-
-      grid-template-areas:
-        "destinations destinations activity activity submit"
-        "when when guests guests submit";
-
-      &__item {
-        padding: 1rem;
-      }
-      &__destinations {
-        border-right: 0.5px solid #ccc;
-        border-bottom: 0.5px solid #ccc;
-      }
-
-      &__activity {
-        border-right: 0.5px solid #ccc;
-        border-bottom: 0.5px solid #ccc;
-      }
-
-      &__when {
-        border-right: 0.5px solid #ccc;
-      }
-
-      &__guests {
-        border-right: none;
-      }
-    }
-  }
-}
-
 @media screen and (max-width: 980px) {
-  .section-1 {
-    .search-form {
-      grid-template-columns: 1.5fr 1.5fr 1fr 1fr 1fr;
-    }
-  }
   .section-2 {
     width: 735px;
 
@@ -422,7 +382,7 @@
   }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 750px) {
   .section-2 {
     margin-top: 150px;
   }
@@ -454,8 +414,8 @@
     grid-template-columns: 1.5fr 1fr;
     gap: 1rem;
     grid-template-areas:
-      "first second"
-      "third third";
+      'first second'
+      'third third';
 
     &__link {
       font-size: 14px;
@@ -488,9 +448,6 @@
         width: 320px;
         font-size: 34px;
       }
-    }
-    .search-form {
-      bottom: -35%;
     }
   }
   .section-title {
