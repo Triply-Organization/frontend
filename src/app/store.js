@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import adminSlice from './AdminSlice';
-import registerSlice from './RegisterSlice';
 import checkoutSlice from './checkoutSlice';
 import loginSlice from './loginSlice';
 import orderSlice from './orderSlice';
+import registerSlice from './registerSlice';
 import toursSlice from './toursSlice';
 
 export const store = configureStore({
