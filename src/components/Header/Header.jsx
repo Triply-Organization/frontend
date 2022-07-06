@@ -19,6 +19,7 @@ import Navbar from './Navbar';
 export default function Header() {
   // state set for active tab
   const [activeTab, setActiveTab] = useState(0);
+  console.log(activeTab);
   // state set for window srollY
   const [scrollY, setScrollY] = useState(window.scrollY);
   // state set for window width
@@ -143,6 +144,7 @@ export default function Header() {
   );
 
   const handleSetActiveTab = id => {
+    console.log('----CHANGE TAB');
     setActiveTab(id);
   };
 
