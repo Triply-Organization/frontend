@@ -68,8 +68,6 @@ export default function DetailTour() {
   const [total, setTotal] = useState(0);
   const [priceFollowDate, setPriceFollowDate] = useState([]);
 
-  console.log(userData);
-
   const userReviews = detailTour.reviews?.map(item => {
     return {
       name: item.name,
@@ -345,7 +343,7 @@ export default function DetailTour() {
                 className="detailTour__plan"
                 expandIconPosition="end"
               >
-                {detailTour.tourPlans && detailTour.tourPlans.length > 0
+                {detailTour.tourPlans && detailTour.tourPlans?.length > 0
                   ? detailTour.tourPlans.map(item => {
                       return (
                         <Panel
@@ -372,75 +370,82 @@ export default function DetailTour() {
                   : null}
               </Collapse>
             </div>
-            <div className="detailTour__relatedTour">
-              <h2 className="detailTour__content-heading">you may like</h2>
-              <Carousel
-                autoplay
-                className="detailTour__relatedTour-carousel"
-                draggable={true}
-                slidesToShow={relatedTours?.length > 1 ? 2 : 1}
-              >
-                {relatedTours && relatedTours.length > 0 ? (
-                  relatedTours?.map(item => {
-                    return (
-                      <>
-                        <div className="detailTour__relatedTour-item">
-                          <CardTour tour={item} key={item.id} />
-                        </div>
-                      </>
-                    );
-                  })
-                ) : (
-                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                )}
-              </Carousel>
-            </div>
-            <div className="detailTour__review-wrapper">
-              <div className="detailTour__review-overall-wrapper">
-                <h2 className="detailTour__content-heading">reviews</h2>
-                <div className="detailTour__review-overall">
-                  <div className="detailTour__review-overall-words">
-                    <div className="detailTour__review-overall-point">
-                      <span className="detailTour__review-overall-average">
-                        {detailTour.rating?.avg}
-                      </span>
-                      <span className="detailTour__review-overall-pattern">
-                        /5
-                      </span>
-                    </div>
-                    <p className="detailTour__review-overall-adj">wonderful</p>
-                    <p className="detailTour__review-overall-total">
-                      8 verified reviews
-                    </p>
-                  </div>
-                  <div className="detailTour__review-chart-wrapper">
-                    {reviews.map((item, index) => {
+            {relatedTours?.length > 0 && (
+              <div className="detailTour__relatedTour">
+                <h2 className="detailTour__content-heading">you may like</h2>
+                <Carousel
+                  autoplay
+                  className="detailTour__relatedTour-carousel"
+                  draggable={true}
+                  slidesToShow={relatedTours?.length > 1 ? 2 : 1}
+                >
+                  {relatedTours && relatedTours.length > 0 ? (
+                    relatedTours?.map(item => {
                       return (
                         <>
-                          <div
-                            key={index}
-                            className="detailTour__review-chart-item"
-                          >
-                            <p className="detailTour__review-chart-heading">
-                              <span className="detailTour__review-chart-title">
-                                {item.title}
-                              </span>
-                              <span className="detailTour__review-chart-point">
-                                {item.point}/5
-                              </span>
-                            </p>
-                            <Progress
-                              className="detailTour__review-chart-progress"
-                              percent={(item.point / 5) * 100}
-                              showInfo={false}
-                            />
+                          <div className="detailTour__relatedTour-item">
+                            <CardTour tour={item} key={item.id} />
                           </div>
                         </>
                       );
-                    })}
+                    })
+                  ) : (
+                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                  )}
+                </Carousel>
+              </div>
+            )}
+            <div className="detailTour__review-wrapper">
+              {detailTour.rating?.length ? (
+                <div className="detailTour__review-overall-wrapper">
+                  <h2 className="detailTour__content-heading">reviews</h2>
+                  <div className="detailTour__review-overall">
+                    <div className="detailTour__review-overall-words">
+                      <div className="detailTour__review-overall-point">
+                        <span className="detailTour__review-overall-average">
+                          {detailTour.rating?.avg}
+                        </span>
+                        <span className="detailTour__review-overall-pattern">
+                          /5
+                        </span>
+                      </div>
+                      <p className="detailTour__review-overall-adj">
+                        wonderful
+                      </p>
+                      <p className="detailTour__review-overall-total">
+                        8 verified reviews
+                      </p>
+                    </div>
+                    <div className="detailTour__review-chart-wrapper">
+                      {reviews.map((item, index) => {
+                        return (
+                          <>
+                            <div
+                              key={index}
+                              className="detailTour__review-chart-item"
+                            >
+                              <p className="detailTour__review-chart-heading">
+                                <span className="detailTour__review-chart-title">
+                                  {item.title}
+                                </span>
+                                <span className="detailTour__review-chart-point">
+                                  {item.point}/5
+                                </span>
+                              </p>
+                              <Progress
+                                className="detailTour__review-chart-progress"
+                                percent={(item.point / 5) * 100}
+                                showInfo={false}
+                              />
+                            </div>
+                          </>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : null}
+
               <div className="detailTour__review-detail-wrapper">
                 {userReviews?.map((item, index) => {
                   return (
@@ -496,84 +501,88 @@ export default function DetailTour() {
             </div>
           </div>
 
-          <div className="detailTour__booking-wrapper">
-            <div className="detailTour__booking">
-              <h3 className="detailTour__booking-heading">Book This Tour</h3>
-              <Form
-                layout="horizontal"
-                onFinish={handleSubmit}
-                autoComplete="off"
-                initialValues={{ adult: 0, youth: 0, children: 0 }}
-                className="detailTour__booking-form"
-              >
-                <p className="detailTour__booking-label">From:</p>
-                <Form.Item className="detailTour__booking-date" name="date">
-                  <DatePicker
-                    disabledDate={disabledDate}
-                    onChange={handleDatePickerChange}
-                    format="YYYY-MM-DD"
-                    className="detailTour__booking-date-input"
-                  />
-                </Form.Item>
-                <div className="detailTour__booking-tickets">
-                  <p className="detailTour__booking-label">Tickets:</p>
-
-                  {priceFollowDate && priceFollowDate.length > 0
-                    ? priceFollowDate.map(item =>
-                        item.ticket.map(e => {
-                          return (
-                            <>
-                              <div className="inputNumber-style">
-                                <Text strong level={5}>
-                                  {e.type === 'adult'
-                                    ? 'Adult (18+ years)'
-                                    : e.type === 'youth'
-                                    ? 'Youth (13-17 years)'
-                                    : 'Children (0-12 years)'}
-                                </Text>
-
-                                <Text strong>${e.price} :</Text>
-                              </div>
-                              <Form.Item
-                                key={e.id}
-                                className="detailTour__booking-tickets-section"
-                                name={e.type}
-                              >
-                                <InputNumber
-                                  min={0}
-                                  max={10}
-                                  onChange={values =>
-                                    handleChangePrice(values, e)
-                                  }
-                                />
-                              </Form.Item>
-                            </>
-                          );
-                        }),
-                      )
-                    : 'Please choose the date!'}
-                </div>
-                <div className="detailTour__booking-footer">
-                  <div className="detailTour__booking-count">
-                    <span className="detailTour__booking-count-words">
-                      Total:
-                    </span>
-                    <span className="detailTour__booking-total">${total}</span>
-                  </div>
-                  <Form.Item>
-                    <Button
-                      htmlType="submit"
-                      className="detailTour__booking-btn"
-                      type="primary"
-                      size="large"
-                    >
-                      book now
-                    </Button>
+          {userData.roles[0] === 'ROLE_USER' && (
+            <div className="detailTour__booking-wrapper">
+              <div className="detailTour__booking">
+                <h3 className="detailTour__booking-heading">Book This Tour</h3>
+                <Form
+                  layout="horizontal"
+                  onFinish={handleSubmit}
+                  autoComplete="off"
+                  initialValues={{ adult: 0, youth: 0, children: 0 }}
+                  className="detailTour__booking-form"
+                >
+                  <p className="detailTour__booking-label">From:</p>
+                  <Form.Item className="detailTour__booking-date" name="date">
+                    <DatePicker
+                      disabledDate={disabledDate}
+                      onChange={handleDatePickerChange}
+                      format="YYYY-MM-DD"
+                      className="detailTour__booking-date-input"
+                    />
                   </Form.Item>
-                </div>
-              </Form>
+                  <div className="detailTour__booking-tickets">
+                    <p className="detailTour__booking-label">Tickets:</p>
+
+                    {priceFollowDate && priceFollowDate.length > 0
+                      ? priceFollowDate.map(item =>
+                          item.ticket.map(e => {
+                            return (
+                              <>
+                                <div className="inputNumber-style">
+                                  <Text strong level={5}>
+                                    {e.type === 'adult'
+                                      ? 'Adult (18+ years)'
+                                      : e.type === 'youth'
+                                      ? 'Youth (13-17 years)'
+                                      : 'Children (0-12 years)'}
+                                  </Text>
+
+                                  <Text strong>${e.price} :</Text>
+                                </div>
+                                <Form.Item
+                                  key={e.id}
+                                  className="detailTour__booking-tickets-section"
+                                  name={e.type}
+                                >
+                                  <InputNumber
+                                    min={0}
+                                    max={10}
+                                    onChange={values =>
+                                      handleChangePrice(values, e)
+                                    }
+                                  />
+                                </Form.Item>
+                              </>
+                            );
+                          }),
+                        )
+                      : 'Please choose the date!'}
+                  </div>
+                  <div className="detailTour__booking-footer">
+                    <div className="detailTour__booking-count">
+                      <span className="detailTour__booking-count-words">
+                        Total:
+                      </span>
+                      <span className="detailTour__booking-total">
+                        ${total}
+                      </span>
+                    </div>
+                    <Form.Item>
+                      <Button
+                        htmlType="submit"
+                        className="detailTour__booking-btn"
+                        type="primary"
+                        size="large"
+                      >
+                        book now
+                      </Button>
+                    </Form.Item>
+                  </div>
+                </Form>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>
