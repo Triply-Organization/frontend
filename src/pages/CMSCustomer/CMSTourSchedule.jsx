@@ -1,9 +1,11 @@
-import { Breadcrumb, Calendar, Form, InputNumber } from 'antd';
+import { Breadcrumb, Calendar, Form, InputNumber, message } from 'antd';
+import _ from 'lodash';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
+import { tourAPI } from '../../api/tourAPI';
 import { clearIdTourJustCreate } from '../../app/toursSlice';
 import FormModal from '../../components/FormModal/FormModal';
 import './CMSTourSchedule.scss';
@@ -54,9 +56,41 @@ const CMSTourSchedule = () => {
     setVisibleFormSetAvailableDay(true);
   };
 
-  const onFinish = value => {
-    console.log({ ...value, date: valueCalendar.format(`YYYY-MM-DD`), id: id });
-    formSetAvailableDay.resetFields();
+  const onFinish = async value => {
+    if (
+      typeof value.children === 'undefined' &&
+      typeof value.youth === 'undefined' &&
+      typeof value.adult == 'undefined'
+    ) {
+      message.error({
+        content: 'Please input at least 1 ticket for this day',
+        key: 'add-schedule',
+      });
+    } else {
+      // change value obj undefined to null
+      const request = _.mapValues(value, v => (_.isUndefined(v) ? null : v));
+      await tourAPI
+        .addSchedule(
+          {
+            ...request,
+            dateStart: valueCalendar.format(`YYYY-MM-DD`),
+          },
+          id,
+        )
+        .then(() => {
+          message.success({
+            content: 'Add ticket for this day successful',
+            key: 'add-schedule',
+          });
+        })
+        .catch(() => {
+          message.error({
+            content: 'We cannot add it now. Please try later!',
+            key: 'add-schedule',
+          });
+        });
+      setVisibleFormSetAvailableDay(false);
+    }
   };
 
   function disabledDate(current) {
@@ -76,41 +110,26 @@ const CMSTourSchedule = () => {
         onCreate={onFinish}
         onCancel={() => setVisibleFormSetAvailableDay(false)}
       >
-        <Form.Item
-          name={'children'}
-          label="Children (0 - 12 years)"
-          rules={[
-            {
-              required: true,
-              message: 'Please input price of children ticket!',
-            },
-          ]}
-        >
-          <InputNumber min={0} />
+        <Form.Item name={'children'} label="Children (0 - 12 years)">
+          <InputNumber min={0} style={{ width: '100%' }} />
+        </Form.Item>
+        <Form.Item name={'youth'} label="Youth (13 - 17 years)">
+          <InputNumber min={0} style={{ width: '100%' }} />
+        </Form.Item>
+        <Form.Item name={'adult'} label="Adult (18+ years)">
+          <InputNumber min={0} style={{ width: '100%' }} />
         </Form.Item>
         <Form.Item
-          name={'youth'}
-          label="Youth (13 - 17 years)"
+          name={'remain'}
+          label="Remain"
           rules={[
             {
               required: true,
-              message: 'Please input price of youth ticket!',
+              message: 'Please input remain of ticket!',
             },
           ]}
         >
-          <InputNumber min={0} />
-        </Form.Item>
-        <Form.Item
-          name={'adult'}
-          label="Adult (18+ years)"
-          rules={[
-            {
-              required: true,
-              message: 'Please input price of adult ticket!',
-            },
-          ]}
-        >
-          <InputNumber min={0} />
+          <InputNumber min={0} style={{ width: '100%' }} />
         </Form.Item>
       </FormModal>
       <Breadcrumb
