@@ -76,12 +76,12 @@ const toursSlice = createSlice({
     builder.addCase(getToursByFilter.fulfilled, (state, action) => {
       state.loading = false;
       let { data } = action.payload;
-      state.destinations = data.data.destinations;
-      state.services = data.data.services;
-      state.totalTours = data.data.totalTours;
+      state.destinations = data.data?.destinations;
+      state.services = data.data?.services;
+      state.totalTours = data.data?.totalTours;
 
-      if (data.data.tours) {
-        const res = data.data.tours.map(item => {
+      if (data.data?.tours) {
+        const res = data.data.tours?.map(item => {
           return {
             id: item.id,
             rating: item.rating?.avg,
