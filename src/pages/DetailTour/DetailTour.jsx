@@ -13,6 +13,7 @@ import {
   Spin,
   Typography,
   message,
+  notification,
 } from 'antd';
 import { Collapse } from 'antd';
 import { DatePicker } from 'antd';
@@ -204,17 +205,26 @@ export default function DetailTour() {
     };
 
     if (!bookingDate) {
-      message.error('Book failed. Please choose the day!');
+      notification.error({
+        message: 'Book failed!',
+        description: 'Please choose the day!',
+      });
     } else if (adultNumber === 0 && youthNumber === 0 && childrenNumber === 0) {
-      message.error({
-        content: 'Book failed. Please choose your ticket!',
-        key: 'failed',
+      notification.error({
+        message: 'Book failed!',
+        description: 'Please choose your ticket!',
       });
     } else {
       if (!localStorage.getItem('token')) {
-        message.error('Book failed. You should login before book tour!');
+        notification.error({
+          message: 'Book failed!',
+          description: 'You should login before book tour!',
+        });
       } else {
-        message.success('Book successfully!');
+        notification.success({
+          message: 'Book successfully!',
+          description: 'Please choose your ticket!',
+        });
         dispatch(booking(request));
         setTimeout(() => {
           navigate(`/checkout/${id}`);
