@@ -261,7 +261,7 @@ const adminSlice = createSlice({
     });
     builder.addCase(changeRoleUser.rejected, state => {
       state.loading = false;
-      message.error('Something went wrong! Could not delete user account');
+      message.error('Something went wrong! Could not change user account role');
     });
     builder.addCase(changeRoleUser.fulfilled, (state, action) => {
       state.loading = false;

@@ -76,7 +76,6 @@ export default function Users() {
   useEffect(() => {
     if (flag !== 0) {
       setSearchParams({ page });
-      console.log('GET ALL USERS WHEN CHANGE PAGE');
       dispatch(getAllUsers(location.search));
     }
   }, [page]);
