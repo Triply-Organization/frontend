@@ -2,83 +2,67 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   SyncOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { Avatar, Button, Form, Image, List, Rate, Space, Tag } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import _ from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { userAPI } from '../../api/userAPI';
 import ModalForm from '../../components/ModalForm/ModalForm';
 import './MyTour.scss';
 
 const MyTour = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [idTourToReview, setIdTourToReview] = useState({});
-  const user = {
-    id: '1',
-    username: 'ddkhoa1206@gmail.com',
-    fullname: 'Dang Khoa Duong',
-    avatar: 'https://joeschmoe.io/api/v1/random',
-  };
-  const dataSource = [
-    {
-      title: 'Thailand Waterfall',
-      id: 1,
-      cover:
-        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+  const [listOrder, setListOrder] = useState([]);
+  const [user, setUser] = useState({});
 
-      bookedAt: '2022-07-05',
-      status: 'unpaid',
-      price: 100,
-      review: {
-        rating: 3.4,
-        value:
-          'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      },
-    },
-    {
-      title: 'Dalat Camping',
-      id: 2,
-      cover:
-        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+  useEffect(() => {
+    const loading = async () => {
+      const response = await userAPI.getOrderList();
+      const { data } = response.data;
+      setListOrder(data.orders);
+      setUser(data.user);
+    };
+    loading();
+  }, []);
 
-      bookedAt: '2022-07-05',
-      status: 'paid',
-      price: 100,
-      review: {},
-    },
-    {
-      title: 'Dalat Camping',
-      id: 3,
-      cover:
-        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-
-      bookedAt: '2022-07-05',
-      status: 'refund',
-      price: 100,
-      review: {},
-    },
-    {
-      title: 'Dalat Camping',
-      id: 4,
-      cover:
-        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-
-      bookedAt: '2022-07-05',
-      status: 'refund',
-      price: 100,
-      review: {},
-    },
-  ];
   const [formReview] = Form.useForm();
 
   const handleReview = () => {
     formReview
       .validateFields()
-      .then(values => {
+      .then(async values => {
+        values.rate.reviewAmentities = {
+          rate: values.rate.reviewAmentities,
+          id: 5,
+        };
+        values.rate.reviewLocation = {
+          rate: values.rate.reviewLocation,
+          id: 4,
+        };
+        values.rate.reviewServices = {
+          rate: values.rate.reviewServices,
+          id: 3,
+        };
+        values.rate.reviewPrices = {
+          rate: values.rate.reviewPrices,
+          id: 2,
+        };
+        values.rate.reviewRooms = {
+          rate: values.rate.reviewRooms,
+          id: 1,
+        };
+        const response = await userAPI.addReview({
+          body: values,
+          id: idTourToReview.id,
+        });
+        console.log(response);
+        setIsVisible(false);
         formReview.resetFields();
-        console.log({ ...values, idTour: idTourToReview.id, userId: user.id });
       })
       .catch(info => {
         console.log('Validate Failed:', info);
@@ -96,26 +80,62 @@ const MyTour = () => {
         cancelText="Cancel"
         okText="Submit"
       >
-        <Form.Item label="Rating" name="rating" rules={[{ required: true }]}>
-          <Rate allowHalf />
+        <Form.Item
+          label="Rating Room"
+          name={['rate', 'reviewRooms']}
+          rules={[{ required: true, message: 'Please rating here' }]}
+        >
+          <Rate allowHalf className="review__rating" />
+        </Form.Item>
+        <Form.Item
+          label="Rating Price"
+          name={['rate', 'reviewPrices']}
+          rules={[{ required: true, message: 'Please rating here' }]}
+        >
+          <Rate allowHalf className="review__rating" />
+        </Form.Item>
+        <Form.Item
+          label="Rating Services"
+          name={['rate', 'reviewServices']}
+          rules={[{ required: true, message: 'Please rating here' }]}
+        >
+          <Rate allowHalf className="review__rating" />
+        </Form.Item>
+        <Form.Item
+          label="Rating Location"
+          name={['rate', 'reviewLocation']}
+          rules={[{ required: true, message: 'Please rating here' }]}
+        >
+          <Rate allowHalf className="review__rating" />
+        </Form.Item>
+        <Form.Item
+          label="Rating Amentities"
+          name={['rate', 'reviewAmentities']}
+          rules={[{ required: true, message: 'Please rating here' }]}
+        >
+          <Rate allowHalf className="review__rating" />
         </Form.Item>
         <Form.Item label="Comment" name={'comment'}>
-          <TextArea size="large" rows={3} />
+          <TextArea rows={3} />
         </Form.Item>
       </ModalForm>
+
       <h1 style={{ textAlign: 'center' }}>My Tours</h1>
       <List
         itemLayout="vertical"
         size="large"
         pagination={{
           pageSize: 3,
+          defaultPageSize: 3,
+          total: listOrder?.length,
+          hideOnSinglePage: true,
         }}
-        dataSource={dataSource}
+        dataSource={listOrder}
         renderItem={item => {
           if (_.isEmpty(item.review)) {
             return (
               <List.Item
-                key={item.title}
+                key={item.id}
                 actions={
                   item.status === 'paid'
                     ? [
@@ -144,7 +164,7 @@ const MyTour = () => {
                 extra={<Image width={272} alt="logo" src={item.cover} />}
               >
                 <List.Item.Meta
-                  avatar={<Avatar src={user.avatar} />}
+                  avatar={<Avatar src={user.avatar} icon={<UserOutlined />} />}
                   title={<b>{user.fullname}</b>}
                   description={item.bookedAt}
                 />
@@ -154,7 +174,7 @@ const MyTour = () => {
                   </p>
 
                   <h3 className="my-tour__price">
-                    {item.price.toLocaleString('en-US', {
+                    {item.totalPrice?.toLocaleString('en-US', {
                       style: 'currency',
                       currency: 'USD',
                     })}
@@ -193,7 +213,7 @@ const MyTour = () => {
                   </p>
 
                   <h2 className="my-tour__price">
-                    {item.price.toLocaleString('en-US', {
+                    {item.price?.toLocaleString('en-US', {
                       style: 'currency',
                       currency: 'USD',
                     })}
@@ -205,10 +225,30 @@ const MyTour = () => {
                     </Tag>
                     <Tag color="warning">Reviewed</Tag>
                   </Space>
-
-                  <p>{item.review.value}</p>
-                  <Rate disabled defaultValue={item.review.rating} />
+                  <p>{item.review.comment}</p>
                 </Space>
+                <div className="rating-star-wrapper">
+                  <Space>
+                    <p>Room</p>
+                    <Rate disabled defaultValue={item.review['0']?.rate} />
+                  </Space>
+                  <Space>
+                    <p>Price</p>
+                    <Rate disabled defaultValue={item.review['1']?.rate} />
+                  </Space>
+                  <Space>
+                    <p>Services</p>
+                    <Rate disabled defaultValue={item.review['2']?.rate} />
+                  </Space>
+                  <Space>
+                    <p>Location</p>
+                    <Rate disabled defaultValue={item.review['3']?.rate} />
+                  </Space>
+                  <Space>
+                    <p>Amentities</p>
+                    <Rate disabled defaultValue={item.review['4']?.rate} />
+                  </Space>
+                </div>
               </List.Item>
             );
           }

@@ -3,7 +3,7 @@
   margin-top: 150px;
   width: 1290px;
   background-color: white;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
   padding: 2rem;
   &__price {
     font-size: 26px;
@@ -16,5 +16,30 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+}
+
+.review {
+  &__rating {
+    & > .ant-rate-star {
+      margin-right: 8px !important;
+      color: #2ea452;
+    }
+  }
+}
+
+.rating-star-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  & p {
+    width: 100px;
+    font-weight: 500;
+  }
+  & .ant-rate-star {
+    margin-right: 8px !important;
+    color: #2ea452;
   }
 }
