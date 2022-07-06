@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import { getTours } from '../../../app/AdminSlice';
+import { getTours, updateTourStatus } from '../../../app/AdminSlice';
 
 const { confirm } = Modal;
 const { Title } = Typography;
@@ -37,8 +37,8 @@ export default function Tours() {
     const request = {
       status: 'enable',
     };
-    console.log(request);
-    // dispatch(updateTourStatus(record.id, request))
+    // console.log(request);
+    dispatch(updateTourStatus({ id: record.id, request }));
   };
 
   //Handle disable tour
@@ -50,7 +50,7 @@ export default function Tours() {
       status: 'disabled',
     };
     console.log(request);
-    // dispatch(updateTourStatus(record.id, request))
+    dispatch(updateTourStatus({ id: record.id, request }));
   };
 
   // Handle able tour
@@ -62,7 +62,8 @@ export default function Tours() {
       status: 'enable',
     };
     console.log(request);
-    // dispatch(updateTourStatus(record.id, request))
+    // console.log(request);
+    dispatch(updateTourStatus({ id: record.id, request }));
   };
 
   // Set loading context for PAGE
@@ -256,7 +257,13 @@ export default function Tours() {
   ];
 
   return (
-    <Spin spinning={isLoading}>
+    <Spin
+      spinning={isLoading}
+      tip="loading..."
+      style={{
+        marginTop: '100px',
+      }}
+    >
       <Breadcrumb
         style={{
           margin: '16px 0',

@@ -45,4 +45,22 @@ export const adminAPI = {
       },
     });
   },
+
+  getAllUsers() {
+    const url = `/admin/manager/users`;
+    return axiosClient.get(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+  },
+
+  getAllCustomers() {
+    const url = `/admin/manager/customers`;
+    return axiosClient.get(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+  },
 };

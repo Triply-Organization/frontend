@@ -30,10 +30,23 @@ export const getTours = createAsyncThunk('admin/tours', async params => {
   return res.data;
 });
 
+export const getAllUsers = createAsyncThunk('admin/get-all-users', async () => {
+  const res = await adminAPI.getAllUsers();
+  return res.data;
+});
+
+export const getAllCustomers = createAsyncThunk(
+  'admin/get-all-customers',
+  async () => {
+    const res = await adminAPI.getAllCustomers();
+    return res.data;
+  },
+);
+
 export const updateTourStatus = createAsyncThunk(
   'admin/update-tour-status',
-  async (id, body) => {
-    const res = await adminAPI.updateTours(id, body);
+  async params => {
+    const res = await adminAPI.updateTours(params.id, params.request);
     return res.data;
   },
 );
@@ -43,6 +56,8 @@ let initialState = {
   totalCommissionData: [],
   overall: [],
   toursData: {},
+  usersData: {},
+  customersData: {},
   loading: false,
 };
 
@@ -159,8 +174,76 @@ const adminSlice = createSlice({
     builder.addCase(updateTourStatus.fulfilled, (state, action) => {
       state.loading = false;
       const data = action.payload;
+      console.log(data);
       if (data.status === 'success') {
-        console.log();
+        //
+      }
+    });
+
+    // GET ALL USERS
+    builder.addCase(getAllUsers.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(getAllUsers.rejected, state => {
+      state.loading = false;
+      message.error('Something went wrong! Could not get users data');
+    });
+    builder.addCase(getAllUsers.fulfilled, (state, action) => {
+      console.log('fulfilled');
+      state.loading = false;
+      const data = action.payload;
+      console.log(data);
+      if (data.status === 'success') {
+        // console.log();
+        const users = [];
+        data.data.users?.map(item => {
+          users.push({
+            id: item.id,
+            key: item.id,
+            name: item.name,
+            avatar: item.avatar,
+            email: item.email,
+            phone: item.phone,
+            address: item.address,
+          });
+        });
+        state.usersData = {
+          ...data.data,
+          users,
+        };
+      }
+    });
+
+    // GET ALL CUSTOMERS
+    builder.addCase(getAllCustomers.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(getAllCustomers.rejected, state => {
+      state.loading = false;
+      message.error('Something went wrong! Could not get customers data');
+    });
+    builder.addCase(getAllCustomers.fulfilled, (state, action) => {
+      state.loading = false;
+      const data = action.payload;
+      console.log(data);
+      if (data.status === 'success') {
+        // console.log();
+        const customers = [];
+        data.data.customers?.map(item => {
+          customers.push({
+            id: item.id,
+            key: item.id,
+            name: item.name,
+            avatar: item.avatar,
+            email: item.email,
+            phone: item.phone,
+            address: item.address,
+          });
+        });
+        state.customersData = {
+          ...data.data,
+          customers,
+        };
       }
     });
   },

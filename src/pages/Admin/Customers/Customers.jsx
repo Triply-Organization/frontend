@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { UserOutlined } from '@ant-design/icons';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {
@@ -10,26 +11,43 @@ import {
   Modal,
   Row,
   Space,
+  Spin,
   Table,
 } from 'antd';
 import { Typography } from 'antd';
 import Search from 'antd/lib/input/Search';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
+import { getAllUsers } from '../../../app/AdminSlice';
 import ModalForm from '../../../components/ModalForm/ModalForm';
 
 const { confirm } = Modal;
 const { Title } = Typography;
 
 export default function Customers() {
-  const loadingContext = useLoadingContext();
+  const dispatch = useDispatch();
+
+  const isLoading = useSelector(state => state.admin.loading);
+  // const usersData = useSelector(state => state.admin.usersData.users)
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [isShowModalAdd, setShowModalAdd] = useState(false);
+  const [page, setPage] = useState(searchParams.get('page') || 1);
+
   const [formAddNewCustomer] = Form.useForm();
+
+  const loadingContext = useLoadingContext();
 
   const loading = async () => {
     //loading some data
+    if (!searchParams.get('page')) {
+      setSearchParams({ page });
+    }
 
+    // dispatch(getAllUsers(location.search));
     //call method to indicate that loading is done
     loadingContext.done();
   };
@@ -152,7 +170,13 @@ export default function Customers() {
   ];
 
   return (
-    <div className="customer__wrapper">
+    <Spin
+      tip="loading..."
+      spinning={isLoading}
+      style={{
+        marginTop: '100px',
+      }}
+    >
       <ModalForm
         form={formAddNewCustomer}
         modalTitle="Add new customer"
@@ -272,6 +296,6 @@ export default function Customers() {
           </Row>
         </Space>
       </div>
-    </div>
+    </Spin>
   );
 }

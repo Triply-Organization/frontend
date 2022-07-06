@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { UserOutlined } from '@ant-design/icons';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {
@@ -10,14 +11,18 @@ import {
   Row,
   Select,
   Space,
+  Spin,
   Table,
 } from 'antd';
 import { Typography } from 'antd';
 import { Modal } from 'antd';
 import Search from 'antd/lib/input/Search';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
+import { getAllUsers } from '../../../app/AdminSlice';
 import ModalForm from '../../../components/ModalForm/ModalForm';
 
 const { Option } = Select;
@@ -27,8 +32,23 @@ const { confirm } = Modal;
 const { Title } = Typography;
 
 export default function Users() {
+  const dispatch = useDispatch();
+  // const usersData = useSelector(state => state.admin.usersData.users)
+  const isLoading = useSelector(state => state.admin.loading);
+  const totalPages = useSelector(state => state.admin.totalPages);
+  const totalUsers = useSelector(state => state.admin.totalUsers);
+
   const [isShowModalAdd, setShowModalAdd] = useState(false);
   const [isShowModalEdit, setShowModalEdit] = useState(false);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  // GET PAGINATION ...
+  const [page, setPage] = useState(searchParams.get('page') || 1);
+  // GET TOUR DATA
+
+  // FLAG PREVENT CALL API TWICE
+  const [flag, setFlag] = useState(0);
+
   // Set current row value
   const [currentValue, setCurrentValue] = useState(false);
   const [formAddUser] = Form.useForm();
@@ -37,15 +57,27 @@ export default function Users() {
 
   const loading = async () => {
     //loading some data
-
+    if (!searchParams.get('page')) {
+      setSearchParams({ page });
+    }
+    // dispatch(getAllUsers(location.search));
+    console.log('GET ALL USERS WHEN FIRST COME');
     //call method to indicate that loading is done
     loadingContext.done();
   };
 
   useEffect(() => {
     loading();
+    setFlag(flag + 1);
   }, []);
 
+  useEffect(() => {
+    if (flag !== 0) {
+      setSearchParams({ page });
+      console.log('GET ALL USERS WHEN CHANGE PAGE');
+      // dispatch(getAllUsers(location.search));
+    }
+  }, [page]);
   // HANDLE ADD NEW USER
   const handleAddNewUser = () => {
     formAddUser
@@ -186,7 +218,13 @@ export default function Users() {
   ];
 
   return (
-    <div className="user__wrapper">
+    <Spin
+      tip="loading..."
+      spinning={isLoading}
+      style={{
+        marginTop: '100px',
+      }}
+    >
       <ModalForm
         form={formAddUser}
         modalTitle="Add new user"
@@ -326,11 +364,25 @@ export default function Users() {
           </Row>
           <Row>
             <Col span={24}>
-              <Table columns={columns} dataSource={data} />
+              <Table
+                size="large"
+                pagination={{
+                  // defaultPageSize: 6,
+                  totalPages,
+                  total: totalUsers,
+                  defaultCurrent: page,
+                  showSizeChanger: false,
+                  onChange: e => {
+                    setPage(e);
+                  },
+                }}
+                columns={columns}
+                dataSource={data}
+              />
             </Col>
           </Row>
         </Space>
       </div>
-    </div>
+    </Spin>
   );
 }
