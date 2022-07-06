@@ -31,6 +31,7 @@
     "antd": "^4.21.3",
     "aos": "^2.3.4",
     "axios": "^0.27.2",
+    "esbuild-linux-64": "^0.14.48",
     "i18next": "^21.8.11",
     "i18next-browser-languagedetector": "^6.1.4",
     "moment": "^2.29.3",
