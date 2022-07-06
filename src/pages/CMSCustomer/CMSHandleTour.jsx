@@ -3,7 +3,6 @@ import {
   Button,
   Collapse,
   Form,
-  Image,
   Input,
   InputNumber,
   Select,
@@ -16,20 +15,14 @@ import axios from 'axios';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import {
-  AiOutlineDelete,
-  AiOutlineFormatPainter,
   AiOutlineInbox,
   AiOutlinePlus,
 } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import {
-  createTour,
-  getDestinationsServiceTours,
-  getDetailTour,
-} from '../../app/toursSlice';
+import { createTour, getDestinationsServiceTours } from '../../app/toursSlice';
 import './CMSHandleTour.scss';
 
 const { TabPane } = Tabs;
@@ -43,16 +36,12 @@ const CMSAddTour = () => {
   const [coverImage, setCoverImage] = useState({});
   const [galleryImage, setGalleryImage] = useState([]);
   const [galleryImageOnChange, setGalleryImageonChange] = useState({});
-  const [type, setType] = useState('');
   const destinations = useSelector(state => state.tours.destinations);
   const services = useSelector(state => state.tours.services);
   const idTourJustCreated = useSelector(state => state.tours.idTourJustCreated);
-  const tour = useSelector(state => state.tours.tour);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const loadingContext = useLoadingContext();
-  const { id } = useParams();
 
   const [form] = Form.useForm();
 
@@ -65,34 +54,6 @@ const CMSAddTour = () => {
     }
     loadingContext.done();
   }, []);
-
-  useEffect(() => {
-    const loadingData = async () => {
-      if (location.pathname.includes('add-tour')) {
-        setType('add');
-      } else {
-        setType('edit');
-        dispatch(getDetailTour(id));
-      }
-    };
-    loadingData();
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (location.pathname.includes('edit-tour') && !_.isEmpty(tour)) {
-      const informationTour = {
-        title: tour.title,
-        duration: tour.duration,
-        maxPeople: tour.maxPeople,
-        minAge: tour.minAge,
-        overview: tour.overView,
-        services: tour.services.map(item => parseInt(item.id)),
-      };
-      form.setFieldsValue(informationTour);
-    }
-  }, [tour]);
-
-  console.log(tour);
 
   useEffect(() => {
     if (idTourJustCreated) {
@@ -205,13 +166,13 @@ const CMSAddTour = () => {
       onError({ err });
     }
   };
+
   return (
     <>
       <Breadcrumb
         style={{
           margin: '16px 0',
-        }}
-      >
+        }}>
         <Breadcrumb.Item>
           <Link to="/home">Home</Link>
         </Breadcrumb.Item>
@@ -220,14 +181,14 @@ const CMSAddTour = () => {
         </Breadcrumb.Item>
         <Breadcrumb.Item>Add Tour</Breadcrumb.Item>
       </Breadcrumb>
+
       <Form
         form={form}
         className="form-tour"
         name="form-tour"
         onFinish={onAddTour}
         layout="vertical"
-        autoComplete="off"
-      >
+        autoComplete="off">
         <div className="form-tour__content__left">
           <div className="form-tour__control-header">
             <Form.Item
@@ -237,8 +198,7 @@ const CMSAddTour = () => {
                   required: true,
                   message: 'Please input your tour title!',
                 },
-              ]}
-            >
+              ]}>
               <Input
                 size="large"
                 placeholder="Tour title"
@@ -250,23 +210,15 @@ const CMSAddTour = () => {
                 <Button
                   type="primary"
                   size="large"
-                  icon={
-                    type === 'add' ? (
-                      <AiOutlinePlus />
-                    ) : (
-                      <AiOutlineFormatPainter />
-                    )
-                  }
+                  icon={<AiOutlinePlus />}
                   htmlType="submit"
-                  className="form-tour__control-header__btn"
-                >
-                  {type === 'add' ? 'Add now' : 'Update'}
+                  className="form-tour__control-header__btn">
+                  Add now
                 </Button>
                 <Button
                   size="large"
                   className="form-tour__control-header__btn"
-                  onClick={() => navigate('/cms/tours')}
-                >
+                  onClick={() => navigate('/cms/tours')}>
                   Cancel
                 </Button>
               </Space>
@@ -285,8 +237,7 @@ const CMSAddTour = () => {
                         required: true,
                         message: 'Please input your tour duration!',
                       },
-                    ]}
-                  >
+                    ]}>
                     <InputNumber
                       onChange={e => setDuration(e)}
                       min={1}
@@ -305,8 +256,7 @@ const CMSAddTour = () => {
                         required: true,
                         message: 'Please input max people!',
                       },
-                    ]}
-                  >
+                    ]}>
                     <InputNumber
                       min={1}
                       max={30}
@@ -323,8 +273,7 @@ const CMSAddTour = () => {
                         required: true,
                         message: 'Please input min age of tour!',
                       },
-                    ]}
-                  >
+                    ]}>
                     <Select size="large" style={{ width: 200 }}>
                       <Option value={0}>0</Option>
                       <Option value={12}>12</Option>
@@ -341,8 +290,7 @@ const CMSAddTour = () => {
                       required: true,
                       message: 'Please input overview your tour!',
                     },
-                  ]}
-                >
+                  ]}>
                   <TextArea
                     style={{ resize: 'none' }}
                     rows={3}
@@ -359,8 +307,7 @@ const CMSAddTour = () => {
                       required: true,
                       message: 'Select your services of tour',
                     },
-                  ]}
-                >
+                  ]}>
                   <Select size="large" mode="multiple">
                     {services.map((item, index) => {
                       return (
@@ -374,21 +321,18 @@ const CMSAddTour = () => {
 
                 <Collapse
                   defaultActiveKey={['1']}
-                  style={{ marginBottom: '1rem' }}
-                >
+                  style={{ marginBottom: '1rem' }}>
                   <Panel header="Images" key="1">
                     <Form.Item
                       style={{ padding: '0 1rem' }}
                       label="Cover image"
-                      name={['tourImages', 'cover']}
-                    >
+                      name={['tourImages', 'cover']}>
                       <Dragger
                         multiple={false}
                         maxCount={1}
                         customRequest={uploadCoverImage}
                         beforeUpload={beforeUpload}
-                        listType="picture"
-                      >
+                        listType="picture">
                         <p className="ant-upload-drag-icon">
                           <AiOutlineInbox />
                         </p>
@@ -401,49 +345,18 @@ const CMSAddTour = () => {
                           interface.
                         </p>
                       </Dragger>
-
-                      {type === 'edit' && !_.isEmpty(tour) && (
-                        <div className="tour-image-wrapper">
-                          {tour.tourImages.map((item, index) => {
-                            if (item.type === 'cover')
-                              return (
-                                <div
-                                  className="tour-image-wrapper__item"
-                                  key={index}
-                                >
-                                  <Space>
-                                    <Image
-                                      height={48}
-                                      src={item.path}
-                                      alt={item.id}
-                                    />
-                                    <p>Old cover image</p>
-                                  </Space>
-
-                                  <Button
-                                    danger
-                                    type="text"
-                                    icon={<AiOutlineDelete />}
-                                  />
-                                </div>
-                              );
-                          })}
-                        </div>
-                      )}
                     </Form.Item>
                     <Form.Item
                       label="Gallery"
                       name={['tourImages', 'gallery']}
-                      style={{ padding: '0 1rem' }}
-                    >
+                      style={{ padding: '0 1rem' }}>
                       <Dragger
                         multiple={true}
                         beforeUpload={beforeUpload}
                         customRequest={uploadGalleryImage}
                         listType="picture"
                         onChange={e => setGalleryImageonChange(e)}
-                        maxCount={5}
-                      >
+                        maxCount={5}>
                         <p className="ant-upload-drag-icon">
                           <AiOutlineInbox />
                         </p>
@@ -455,39 +368,6 @@ const CMSAddTour = () => {
                           will help people understand your tour.
                         </p>
                       </Dragger>
-
-                      {type === 'edit' && (
-                        <div className="tour-image-wrapper">
-                          {tour.tourImages.map((item, index) => {
-                            if (item.type === 'gallery') {
-                              return (
-                                <div
-                                  className="tour-image-wrapper__item"
-                                  key={index}
-                                >
-                                  <Space>
-                                    <Image
-                                      height={48}
-                                      src={item.path}
-                                      alt={item.id}
-                                    />
-                                    <p>Old gallery image</p>
-                                  </Space>
-
-                                  <Button
-                                    danger
-                                    type="text"
-                                    onClick={() => {
-                                      console.log(item.id);
-                                    }}
-                                    icon={<AiOutlineDelete />}
-                                  />
-                                </div>
-                              );
-                            }
-                          })}
-                        </div>
-                      )}
                     </Form.Item>
                   </Panel>
                 </Collapse>
@@ -507,8 +387,7 @@ const CMSAddTour = () => {
                               required: true,
                               message: `Please input title of day ${i + 1}`,
                             },
-                          ]}
-                        >
+                          ]}>
                           <Input
                             style={{ resize: 'none' }}
                             rows={3}
@@ -526,8 +405,7 @@ const CMSAddTour = () => {
                                 i + 1
                               }`,
                             },
-                          ]}
-                        >
+                          ]}>
                           <Select size="large">
                             {destinations.map((item, index) => {
                               return (
@@ -549,8 +427,7 @@ const CMSAddTour = () => {
                                 i + 1
                               }`,
                             },
-                          ]}
-                        >
+                          ]}>
                           <TextArea
                             style={{ resize: 'none' }}
                             rows={3}
