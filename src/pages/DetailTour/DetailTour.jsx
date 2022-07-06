@@ -501,7 +501,7 @@ export default function DetailTour() {
             </div>
           </div>
 
-          {userData.roles[0] === 'ROLE_USER' && (
+          {userData?.roles[0] === 'ROLE_USER' && (
             <div className="detailTour__booking-wrapper">
               <div className="detailTour__booking">
                 <h3 className="detailTour__booking-heading">Book This Tour</h3>
