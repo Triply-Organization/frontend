@@ -41,6 +41,7 @@ export default function DetailTour() {
   let navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
+  const userData = JSON.parse(localStorage.getItem('user'));
   const detailTour = useSelector(state => state.tours.tour);
   const loadingState = useSelector(state => state.tours.loading);
   const availableDate = useSelector(state => state.tours.tour.availableDate);
@@ -66,6 +67,8 @@ export default function DetailTour() {
   const [youth, setYouth] = useState({});
   const [total, setTotal] = useState(0);
   const [priceFollowDate, setPriceFollowDate] = useState([]);
+
+  console.log(userData);
 
   const userReviews = detailTour.reviews?.map(item => {
     return {
@@ -112,6 +115,12 @@ export default function DetailTour() {
       point: detailTour.rating?.rooms,
     },
   ];
+
+  useEffect(() => {
+    if (dataCheckout.id) {
+      navigate(`/checkout/${dataCheckout.id}`);
+    }
+  }, [dataCheckout.id]);
 
   useEffect(() => {
     setTotal(
@@ -206,7 +215,11 @@ export default function DetailTour() {
         error: 'Book failed!',
         description: 'Please choose the day!',
       });
-    } else if (adultNumber === 0 && youthNumber === 0 && childrenNumber === 0) {
+    } else if (
+      adultNumber.value === 0 &&
+      youthNumber.value === 0 &&
+      childrenNumber.value === 0
+    ) {
       notification.error({
         message: 'Book failed!',
         description: 'Please choose your ticket!',
@@ -221,10 +234,8 @@ export default function DetailTour() {
         notification.success({
           message: 'Book successfully!',
         });
+
         dispatch(booking(request));
-        setTimeout(() => {
-          navigate(`/checkout/${id}`);
-        }, 1500);
       }
     }
   };
@@ -367,7 +378,7 @@ export default function DetailTour() {
                 autoplay
                 className="detailTour__relatedTour-carousel"
                 draggable={true}
-                slidesToShow={1}
+                slidesToShow={relatedTours?.length > 1 ? 2 : 1}
               >
                 {relatedTours && relatedTours.length > 0 ? (
                   relatedTours?.map(item => {
@@ -484,6 +495,7 @@ export default function DetailTour() {
               </div>
             </div>
           </div>
+
           <div className="detailTour__booking-wrapper">
             <div className="detailTour__booking">
               <h3 className="detailTour__booking-heading">Book This Tour</h3>

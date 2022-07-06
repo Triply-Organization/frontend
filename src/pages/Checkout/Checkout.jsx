@@ -14,6 +14,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { axiosClient } from '../../api/config/axiosClient';
 import { checkout, getVoucherInfo } from '../../app/checkoutSlice';
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import paypal from '../../assets/images/paypal-logo.png';
@@ -27,6 +28,7 @@ const Checkout = () => {
   const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
   const [finalTotal, setFinalTotal] = useState(checkoutData.subTotal);
   const [discountValue, setDiscountValue] = useState(0);
+  const [taxInfo, setTaxInfo] = useState(0);
   const [voucherVal, setVoucherVal] = useState('');
   const loading = useSelector(state => state.checkout.loading);
   const voucherData = useSelector(state => state.checkout.voucher);
@@ -42,9 +44,8 @@ const Checkout = () => {
       scheduleId: checkoutData.scheduleId,
       totalPrice: finalTotal,
       discountPrice: 0,
-      taxPrice: checkoutData.tax.percent,
-      // currency: localStorage.getItem('currencyItem').toLowerCase(),
-      currency: 'usd',
+      taxPrice: (checkoutData.subTotal * taxInfo) / 100,
+      currency: localStorage.getItem('currencyItem').toLowerCase(),
       phone: values.phone,
       tourName: checkoutData.tourTitle,
       email: values.email,
@@ -56,10 +57,9 @@ const Checkout = () => {
       voucherId: voucherData.id,
       scheduleId: checkoutData.scheduleId,
       totalPrice: finalTotal,
-      discountPrice: voucherData.discount,
-      taxPrice: checkoutData.tax.percent,
-      // currency: localStorage.getItem('currencyItem').toLowerCase(),
-      currency: 'usd',
+      discountPrice: (checkoutData.subTotal * voucherData.discount) / 100,
+      taxPrice: (checkoutData.subTotal * taxInfo) / 100,
+      currency: localStorage.getItem('currencyItem').toLowerCase(),
       phone: values.phone,
       tourName: checkoutData.tourTitle,
       email: values.email,
@@ -79,14 +79,31 @@ const Checkout = () => {
   };
 
   useEffect(() => {
+    const getTax = async () => {
+      const url = '/taxes/getinfo?currency=vn';
+      const res = await axiosClient.get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const taxData = res.data.data.percent;
+      console.log(taxData);
+      setTaxInfo(taxData);
+    };
+    getTax();
+  }, []);
+
+  useEffect(() => {
     setDiscountValue(voucherData.discount);
     if (voucherData.discount) {
       setFinalTotal(
         checkoutData.subTotal -
           (checkoutData.subTotal * voucherData.discount) / 100,
       );
-    } else if (!voucherData.discount) {
-      setFinalTotal(checkoutData.subTotal);
+    } else if (!voucherData.id) {
+      setFinalTotal(
+        checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
+      );
     }
   }, [voucherData]);
 
@@ -95,7 +112,13 @@ const Checkout = () => {
       clearTimeout(filterTimeout.current);
     }
 
-    if (!e) return setVoucherVal('');
+    if (!e.target.value) {
+      setVoucherVal('');
+      setFinalTotal(
+        checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
+      );
+      setDiscountValue(0);
+    }
 
     filterTimeout.current = setTimeout(() => {
       setVoucherVal(e.target.value);
@@ -127,6 +150,7 @@ const Checkout = () => {
             data={checkoutData}
             finalTotal={finalTotal}
             discountValue={discountValue}
+            taxInfo={taxInfo}
           />
         </div>
 
@@ -221,7 +245,9 @@ const Checkout = () => {
 
               <Form.Item
                 name="discount"
-                label={<Title level={5}>Apply your voucher to discount!</Title>}
+                label={
+                  <Title level={5}>Apply your voucher for discount!</Title>
+                }
                 rules={[
                   {
                     pattern: /^[A-Z]*$/,
@@ -229,17 +255,24 @@ const Checkout = () => {
                   },
                 ]}
               >
-                <Row gutter={8}>
-                  <Col span={19}>
+                <Row gutter={[8, 8]}>
+                  <Col lg={18} md={18} sm={24} xs={24}>
                     <Form.Item name="discount" noStyle>
                       <Input
+                        allowClear
                         placeholder="VOUCHER CODE"
                         onChange={handleChangInputVoucher}
                       />
                     </Form.Item>
                   </Col>
-                  <Col span={5}>
-                    <Button onClick={handleClickVoucherButton}>Apply</Button>
+                  <Col lg={6} md={6} sm={24} xs={24}>
+                    <Button
+                      disabled={voucherVal === '' ? true : false}
+                      onClick={handleClickVoucherButton}
+                      className="voucher-btn"
+                    >
+                      Apply
+                    </Button>
                   </Col>
                 </Row>
               </Form.Item>

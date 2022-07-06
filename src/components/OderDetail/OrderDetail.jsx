@@ -8,7 +8,7 @@ import './OrderDetail.scss';
 const { Title, Text } = Typography;
 
 const OrderDetail = props => {
-  const { data, finalTotal, discountValue } = props;
+  const { data, finalTotal, discountValue, taxInfo } = props;
 
   return (
     <>
@@ -16,9 +16,15 @@ const OrderDetail = props => {
       <div className="checkout-info-display">
         <Row gutter={8}>
           <Col lg={8} md={6} sm={6} xs={0}>
-            <Image width={150} src={data.imageTour?.path} />
+            <Image width={200} src={data.imageTour?.path} />
           </Col>
-          <Col lg={12} md={15} sm={15} xs={18}>
+          <Col
+            lg={16}
+            md={18}
+            sm={18}
+            xs={22}
+            className="checkout-info-display__content"
+          >
             <Title level={4}>{data.tourTitle}</Title>
             <section>
               <Text strong>Date: </Text>
@@ -63,9 +69,6 @@ const OrderDetail = props => {
               ) : null}
             </section>
           </Col>
-          <Col lg={4} md={3} sm={3} xs={6}>
-            <Title level={5}>${data.subTotal}</Title>
-          </Col>
         </Row>
         <Divider />
 
@@ -79,10 +82,13 @@ const OrderDetail = props => {
               <Text strong>Discount</Text>
             </section>
             <section>
+              <Text strong>Tax</Text>
+            </section>
+            <section>
               <Title level={4}>Total</Title>
             </section>
           </Col>
-          <Col lg={4} md={3} sm={3} xs={6}>
+          <Col lg={3} md={3} sm={3} xs={6}>
             <section>
               <Text strong>${data?.subTotal}</Text>
             </section>
@@ -90,8 +96,13 @@ const OrderDetail = props => {
               <Text strong>
                 {data?.bill?.discount
                   ? `-${data?.bill?.discount}%`
-                  : `-${discountValue}%`}
+                  : discountValue
+                  ? `-${discountValue}%`
+                  : '0%'}
               </Text>
+            </section>
+            <section>
+              <Text strong>{taxInfo ? taxInfo : 8}%</Text>
             </section>
             <section>
               <Title level={4} className="result-payment">
@@ -109,6 +120,7 @@ OrderDetail.propTypes = {
   data: PropTypes.object,
   finalTotal: PropTypes.number,
   discountValue: PropTypes.number,
+  taxInfo: PropTypes.number,
 };
 
 export default OrderDetail;
