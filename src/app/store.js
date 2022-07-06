@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import loginSlice from '../pages/Login/LoginSlice';
-import registerSlice from '../pages/Register/RegisterSlice';
 import adminSlice from './AdminSlice';
+import registerSlice from './RegisterSlice';
 import checkoutSlice from './checkoutSlice';
+import loginSlice from './loginSlice';
 import orderSlice from './orderSlice';
 import toursSlice from './toursSlice';
 
