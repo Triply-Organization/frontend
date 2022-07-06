@@ -92,35 +92,41 @@ const MyTour = () => {
           handleOk={handleReview}
           handleCancel={() => setIsVisible(false)}
           cancelText="Cancel"
-          okText="Submit">
+          okText="Submit"
+        >
           <Form.Item
             label="Rating Room"
             name={['rate', 'reviewRooms']}
-            rules={[{ required: true, message: 'Please rating here' }]}>
+            rules={[{ required: true, message: 'Please rating here' }]}
+          >
             <Rate allowHalf className="review__rating" />
           </Form.Item>
           <Form.Item
             label="Rating Price"
             name={['rate', 'reviewPrices']}
-            rules={[{ required: true, message: 'Please rating here' }]}>
+            rules={[{ required: true, message: 'Please rating here' }]}
+          >
             <Rate allowHalf className="review__rating" />
           </Form.Item>
           <Form.Item
             label="Rating Services"
             name={['rate', 'reviewServices']}
-            rules={[{ required: true, message: 'Please rating here' }]}>
+            rules={[{ required: true, message: 'Please rating here' }]}
+          >
             <Rate allowHalf className="review__rating" />
           </Form.Item>
           <Form.Item
             label="Rating Location"
             name={['rate', 'reviewLocation']}
-            rules={[{ required: true, message: 'Please rating here' }]}>
+            rules={[{ required: true, message: 'Please rating here' }]}
+          >
             <Rate allowHalf className="review__rating" />
           </Form.Item>
           <Form.Item
             label="Rating Amentities"
             name={['rate', 'reviewAmentities']}
-            rules={[{ required: true, message: 'Please rating here' }]}>
+            rules={[{ required: true, message: 'Please rating here' }]}
+          >
             <Rate allowHalf className="review__rating" />
           </Form.Item>
           <Form.Item label="Comment" name={'comment'}>
@@ -156,7 +162,8 @@ const MyTour = () => {
                                 id: item.id,
                                 title: item.title,
                               });
-                            }}>
+                            }}
+                          >
                             Review now
                           </Button>,
                         ]
@@ -168,7 +175,8 @@ const MyTour = () => {
                         ]
                       : null
                   }
-                  extra={<Image width={272} alt="logo" src={item.cover} />}>
+                  extra={<Image width={272} alt="logo" src={item.cover} />}
+                >
                   <List.Item.Meta
                     avatar={
                       <Avatar src={user.avatar} icon={<UserOutlined />} />
@@ -208,7 +216,8 @@ const MyTour = () => {
               return (
                 <List.Item
                   key={item.title}
-                  extra={<Image width={272} alt="logo" src={item.cover} />}>
+                  extra={<Image width={272} alt="logo" src={item.cover} />}
+                >
                   <List.Item.Meta
                     avatar={<Avatar src={user.avatar} />}
                     title={<b>{user.fullname}</b>}
