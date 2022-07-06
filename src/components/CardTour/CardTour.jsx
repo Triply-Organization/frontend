@@ -41,7 +41,7 @@ const CardTour = props => {
         <div className="card-tour__meta__review">
           <Rate
             disabled
-            defaultValue={4.5}
+            defaultValue={tour?.rating}
             allowHalf
             className="card-tour__meta__review__rate"
           />

@@ -20,12 +20,13 @@ const Search = props => {
       <div className="search-form__item__select">
         <AiOutlineCompass className="search-form__item__select__icon" />
         <div>
-          <b>Destinations</b>
+          <b>Destination</b>
           <Form.Item
             name="destinations"
             className="search-form__item search-form__destinations "
           >
             <Select
+              className="search-form__item__field"
               allowClear
               bordered={false}
               style={{ border: 'none' }}
@@ -48,12 +49,13 @@ const Search = props => {
       <div className="search-form__item__select">
         <AiOutlineDribbble className="search-form__item__select__icon" />
         <div>
-          <b>Services</b>
+          <b>Service</b>
           <Form.Item
             name="services"
             className="search-form__item search-form__activity"
           >
             <Select
+              className="search-form__item__field"
               allowClear
               bordered={false}
               placeholder={'All Activity'}
@@ -81,8 +83,9 @@ const Search = props => {
             className="search-form__item search-form__when"
           >
             <DatePicker
+              className="search-form__item__field"
               bordered={false}
-              style={{ paddingLeft: 0 }}
+              style={{ paddingLeft: 0, border: 'none' }}
               allowClear
             />
           </Form.Item>
@@ -98,11 +101,11 @@ const Search = props => {
             className="search-form__item search-form__guests"
           >
             <Select
-              className="select-guest-mul"
+              className="select-guest-mul search-form__item__field"
               mode="multiple"
               showArrow
               bordered={false}
-              style={{ padding: 0 }}
+              style={{ padding: 0, border: 'none' }}
               placeholder="Whose ticket?"
             >
               <Option value="1">Adult</Option>
