@@ -48,7 +48,8 @@
       "logged_in": {
         "tour": "Chuyến đi của tôi",
         "review": "Đánh giá của tôi",
-        "my_account": "Tài khoản của tôi"
+        "my_account": "Tài khoản của tôi",
+        "my_profile": "Hồ sơ của tôi"
       },
 
       "not_logged_in": {
