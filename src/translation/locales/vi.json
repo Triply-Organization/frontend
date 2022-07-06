@@ -85,8 +85,43 @@
         "content": "Chuyến đi phổ biến"
       },
       "banner": {
-        "telephone": "Đừng chần chừ. Hãy liên hệ chúng tôi ngay!",
+        "telephone": "Đừng chần chờ. Hãy liên hệ chúng tôi ngay!",
         "follow": "Theo dõi chúng tôi"
+      }
+    },
+
+    "all_tours": {
+      "tours": "Chuyến",
+      "filter": {
+        "title": "Lọc",
+        "price": "Giá",
+        "rating": "Đánh giá"
+      },
+      "sort": "Sắp xếp theo giá: "
+    },
+
+
+    "search": {
+      "destination": {
+        "title": "Điểm đến",
+        "place_holder": "Bạn muốn đến đâu?"
+      },
+      "service": {
+        "title":"Dịch vụ",
+        "place_holder": "Các hoạt động"
+      },
+      "when": {
+        "title": "Thời gian",
+        "place_holder": "Hãy chọn ngày"
+      },
+      "guest": {
+        "title": "Hành khách",
+        "place_holder": "Các loại vé",
+        "item": {
+          "adult": "Người lớn",
+          "young": "Vị thành niên",
+          "children": "Trẻ em"
+        }
       }
     },
 
@@ -103,13 +138,13 @@
         }
       },
       "explore": {
-        "tilte": "Explore",
+        "title": "Khám phá",
         "item": {
-          "madrid": "Marid Tour",
-          "stockhome": "StockHome City",
-          "rome": "Rome City",
-          "shanghai": "Shanghai City",
-          "tokyo": "Tokyo"
+          "madrid": "Thành phố Marid",
+          "stockhome": "Thành phố StockHome",
+          "rome": "Thành Rome",
+          "shanghai": "Thành phố Thượng Hải",
+          "tokyo": "Thành phố Tokyo"
         }
       },
       "get_update": {

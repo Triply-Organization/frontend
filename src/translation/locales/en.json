@@ -90,6 +90,39 @@
       }
     },
 
+    "all_tours": {
+      "filter": {
+        "title": "Filter",
+        "price": "Price",
+        "rating": "Rating"
+      },
+      "sort": "Sort by price: "
+    },
+
+    "search": {
+      "destination": {
+        "title": "Destination",
+        "place_holder": "Where are you going?"
+      },
+      "service": {
+        "title":"Service",
+        "place_holder": "All Activity"
+      },
+      "when": {
+        "title": "When",
+        "place_holder": "Select date"
+      },
+      "guest": {
+        "title": "Guest",
+        "place_holder": "Whose ticket?",
+        "item": {
+          "adult": "Adult",
+          "young": "Young",
+          "children": "Children"
+        }
+      }
+    },
+
     "footer": {
       "title": "Triply, makes it easy to find and book something you'll love to do. With access to the world's largest selection of high-quality experiences, there's always something new to discover, both near and far from home. From must-do moments to who-knew discoveries, see the familiar in a new way, or the unknown for the first time!",
       "service": {
@@ -103,7 +136,7 @@
         }
       },
       "explore": {
-        "tilte": "Explore",
+        "title": "Explore",
         "item": {
           "madrid": "Marid Tour",
           "stockhome": "StockHome City",

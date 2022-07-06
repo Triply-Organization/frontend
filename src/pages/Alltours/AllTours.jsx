@@ -15,6 +15,7 @@ import {
 import _ from 'lodash';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BsSortNumericDown, BsSortNumericDownAlt } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -54,6 +55,7 @@ const AllTours = () => {
   const loadingCallAPI = useSelector(state => state.tours.loading);
   const totalTours = useSelector(state => state.tours.totalTours);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   // USE EFFECT
   useEffect(() => {
@@ -228,13 +230,16 @@ const AllTours = () => {
           className="all-tours__filter"
           expandIconPosition="end"
         >
-          <Panel header="Filter" key="1">
+          <Panel header={t('all_tours.filter.title')} key="1">
             <Form
               className="all-tours__filter__item"
               layout={'vertical'}
               onValuesChange={_.debounce(onFilter, 300)}
             >
-              <Form.Item name="filter_by_price" label="Price">
+              <Form.Item
+                name="filter_by_price"
+                label={t('all_tours.filter.price')}
+              >
                 <Slider
                   range
                   defaultValue={[0, 1000]}
@@ -247,7 +252,10 @@ const AllTours = () => {
                   }
                 />
               </Form.Item>
-              <Form.Item name="filter_by_rating" label="Rating">
+              <Form.Item
+                name="filter_by_rating"
+                label={t('all_tours.filter.rating')}
+              >
                 <Rate allowHalf defaultValue={0} />
               </Form.Item>
             </Form>
@@ -255,12 +263,12 @@ const AllTours = () => {
         </Collapse>
         <div className="all-tours__header">
           <p>
-            <b>{totalTours}</b> Tours
+            <b>{totalTours}</b> {t('all_tours.tours')}
           </p>
 
           <div className="all-tours__header__sort">
             <Space>
-              <p>Sort by price: </p>
+              <p>{t('all_tours.sort')}</p>
               {renderIconSortPrice()}
             </Space>
           </div>
