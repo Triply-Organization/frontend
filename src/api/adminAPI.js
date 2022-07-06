@@ -55,6 +55,15 @@ export const adminAPI = {
     });
   },
 
+  changeRoleUser(id, body) {
+    const url = `/admin/manager/users/${id}`;
+    return axiosClient.patch(url, body, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+  },
+
   deleteUser(params) {
     const url = `/admin/manager/users/${params}`;
     return axiosClient.delete(url, {
@@ -67,6 +76,15 @@ export const adminAPI = {
   getAllCustomers(params) {
     const url = `/admin/manager/customers${params}`;
     return axiosClient.get(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+  },
+
+  deleteCustomer(params) {
+    const url = `/admin/manager/customers/${params}`;
+    return axiosClient.delete(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },

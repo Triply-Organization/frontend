@@ -46,6 +46,15 @@ export const getAllUsers = createAsyncThunk(
   },
 );
 
+export const changeRoleUser = createAsyncThunk(
+  'admin/change-role-user',
+  async (params, thunkAPI) => {
+    const res = await adminAPI.changeRoleUser(params.id, params.body);
+    thunkAPI.dispatch(getAllUsers(params.searchParams));
+    return res.data;
+  },
+);
+
 export const deleteUser = createAsyncThunk(
   'admin/delete-user',
   async (params, thunkAPI) => {
@@ -60,6 +69,15 @@ export const getAllCustomers = createAsyncThunk(
   async params => {
     const res = await adminAPI.getAllCustomers(params);
     return res.data;
+  },
+);
+
+export const deleteCustomer = createAsyncThunk(
+  'admin/delete-customer',
+  async (params, thunkAPI) => {
+    const res = await adminAPI.deleteCustomer(params.id);
+    thunkAPI.dispatch(getAllCustomers(params.searchParams));
+    return res;
   },
 );
 
@@ -224,6 +242,37 @@ const adminSlice = createSlice({
       }
     });
 
+    // DELETE USER
+    builder.addCase(deleteUser.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(deleteUser.rejected, state => {
+      state.loading = false;
+      message.error('Something went wrong! Could not delete user account');
+    });
+    builder.addCase(deleteUser.fulfilled, state => {
+      state.loading = false;
+      message.success('Delete user account successfully');
+    });
+
+    // CHANGE ROLE USER
+    builder.addCase(changeRoleUser.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(changeRoleUser.rejected, state => {
+      state.loading = false;
+      message.error('Something went wrong! Could not delete user account');
+    });
+    builder.addCase(changeRoleUser.fulfilled, (state, action) => {
+      state.loading = false;
+      const data = action.payload;
+      if (data.status === 'success') {
+        message.success(
+          `Change ${data.data.email} account's role successfully`,
+        );
+      }
+    });
+
     // GET ALL CUSTOMERS
     builder.addCase(getAllCustomers.pending, state => {
       state.loading = true;
@@ -235,7 +284,6 @@ const adminSlice = createSlice({
     builder.addCase(getAllCustomers.fulfilled, (state, action) => {
       state.loading = false;
       const data = action.payload;
-      console.log(data);
       if (data.status === 'success') {
         // console.log();
         const customers = [];
@@ -257,17 +305,17 @@ const adminSlice = createSlice({
       }
     });
 
-    // DELETE USER
-    builder.addCase(deleteUser.pending, state => {
+    // DELETE CUSTOMERS
+    builder.addCase(deleteCustomer.pending, state => {
       state.loading = true;
     });
-    builder.addCase(deleteUser.rejected, state => {
+    builder.addCase(deleteCustomer.rejected, state => {
       state.loading = false;
-      message.error('Something went wrong! Could not update tour status');
+      message.error('Something went wrong! Could not delete customer account');
     });
-    builder.addCase(deleteUser.fulfilled, state => {
+    builder.addCase(deleteCustomer.fulfilled, state => {
       state.loading = false;
-      message.success('Delete user account successfully');
+      message.success('Delete customer account successfully');
     });
   },
 });

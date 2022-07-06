@@ -20,7 +20,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import { deleteUser, getAllUsers } from '../../../app/AdminSlice';
+import {
+  changeRoleUser,
+  deleteUser,
+  getAllUsers,
+} from '../../../app/AdminSlice';
 import ModalForm from '../../../components/ModalForm/ModalForm';
 
 const { Option } = Select;
@@ -99,10 +103,6 @@ export default function Users() {
           }),
         );
       },
-
-      // onCancel() {
-      //   console.log('Cancel');
-      // },
     });
   };
 
@@ -112,7 +112,21 @@ export default function Users() {
       .validateFields()
       .then(val => {
         // HANDLE LOGIC EDIT ROLE USER
-        console.log(val, currentValue);
+        // console.log(val, currentValue);
+
+        // console.log({
+        //   id: currentValue.id,
+        //   body: JSON.stringify(val),
+        //   searchParams: location.search,
+        // });
+
+        dispatch(
+          changeRoleUser({
+            id: currentValue.id,
+            body: JSON.stringify(val),
+            searchParams: location.search,
+          }),
+        );
       })
       .catch(err => console.log(err));
   };

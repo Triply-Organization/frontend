@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import { getAllCustomers } from '../../../app/AdminSlice';
+import { deleteCustomer, getAllCustomers } from '../../../app/AdminSlice';
 
 const { confirm } = Modal;
 const { Title } = Typography;
@@ -28,11 +28,12 @@ export default function Customers() {
 
   const isLoading = useSelector(state => state.admin.loading);
   const totalPages = useSelector(state => state.admin.customersData.totalPages);
-  const customersData = useSelector(state => state.admin.usersData.users);
+  const customersData = useSelector(
+    state => state.admin.customersData.customers,
+  );
   const totalCustomers = useSelector(
     state => state.admin.customersData.totalCustomers,
   );
-  // const usersData = useSelector(state => state.admin.usersData.users)
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [page, setPage] = useState(searchParams.get('page') || 1);
@@ -48,7 +49,7 @@ export default function Customers() {
       setSearchParams({ page });
     }
 
-    // dispatch(getAllCustomers(location.search));
+    dispatch(getAllCustomers(location.search));
     //call method to indicate that loading is done
     loadingContext.done();
   };
@@ -61,7 +62,7 @@ export default function Customers() {
     if (flag !== 0) {
       setSearchParams({ page });
       console.log('GET ALL CUSTOMERS WHEN CHANGE PAGE');
-      // dispatch(getAllCustomers(location.search));
+      dispatch(getAllCustomers(location.search));
     }
   }, [page]);
 
@@ -73,11 +74,12 @@ export default function Customers() {
 
       onOk() {
         // HANDLE DELETE CUSTOMER ACCOUNT
-        console.log(record);
-      },
-
-      onCancel() {
-        console.log('Cancel');
+        dispatch(
+          deleteCustomer({
+            id: record.id,
+            searchParams: location.search,
+          }),
+        );
       },
     });
   };
@@ -199,6 +201,7 @@ export default function Customers() {
                 pagination={{
                   current: page,
                   total: totalCustomers,
+                  totalPages,
                   pageSize: 6,
                   showSizeChanger: false,
                   onChange: e => {
@@ -206,7 +209,7 @@ export default function Customers() {
                   },
                 }}
                 columns={columns}
-                dataSource={data}
+                dataSource={customersData}
               />
             </Col>
           </Row>
