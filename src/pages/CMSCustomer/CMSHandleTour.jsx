@@ -14,10 +14,7 @@ import {
 import axios from 'axios';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import {
-  AiOutlineInbox,
-  AiOutlinePlus,
-} from 'react-icons/ai';
+import { AiOutlineInbox, AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
@@ -172,7 +169,8 @@ const CMSAddTour = () => {
       <Breadcrumb
         style={{
           margin: '16px 0',
-        }}>
+        }}
+      >
         <Breadcrumb.Item>
           <Link to="/home">Home</Link>
         </Breadcrumb.Item>
@@ -188,7 +186,8 @@ const CMSAddTour = () => {
         name="form-tour"
         onFinish={onAddTour}
         layout="vertical"
-        autoComplete="off">
+        autoComplete="off"
+      >
         <div className="form-tour__content__left">
           <div className="form-tour__control-header">
             <Form.Item
@@ -198,7 +197,8 @@ const CMSAddTour = () => {
                   required: true,
                   message: 'Please input your tour title!',
                 },
-              ]}>
+              ]}
+            >
               <Input
                 size="large"
                 placeholder="Tour title"
@@ -212,13 +212,15 @@ const CMSAddTour = () => {
                   size="large"
                   icon={<AiOutlinePlus />}
                   htmlType="submit"
-                  className="form-tour__control-header__btn">
+                  className="form-tour__control-header__btn"
+                >
                   Add now
                 </Button>
                 <Button
                   size="large"
                   className="form-tour__control-header__btn"
-                  onClick={() => navigate('/cms/tours')}>
+                  onClick={() => navigate('/cms/tours')}
+                >
                   Cancel
                 </Button>
               </Space>
@@ -237,7 +239,8 @@ const CMSAddTour = () => {
                         required: true,
                         message: 'Please input your tour duration!',
                       },
-                    ]}>
+                    ]}
+                  >
                     <InputNumber
                       onChange={e => setDuration(e)}
                       min={1}
@@ -256,7 +259,8 @@ const CMSAddTour = () => {
                         required: true,
                         message: 'Please input max people!',
                       },
-                    ]}>
+                    ]}
+                  >
                     <InputNumber
                       min={1}
                       max={30}
@@ -273,7 +277,8 @@ const CMSAddTour = () => {
                         required: true,
                         message: 'Please input min age of tour!',
                       },
-                    ]}>
+                    ]}
+                  >
                     <Select size="large" style={{ width: 200 }}>
                       <Option value={0}>0</Option>
                       <Option value={12}>12</Option>
@@ -290,7 +295,8 @@ const CMSAddTour = () => {
                       required: true,
                       message: 'Please input overview your tour!',
                     },
-                  ]}>
+                  ]}
+                >
                   <TextArea
                     style={{ resize: 'none' }}
                     rows={3}
@@ -307,7 +313,8 @@ const CMSAddTour = () => {
                       required: true,
                       message: 'Select your services of tour',
                     },
-                  ]}>
+                  ]}
+                >
                   <Select size="large" mode="multiple">
                     {services.map((item, index) => {
                       return (
@@ -321,18 +328,21 @@ const CMSAddTour = () => {
 
                 <Collapse
                   defaultActiveKey={['1']}
-                  style={{ marginBottom: '1rem' }}>
+                  style={{ marginBottom: '1rem' }}
+                >
                   <Panel header="Images" key="1">
                     <Form.Item
                       style={{ padding: '0 1rem' }}
                       label="Cover image"
-                      name={['tourImages', 'cover']}>
+                      name={['tourImages', 'cover']}
+                    >
                       <Dragger
                         multiple={false}
                         maxCount={1}
                         customRequest={uploadCoverImage}
                         beforeUpload={beforeUpload}
-                        listType="picture">
+                        listType="picture"
+                      >
                         <p className="ant-upload-drag-icon">
                           <AiOutlineInbox />
                         </p>
@@ -349,14 +359,16 @@ const CMSAddTour = () => {
                     <Form.Item
                       label="Gallery"
                       name={['tourImages', 'gallery']}
-                      style={{ padding: '0 1rem' }}>
+                      style={{ padding: '0 1rem' }}
+                    >
                       <Dragger
                         multiple={true}
                         beforeUpload={beforeUpload}
                         customRequest={uploadGalleryImage}
                         listType="picture"
                         onChange={e => setGalleryImageonChange(e)}
-                        maxCount={5}>
+                        maxCount={5}
+                      >
                         <p className="ant-upload-drag-icon">
                           <AiOutlineInbox />
                         </p>
@@ -387,7 +399,8 @@ const CMSAddTour = () => {
                               required: true,
                               message: `Please input title of day ${i + 1}`,
                             },
-                          ]}>
+                          ]}
+                        >
                           <Input
                             style={{ resize: 'none' }}
                             rows={3}
@@ -405,7 +418,8 @@ const CMSAddTour = () => {
                                 i + 1
                               }`,
                             },
-                          ]}>
+                          ]}
+                        >
                           <Select size="large">
                             {destinations.map((item, index) => {
                               return (
@@ -427,7 +441,8 @@ const CMSAddTour = () => {
                                 i + 1
                               }`,
                             },
-                          ]}>
+                          ]}
+                        >
                           <TextArea
                             style={{ resize: 'none' }}
                             rows={3}

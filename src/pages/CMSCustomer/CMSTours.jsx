@@ -83,7 +83,8 @@ const CMSTours = () => {
       render: (_, record) => (
         <Button
           type="dashed"
-          onClick={() => navigate(`/cms/set-schedule/${record.id}`)}>
+          onClick={() => navigate(`/cms/set-schedule/${record.id}`)}
+        >
           Set schedule
         </Button>
       ),
@@ -104,7 +105,8 @@ const CMSTours = () => {
       <Breadcrumb
         style={{
           margin: '16px 0',
-        }}>
+        }}
+      >
         <Breadcrumb.Item>
           <Link to="/home">Home</Link>
         </Breadcrumb.Item>
@@ -118,7 +120,8 @@ const CMSTours = () => {
             size="large"
             icon={<AiOutlinePlus />}
             onClick={() => navigate('/cms/add-tour')}
-            className="cms-content-btn">
+            className="cms-content-btn"
+          >
             Add new tour
           </Button>
           <Button
