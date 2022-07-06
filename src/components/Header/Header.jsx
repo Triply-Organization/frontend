@@ -5,14 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineHome } from 'react-icons/ai';
 import { AiOutlineLogout } from 'react-icons/ai';
-import { BsChatRightDots } from 'react-icons/bs';
-import { BsHeart } from 'react-icons/bs';
-import { MdOutlinePlace } from 'react-icons/md';
 import { MdFeedback } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.png';
+import CurrencySelect from '../CurrencySelect/CurrencySelect';
 import LanguageSelect from './../LanguageSelect/LanguageSelect';
 import './Header.scss';
 import MobileNav from './MobileNav/MobileNav';
@@ -28,8 +26,7 @@ export default function Header() {
   // state set for mobileNav status
   const [mobileNavStatus, setMobileNavStatus] = useState(false);
   const { t } = useTranslation();
-
-  const user = JSON.parse(localStorage.getItem('user')) || null;
+  const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
   const handleLogout = () => {
@@ -41,13 +38,12 @@ export default function Header() {
     <Menu
       items={[
         {
-          disabled: true,
           key: '1',
           label: (
-            <span className="header__language-heading header__language-item">
-              <span className="header__language-abbre">
-                Hi {user && user.name}
-              </span>
+            <span className="header__language-item">
+              <Link to="/setting-account/1" className="header__language-words">
+                My profile
+              </Link>
             </span>
           ),
         },
@@ -55,7 +51,7 @@ export default function Header() {
           key: '2',
           label: (
             <span className="header__language-item">
-              <Link to="#" className="header__language-words">
+              <Link to="/my-tours" className="header__language-words">
                 {t('header.logged_in.tour')}
               </Link>
             </span>
@@ -63,16 +59,6 @@ export default function Header() {
         },
         {
           key: '3',
-          label: (
-            <span className="header__language-item">
-              <Link to="#" className="header__language-words">
-                {t('header.logged_in.review')}
-              </Link>
-            </span>
-          ),
-        },
-        {
-          key: '4',
           label: (
             <span className="header__language-item">
               <Link
@@ -98,53 +84,12 @@ export default function Header() {
       link: '/',
     },
     {
-      title: `${t('header.logged_in.save_tour')}`,
-      icon: <BsHeart />,
-      subnav: ['destination1', 'destination2', 'destination3'],
-      link: '/',
-    },
-    {
       title: `${t('cta.logout')}`,
       icon: <AiOutlineLogout />,
       link: '/login',
       onClick: handleLogout,
     },
   ];
-
-  //--------------- Currency ----------------->
-  const currency = (
-    <Menu
-      items={[
-        {
-          disabled: true,
-          key: '1',
-          label: (
-            <span className="header__currency-heading header__currency-item">
-              <span className="header__currency-abbre">
-                {t('header.currency')}
-              </span>
-            </span>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <span className="header__currency-item">
-              <span className="header__currency-abbre">USD</span>
-            </span>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <span className="header__currency-item">
-              <span className="header__currency-abbre">VND</span>
-            </span>
-          ),
-        },
-      ]}
-    />
-  );
 
   //--------------- Nav Item ----------------->
   const navItem = [
@@ -157,20 +102,8 @@ export default function Header() {
     {
       title: `${t('header.tour')}`,
       icon: <TbTicket />,
-      subnav: ['tour1', 'tour2', 'tour3', 'tour4'],
-      to: 'tours',
-    },
-    {
-      title: `${t('header.destination')}`,
-      icon: <MdOutlinePlace />,
-      subnav: ['destination1', 'destination2', 'destination3'],
-      to: 'destination',
-    },
-    {
-      title: `${t('header.contact')}`,
-      icon: <BsChatRightDots />,
       subnav: [],
-      to: 'contact',
+      to: 'tours',
     },
   ];
 
@@ -238,7 +171,7 @@ export default function Header() {
       }
     >
       <div className="header__left-side">
-        <div className="header__logo-wrapper">
+        <div className="header__logo-wrapper" onClick={() => navigate('/home')}>
           <img src={logo} alt="logo" className="header__logo" />
         </div>
         {width < 1023 ? null : (
@@ -260,16 +193,7 @@ export default function Header() {
         ) : (
           <>
             <div className="header__multi-currency">
-              <Dropdown
-                overlayClassName="header__multi-currency-dropdown"
-                overlay={currency}
-                placement="bottomRight"
-                arrow
-              >
-                <Button className="header__multi-currency-container">
-                  USD
-                </Button>
-              </Dropdown>
+              <CurrencySelect />
             </div>
             <div className="header__multi-lang-wrapper">
               <LanguageSelect />

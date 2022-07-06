@@ -1,12 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { message } from 'antd';
 
 import { orderAPI } from '../api/orderAPI';
 
 const initialState = {
   loading: false,
+  checkout: {},
+  status: {},
 };
 
-export const orderTour = createAsyncThunk('order/orderTour', async params => {
+export const booking = createAsyncThunk('order/booking', async params => {
   const res = await orderAPI.order(params);
   return res;
 });
@@ -16,15 +19,18 @@ const orderSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(orderTour.pending, state => {
+    builder.addCase(booking.pending, state => {
       state.loading = true;
     });
-    builder.addCase(orderTour.rejected, state => {
+    builder.addCase(booking.rejected, state => {
       state.loading = false;
+      message.error('Book Tour Failed !');
     });
-    builder.addCase(orderTour.fulfilled, (state, action) => {
+    builder.addCase(booking.fulfilled, (state, action) => {
       state.loading = false;
       console.log(action.payload);
+      state.checkout = action.payload.data.data;
+      state.status = action.payload.data;
     });
   },
 });

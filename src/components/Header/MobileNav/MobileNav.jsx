@@ -57,7 +57,7 @@ export default function MobileNav(props) {
         {token ? (
           <div className="mobileNav__account">
             <Title className="mobileNav__account-heading" level={4}>
-              Hi {user.name}
+              Hi {user?.name}
             </Title>
             <ul className="mobileNav__list">
               {userDataLoginMobile.map((item, index) => {
