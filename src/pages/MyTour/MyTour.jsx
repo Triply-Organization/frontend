@@ -3,74 +3,57 @@ import {
   CloseCircleOutlined,
   SyncOutlined,
 } from '@ant-design/icons';
-import { Avatar, Button, Form, Image, List, Rate, Space, Tag } from 'antd';
+import {
+  Avatar,
+  Button,
+  Form,
+  Image,
+  List,
+  Rate,
+  Skeleton,
+  Space,
+  Tag,
+} from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import _ from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
+import { userAPI } from '../../api/userApi';
 import ModalForm from '../../components/ModalForm/ModalForm';
 import './MyTour.scss';
 
 const MyTour = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [idTourToReview, setIdTourToReview] = useState({});
-  const user = {
-    id: '1',
-    username: 'ddkhoa1206@gmail.com',
-    fullname: 'Dang Khoa Duong',
-    avatar: 'https://joeschmoe.io/api/v1/random',
-  };
-  const dataSource = [
-    {
-      title: 'Thailand Waterfall',
-      id: 1,
-      cover:
-        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+  const [dataSource, setDataSource] = useState([]);
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(false);
+  const loadingContext = useLoadingContext();
 
-      bookedAt: '2022-07-05',
-      status: 'unpaid',
-      price: 100,
-      review: {
-        rating: 3.4,
-        value:
-          'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      },
-    },
-    {
-      title: 'Dalat Camping',
-      id: 2,
-      cover:
-        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+  useEffect(() => {
+    const loadingData = async () => {
+      //loading some data
+      setLoading(true);
+      try {
+        const response = await userAPI.getAllOrder();
+        const { data } = response;
+        setLoading(true);
+        setUser(data.data.user);
+        setDataSource(data.data.orders);
+      } catch (error) {
+        console.log(error);
+      }
+      //call method to indicate that loading is done
+      loadingContext.done();
+    };
 
-      bookedAt: '2022-07-05',
-      status: 'paid',
-      price: 100,
-      review: {},
-    },
-    {
-      title: 'Dalat Camping',
-      id: 3,
-      cover:
-        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+    loadingData();
+  }, []);
 
-      bookedAt: '2022-07-05',
-      status: 'refund',
-      price: 100,
-      review: {},
-    },
-    {
-      title: 'Dalat Camping',
-      id: 4,
-      cover:
-        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+  console.log(dataSource);
 
-      bookedAt: '2022-07-05',
-      status: 'refund',
-      price: 100,
-      review: {},
-    },
-  ];
   const [formReview] = Form.useForm();
 
   const handleReview = () => {
@@ -108,108 +91,115 @@ const MyTour = () => {
         itemLayout="vertical"
         size="large"
         pagination={{
+          defaultPageSize: 3,
+          hideOnSinglePage: true,
           pageSize: 3,
+          total: dataSource?.length,
         }}
         dataSource={dataSource}
         renderItem={item => {
           if (_.isEmpty(item.review)) {
             return (
-              <List.Item
-                key={item.title}
-                actions={
-                  item.status === 'paid'
-                    ? [
-                        <Button
-                          key={item.id}
-                          type="primary"
-                          onClick={() => {
-                            setIsVisible(true);
-                            setIdTourToReview({
-                              id: item.id,
-                              title: item.title,
-                            });
-                          }}
-                        >
-                          Review now
-                        </Button>,
-                      ]
-                    : item.status === 'unpaid'
-                    ? [
-                        <Button key={item.id} type="primary">
-                          Checkout
-                        </Button>,
-                      ]
-                    : null
-                }
-                extra={<Image width={272} alt="logo" src={item.cover} />}
-              >
-                <List.Item.Meta
-                  avatar={<Avatar src={user.avatar} />}
-                  title={<b>{user.fullname}</b>}
-                  description={item.bookedAt}
-                />
-                <Space direction="vertical">
-                  <p>
-                    Tour: <Link to="#">{item.title}</Link>
-                  </p>
+              <Skeleton active loading={loading} style={{ margin: '3rem 0' }}>
+                <List.Item
+                  key={item.title}
+                  actions={
+                    item.status === 'paid'
+                      ? [
+                          <Button
+                            key={item.id}
+                            type="primary"
+                            onClick={() => {
+                              setIsVisible(true);
+                              setIdTourToReview({
+                                id: item.id,
+                                title: item.title,
+                              });
+                            }}
+                          >
+                            Review now
+                          </Button>,
+                        ]
+                      : item.status === 'unpaid'
+                      ? [
+                          <Button key={item.id} type="primary">
+                            Checkout
+                          </Button>,
+                        ]
+                      : null
+                  }
+                  extra={<Image width={272} alt="logo" src={item.cover} />}
+                >
+                  <List.Item.Meta
+                    avatar={<Avatar src={user.avatar} />}
+                    title={<b>{user.fullname}</b>}
+                    description={item.bookedAt}
+                  />
+                  <Space direction="vertical">
+                    <p>
+                      Tour: <Link to="#">{item.title}</Link>
+                    </p>
 
-                  <h3 className="my-tour__price">
-                    {item.price.toLocaleString('en-US', {
-                      style: 'currency',
-                      currency: 'USD',
-                    })}
-                  </h3>
+                    <h3 className="my-tour__price">
+                      {item?.price?.toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                      })}
+                    </h3>
 
-                  {item.status === 'unpaid' ? (
-                    <Tag icon={<SyncOutlined spin />} color="processing">
-                      Waiting checkout
-                    </Tag>
-                  ) : item.status === 'paid' ? (
-                    <Tag icon={<CheckCircleOutlined />} color="success">
-                      Paid
-                    </Tag>
-                  ) : (
-                    <Tag icon={<CloseCircleOutlined />} color="error">
-                      Refund
-                    </Tag>
-                  )}
-                </Space>
-              </List.Item>
+                    {item.status === 'unpaid' ? (
+                      <Tag icon={<SyncOutlined spin />} color="processing">
+                        Waiting checkout
+                      </Tag>
+                    ) : item.status === 'paid' ? (
+                      <Tag icon={<CheckCircleOutlined />} color="success">
+                        Paid
+                      </Tag>
+                    ) : (
+                      <Tag icon={<CloseCircleOutlined />} color="error">
+                        Refund
+                      </Tag>
+                    )}
+                  </Space>
+                </List.Item>
+              </Skeleton>
             );
           } else {
             return (
-              <List.Item
-                key={item.title}
-                extra={<Image width={272} alt="logo" src={item.cover} />}
-              >
-                <List.Item.Meta
-                  avatar={<Avatar src={user.avatar} />}
-                  title={<b>{user.fullname}</b>}
-                  description={item.bookedAt}
-                />
-                <Space direction="vertical">
-                  <p>
-                    Tour: <Link to="#">{item.title}</Link>
-                  </p>
+              <Skeleton active loading={loading} style={{ margin: '3rem 0' }}>
+                <List.Item
+                  key={item.title}
+                  extra={<Image width={272} alt="logo" src={item.cover} />}
+                >
+                  <List.Item.Meta
+                    avatar={<Avatar src={user.avatar} />}
+                    title={<b>{user.fullname}</b>}
+                    description={item.bookedAt}
+                  />
+                  <Space direction="vertical">
+                    <p>
+                      Tour: <Link to="#">{item.title}</Link>
+                    </p>
 
-                  <h2 className="my-tour__price">
-                    {item.price.toLocaleString('en-US', {
-                      style: 'currency',
-                      currency: 'USD',
-                    })}
-                  </h2>
+                    <h2 className="my-tour__price">
+                      {item.price.toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                      })}
+                    </h2>
 
-                  <Space>
-                    <Tag icon={<CheckCircleOutlined />} color="success">
-                      Paid
-                    </Tag>
-                    <Tag color="warning">Reviewed</Tag>
+                    <Space>
+                      <Tag icon={<CheckCircleOutlined />} color="success">
+                        Paid
+                      </Tag>
+                      <Tag color="warning">Reviewed</Tag>
+                    </Space>
+
+                    <p>{item.review.value}</p>
+                    <Rate disabled defaultValue={item.review.rating} />
                   </Space>
-
-                  <p>{item.review.value}</p>
-                  <Rate disabled defaultValue={item.review.rating} />
-                </Space>
-              </List.Item>
+                </List.Item>
+              </Skeleton>
             );
           }
         }}

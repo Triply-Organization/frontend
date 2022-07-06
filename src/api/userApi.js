@@ -10,4 +10,13 @@ export const userAPI = {
     const url = `/register`;
     return axiosClient.post(url, params);
   },
+
+  getAllOrder() {
+    const url = `/users`;
+    return axiosClient.get(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+  },
 };
