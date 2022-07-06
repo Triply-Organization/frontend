@@ -12,6 +12,7 @@ import {
   message,
 } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { axiosClient } from '../../api/config/axiosClient';
@@ -35,6 +36,7 @@ const Checkout = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const filterTimeout = useRef(null);
+  const { t } = useTranslation();
 
   const onFinish = values => {
     const valueWithoutVoucher = {
@@ -144,7 +146,9 @@ const Checkout = () => {
       <div className="ctn ctn-checkout">
         <div className="ctn-checkout__left-ctn">
           <div className="ctn-checkout__left-ctn__title">
-            <Title level={2}>Order #{checkoutData.id}</Title>
+            <Title level={2}>
+              {t('checkout.order_detail.title')} #{checkoutData.id}
+            </Title>
           </div>
           <OrderDetail
             data={checkoutData}
@@ -156,7 +160,7 @@ const Checkout = () => {
 
         <div className="ctn-checkout__right-ctn">
           <div className="ctn-checkout__right-ctn__title">
-            <Title level={2}>Contact information</Title>
+            <Title level={2}>{t('checkout.contact_information.title')}</Title>
           </div>
           <div className="ctn-checkout__right-ctn__form">
             <Form
@@ -178,7 +182,9 @@ const Checkout = () => {
                   },
                 ]}
               >
-                <Input placeholder="First name" />
+                <Input
+                  placeholder={t('checkout.contact_information.first_name')}
+                />
               </Form.Item>
               <Form.Item
                 name="last_name"
@@ -189,7 +195,9 @@ const Checkout = () => {
                   },
                 ]}
               >
-                <Input placeholder="Last name" />
+                <Input
+                  placeholder={t('checkout.contact_information.last_name')}
+                />
               </Form.Item>
               <Form.Item
                 name="email"
@@ -204,7 +212,7 @@ const Checkout = () => {
                   },
                 ]}
               >
-                <Input placeholder="Email" />
+                <Input placeholder={t('checkout.contact_information.email')} />
               </Form.Item>
               <Form.Item
                 name="phone"
@@ -219,11 +227,11 @@ const Checkout = () => {
                   },
                 ]}
               >
-                <Input placeholder="Contact number" />
+                <Input placeholder={t('checkout.contact_information.phone')} />
               </Form.Item>
 
               <Title level={2} className="payment-title">
-                Payment Method
+                {t('checkout.contact_information.payment')}
               </Title>
 
               <Form.Item name="payment">
@@ -246,7 +254,9 @@ const Checkout = () => {
               <Form.Item
                 name="discount"
                 label={
-                  <Title level={5}>Apply your voucher for discount!</Title>
+                  <Title level={5}>
+                    {t('checkout.contact_information.voucher_notify')}
+                  </Title>
                 }
                 rules={[
                   {
@@ -260,7 +270,7 @@ const Checkout = () => {
                     <Form.Item name="discount" noStyle>
                       <Input
                         allowClear
-                        placeholder="VOUCHER CODE"
+                        placeholder={t('checkout.contact_information.voucher')}
                         onChange={handleChangInputVoucher}
                       />
                     </Form.Item>
@@ -271,7 +281,7 @@ const Checkout = () => {
                       onClick={handleClickVoucherButton}
                       className="voucher-btn"
                     >
-                      Apply
+                      {t('cta.apply')}
                     </Button>
                   </Col>
                 </Row>
@@ -292,7 +302,8 @@ const Checkout = () => {
                 ]}
               >
                 <Checkbox>
-                  I have read the <a href="">agreement</a>
+                  {t('checkout.contact_information.agreement')}{' '}
+                  <a href="">agreement</a>
                 </Checkbox>
               </Form.Item>
 
@@ -303,7 +314,7 @@ const Checkout = () => {
                   type="primary"
                   className="button-checkout-page"
                 >
-                  Complete My Order
+                  {t('cta.complete_order')}
                 </Button>
               </Form.Item>
             </Form>
