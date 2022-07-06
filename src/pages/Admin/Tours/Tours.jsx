@@ -1,30 +1,68 @@
-import { Breadcrumb, Button, Space, Table, Tag } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Breadcrumb, Button, Modal, Space, Spin, Table, Tag } from 'antd';
 import { Typography } from 'antd';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
+import { getTours } from '../../../app/AdminSlice';
+
+const { confirm } = Modal;
 const { Title } = Typography;
 
 export default function Tours() {
-  // GET PAGINATION ...
+  const dispatch = useDispatch();
+  const tours = useSelector(state => state.admin.toursData.tours);
+  const isLoading = useSelector(state => state.admin.loading);
+  const totalPages = useSelector(state => state.admin.toursData.totalPages);
+  const totalTours = useSelector(state => state.admin.toursData.totalTours);
 
+  // const page = useSelector();
+  const [searchParams, setSearchParams] = useSearchParams();
+  // GET PAGINATION ...
+  const [page, setPage] = useState(searchParams.get('page') || 1);
   // GET TOUR DATA
+
+  // FLAG PREVENT CALL API TWICE
+  const [flag, setFlag] = useState(0);
 
   // Handle Approve Tour
   const handleApproveTour = record => {
-    console.log('APPROVE: ', record);
+    console.log('APPROVE: ');
+
+    console.log('DISPATCH APPROVE: ', record.id);
+    const request = {
+      status: 'enable',
+    };
+    console.log(request);
+    // dispatch(updateTourStatus(record.id, request))
   };
 
   //Handle disable tour
   const handleDisableTour = record => {
     console.log('DISABLE: ', record);
+
+    console.log('DISPATCH DISABLED: ', record.id);
+    const request = {
+      status: 'disabled',
+    };
+    console.log(request);
+    // dispatch(updateTourStatus(record.id, request))
   };
 
   // Handle able tour
-  const handleAbleTour = record => {
+  const handleEnableTour = record => {
     console.log('ABLE: ', record);
+
+    console.log('DISPATCH ENABLE: ', record.id);
+    const request = {
+      status: 'enable',
+    };
+    console.log(request);
+    // dispatch(updateTourStatus(record.id, request))
   };
 
   // Set loading context for PAGE
@@ -33,13 +71,76 @@ export default function Tours() {
   const loading = async () => {
     //loading some data
 
+    // if (searchParams.get('page')) {
+    //   console.log('CO PARAM');
+    //   // IF HAS SEARCH PARAMS
+    // } else {
+    //   // IF HAS NO SEARCH PARAMS
+    //   console.log('KHONG CO PARAM');
+    //   setSearchParams({ page });
+    // }
+
+    if (!searchParams.get('page')) {
+      setSearchParams({ page });
+    }
+
+    dispatch(getTours(location.search));
+
     //call method to indicate that loading is done
     loadingContext.done();
   };
 
+  // HANDLE CONFIRM DISABLED
+  const showConfirmDisabled = record => {
+    confirm({
+      title: 'Confirm!',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Do you really want to change status to Disable?',
+
+      onOk() {
+        handleDisableTour(record);
+      },
+    });
+  };
+
+  // HANDLE CONFIRM APPROVE
+  const showConfirmApproved = record => {
+    confirm({
+      title: 'Confirm!',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Do you really want to approve this tour?',
+
+      onOk() {
+        handleApproveTour(record);
+      },
+    });
+  };
+
+  // HANDLE CONFIRM ENABLE
+  const showConfirmEnabled = record => {
+    confirm({
+      title: 'Confirm!',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Do you really want to change status to Enabled?',
+
+      onOk() {
+        handleEnableTour(record);
+      },
+    });
+  };
+
   useEffect(() => {
     loading();
+    setFlag(flag + 1);
   }, []);
+
+  useEffect(() => {
+    if (flag !== 0) {
+      setSearchParams({ page });
+      dispatch(getTours(location.search));
+    }
+  }, [page]);
+
   const columns = [
     {
       title: 'Title',
@@ -79,12 +180,6 @@ export default function Tours() {
       sorter: (a, b) => a.minAge - b.minAge,
     },
     {
-      title: 'Price',
-      dataIndex: 'price',
-      key: 'price',
-      sorter: (a, b) => a.price - b.price,
-    },
-    {
       title: 'Created at',
       dataIndex: 'createdAt',
       key: 'createdAt',
@@ -96,14 +191,14 @@ export default function Tours() {
       dataIndex: 'status',
       render: status => {
         switch (status) {
-          case 'processing': {
+          case 'pending': {
             return (
               <Tag color="volcano" key={status}>
                 {status.toUpperCase()}
               </Tag>
             );
           }
-          case 'approved': {
+          case 'enable': {
             return (
               <Tag color="cyan" key={status}>
                 {status.toUpperCase()}
@@ -125,171 +220,43 @@ export default function Tours() {
       title: 'Action',
       key: 'action',
       render: (_, record) => {
-        if (record.status === 'processing') {
+        if (record.status === 'pending') {
           return (
             <Space size={'middle'}>
-              <Button type="primary" onClick={() => handleApproveTour(record)}>
-                Approved
+              <Button
+                type="primary"
+                onClick={() => showConfirmApproved(record)}
+              >
+                Approve
               </Button>
-              <Button onClick={() => handleDisableTour(record)}>Disable</Button>
+              <Button onClick={() => showConfirmDisabled(record)}>
+                Disable
+              </Button>
             </Space>
           );
         } else if (record.status === 'disabled') {
           return (
             <Space size={'middle'}>
               <Button
-                onClick={() => handleAbleTour(record)}
+                onClick={() => showConfirmEnabled(record)}
                 type="ghost"
                 style={{ background: '#008000b3', color: '#fff' }}
               >
-                Able
+                Enable
               </Button>
             </Space>
           );
         } else {
           return (
-            <Button onClick={() => handleDisableTour(record)}>Disable</Button>
+            <Button onClick={() => showConfirmDisabled(record)}>Disable</Button>
           );
         }
       },
     },
   ];
-  const data = [
-    {
-      key: '1',
-      id: 1,
-      title: 'a',
-      customer: 'q',
-      duration: 4,
-      maxPeople: 52,
-      minAge: 10,
-      price: 10,
-      createdAt: moment('2022-07-05 02:06:24').format('DD/MM/YYYY'),
-      status: 'processing',
-    },
-    {
-      key: '2',
-      id: 2,
-      title: 'b',
-      customer: 'w',
-      duration: 12,
-      maxPeople: 54,
-      minAge: 11,
-      price: 33,
-      createdAt: '1-3-2019',
-      status: 'disabled',
-    },
-    {
-      key: '3',
-      id: 3,
-      title: 'c',
-      customer: 'e',
-      duration: 33,
-      maxPeople: 55,
-      minAge: 2,
-      price: 44,
-      createdAt: '1-2-2019',
-      status: 'approved',
-    },
-    {
-      key: '4',
-      id: 4,
-      title: 'asd',
-      customer: 'qzxcq',
-      duration: 5,
-      maxPeople: 52,
-      minAge: 10,
-      price: 10,
-      createdAt: '11-2-2019',
-      status: 'processing',
-    },
-    {
-      key: '5',
-      id: 5,
-      title: 'sb',
-      customer: 'w',
-      duration: 12,
-      maxPeople: 54,
-      minAge: 11,
-      price: 33,
-      createdAt: '9-3-2019',
-      status: 'disabled',
-    },
-    {
-      key: '6',
-      id: 6,
-      title: 'ca',
-      customer: 'e',
-      duration: 33,
-      maxPeople: 55,
-      minAge: 2,
-      price: 44,
-      createdAt: '13-5-2020',
-      status: 'approved',
-    },
-    {
-      key: '7',
-      id: 7,
-      title: 'aza',
-      customer: 'q',
-      duration: 4,
-      maxPeople: 52,
-      minAge: 10,
-      price: 10,
-      createdAt: '11-11-2019',
-      status: 'processing',
-    },
-    {
-      key: '8',
-      id: 8,
-      title: 'lb',
-      customer: 'w',
-      duration: 12,
-      maxPeople: 54,
-      minAge: 11,
-      price: 33,
-      createdAt: '3-3-2019',
-      status: 'disabled',
-    },
-    {
-      key: '9',
-      id: 9,
-      title: 'c',
-      customer: 'e',
-      duration: 33,
-      maxPeople: 55,
-      minAge: 2,
-      price: 44,
-      createdAt: '11-2-2019',
-      status: 'approved',
-    },
-    {
-      key: '10',
-      id: 10,
-      title: 'asc',
-      customer: 'e',
-      duration: 33,
-      maxPeople: 55,
-      minAge: 2,
-      price: 44,
-      createdAt: '1-2-2019',
-      status: 'approved',
-    },
-    {
-      key: '11',
-      id: 11,
-      title: 'c',
-      customer: 'e',
-      duration: 33,
-      maxPeople: 55,
-      minAge: 2,
-      price: 44,
-      createdAt: '2-2-2019',
-      status: 'approved',
-    },
-  ];
+
   return (
-    <>
+    <Spin spinning={isLoading}>
       <Breadcrumb
         style={{
           margin: '16px 0',
@@ -317,17 +284,20 @@ export default function Tours() {
             size="large"
             pagination={{
               // defaultPageSize: 6,
+              totalPages,
+              total: totalTours,
+              defaultCurrent: page,
               showSizeChanger: false,
               onChange: e => {
-                console.log(e);
+                setPage(e);
               },
             }}
             bordered
             columns={columns}
-            dataSource={data}
+            dataSource={tours}
           />
         </Space>
       </div>
-    </>
+    </Spin>
   );
 }

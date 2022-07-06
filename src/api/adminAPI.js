@@ -1,5 +1,4 @@
 import { axiosClient } from './config/axiosClient';
-import { fakeTourAxios } from './config/fakeToursAxios';
 
 export const adminAPI = {
   getBooking(year) {
@@ -29,8 +28,21 @@ export const adminAPI = {
     });
   },
 
-  getTours() {
-    const url = `tours`;
-    return fakeTourAxios.get(url);
+  getTours(params) {
+    const url = `/tours/all/${params}`;
+    return axiosClient.get(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+  },
+
+  updateTours(id, body) {
+    const url = `/tours/changeStatus/${id}`;
+    return axiosClient.patch(url, body, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
   },
 };

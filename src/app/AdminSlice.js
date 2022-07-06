@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
+import moment from 'moment';
 
 import { adminAPI } from '../api/adminAPI';
 
@@ -7,7 +8,6 @@ export const getTotalBooking = createAsyncThunk(
   'admin/total-booking',
   async year => {
     const res = await adminAPI.getBooking(year);
-    console.log(res.data);
     return res.data;
   },
 );
@@ -25,16 +25,24 @@ export const getOverall = createAsyncThunk('admin/overall', async () => {
   return res.data;
 });
 
-export const getTours = createAsyncThunk('admin/tours', async () => {
-  const res = await adminAPI.getTours();
-  return res.data[0];
+export const getTours = createAsyncThunk('admin/tours', async params => {
+  const res = await adminAPI.getTours(params);
+  return res.data;
 });
+
+export const updateTourStatus = createAsyncThunk(
+  'admin/update-tour-status',
+  async (id, body) => {
+    const res = await adminAPI.updateTours(id, body);
+    return res.data;
+  },
+);
 
 let initialState = {
   totalBookingData: [],
   totalCommissionData: [],
   overall: [],
-  tours: [],
+  toursData: {},
   loading: false,
 };
 
@@ -81,7 +89,6 @@ const adminSlice = createSlice({
       if (data.status === 'success') {
         const responseData = data.data;
         const lineData = [];
-        console.log(responseData);
         for (const [key, val] of Object.entries(responseData)) {
           for (const [key1, val1] of Object.entries(val)) {
             lineData.push({ month: key, value: val1, type: key1 });
@@ -113,11 +120,48 @@ const adminSlice = createSlice({
     });
     builder.addCase(getTours.rejected, state => {
       state.loading = false;
-      message.error('Something went wrong! Could not get overall information');
+      message.error('Something went wrong! Could not get tours');
     });
     builder.addCase(getTours.fulfilled, (state, action) => {
       state.loading = false;
-      console.log(action.payload);
+      const data = action.payload;
+      if (data.status === 'success') {
+        const toursArray = [];
+        data.data.tours?.map(item => {
+          toursArray.push({
+            key: item.id,
+            id: item.id,
+            title: item.title,
+            customer: item.createdUser,
+            duration: item.duration,
+            maxPeople: item.maxPeople,
+            minAge: item.minAge,
+            createdAt: moment(item.date).format('DD/MM/YYYY'),
+            status: item.status,
+          });
+        });
+
+        state.toursData = {
+          ...data.data,
+          tours: toursArray,
+        };
+      }
+    });
+
+    // UPDATE TOUR STATUS
+    builder.addCase(updateTourStatus.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(updateTourStatus.rejected, state => {
+      state.loading = false;
+      message.error('Something went wrong! Could not update tour status');
+    });
+    builder.addCase(updateTourStatus.fulfilled, (state, action) => {
+      state.loading = false;
+      const data = action.payload;
+      if (data.status === 'success') {
+        console.log();
+      }
     });
   },
 });
