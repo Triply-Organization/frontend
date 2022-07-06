@@ -26,7 +26,6 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import {
-  createTour,
   getDestinationsServiceTours,
   getDetailTour,
 } from '../../app/toursSlice';
@@ -143,8 +142,13 @@ const CMSAddTour = () => {
         day: index + 1,
       })),
     };
-    form.resetFields();
-    dispatch(createTour(response));
+    // form.resetFields();
+    // dispatch(createTour(response));
+    console.log(response);
+  };
+
+  const checkIfChange = (changedValues, values) => {
+    console.log(changedValues, values);
   };
 
   const uploadCoverImage = async options => {
@@ -221,6 +225,7 @@ const CMSAddTour = () => {
         <Breadcrumb.Item>Add Tour</Breadcrumb.Item>
       </Breadcrumb>
       <Form
+        onValuesChange={checkIfChange}
         form={form}
         className="form-tour"
         name="form-tour"
