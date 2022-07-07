@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Space, Table } from 'antd';
+import { Breadcrumb, Button, Table } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlinePlus } from 'react-icons/ai';
@@ -13,10 +13,6 @@ const CMSTours = () => {
   const [data, setData] = useState();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const loadingContext = useLoadingContext();
-  // Handle
-  // const onEditTour = tour => {
-  //   console.log(tour);
-  // };
 
   // const deleteTour = () => {
 
@@ -85,20 +81,12 @@ const CMSTours = () => {
       dataIndex: 'x',
       key: 'x',
       render: (_, record) => (
-        <Space>
-          <Button
-            type="ghost"
-            onClick={() => navigate(`/cms/edit-tour/${record.id}`)}
-          >
-            Edit
-          </Button>
-          <Button
-            type="ghost"
-            onClick={() => navigate(`/cms/set-schedule/${record.id}`)}
-          >
-            Set schedule
-          </Button>
-        </Space>
+        <Button
+          type="dashed"
+          onClick={() => navigate(`/cms/set-schedule/${record.id}`)}
+        >
+          Set schedule
+        </Button>
       ),
     },
   ];
