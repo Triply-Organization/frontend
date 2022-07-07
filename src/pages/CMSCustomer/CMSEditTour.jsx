@@ -10,8 +10,10 @@ import {
   Space,
   Tabs,
   Upload,
+  message,
 } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
+import axios from 'axios';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,7 +47,6 @@ const CMSEditTour = () => {
   const loading = useSelector(state => state.tours.loading);
 
   const loadingContext = useLoadingContext();
-  loadingContext.done();
   const { id } = useParams();
   const [formInformation] = Form.useForm();
   const [formCover] = Form.useForm();
@@ -68,6 +69,7 @@ const CMSEditTour = () => {
     if (_.isEmpty()) {
       dispatch(getDestinationsServiceTours());
     }
+    loadingContext.done();
   }, []);
 
   useEffect(() => {
@@ -85,13 +87,31 @@ const CMSEditTour = () => {
         services: tour.services.map(item => item.id),
       };
 
-      const valueFormCoverImage = tour.tourImages.filter(
-        item => item.type === 'cover',
-      );
+      let valueFormCoverImage = tour.tourImages.map(item => {
+        if (item.type === 'cover')
+          return {
+            uid: item.id,
+            url: item.path,
+            name: '',
+            status: 'done',
+          };
+      });
+      valueFormCoverImage = valueFormCoverImage.filter(function (element) {
+        return element !== undefined;
+      });
 
-      const valueFormCoverGallery = tour.tourImages.filter(
-        item => item.type === 'gallery',
-      );
+      let valueFormCoverGallery = tour.tourImages.map(item => {
+        if (item.type === 'cover')
+          return {
+            uid: '1',
+            name: '',
+            status: 'done',
+            url: item.path,
+          };
+      });
+      valueFormCoverGallery = valueFormCoverGallery.filter(function (element) {
+        return element !== undefined;
+      });
 
       setCover(valueFormCoverImage);
       setValueCover(valueFormCoverImage);
@@ -128,34 +148,50 @@ const CMSEditTour = () => {
     setDisableUpdateInfomation(true);
   };
 
-  //   const uploadCoverImage = async options => {
-  //     const { onSuccess, onError, file } = options;
-  //     const fmData = new FormData();
-  //     const config = {
-  //       headers: {
-  //         'content-type': 'multipart/form-data',
-  //         Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //       },
-  //     };
-  //     fmData.append('image[]', file);
-  //     try {
-  //       const res = await axios.post(
-  //         'https://api.nhivo-rentcar.me/api/images/',
-  //         fmData,
-  //         config,
-  //       );
-  //       onSuccess('Ok');
-  //       const tempCoverImg = {
-  //         id: res.data.data[0]?.id,
-  //         type: 'cover',
-  //         file,
-  //       };
-  //       setCover(tempCoverImg);
-  //     } catch (err) {
-  //       console.log('Eroor: ', err);
-  //       onError({ err });
-  //     }
-  //   };
+  const beforeUpload = file => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+
+    const isLt2M = file.size / 1024 / 1024 < 10;
+
+    if (!isLt2M) {
+      message.error('Image must smaller than 10MB!');
+    }
+
+    return isJpgOrPng && isLt2M;
+  };
+
+  const uploadCoverImage = async options => {
+    const { onSuccess, onError, file } = options;
+    const fmData = new FormData();
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    };
+    fmData.append('image[]', file);
+    try {
+      const res = await axios.post(
+        'https://api.triply.asia/api/images/',
+        fmData,
+        config,
+      );
+      onSuccess('Ok');
+      const tempCoverImg = {
+        id: res.data.data[0]?.id,
+        type: 'cover',
+        file,
+      };
+      setCover(tempCoverImg);
+    } catch (err) {
+      console.log('Eroor: ', err);
+      onError({ err });
+    }
+  };
 
   //   const uploadGalleryImage = async options => {
   //     const { onSuccess, onError, file } = options;
@@ -189,6 +225,7 @@ const CMSEditTour = () => {
 
   const onEditFormCoverImage = values => {
     console.log(values);
+    console.log(valueCover);
   };
 
   const onEditFormGallery = values => {
@@ -381,28 +418,33 @@ const CMSEditTour = () => {
               layout="vertical"
               autoComplete="off"
             >
-              <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture-card"
-                fileList={cover}
-                onPreview={handlePreviewCover}
-                onChange={handleChangeCover}
-              >
-                {cover.length !== 0 ? null : uploadButton}
-              </Upload>
-              <Modal
-                visible={previewVisibleCover}
-                footer={null}
-                onCancel={handleCancelCover}
-              >
-                <img
-                  alt="example"
-                  style={{
-                    width: '100%',
-                  }}
-                  src={previewImageCover}
-                />
-              </Modal>
+              {!_.isEmpty(cover) && (
+                <>
+                  <Upload
+                    beforeUpload={beforeUpload}
+                    customRequest={uploadCoverImage}
+                    listType="picture-card"
+                    fileList={cover}
+                    onPreview={handlePreviewCover}
+                    onChange={handleChangeCover}
+                  >
+                    {cover.length !== 0 ? null : uploadButton}
+                  </Upload>
+                  <Modal
+                    visible={previewVisibleCover}
+                    footer={null}
+                    onCancel={handleCancelCover}
+                  >
+                    <img
+                      alt="example"
+                      style={{
+                        width: '100%',
+                      }}
+                      src={previewImageCover}
+                    />
+                  </Modal>
+                </>
+              )}
 
               <Form.Item>
                 <Button
