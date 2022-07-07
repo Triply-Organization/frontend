@@ -93,7 +93,7 @@ export const getAllReviews = createAsyncThunk(
 export const deleteReview = createAsyncThunk(
   'admin/delete-reviews',
   async (params, thunkAPI) => {
-    const res = await adminAPI.getAllReviews(params.id);
+    const res = await adminAPI.deleteReview(params.id);
     thunkAPI.dispatch(getAllReviews(params.searchParams));
     return res.data;
   },
@@ -200,7 +200,7 @@ const adminSlice = createSlice({
             duration: item.duration,
             maxPeople: item.maxPeople,
             minAge: item.minAge,
-            createdAt: moment(item.date).format('DD/MM/YYYY'),
+            createdAt: moment(item.date).format('YYYY-MM-DD'),
             status: item.status,
           });
         });
@@ -355,7 +355,7 @@ const adminSlice = createSlice({
             key: item.id,
             id: item.id,
             email: item.user.email,
-            createdAt: moment(item.createdAt.date).format('DD/MM/YYYY'),
+            createdAt: moment(item.createdAt.date).format('YYYY-MM-DD'),
             comment: item.comment,
             tourTitle: item.tour.name,
             rating:

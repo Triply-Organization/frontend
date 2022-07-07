@@ -70,11 +70,6 @@ export default function Reviews() {
 
       onOk() {
         // HANDLE DELETE ACCOUNT
-        // console.log({
-        //   id: record.id,
-        //   searchParams: location.search,
-        // });
-
         dispatch(
           deleteReview({
             id: record.id,
