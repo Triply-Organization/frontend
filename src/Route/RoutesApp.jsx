@@ -45,32 +45,28 @@ const RoutesApp = () => {
           </>
         }
       >
-        <Route index element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/setting-account/:id" element={<SettingAccount />} />
-        <Route path="/tours">
-          <Route index element={<AllTours />} loading />
-          <Route path=":search" element={<AllTours />} loading />
-        </Route>
-        <Route path="/my-tours" element={<MyTour />} />
-        <Route path="/detail/:id" element={<DetailTour />} />
+        <Route index element={<Home />} />
+        <Route path="setting-account/:id" element={<SettingAccount />} />
+        <Route path="tours" element={<AllTours />} loading />
+        <Route path="my-tours" element={<MyTour />} />
+        <Route path="detail/:id" element={<DetailTour />} />
         <Route path="confirmation/:id" element={<Confirmation />} />
       </Route>
       <Route path="/admin" element={<Admin />}>
-        <Route index element={<Dashboard />} />
+        <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} loading />
         <Route path="tours" element={<Tours />} loading />
         <Route path="users" element={<Users />} />
         <Route path="customers" element={<Customers />} />
         <Route path="reviews" element={<h1>Reviews</h1>} />
       </Route>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
       <Route path="checkout/:id" element={<Checkout />} />
       <Route path="confirmation/:id" element={<Confirmation />} />
 
       <Route path="/cms" element={<CMSCustomer />}>
-        <Route index element={<Navigate to="dashboard" replace />} loading />
+        <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<CMSDashBoard />} loading />
         <Route path="tours" element={<CMSTours />} loading />
         <Route path="add-tour" element={<CMSHandleTour />} loading />
