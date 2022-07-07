@@ -82,6 +82,14 @@ export const deleteCustomer = createAsyncThunk(
   },
 );
 
+export const getAllReviews = createAsyncThunk(
+  'admin/get-reviews',
+  async params => {
+    const res = await adminAPI.getAllReviews(params);
+    return res.data;
+  },
+);
+
 let initialState = {
   totalBookingData: [],
   totalCommissionData: [],
@@ -89,6 +97,7 @@ let initialState = {
   toursData: {},
   usersData: {},
   customersData: {},
+  reviewsData: {},
   loading: false,
 };
 
@@ -316,6 +325,40 @@ const adminSlice = createSlice({
     builder.addCase(deleteCustomer.fulfilled, state => {
       state.loading = false;
       message.success('Delete customer account successfully');
+    });
+
+    // GET ALL REVIEWS
+    builder.addCase(getAllReviews.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(getAllReviews.rejected, state => {
+      state.loading = false;
+      message.error('Something went wrong! Could not get reviews');
+    });
+    builder.addCase(getAllReviews.fulfilled, (state, action) => {
+      state.loading = false;
+      const data = action.payload;
+      if (data.status === 'success') {
+        const responseData = data.data;
+        const reviews = [];
+        responseData.reviews?.map(item => {
+          reviews.push({
+            key: item.id,
+            id: item.id,
+            email: item.user.email,
+            createdAt: moment(item.createdAt.date).format('DD/MM/YYYY'),
+            comment: item.comment,
+            tourTitle: item.tour.name,
+            rating:
+              item.rating?.reduce((prev, cur) => prev + cur.rate, 0) /
+              item.rating.length,
+          });
+        });
+        state.reviewsData = {
+          ...responseData,
+          reviews,
+        };
+      }
     });
   },
 });

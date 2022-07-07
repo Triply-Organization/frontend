@@ -165,8 +165,7 @@ export default function Customers() {
   return (
     <Spin
       tip="loading..."
-      spinning={false}
-      // spinning={isLoading}
+      spinning={isLoading}
       style={{
         marginTop: '100px',
       }}

@@ -292,6 +292,7 @@ export default function Tours() {
             pagination={{
               current: page,
               total: totalTours,
+              totalPages: totalPages,
               pageSize: 6,
               showSizeChanger: false,
               onChange: e => {

@@ -6,14 +6,17 @@ import {
   Rate,
   Row,
   Space,
+  Spin,
   Table,
   Typography,
 } from 'antd';
 import confirm from 'antd/lib/modal/confirm';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
+import { getAllReviews } from '../../../app/AdminSlice';
 import './Reviews.scss';
 
 const { Title } = Typography;
@@ -22,6 +25,14 @@ export default function Reviews() {
   const loadingContext = useLoadingContext();
 
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const dispatch = useDispatch();
+  const reviews = useSelector(state => state.admin.reviewsData.reviews);
+  const isLoading = useSelector(state => state.admin.loading);
+  const totalPages = useSelector(state => state.admin.reviewsData.totalPages);
+  const totalReviews = useSelector(
+    state => state.admin.reviewsData.totalReviews,
+  );
 
   const [page, setPage] = useState(searchParams.get('page') || 1);
   // FLAG PREVENT CALL API TWICE
@@ -32,6 +43,8 @@ export default function Reviews() {
     if (!searchParams.get('page')) {
       setSearchParams({ page });
     }
+    dispatch(getAllReviews(location.search));
+
     //call method to indicate that loading is done
     loadingContext.done();
   };
@@ -44,7 +57,7 @@ export default function Reviews() {
   useEffect(() => {
     if (flag !== 0) {
       setSearchParams({ page });
-      // dispatch(getTours(location.search));
+      dispatch(getAllReviews(location.search));
     }
   }, [page]);
 
@@ -82,9 +95,9 @@ export default function Reviews() {
       render: text => <p className="reviews__comment">{text}</p>,
     },
     {
-      title: 'Tour Name',
-      dataIndex: 'tourName',
-      key: 'tourName',
+      title: 'Tour Title',
+      dataIndex: 'tourTitle',
+      key: 'tourTitle',
       width: '20%',
     },
     {
@@ -113,99 +126,62 @@ export default function Reviews() {
       },
     },
   ];
-  const data = [
-    {
-      key: 1,
-      email: 'a@gmail.com',
-      createdAt: '2/2/2000',
-      comment:
-        'sdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcx sdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcx',
-      tourName: 'Long xuyen USA',
-      rating: 3.5,
-    },
-    {
-      key: 2,
-      email: 'a@gmail.com',
-      createdAt: '2/2/2000',
-      comment:
-        'sdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcx sdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcx',
-      tourName: 'Long xuyen USA',
-      rating: 1.5,
-    },
-    {
-      key: 3,
-      email: 'a@gmail.com',
-      createdAt: '2/2/2000',
-      comment:
-        'sdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcx sdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcx',
-      tourName: 'Long xuyen USA',
-      rating: 2.5,
-    },
-    {
-      key: 4,
-      email: 'a@gmail.com',
-      createdAt: '2/2/2000',
-      comment:
-        'sdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcx sdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcx',
-      tourName: 'Long xuyen USA',
-      rating: 5,
-    },
-    {
-      key: 5,
-      email: 'a@gmail.com',
-      createdAt: '2/2/2000',
-      comment:
-        'sdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcx sdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcxsdfxcvwq er fsdfxcvz ewrwqrwwqer wxvczcx',
-      tourName: 'Long xuyen USA',
-      rating: 4,
-    },
-  ];
+
   return (
     <>
-      <Breadcrumb
+      <Spin
+        tip="loading..."
+        spinning={isLoading}
         style={{
-          margin: '16px 0',
+          marginTop: '100px',
         }}
       >
-        <Breadcrumb.Item>
-          <Title level={3}>Reviews</Title>
-        </Breadcrumb.Item>
-      </Breadcrumb>
-      <div
-        className="site-layout-background"
-        style={{
-          padding: 24,
-          minHeight: 360,
-        }}
-      >
-        <Space
-          direction="vertical"
-          size="large"
+        <Breadcrumb
           style={{
-            display: 'flex',
+            margin: '16px 0',
           }}
         >
-          <Row>
-            <Col span={24}>
-              <Table
-                size="large"
-                pagination={{
-                  current: page,
-                  //  total: totalReviews,
-                  pageSize: 6,
-                  showSizeChanger: false,
-                  onChange: e => {
-                    setPage(e);
-                  },
-                }}
-                bordered
-                columns={columns}
-                dataSource={data}
-              />
-            </Col>
-          </Row>
-        </Space>
-      </div>
+          <Breadcrumb.Item>
+            <Title level={3}>Reviews</Title>
+          </Breadcrumb.Item>
+        </Breadcrumb>
+        <div
+          className="site-layout-background"
+          style={{
+            padding: 24,
+            minHeight: 360,
+          }}
+        >
+          <Space
+            direction="vertical"
+            size="large"
+            style={{
+              display: 'flex',
+            }}
+          >
+            <Row>
+              <Col span={24}>
+                <Table
+                  size="large"
+                  pagination={{
+                    current: page,
+                    total: totalReviews,
+                    totalPages,
+                    pageSize: 6,
+                    showSizeChanger: false,
+                    onChange: e => {
+                      setPage(e);
+                    },
+                  }}
+                  bordered
+                  columns={columns}
+                  dataSource={reviews}
+                />
+              </Col>
+            </Row>
+          </Space>
+        </div>
+      </Spin>
     </>
   );
 }

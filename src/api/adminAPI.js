@@ -90,4 +90,13 @@ export const adminAPI = {
       },
     });
   },
+
+  getAllReviews(params) {
+    const url = `/reviews/${params}`;
+    return axiosClient.get(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+  },
 };
