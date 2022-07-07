@@ -236,7 +236,17 @@ export default function Header() {
                   arrow
                 >
                   <div className="header__account-icon">
-                    <Avatar icon={<UserOutlined />} />
+                    <Avatar
+                      src={
+                        JSON.parse(localStorage.getItem('user'))?.avatar || null
+                      }
+                      icon={
+                        JSON.parse(localStorage.getItem('user'))
+                          ?.avatar ? null : (
+                          <UserOutlined />
+                        )
+                      }
+                    />
                   </div>
                 </Dropdown>
               </div>
