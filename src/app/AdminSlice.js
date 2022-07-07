@@ -32,8 +32,9 @@ export const getTours = createAsyncThunk('admin/tours', async params => {
 
 export const updateTourStatus = createAsyncThunk(
   'admin/update-tour-status',
-  async params => {
-    const res = await adminAPI.updateTours(params.id, params.request);
+  async (params, thunkAPI) => {
+    const res = await adminAPI.updateTours(params.id, params.body);
+    thunkAPI.dispatch(getTours(params.searchParams));
     return res.data;
   },
 );
@@ -204,9 +205,8 @@ const adminSlice = createSlice({
     builder.addCase(updateTourStatus.fulfilled, (state, action) => {
       state.loading = false;
       const data = action.payload;
-      console.log(data);
       if (data.status === 'success') {
-        //
+        message.success('Update tour status successfully');
       }
     });
 

@@ -34,10 +34,13 @@ export default function Tours() {
     const request = {
       status: 'enable',
     };
-    console.log('DISPATCH APPROVE: ', record.id);
-    console.log(request);
-    // console.log(request);
-    dispatch(updateTourStatus({ id: record.id, request }));
+    dispatch(
+      updateTourStatus({
+        id: record.id,
+        body: JSON.stringify(request),
+        searchParams: location.search,
+      }),
+    );
   };
 
   //Handle disable tour
@@ -45,9 +48,13 @@ export default function Tours() {
     const request = {
       status: 'disabled',
     };
-    console.log('DISPATCH DISABLED: ', record.id);
-    console.log(request);
-    dispatch(updateTourStatus({ id: record.id, request }));
+    dispatch(
+      updateTourStatus({
+        id: record.id,
+        body: JSON.stringify(request),
+        searchParams: location.search,
+      }),
+    );
   };
 
   // Handle able tour
@@ -55,10 +62,13 @@ export default function Tours() {
     const request = {
       status: 'enable',
     };
-    console.log('DISPATCH ENABLE: ', record.id);
-    console.log(request);
-    // console.log(request);
-    dispatch(updateTourStatus({ id: record.id, request }));
+    dispatch(
+      updateTourStatus({
+        id: record.id,
+        body: JSON.stringify(request),
+        searchParams: location.search,
+      }),
+    );
   };
 
   // Set loading context for PAGE
