@@ -25,12 +25,12 @@ const Login = () => {
 
   useEffect(() => {
     if (user && user.roles) {
-      if (user.roles.role === 'ROLE_USER') {
-        navigate('/home');
-      } else if (user.roles.role === 'ROLE_ADMIN') {
+      if (user.roles.includes('ROLE_ADMIN')) {
         navigate('/admin');
-      } else if (user.roles.role === 'ROLE_CUSTOMER') {
+      } else if (user.roles.includes('ROLE_CUSTOMER')) {
         navigate('/cms');
+      } else if (user.roles.includes('ROLE_USER')) {
+        navigate('/home');
       }
     }
   }, [user]);

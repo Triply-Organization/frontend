@@ -48,7 +48,8 @@
       "logged_in": {
         "tour": "My tours",
         "review": "My Reviews",
-        "save_tour": "Saved Tour"
+        "save_tour": "Saved Tour",
+        "my_profile": "My Profile"
       },
 
       "not_logged_in": {

@@ -18,8 +18,14 @@ import Navbar from './Navbar';
 
 export default function Header() {
   // state set for active tab
-  const [activeTab, setActiveTab] = useState(0);
-  console.log(activeTab);
+  const [activeTab, setActiveTab] = useState(() => {
+    if (window.location.pathname.includes('home')) {
+      return 0;
+    } else if (window.location.pathname.includes('tour')) {
+      return 1;
+    }
+  });
+
   // state set for window srollY
   const [scrollY, setScrollY] = useState(window.scrollY);
   // state set for window width
@@ -40,37 +46,49 @@ export default function Header() {
       items={[
         {
           key: '1',
-          label: (
-            <span className="header__language-item">
-              <Link to="/setting-account/1" className="header__language-words">
-                My profile
-              </Link>
-            </span>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <span className="header__language-item">
-              <Link to="/my-tours" className="header__language-words">
-                {t('header.logged_in.tour')}
-              </Link>
-            </span>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <span className="header__language-item">
-              <Link
-                onClick={handleLogout}
-                to="/login"
-                className="header__language-words"
-              >
-                {t('cta.logout')}
-              </Link>
-            </span>
-          ),
+          type: 'group',
+          label: `Hi ${
+            JSON.parse(localStorage.getItem('user'))?.name || 'there'
+          }`,
+          children: [
+            {
+              key: '1-1',
+              label: (
+                <span className="header__language-item">
+                  <Link
+                    to="/setting-account/1"
+                    className="header__language-words"
+                  >
+                    {t('header.logged_in.my_profile')}
+                  </Link>
+                </span>
+              ),
+            },
+            {
+              key: '1-2',
+              label: (
+                <span className="header__language-item">
+                  <Link to="/my-tours" className="header__language-words">
+                    {t('header.logged_in.tour')}
+                  </Link>
+                </span>
+              ),
+            },
+            {
+              key: '1-3',
+              label: (
+                <span className="header__language-item">
+                  <Link
+                    onClick={handleLogout}
+                    to="/login"
+                    className="header__language-words"
+                  >
+                    {t('cta.logout')}
+                  </Link>
+                </span>
+              ),
+            },
+          ],
         },
       ]}
     />
