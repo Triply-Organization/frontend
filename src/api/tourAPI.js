@@ -46,4 +46,18 @@ export const tourAPI = {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
   },
+
+  deleteTour(id) {
+    const url = `/tours/${id}`;
+    return axiosClient.delete(url, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+  },
+
+  updateTour(params) {
+    const url = `/tours/${params.id}`;
+    return axiosClient.patch(url, params.body, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+  },
 };

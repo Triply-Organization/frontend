@@ -11,9 +11,10 @@ import { Dashboard } from '../pages/Admin/Dashboard/Dashboard';
 import Tours from '../pages/Admin/Tours/Tours';
 import Users from '../pages/Admin/Users/Users';
 import AllTours from '../pages/Alltours/AllTours';
+import CMSAddTour from '../pages/CMSCustomer/CMSAddTour';
 import CMSCustomer from '../pages/CMSCustomer/CMSCustomer';
 import CMSDashBoard from '../pages/CMSCustomer/CMSDashBoard';
-import CMSHandleTour from '../pages/CMSCustomer/CMSHandleTour';
+import CMSEditTour from '../pages/CMSCustomer/CMSEditTour';
 import CMSTourSchedule from '../pages/CMSCustomer/CMSTourSchedule';
 import CMSTours from '../pages/CMSCustomer/CMSTours';
 import Checkout from '../pages/Checkout/Checkout';
@@ -73,8 +74,8 @@ const RoutesApp = () => {
         <Route index element={<Navigate to="dashboard" replace />} loading />
         <Route path="dashboard" element={<CMSDashBoard />} loading />
         <Route path="tours" element={<CMSTours />} loading />
-        <Route path="add-tour" element={<CMSHandleTour />} loading />
-        <Route path="edit-tour/:id" element={<CMSHandleTour />} loading />
+        <Route path="add-tour" element={<CMSAddTour />} loading />
+        <Route path="edit-tour/:id" element={<CMSEditTour />} loading />
         <Route path="set-schedule/:id" element={<CMSTourSchedule />} loading />
       </Route>
       {/* <Route path="*" element={<NoMatch />} /> */}

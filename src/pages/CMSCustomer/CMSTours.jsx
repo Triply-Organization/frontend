@@ -1,58 +1,38 @@
-import { Breadcrumb, Button, Table } from 'antd';
-import moment from 'moment';
+import { Breadcrumb, Button, Space, Table, message } from 'antd';
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlinePlus } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import { tourAPI } from '../../api/tourAPI';
+import { deleteTour, getToursCustomer } from '../../app/toursSlice';
 import './CMSTours.scss';
 
 const CMSTours = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState();
+  const data = useSelector(state => state.tours.toursCustomer);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const loadingContext = useLoadingContext();
-
-  // const deleteTour = () => {
-
-  // }
+  const [disableDelete, setDisableDelete] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const loading = async () => {
-      try {
-        const response = await tourAPI.getToursOfCustomer();
-
-        const tempData = response.data.data.map(item => ({
-          id: item.id,
-          key: item.id,
-          title: item.title,
-          destination: item.destination[0],
-          duration: item.duration,
-          availableDay: item.schedule,
-          max_people: item.maxPeople,
-          min_age: item.minAge,
-          createdAt: moment(item.createdAt.date).format('YYYY-MM-DD'),
-        }));
-        setData(tempData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    loading();
+    dispatch(getToursCustomer());
     loadingContext.done();
   }, []);
+
+  useEffect(() => {
+    console.log(selectedRowKeys);
+    if (_.isEmpty(selectedRowKeys)) setDisableDelete(true);
+    else setDisableDelete(false);
+  }, [selectedRowKeys]);
 
   const columns = [
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      render: text => (
-        <Button type="link" style={{ padding: '0' }}>
-          {text}
-        </Button>
-      ),
     },
     {
       title: 'Destination',
@@ -78,15 +58,35 @@ const CMSTours = () => {
     },
     {
       title: 'Action',
-      dataIndex: 'x',
-      key: 'x',
+      dataIndex: 'action',
+      key: 'action',
       render: (_, record) => (
-        <Button
-          type="dashed"
-          onClick={() => navigate(`/cms/set-schedule/${record.id}`)}
-        >
-          Set schedule
-        </Button>
+        <>
+          {record.status === 'disabled' ? (
+            <Button
+              type="primary"
+              danger
+              onClick={() => handleDelete(record.id)}
+            >
+              Reopen
+            </Button>
+          ) : (
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => navigate(`/cms/set-schedule/${record.id}`)}
+              >
+                Set schedule
+              </Button>
+              <Button
+                type="primary"
+                onClick={() => navigate(`/cms/edit-tour/${record.id}`)}
+              >
+                Update tour
+              </Button>
+            </Space>
+          )}
+        </>
       ),
     },
   ];
@@ -98,6 +98,20 @@ const CMSTours = () => {
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
+    getCheckboxProps: record => ({
+      disabled: record.status === 'disabled',
+    }),
+  };
+
+  const handleDelete = id => {
+    if (!_.isEmpty(selectedRowKeys)) {
+      selectedRowKeys.forEach(item => dispatch(deleteTour(item)));
+    }
+    if (id) {
+      dispatch(deleteTour(id));
+    }
+    dispatch(getToursCustomer());
+    message.success('Delete successful');
   };
 
   return (
@@ -125,11 +139,13 @@ const CMSTours = () => {
             Add new tour
           </Button>
           <Button
+            disabled={disableDelete}
             type="primary"
             size="large"
             icon={<AiOutlineDelete />}
             className="cms-content-btn"
             danger
+            onClick={handleDelete}
           />
         </div>
       </div>
@@ -144,6 +160,7 @@ const CMSTours = () => {
           total: data?.length,
         }}
         rowSelection={rowSelection}
+        rowClassName={record => record.status === 'disabled' && 'disabled-row'}
       />
     </>
   );

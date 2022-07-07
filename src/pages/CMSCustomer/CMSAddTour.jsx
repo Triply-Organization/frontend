@@ -20,7 +20,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import { createTour, getDestinationsServiceTours } from '../../app/toursSlice';
-import './CMSHandleTour.scss';
+import './CMSAddTour.scss';
 
 const { TabPane } = Tabs;
 const { TextArea } = Input;
@@ -105,10 +105,6 @@ const CMSAddTour = () => {
     dispatch(createTour(response));
   };
 
-  const checkIfChange = (changedValues, values) => {
-    console.log(changedValues, values);
-  };
-
   const uploadCoverImage = async options => {
     const { onSuccess, onError, file } = options;
     const fmData = new FormData();
@@ -185,7 +181,6 @@ const CMSAddTour = () => {
       </Breadcrumb>
 
       <Form
-        onValuesChange={checkIfChange}
         form={form}
         className="form-tour"
         name="form-tour"

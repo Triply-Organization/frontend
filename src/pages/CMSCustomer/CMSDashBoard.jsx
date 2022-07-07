@@ -43,6 +43,16 @@ const CMSDashBoard = () => {
       gdp: 1000,
       name: 'Can Tho - Viet Nam',
     },
+    {
+      date: '2021-02-01',
+      gdp: 1000,
+      name: 'Da nang',
+    },
+    {
+      date: '2023-02-05',
+      gdp: 1000,
+      name: 'Da nang',
+    },
   ]);
 
   const config = {
