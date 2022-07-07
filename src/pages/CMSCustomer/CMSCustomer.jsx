@@ -1,3 +1,4 @@
+import { LoginOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { AiFillDashboard, AiOutlineUnorderedList } from 'react-icons/ai';
@@ -12,6 +13,11 @@ const CMSCustomer = () => {
   const navigate = useNavigate();
   const [url, setUrl] = useState(['dashboard']);
   const location = useLocation();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  };
 
   useEffect(() => {
     if (location.pathname.includes('dashboard')) setUrl(['dashboard']);
@@ -39,6 +45,13 @@ const CMSCustomer = () => {
             onClick={() => navigate('tours')}
           >
             Tours
+          </Menu.Item>
+          <Menu.Item
+            onClick={handleLogout}
+            key="logout"
+            icon={<LoginOutlined />}
+          >
+            <Link to="/login">Logout</Link>
           </Menu.Item>
         </Menu>
       </Sider>
