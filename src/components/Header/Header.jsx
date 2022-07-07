@@ -26,6 +26,8 @@ export default function Header() {
     }
   });
 
+  const roles = JSON.parse(localStorage.getItem('user'))?.roles;
+
   // state set for window srollY
   const [scrollY, setScrollY] = useState(window.scrollY);
   // state set for window width
@@ -74,6 +76,31 @@ export default function Header() {
                 </span>
               ),
             },
+            roles.includes('ROLE_ADMIN')
+              ? !roles.includes('ROLE_USER')
+                ? {
+                    key: '1-21',
+                    label: (
+                      <span className="header__language-item">
+                        <Link to="/admin" className="header__language-words">
+                          {t('header.logged_in.dashboard')}
+                        </Link>
+                      </span>
+                    ),
+                  }
+                : null
+              : !roles.includes('ROLE_USER')
+              ? {
+                  key: '1-21',
+                  label: (
+                    <span className="header__language-item">
+                      <Link to="/cms" className="header__language-words">
+                        {t('header.logged_in.dashboard')}
+                      </Link>
+                    </span>
+                  ),
+                }
+              : null,
             {
               key: '1-3',
               label: (
@@ -102,6 +129,23 @@ export default function Header() {
       icon: <MdFeedback />,
       link: '/',
     },
+
+    roles.includes('ROLE_ADMIN')
+      ? !roles.includes('ROLE_USER')
+        ? {
+            title: `${t('header.logged_in.dashboard')}`,
+            icon: <UserOutlined />,
+            link: '/admin',
+          }
+        : null
+      : !roles.includes('ROLE_USER')
+      ? {
+          title: `${t('header.logged_in.dashboard')}`,
+          icon: <UserOutlined />,
+          link: '/cms',
+        }
+      : null,
+
     {
       title: `${t('cta.logout')}`,
       icon: <AiOutlineLogout />,
