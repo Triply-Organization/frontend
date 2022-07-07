@@ -200,8 +200,8 @@ export default function Customers() {
                 pagination={{
                   current: page,
                   total: totalCustomers,
-                  totalPages,
-                  pageSize: 6,
+                  // totalPages,
+                  pageSize: 10,
                   showSizeChanger: false,
                   onChange: e => {
                     setPage(e);

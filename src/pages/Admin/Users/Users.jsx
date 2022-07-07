@@ -253,8 +253,8 @@ export default function Users() {
                 pagination={{
                   current: page,
                   total: totalUsers,
-                  totalPages: totalPages,
-                  pageSize: 6,
+                  // totalPages: totalPages,
+                  pageSize: 10,
                   showSizeChanger: false,
                   onChange: e => {
                     setPage(e);
