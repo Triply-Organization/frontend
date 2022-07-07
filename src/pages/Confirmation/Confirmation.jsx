@@ -62,7 +62,7 @@ const Confirmation = () => {
           <div className="ctn-confirmation__order-info__content">
             <div>
               <Text strong>Order number:</Text>
-              {confirmInfo.id}
+              {confirmInfo?.id}
             </div>
             <div>
               <Text strong>Date:</Text>
@@ -70,7 +70,9 @@ const Confirmation = () => {
             </div>
             <div>
               <Text strong>Total after VAT:</Text>
-              {confirmInfo.bill?.totalPrice}
+              {confirmInfo?.bill?.totalPrice
+                ? confirmInfo?.bill?.totalPrice
+                : 'Unpaid Order'}
             </div>
           </div>
         </div>

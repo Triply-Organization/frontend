@@ -16,6 +16,7 @@ import {
 } from 'antd';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FcGoogle } from 'react-icons/fc';
 
 import './SettingAccount.scss';
@@ -34,6 +35,8 @@ const SettingAccount = () => {
     phone: '012039102932',
     address: 'Vietnam',
   };
+
+  const { t } = useTranslation();
 
   const capitalizeText = text => {
     return (
@@ -118,23 +121,23 @@ const SettingAccount = () => {
       <div className="setting-account-wrapper">
         <div className="setting-account-wrapper__header">
           <div className="setting-account-wrapper__header__text">
-            <h3>Profile</h3>
-            <p>Settings for your personal profile</p>
+            <h3>{t('my_profile.title')}</h3>
+            <p>{t('my_profile.note')}</p>
           </div>
           <div>
-            <Button type="text">Cancel</Button>
+            <Button type="text">{t('cta.cancle')}</Button>
             <Button
               type="primary"
               onClick={() => form.submit()}
               disabled={isDisableSave}
             >
-              Save changes
+              {t('cta.save')}
             </Button>
           </div>
         </div>
         <div className="setting-account-wrapper__content">
           <div className="setting-account-wrapper__content__image">
-            <h4>Profile picture</h4>
+            <h4>{t('my_profile.picture')}</h4>
             <div className="setting-account-wrapper__content__image__wrapper">
               <Space>
                 <Spin spinning={loading}>
@@ -151,16 +154,15 @@ const SettingAccount = () => {
                 beforeUpload={beforeUpload}
                 onChange={handleChange}
               >
-                <Button icon={<UploadOutlined />}>Upload photo</Button>
+                <Button icon={<UploadOutlined />}>
+                  {t('cta.upload_photo')}
+                </Button>
               </Upload>
             </div>
           </div>
           <div className="setting-account-wrapper__content__google">
             <FcGoogle style={{ fontSize: '28px' }} />
-            <p>
-              This account is connected to your Google account. Your detail can
-              only be changed from the Google account
-            </p>
+            <p>{t('my_profile.google_notify')}</p>
           </div>
           <Form
             form={form}
@@ -172,17 +174,17 @@ const SettingAccount = () => {
             layout="vertical"
             className="setting-account-wrapper__content__form"
           >
-            <Form.Item label="Full name" name="fullName">
+            <Form.Item label={t('my_profile.form.full_name')} name="fullName">
               <Input />
             </Form.Item>
             <Form.Item
-              label="Phone"
+              label={t('my_profile.form.phone')}
               name="phone"
               rules={[{ min: 10, message: 'Your phone number is not correct' }]}
             >
               <Input type={'number'} style={{ width: '100%' }} />
             </Form.Item>
-            <Form.Item label="Address" name="address">
+            <Form.Item label={t('my_profile.form.address')} name="address">
               <Input />
             </Form.Item>
           </Form>
@@ -190,16 +192,13 @@ const SettingAccount = () => {
       </div>
       <div className="setting-account-danger">
         <div className="setting-account-danger__header">
-          <h3>Danger zone</h3>
-          <p>Delete your account</p>
+          <h3>{t('my_profile.danger.title')}</h3>
+          <p>{t('my_profile.danger.danger_note')}</p>
         </div>
         <div className="setting-account-danger__content">
-          <p>
-            By deleting your account you will lose all your data and access to
-            any tours that you are booked.
-          </p>
+          <p>{t('my_profile.danger.content')}</p>
           <Button danger onClick={showDeleteConfirm}>
-            Delete this account
+            {t('cta.delete_account')}
           </Button>
         </div>
       </div>

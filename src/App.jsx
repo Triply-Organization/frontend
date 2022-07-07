@@ -8,6 +8,8 @@ import { store } from './app/store';
 import './translation';
 
 function App() {
+  localStorage.setItem('currencyString', 'en-US');
+  localStorage.setItem('currencyItem', 'USD');
   return (
     <Provider store={store}>
       <Router>
