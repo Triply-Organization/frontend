@@ -3,10 +3,14 @@ import { Column, Line } from '@ant-design/plots';
 import { Breadcrumb } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
 import './CMSDashBoard.scss';
 
 const CMSDashBoard = () => {
+  const loadingContext = useLoadingContext();
+  loadingContext.done();
+
   // LINE
   const [data, setData] = useState([
     {

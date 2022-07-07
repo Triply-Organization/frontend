@@ -11,6 +11,13 @@ export const tourAPI = {
     return axiosClient.get(url);
   },
 
+  createTour(params) {
+    const url = `/tours/`;
+    return axiosClient.post(url, params, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+  },
+
   bookTour(params) {
     const url = `/booking`;
     return axiosClient.post(url, params);
@@ -18,5 +25,25 @@ export const tourAPI = {
   getToursByFilter(params) {
     const url = `/tours${decodeURIComponent(params)}`;
     return axiosClient.get(url);
+  },
+
+  addSchedule(params, id) {
+    const url = `/schedules/${id}`;
+    return axiosClient.post(url, params, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+  },
+
+  getToursOfCustomer() {
+    const url = `/tours/customerTour`;
+    return axiosClient.get(url, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+  },
+  getScheduleOfTour(id) {
+    const url = `/schedules/${id}`;
+    return axiosClient.get(url, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
   },
 };
