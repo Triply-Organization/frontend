@@ -21,10 +21,12 @@ import _ from 'lodash';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import { userAPI } from '../../api/userAPI';
+import { getConfirmInfo } from '../../app/checkoutSlice';
 import ModalForm from '../../components/ModalForm/ModalForm';
 import './MyTour.scss';
 
@@ -36,6 +38,7 @@ const MyTour = () => {
   const { t } = useTranslation();
   const loadingContext = useLoadingContext();
   const today = moment(new Date()).format('YYYY-MM-DD');
+  const dispatch = useDispatch();
   const loading = async () => {
     const response = await userAPI.getOrderList();
     const { data } = response.data;
@@ -46,10 +49,6 @@ const MyTour = () => {
     loading();
     loadingContext.done();
   }, []);
-
-  console.log(listOrder);
-  console.log(today);
-  console.log(moment(today).isBefore('2022-07-12'));
 
   const [formReview] = Form.useForm();
 
@@ -103,14 +102,20 @@ const MyTour = () => {
       currency: localStorage.getItem('currencyItem').toLowerCase(),
     };
     console.log(req);
-    // try {
-    //   await userAPI.refundOrder(req);
-    //   loading();
-    //   message.success({ content: 'Refund Successful!', key: 'success' });
-    // } catch (error) {
-    //   console.log(error);
-    //   message.error({ content: 'Refund Failed!', key: 'failed' });
-    // }
+    try {
+      await userAPI.refundOrder(req);
+      loading();
+      message.success({ content: 'Refund Successful!', key: 'success' });
+    } catch (error) {
+      console.log(error);
+      message.error({ content: 'Refund Failed!', key: 'failed' });
+    }
+  };
+
+  const handleCheckout = value => {
+    const req = value.id;
+    console.log(req);
+    dispatch(getConfirmInfo(req));
   };
 
   return (
@@ -203,7 +208,11 @@ const MyTour = () => {
                         ]
                       : item.status === 'unpaid'
                       ? [
-                          <Button key={item.id} type="primary">
+                          <Button
+                            key={item.id}
+                            type="primary"
+                            onClick={() => handleCheckout(item)}
+                          >
                             Checkout
                           </Button>,
                         ]
