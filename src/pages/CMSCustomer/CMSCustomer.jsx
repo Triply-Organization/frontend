@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { AiFillDashboard, AiOutlineUnorderedList } from 'react-icons/ai';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import logo from '../../assets/images/logo.png';
 import './CMSCustomer.scss';
 
 const { Content, Sider } = Layout;
@@ -19,7 +20,7 @@ const CMSCustomer = () => {
 
   return (
     <Layout className="layout-cms-customer">
-      <Sider width={200}>
+      <Sider width={250}>
         <Menu
           mode="inline"
           selectedKeys={url}
@@ -28,6 +29,7 @@ const CMSCustomer = () => {
             borderRight: 0,
           }}
         >
+          <img src={logo} alt="logo" className="logo" />
           <Menu.Item key="dashboard" icon={<AiFillDashboard />}>
             <Link to={'dashboard'}>Dashboard</Link>
           </Menu.Item>
