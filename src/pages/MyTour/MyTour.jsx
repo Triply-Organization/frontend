@@ -10,6 +10,7 @@ import {
   Form,
   Image,
   List,
+  Popconfirm,
   Rate,
   Space,
   Tag,
@@ -17,6 +18,7 @@ import {
 } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import _ from 'lodash';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -33,6 +35,7 @@ const MyTour = () => {
   const [user, setUser] = useState({});
   const { t } = useTranslation();
   const loadingContext = useLoadingContext();
+  const today = moment(new Date()).format('YYYY-MM-DD');
   const loading = async () => {
     const response = await userAPI.getOrderList();
     const { data } = response.data;
@@ -45,6 +48,8 @@ const MyTour = () => {
   }, []);
 
   console.log(listOrder);
+  console.log(today);
+  console.log(moment(today).isBefore('2022-07-12'));
 
   const [formReview] = Form.useForm();
 
@@ -84,6 +89,28 @@ const MyTour = () => {
       .catch(info => {
         console.log('Validate Failed:', info);
       });
+  };
+
+  const handleRefund = async value => {
+    const req = {
+      billId: value.bill.id,
+      orderId: value.id,
+      stripeId: value.bill.stripe,
+      dayRemain: moment(moment(value.startDay.date).format('YYYY-MM-DD')).diff(
+        moment(today),
+        'days',
+      ),
+      currency: localStorage.getItem('currencyItem').toLowerCase(),
+    };
+    console.log(req);
+    // try {
+    //   await userAPI.refundOrder(req);
+    //   loading();
+    //   message.success({ content: 'Refund Successful!', key: 'success' });
+    // } catch (error) {
+    //   console.log(error);
+    //   message.error({ content: 'Refund Failed!', key: 'failed' });
+    // }
   };
 
   return (
@@ -155,7 +182,10 @@ const MyTour = () => {
                 <List.Item
                   key={item.id}
                   actions={
-                    item.status === 'paid'
+                    item.status === 'paid' &&
+                    moment(today).isAfter(
+                      moment(item.startDay.date).format('YYYY-MM-DD'),
+                    )
                       ? [
                           <Button
                             key={item.id}
@@ -186,7 +216,9 @@ const MyTour = () => {
                       <Avatar src={user.avatar} icon={<UserOutlined />} />
                     }
                     title={<b>{user.fullname}</b>}
-                    description={item.bookedAt}
+                    description={moment(item.bookedAt.date).format(
+                      'YYYY-MM-DD',
+                    )}
                   />
                   <Space direction="vertical">
                     <p>
@@ -204,15 +236,31 @@ const MyTour = () => {
                       <Tag icon={<SyncOutlined spin />} color="processing">
                         Waiting checkout
                       </Tag>
-                    ) : item.status === 'paid' ? (
-                      <Tag icon={<CheckCircleOutlined />} color="success">
-                        Paid
-                      </Tag>
-                    ) : (
+                    ) : item.status === 'paid' &&
+                      moment(today).isBefore(
+                        moment(item.startDay.date).format('YYYY-MM-DD'),
+                      ) ? (
+                      <>
+                        <Tag icon={<CheckCircleOutlined />} color="success">
+                          Paid
+                        </Tag>
+                        <Popconfirm
+                          title="Do you want to refund now?"
+                          onConfirm={() => handleRefund(item)}
+                          onCancel={() => console.log('cancle')}
+                          okText="Yes"
+                          cancelText="No"
+                        >
+                          <Button type="primary" danger>
+                            Refund
+                          </Button>
+                        </Popconfirm>
+                      </>
+                    ) : item.status === 'refund' ? (
                       <Tag icon={<CloseCircleOutlined />} color="error">
                         Refund
                       </Tag>
-                    )}
+                    ) : null}
                   </Space>
                 </List.Item>
               );
@@ -225,7 +273,9 @@ const MyTour = () => {
                   <List.Item.Meta
                     avatar={<Avatar src={user.avatar} />}
                     title={<b>{user.fullname}</b>}
-                    description={item.bookedAt}
+                    description={moment(item.bookedAt.date).format(
+                      'YYYY-MM-DD',
+                    )}
                   />
                   <Space direction="vertical">
                     <p>
