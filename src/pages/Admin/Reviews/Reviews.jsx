@@ -29,7 +29,6 @@ export default function Reviews() {
   const dispatch = useDispatch();
   const reviews = useSelector(state => state.admin.reviewsData.reviews);
   const isLoading = useSelector(state => state.admin.loading);
-  const totalPages = useSelector(state => state.admin.reviewsData.totalPages);
   const totalReviews = useSelector(
     state => state.admin.reviewsData.totalReviews,
   );
@@ -178,7 +177,7 @@ export default function Reviews() {
                   pagination={{
                     current: page,
                     total: totalReviews,
-                    totalPages,
+                    // totalPages,
                     pageSize: 6,
                     showSizeChanger: false,
                     onChange: e => {

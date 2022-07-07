@@ -26,7 +26,7 @@ export default function Header() {
     }
   });
 
-  const roles = JSON.parse(localStorage.getItem('user'))?.roles;
+  const roles = JSON.parse(localStorage.getItem('user'))?.roles || [];
 
   // state set for window srollY
   const [scrollY, setScrollY] = useState(window.scrollY);

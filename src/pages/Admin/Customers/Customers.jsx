@@ -48,7 +48,6 @@ export default function Customers() {
     if (!searchParams.get('page')) {
       setSearchParams({ page });
     }
-
     dispatch(getAllCustomers(location.search));
     //call method to indicate that loading is done
     loadingContext.done();
@@ -56,12 +55,12 @@ export default function Customers() {
 
   useEffect(() => {
     loading();
+    setFlag(flag + 1);
   }, []);
 
   useEffect(() => {
     if (flag !== 0) {
       setSearchParams({ page });
-      console.log('GET ALL CUSTOMERS WHEN CHANGE PAGE');
       dispatch(getAllCustomers(location.search));
     }
   }, [page]);
@@ -130,35 +129,6 @@ export default function Customers() {
           </Space>
         );
       },
-    },
-  ];
-
-  const data = [
-    {
-      name: 'a',
-      key: '1',
-      avatar:
-        'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
-      email: '123@gmail.com',
-      phone: '0123123123',
-      address: '123 ASD BVCX',
-    },
-    {
-      name: 'b',
-      key: '2',
-      avatar: null,
-      email: '542@gmail.com',
-      phone: '012438123',
-      address: '142 ASD BVCX',
-    },
-    {
-      name: 'c',
-      key: '3',
-      avatar:
-        'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
-      email: '55555@gmail.com',
-      phone: '01234333223',
-      address: '554 ASD BVCX',
     },
   ];
 

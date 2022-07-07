@@ -111,12 +111,6 @@ export default function Users() {
       .validateFields()
       .then(val => {
         // HANDLE LOGIC EDIT ROLE USER
-
-        // console.log({
-        //   id: currentValue.id,
-        //   body: JSON.stringify({ role: [val.role] }),
-        //   searchParams: location.search,
-        // });
         dispatch(
           changeRoleUser({
             id: currentValue.id,
