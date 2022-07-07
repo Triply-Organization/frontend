@@ -21,8 +21,8 @@ import _ from 'lodash';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import { userAPI } from '../../api/userAPI';
@@ -36,9 +36,11 @@ const MyTour = () => {
   const [listOrder, setListOrder] = useState([]);
   const [user, setUser] = useState({});
   const { t } = useTranslation();
+  const checkoutInfo = useSelector(state => state.checkout.confirmationData);
   const loadingContext = useLoadingContext();
   const today = moment(new Date()).format('YYYY-MM-DD');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const loading = async () => {
     const response = await userAPI.getOrderList();
     const { data } = response.data;
@@ -49,6 +51,14 @@ const MyTour = () => {
     loading();
     loadingContext.done();
   }, []);
+
+  useEffect(() => {
+    if (checkoutInfo.id) {
+      navigate(`/checkout/${checkoutInfo.id}`);
+    }
+  }, [checkoutInfo.id]);
+
+  localStorage.setItem('bookingInfo', JSON.stringify(checkoutInfo));
 
   const [formReview] = Form.useForm();
 
@@ -269,7 +279,11 @@ const MyTour = () => {
                       <Tag icon={<CloseCircleOutlined />} color="error">
                         Refund
                       </Tag>
-                    ) : null}
+                    ) : (
+                      <Tag icon={<CheckCircleOutlined />} color="success">
+                        Paid
+                      </Tag>
+                    )}
                   </Space>
                 </List.Item>
               );
