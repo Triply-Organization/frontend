@@ -111,6 +111,10 @@
       }
     },
 
+    "my_tour": {
+      "title": "My Tours"
+    },
+
     "all_tours": {
       "filter": {
         "title": "Filter",

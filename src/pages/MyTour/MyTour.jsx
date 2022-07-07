@@ -18,6 +18,7 @@ import {
 import TextArea from 'antd/lib/input/TextArea';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
@@ -30,6 +31,7 @@ const MyTour = () => {
   const [idTourToReview, setIdTourToReview] = useState({});
   const [listOrder, setListOrder] = useState([]);
   const [user, setUser] = useState({});
+  const { t } = useTranslation();
   const loadingContext = useLoadingContext();
   const loading = async () => {
     const response = await userAPI.getOrderList();
@@ -41,6 +43,8 @@ const MyTour = () => {
     loading();
     loadingContext.done();
   }, []);
+
+  console.log(listOrder);
 
   const [formReview] = Form.useForm();
 
@@ -134,7 +138,7 @@ const MyTour = () => {
           </Form.Item>
         </ModalForm>
 
-        <h1 style={{ textAlign: 'center' }}>My Tours</h1>
+        <h1 style={{ textAlign: 'center' }}>{t('my_tour.title')}</h1>
         <List
           itemLayout="vertical"
           size="large"

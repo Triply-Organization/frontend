@@ -111,6 +111,10 @@
       }
     },
 
+    "my_tour": {
+      "title": "Các chuyến đi của tôi"
+    },
+
     "all_tours": {
       "tours": "Chuyến",
       "filter": {
