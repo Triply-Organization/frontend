@@ -13,10 +13,10 @@ import {
 import confirm from 'antd/lib/modal/confirm';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import { getAllReviews } from '../../../app/AdminSlice';
+import { deleteReview, getAllReviews } from '../../../app/AdminSlice';
 import './Reviews.scss';
 
 const { Title } = Typography;
@@ -70,7 +70,17 @@ export default function Reviews() {
 
       onOk() {
         // HANDLE DELETE ACCOUNT
-        console.log(record);
+        // console.log({
+        //   id: record.id,
+        //   searchParams: location.search,
+        // });
+
+        dispatch(
+          deleteReview({
+            id: record.id,
+            searchParams: location.search,
+          }),
+        );
       },
     });
   };
@@ -99,6 +109,13 @@ export default function Reviews() {
       dataIndex: 'tourTitle',
       key: 'tourTitle',
       width: '20%',
+      render: (_, record) => {
+        return (
+          <Link target="_blank" to={`/detail/${record.id}`}>
+            {record.tourTitle}
+          </Link>
+        );
+      },
     },
     {
       title: 'Rating',
@@ -173,7 +190,6 @@ export default function Reviews() {
                       setPage(e);
                     },
                   }}
-                  bordered
                   columns={columns}
                   dataSource={reviews}
                 />

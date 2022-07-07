@@ -77,12 +77,13 @@ export default function Tours() {
   const loading = async () => {
     //loading some data
     if (!searchParams.get('page')) {
+      console.log('--KHONG CO PARAMS');
       setSearchParams({ page });
     } else {
       console.log(totalPages);
+      console.log('--CO PARAMS');
       if (searchParams.get('page') > totalPages) {
         // setSearchParams({ page: totalPages });
-        console.log(totalPages);
       }
     }
 
@@ -226,7 +227,8 @@ export default function Tours() {
           return (
             <Space size={'middle'}>
               <Button
-                type="primary"
+                style={{ background: '#008000b3', color: '#fff' }}
+                type="ghost"
                 onClick={() => showConfirmApproved(record)}
               >
                 Approve
@@ -239,11 +241,7 @@ export default function Tours() {
         } else if (record.status === 'disabled') {
           return (
             <Space size={'middle'}>
-              <Button
-                onClick={() => showConfirmEnabled(record)}
-                type="ghost"
-                style={{ background: '#008000b3', color: '#fff' }}
-              >
+              <Button onClick={() => showConfirmEnabled(record)} type="primary">
                 Enable
               </Button>
             </Space>
@@ -299,7 +297,6 @@ export default function Tours() {
                 setPage(e);
               },
             }}
-            bordered
             columns={columns}
             dataSource={tours}
           />

@@ -51,7 +51,9 @@ export default function Admin() {
         collapsed={collapsed}
         onCollapse={value => setCollapsed(value)}
       >
-        <img src={logo} alt="logo" className="logo" />
+        <Link to="/home">
+          <img src={logo} alt="logo" className="logo" />
+        </Link>
         <Menu
           inlineCollapsed={true}
           theme="dark"

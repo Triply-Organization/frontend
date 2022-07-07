@@ -99,4 +99,13 @@ export const adminAPI = {
       },
     });
   },
+
+  deleteReview(id) {
+    const url = `/reviews/${id}`;
+    return axiosClient.delete(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+  },
 };

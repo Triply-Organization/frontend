@@ -61,7 +61,7 @@ export const deleteUser = createAsyncThunk(
   async (params, thunkAPI) => {
     const res = await adminAPI.deleteUser(params.id);
     thunkAPI.dispatch(getAllUsers(params.searchParams));
-    return res;
+    return res.data;
   },
 );
 
@@ -78,7 +78,7 @@ export const deleteCustomer = createAsyncThunk(
   async (params, thunkAPI) => {
     const res = await adminAPI.deleteCustomer(params.id);
     thunkAPI.dispatch(getAllCustomers(params.searchParams));
-    return res;
+    return res.data;
   },
 );
 
@@ -86,6 +86,15 @@ export const getAllReviews = createAsyncThunk(
   'admin/get-reviews',
   async params => {
     const res = await adminAPI.getAllReviews(params);
+    return res.data;
+  },
+);
+
+export const deleteReview = createAsyncThunk(
+  'admin/delete-reviews',
+  async (params, thunkAPI) => {
+    const res = await adminAPI.getAllReviews(params.id);
+    thunkAPI.dispatch(getAllReviews(params.searchParams));
     return res.data;
   },
 );
@@ -359,6 +368,19 @@ const adminSlice = createSlice({
           reviews,
         };
       }
+    });
+
+    // DELETE REVIEWS
+    builder.addCase(deleteReview.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(deleteReview.rejected, state => {
+      state.loading = false;
+      message.error('Something went wrong! Could not delete this review');
+    });
+    builder.addCase(deleteReview.fulfilled, state => {
+      state.loading = false;
+      message.success('Delete view successfully');
     });
   },
 });

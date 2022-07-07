@@ -167,7 +167,7 @@ export function Dashboard() {
               <Statistic
                 className="admin__dashboard-statistic"
                 title="Total booking"
-                value={overall.totalUsers}
+                value={overall.totalBooking}
                 formatter={v => <CountUp end={v} duration={0.8} />}
                 prefix={<DollarOutlined />}
               />
