@@ -117,7 +117,7 @@ const CMSAddTour = () => {
     fmData.append('image[]', file);
     try {
       const res = await axios.post(
-        'https://api.nhivo-rentcar.me/api/images/',
+        'https://api.triply.asia/api/images/',
         fmData,
         config,
       );
@@ -147,7 +147,7 @@ const CMSAddTour = () => {
     fmData.append('image[]', file);
     try {
       const res = await axios.post(
-        'https://api.nhivo-rentcar.me/api/images/',
+        'https://api.triply.asia/api/images/',
         fmData,
         config,
       );
