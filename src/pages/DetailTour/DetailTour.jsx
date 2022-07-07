@@ -19,6 +19,7 @@ import { Collapse } from 'antd';
 import { DatePicker } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AiOutlineDollar } from 'react-icons/ai';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { BiTimeFive } from 'react-icons/bi';
@@ -67,6 +68,7 @@ export default function DetailTour() {
   const [youth, setYouth] = useState({});
   const [total, setTotal] = useState(0);
   const [priceFollowDate, setPriceFollowDate] = useState([]);
+  const { t } = useTranslation();
 
   const userReviews = detailTour.reviews?.map(item => {
     return {
@@ -174,23 +176,24 @@ export default function DetailTour() {
       // },
       {
         icon: <BiTimeFive />,
-        title: 'duration',
+        title: `${t('detail_tour.duration.title')}`,
         detail: detailTour.duration + ' days',
       },
       {
         icon: <RiGroupLine />,
-        title: 'max people',
-        detail: detailTour.maxPeople + ' people',
+        title: `${t('detail_tour.max_people.title')}`,
+        detail:
+          detailTour.maxPeople + ` ${t('detail_tour.max_people.content')}`,
       },
       {
         icon: <RiErrorWarningLine />,
-        title: 'min age',
+        title: `${t('detail_tour.min_age')}`,
         detail: detailTour.minAge,
       },
       {
         icon: <BiCommentDetail />,
-        title: 'reviews',
-        detail: '8 reviews',
+        title: `${t('detail_tour.review.title')}`,
+        detail: `8 ${t('detail_tour.review.content')}`,
       },
     ];
   }, [detailTour]);
@@ -314,13 +317,17 @@ export default function DetailTour() {
         <div className="detailTour__content-wrapper">
           <div className="detailTour__content">
             <div className="detailTour__overview">
-              <h2 className="detailTour__content-heading">overview</h2>
+              <h2 className="detailTour__content-heading">
+                {t('detail_tour.overview')}
+              </h2>
               <p className="detailTour__overview-description">
                 {detailTour.overView ? detailTour.overView : null}
               </p>
             </div>
             <div className="detailTour__services">
-              <h2 className="detailTour__content-heading">services</h2>
+              <h2 className="detailTour__content-heading">
+                {t('detail_tour.service')}
+              </h2>
               <ul className="detailTour__services-list">
                 {detailTour.services && detailTour.services.length > 0
                   ? detailTour.services.map(item => {
@@ -336,7 +343,7 @@ export default function DetailTour() {
             </div>
             <div className="detailTour__plan">
               <h2 className="detailTour__content-heading detailTour__content-heading--primary">
-                tour plan
+                {t('detail_tour.tour_plan')}
               </h2>
               <Collapse
                 accordion
@@ -372,7 +379,9 @@ export default function DetailTour() {
             </div>
             {relatedTours?.length > 0 && (
               <div className="detailTour__relatedTour">
-                <h2 className="detailTour__content-heading">you may like</h2>
+                <h2 className="detailTour__content-heading">
+                  {t('detail_tour.you_may_like')}
+                </h2>
                 <Carousel
                   autoplay
                   className="detailTour__relatedTour-carousel"
@@ -504,7 +513,9 @@ export default function DetailTour() {
           {userData?.roles[0] === 'ROLE_USER' && (
             <div className="detailTour__booking-wrapper">
               <div className="detailTour__booking">
-                <h3 className="detailTour__booking-heading">Book This Tour</h3>
+                <h3 className="detailTour__booking-heading">
+                  {t('detail_tour.booking_form.title')}
+                </h3>
                 <Form
                   layout="horizontal"
                   onFinish={handleSubmit}
@@ -512,7 +523,9 @@ export default function DetailTour() {
                   initialValues={{ adult: 0, youth: 0, children: 0 }}
                   className="detailTour__booking-form"
                 >
-                  <p className="detailTour__booking-label">From:</p>
+                  <p className="detailTour__booking-label">
+                    {t('detail_tour.booking_form.from')}
+                  </p>
                   <Form.Item className="detailTour__booking-date" name="date">
                     <DatePicker
                       disabledDate={disabledDate}
@@ -522,7 +535,9 @@ export default function DetailTour() {
                     />
                   </Form.Item>
                   <div className="detailTour__booking-tickets">
-                    <p className="detailTour__booking-label">Tickets:</p>
+                    <p className="detailTour__booking-label">
+                      {t('detail_tour.booking_form.ticket.title')}
+                    </p>
 
                     {priceFollowDate && priceFollowDate.length > 0
                       ? priceFollowDate.map(item =>
@@ -557,12 +572,12 @@ export default function DetailTour() {
                             );
                           }),
                         )
-                      : 'Please choose the date!'}
+                      : t('detail_tour.booking_form.ticket.notify')}
                   </div>
                   <div className="detailTour__booking-footer">
                     <div className="detailTour__booking-count">
                       <span className="detailTour__booking-count-words">
-                        Total:
+                        {t('detail_tour.booking_form.total')}
                       </span>
                       <span className="detailTour__booking-total">
                         ${total}
