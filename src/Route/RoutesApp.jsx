@@ -47,7 +47,7 @@ const RoutesApp = () => {
         }
       >
         <Route index element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<Home />} loading />
         <Route path="/setting-account/:id" element={<SettingAccount />} />
         <Route path="/tours">
           <Route index element={<AllTours />} loading />
