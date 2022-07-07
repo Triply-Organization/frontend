@@ -198,14 +198,6 @@
       justify-items: center;
     }
   }
-
-  .section-4 {
-    width: 835px;
-
-    &__link {
-      font-size: 20px;
-    }
-  }
 }
 
 @media screen and (max-width: 980px) {
@@ -243,17 +235,6 @@
       &__content {
         margin-top: 100%;
       }
-    }
-  }
-
-  .section-4 {
-    width: 735px;
-
-    &__link {
-      font-size: 18px;
-    }
-    &__wrapper-button {
-      gap: 0.5rem;
     }
   }
 }
@@ -314,17 +295,6 @@
       &__content {
         margin-top: 390px;
       }
-    }
-  }
-
-  .section-4 {
-    width: 735px;
-
-    &__link {
-      font-size: 18px;
-    }
-    &__wrapper-button {
-      gap: 0.5rem;
     }
   }
 }
@@ -390,8 +360,7 @@
 
 @media screen and (max-width: 550px) {
   .section-2,
-  .section-3__content-wrapper,
-  .section-4 {
+  .section-3__content-wrapper {
     width: 425px;
   }
 
@@ -407,34 +376,6 @@
     &__control {
       flex-direction: row;
       justify-content: center;
-    }
-  }
-  .section-4 {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 1rem;
-    grid-template-areas:
-      'first second'
-      'third third';
-
-    &__link {
-      font-size: 14px;
-    }
-    &__text {
-      font-size: 12px;
-    }
-    &__1st {
-      grid-area: first;
-    }
-    &__2nd {
-      grid-area: second;
-      text-align: right;
-    }
-    &__follow-us {
-      grid-area: third;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
     }
   }
 }
@@ -498,17 +439,6 @@
           }
         }
       }
-    }
-  }
-
-  .section-4 {
-    padding: 2rem 0;
-    width: 320px;
-    &__link {
-      font-size: 12px;
-    }
-    &__text {
-      font-size: 10px;
     }
   }
 }
