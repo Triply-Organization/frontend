@@ -28,9 +28,9 @@ const Login = () => {
       if (user.roles.includes('ROLE_ADMIN')) {
         navigate('/admin');
       } else if (user.roles.includes('ROLE_CUSTOMER')) {
-        navigate('/home');
+        navigate('/');
       } else if (user.roles.includes('ROLE_USER')) {
-        navigate('/home');
+        navigate('/');
       }
     }
   }, [user]);

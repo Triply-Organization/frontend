@@ -26,7 +26,7 @@ const CMSCustomer = () => {
 
   return (
     <Layout className="layout-cms-customer">
-      <Sider width={250}>
+      <Sider>
         <Menu
           mode="inline"
           selectedKeys={url}
@@ -35,7 +35,9 @@ const CMSCustomer = () => {
             borderRight: 0,
           }}
         >
-          <img src={logo} alt="logo" className="logo" />
+          <Link to="/">
+            <img src={logo} alt="logo" className="logo" />
+          </Link>
           <Menu.Item key="dashboard" icon={<AiFillDashboard />}>
             <Link to={'dashboard'}>Dashboard</Link>
           </Menu.Item>
