@@ -351,13 +351,13 @@ const adminSlice = createSlice({
           reviews.push({
             key: item.id,
             id: item.id,
-            email: item.user.email,
-            createdAt: moment(item.createdAt.date).format('YYYY-MM-DD'),
+            email: item.user?.email,
+            createdAt: moment(item.createdAt?.date).format('YYYY-MM-DD'),
             comment: item.comment,
-            tourTitle: item.tour.name,
+            tourTitle: item.tour?.name,
             rating:
               item.rating?.reduce((prev, cur) => prev + cur.rate, 0) /
-              item.rating.length,
+              item.rating?.length,
           });
         });
         state.reviewsData = {

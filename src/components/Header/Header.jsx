@@ -19,10 +19,10 @@ import Navbar from './Navbar';
 export default function Header() {
   // state set for active tab
   const [activeTab, setActiveTab] = useState(() => {
-    if (window.location.pathname.includes('home')) {
-      return 0;
-    } else if (window.location.pathname.includes('tour')) {
+    if (window.location.pathname.includes('tour')) {
       return 1;
+    } else {
+      return 0;
     }
   });
 
