@@ -233,6 +233,10 @@ const AllTours = () => {
               className="all-tours__filter__item"
               layout={'vertical'}
               onValuesChange={_.debounce(onFilter, 300)}
+              initialValues={{
+                filter_by_price: [0, 1000],
+                filter_by_rating: 0,
+              }}
             >
               <Form.Item
                 name="filter_by_price"
@@ -240,7 +244,6 @@ const AllTours = () => {
               >
                 <Slider
                   range
-                  defaultValue={[0, 1000]}
                   max={1000}
                   tipFormatter={value =>
                     value.toLocaleString('en-US', {
@@ -254,7 +257,7 @@ const AllTours = () => {
                 name="filter_by_rating"
                 label={t('all_tours.filter.rating')}
               >
-                <Rate allowHalf defaultValue={0} />
+                <Rate allowHalf />
               </Form.Item>
             </Form>
           </Panel>

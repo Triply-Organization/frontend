@@ -278,15 +278,13 @@ export default function DetailTour() {
               {detailTour.tourImages && detailTour.tourImages.length > 0
                 ? detailTour.tourImages.map(item => {
                     return (
-                      <>
-                        <div key={item.id} className="detailTour__img-wrapper">
-                          <img
-                            src={item.path}
-                            alt="photo"
-                            className="detailTour__img"
-                          />
-                        </div>
-                      </>
+                      <div key={item.id} className="detailTour__img-wrapper">
+                        <img
+                          src={item.path}
+                          alt="photo"
+                          className="detailTour__img"
+                        />
+                      </div>
                     );
                   })
                 : null}
@@ -295,21 +293,19 @@ export default function DetailTour() {
           <div className="detailTour__information">
             {detailTourItem.map((item, index) => {
               return (
-                <>
-                  <div className="detailTour__information-item" key={index}>
-                    <span className="detailTour__information-icon">
-                      {item.icon}
-                    </span>
-                    <span className="detailTour__information-words">
-                      <p className="detailTour__information-heading-words">
-                        {item.title}
-                      </p>
-                      <p className="detailTour__information-detail">
-                        {item.detail}
-                      </p>
-                    </span>
-                  </div>
-                </>
+                <div className="detailTour__information-item" key={index}>
+                  <span className="detailTour__information-icon">
+                    {item.icon}
+                  </span>
+                  <span className="detailTour__information-words">
+                    <p className="detailTour__information-heading-words">
+                      {item.title}
+                    </p>
+                    <p className="detailTour__information-detail">
+                      {item.detail}
+                    </p>
+                  </span>
+                </div>
               );
             })}
           </div>
@@ -393,11 +389,12 @@ export default function DetailTour() {
                   {relatedTours && relatedTours.length > 0 ? (
                     relatedTours?.map(item => {
                       return (
-                        <>
-                          <div className="detailTour__relatedTour-item">
-                            <CardTour tour={item} key={item.id} />
-                          </div>
-                        </>
+                        <div
+                          key={item.id}
+                          className="detailTour__relatedTour-item"
+                        >
+                          <CardTour tour={item} />
+                        </div>
                       );
                     })
                   ) : (
@@ -430,26 +427,24 @@ export default function DetailTour() {
                     <div className="detailTour__review-chart-wrapper">
                       {reviews.map((item, index) => {
                         return (
-                          <>
-                            <div
-                              key={index}
-                              className="detailTour__review-chart-item"
-                            >
-                              <p className="detailTour__review-chart-heading">
-                                <span className="detailTour__review-chart-title">
-                                  {item.title}
-                                </span>
-                                <span className="detailTour__review-chart-point">
-                                  {item.point}/5
-                                </span>
-                              </p>
-                              <Progress
-                                className="detailTour__review-chart-progress"
-                                percent={(item.point / 5) * 100}
-                                showInfo={false}
-                              />
-                            </div>
-                          </>
+                          <div
+                            key={index}
+                            className="detailTour__review-chart-item"
+                          >
+                            <p className="detailTour__review-chart-heading">
+                              <span className="detailTour__review-chart-title">
+                                {item.title}
+                              </span>
+                              <span className="detailTour__review-chart-point">
+                                {item.point}/5
+                              </span>
+                            </p>
+                            <Progress
+                              className="detailTour__review-chart-progress"
+                              percent={(item.point / 5) * 100}
+                              showInfo={false}
+                            />
+                          </div>
                         );
                       })}
                     </div>
@@ -460,52 +455,47 @@ export default function DetailTour() {
               <div className="detailTour__review-detail-wrapper">
                 {userReviews?.map((item, index) => {
                   return (
-                    <>
-                      <div
-                        key={index}
-                        className="detailTour__review-detail-item"
-                      >
-                        <div className="detailTour__review-item-avatar">
-                          <Avatar
-                            src={item.avatar}
-                            size="large"
-                            icon={<UserOutlined />}
-                          />
-                        </div>
-                        <div className="detailTour__review-item-section">
-                          <p className="detailTour__review-item-name">
-                            {item.name}
-                          </p>
-                          <p className="detailTour__review-item-date">
-                            {item.date}
-                          </p>
-                          <div className="detailTour__review-item-rating-wrapper">
-                            {item.rating.map((rItem, rIndex) => {
-                              return (
-                                <>
-                                  <div
-                                    className="detailTour__review-item-rating"
-                                    key={rIndex}
-                                  >
-                                    <p className="detailTour__review-item-title">
-                                      {rItem.title}
-                                    </p>
-                                    <Rate
-                                      disabled
-                                      defaultValue={rItem.point}
-                                      className="detailTour__review-item-point"
-                                    />
-                                  </div>
-                                </>
-                              );
-                            })}
-                          </div>
-                          <p className="detailTour__review-item-comment">
-                            {item.comment}
-                          </p>
-                        </div>
+                    <div key={index} className="detailTour__review-detail-item">
+                      <div className="detailTour__review-item-avatar">
+                        <Avatar
+                          src={item.avatar}
+                          size="large"
+                          icon={<UserOutlined />}
+                        />
                       </div>
-                    </>
+                      <div className="detailTour__review-item-section">
+                        <p className="detailTour__review-item-name">
+                          {item.name}
+                        </p>
+                        <p className="detailTour__review-item-date">
+                          {item.date}
+                        </p>
+                        <div className="detailTour__review-item-rating-wrapper">
+                          {item.rating.map((rItem, rIndex) => {
+                            return (
+                              <>
+                                <div
+                                  className="detailTour__review-item-rating"
+                                  key={rIndex}
+                                >
+                                  <p className="detailTour__review-item-title">
+                                    {rItem.title}
+                                  </p>
+                                  <Rate
+                                    disabled
+                                    defaultValue={rItem.point}
+                                    className="detailTour__review-item-point"
+                                  />
+                                </div>
+                              </>
+                            );
+                          })}
+                        </div>
+                        <p className="detailTour__review-item-comment">
+                          {item.comment}
+                        </p>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
@@ -543,10 +533,10 @@ export default function DetailTour() {
 
                     {priceFollowDate && priceFollowDate.length > 0
                       ? priceFollowDate.map(item =>
-                          item.ticket.map(e => {
+                          item.ticket.map((e, index) => {
                             return (
                               <>
-                                <div className="inputNumber-style">
+                                <div className="inputNumber-style" key={index}>
                                   <Text strong level={5}>
                                     {e.type === 'adult'
                                       ? 'Adult (18+ years)'
