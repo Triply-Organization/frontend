@@ -107,7 +107,7 @@ const CMSTours = () => {
     if (!_.isEmpty(selectedRowKeys)) {
       selectedRowKeys.forEach(item => dispatch(deleteTour(item)));
     }
-    if (id) {
+    if (_.isEmpty(selectedRowKeys) && id) {
       dispatch(deleteTour(id));
     }
     dispatch(getToursCustomer());
