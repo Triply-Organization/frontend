@@ -53,7 +53,7 @@ const RoutesApp = () => {
           <Route index element={<AllTours />} loading />
           <Route path=":search" element={<AllTours />} loading />
         </Route>
-        <Route path="/my-tours" element={<MyTour />} />
+        <Route path="/my-tours" element={<MyTour />} loading />
         <Route path="/detail/:id" element={<DetailTour />} />
         <Route path="confirmation/:id" element={<Confirmation />} />
       </Route>

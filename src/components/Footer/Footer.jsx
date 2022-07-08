@@ -47,9 +47,7 @@ export default function Footer() {
     <footer className="footer__wrapper">
       <div className="section-4">
         <div className="section-4__contact-wrapper">
-          <p className="section-4__text">
-            Don&apos;t wait any longer. Contact us!
-          </p>
+          <p className="section-4__text">{t('home.banner.telephone')}</p>
           <a href="#" className="section-4__link">
             <span className="section-4__link-icon">
               <FcTwoSmartphones />
@@ -68,7 +66,7 @@ export default function Footer() {
         </div>
 
         <div className="section-4__follow-us">
-          <p className="section-4__text">Follow us</p>
+          <p className="section-4__text">{t('home.banner.follow')}</p>
           <div className="section-4__wrapper-button">
             <Button
               className="section-4__button"
@@ -120,7 +118,7 @@ export default function Footer() {
         </div>
         <div className="footer__list-wrapper footer__list-mobile--left">
           <Title className="footer__heading" level={4}>
-            Our Services
+            {t('footer.service.title')}
           </Title>
           <ul className="footer__list">
             {services.map((item, index) => {
@@ -136,7 +134,7 @@ export default function Footer() {
         </div>
         <div className="footer__list-wrapper footer__list-mobile--right">
           <Title className="footer__heading" level={4}>
-            Explore
+            {t('footer.explore.title')}
           </Title>
           <ul className="footer__list">
             {explore.map((item, index) => {
