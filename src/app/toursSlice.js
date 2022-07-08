@@ -60,8 +60,9 @@ export const getToursCustomer = createAsyncThunk(
 
 export const deleteTour = createAsyncThunk(
   'tours/delete-tour',
-  async params => {
+  async (params, thunkAPI) => {
     const res = await tourAPI.deleteTour(params);
+    thunkAPI.dispatch(getToursCustomer());
     return res;
   },
 );
