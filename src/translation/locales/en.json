@@ -117,6 +117,7 @@
     },
 
     "all_tours": {
+      "tours": "Tours",
       "filter": {
         "title": "Filter",
         "price": "Price",

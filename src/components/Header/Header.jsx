@@ -60,7 +60,7 @@ export default function Header() {
                   label: (
                     <span className="header__language-item">
                       <Link
-                        to="/setting-account/1"
+                        to={`/setting-account/${id}`}
                         className="header__language-words"
                       >
                         {t('header.logged_in.my_profile')}

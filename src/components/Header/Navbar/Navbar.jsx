@@ -12,7 +12,6 @@ export default function Navbar(props) {
     <nav className="header__navbar-wrapper">
       <ul className="header__navbar">
         {navItem.map((item, index) => {
-          console.log(item.link);
           return (
             <>
               <li
