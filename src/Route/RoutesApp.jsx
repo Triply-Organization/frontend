@@ -50,8 +50,6 @@ const RoutesApp = () => {
         }
       >
         <Route index element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
         <Route path="tours">
           <Route index element={<AllTours />} loading />
           <Route path=":search" element={<AllTours />} loading />
@@ -97,6 +95,16 @@ const RoutesApp = () => {
       </Route>
 
       <Route
+        path="checkout/:id"
+        element={
+          <PrivateRoute role={['ROLE_USER']}>
+            <Checkout />
+          </PrivateRoute>
+        }
+      />
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
+      <Route
         path="/admin"
         element={
           <PrivateRoute role={['ROLE_ADMIN']}>
@@ -126,7 +134,7 @@ const RoutesApp = () => {
         <Route
           path="users"
           element={
-            <PrivateRoute role={['ROLE_USER']}>
+            <PrivateRoute role={['ROLE_ADMIN']}>
               <Users />
             </PrivateRoute>
           }

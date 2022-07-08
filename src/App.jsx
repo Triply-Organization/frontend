@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
@@ -8,17 +8,15 @@ import { store } from './app/store';
 import './translation';
 
 function App() {
-  {
-    !localStorage.getItem('currencyString')
-      ? localStorage.setItem('currencyString', 'en-US')
-      : localStorage.getItem('currencyString');
-  }
+  useEffect(() => {
+    if (!localStorage.getItem('currencyString')) {
+      localStorage.setItem('currencyString', 'en-US');
+    }
 
-  {
-    !localStorage.getItem('currencyItem')
-      ? localStorage.setItem('currencyItem', 'USD')
-      : localStorage.getItem('currencyItem');
-  }
+    if (!localStorage.getItem('currencyItem')) {
+      localStorage.setItem('currencyItem', 'USD');
+    }
+  }, []);
   return (
     <Provider store={store}>
       <Router>
