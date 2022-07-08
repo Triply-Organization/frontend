@@ -1,19 +1,15 @@
-import { CloudSyncOutlined, PlusOutlined } from '@ant-design/icons';
+import { CloudSyncOutlined } from '@ant-design/icons';
 import {
   Breadcrumb,
   Button,
   Form,
   Input,
   InputNumber,
-  Modal,
   Select,
   Space,
   Tabs,
-  Upload,
-  message,
 } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
-import axios from 'axios';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,16 +23,6 @@ import {
 } from '../../app/toursSlice';
 import './CMSEditTour.scss';
 
-const getBase64 = file =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onload = () => resolve(reader.result);
-
-    reader.onerror = error => reject(error);
-  });
-
 const CMSEditTour = () => {
   const { TabPane } = Tabs;
   const { Option } = Select;
@@ -49,21 +35,9 @@ const CMSEditTour = () => {
   const loadingContext = useLoadingContext();
   const { id } = useParams();
   const [formInformation] = Form.useForm();
-  const [formCover] = Form.useForm();
-  const [formGallery] = Form.useForm();
 
-  const [previewVisibleCover, setPreviewVisibleCover] = useState(false);
-  const [previewVisibleGallery, setPreviewVisibleGallery] = useState(false);
-  const [previewImageCover, setPreviewImageCover] = useState('');
-  const [previewImageGallery, setPreviewImageGallery] = useState('');
-  const [cover, setCover] = useState([]);
-  const [gallery, setGallery] = useState([]);
   const [valueInformation, setValueInformation] = useState({});
-  const [valueCover, setValueCover] = useState({});
-  const [valueGallery, setValueGallery] = useState({});
   const [disableUpdateInfomation, setDisableUpdateInfomation] = useState(true);
-  const [disableUpdateCover, setDisableUpdateCover] = useState(true);
-  const [disableUpdateGallery, setDisableUpdateGallery] = useState(true);
 
   useEffect(() => {
     if (_.isEmpty()) {
@@ -87,36 +61,6 @@ const CMSEditTour = () => {
         services: tour.services.map(item => item.id),
       };
 
-      let valueFormCoverImage = tour.tourImages.map(item => {
-        if (item.type === 'cover')
-          return {
-            uid: item.id,
-            url: item.path,
-            name: '',
-            status: 'done',
-          };
-      });
-      valueFormCoverImage = valueFormCoverImage.filter(function (element) {
-        return element !== undefined;
-      });
-
-      let valueFormCoverGallery = tour.tourImages.map(item => {
-        if (item.type === 'cover')
-          return {
-            uid: '1',
-            name: '',
-            status: 'done',
-            url: item.path,
-          };
-      });
-      valueFormCoverGallery = valueFormCoverGallery.filter(function (element) {
-        return element !== undefined;
-      });
-
-      setCover(valueFormCoverImage);
-      setValueCover(valueFormCoverImage);
-      setGallery(valueFormCoverGallery);
-      setValueGallery(valueFormCoverGallery);
       formInformation.setFieldsValue(valueFormInformation);
       setValueInformation(valueFormInformation);
     }
@@ -148,135 +92,6 @@ const CMSEditTour = () => {
     setDisableUpdateInfomation(true);
   };
 
-  const beforeUpload = file => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-
-    if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!');
-    }
-
-    const isLt2M = file.size / 1024 / 1024 < 10;
-
-    if (!isLt2M) {
-      message.error('Image must smaller than 10MB!');
-    }
-
-    return isJpgOrPng && isLt2M;
-  };
-
-  const uploadCoverImage = async options => {
-    const { onSuccess, onError, file } = options;
-    const fmData = new FormData();
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    };
-    fmData.append('image[]', file);
-    try {
-      const res = await axios.post(
-        'https://api.triply.asia/api/images/',
-        fmData,
-        config,
-      );
-      onSuccess('Ok');
-      const tempCoverImg = {
-        id: res.data.data[0]?.id,
-        type: 'cover',
-        file,
-      };
-      setCover(tempCoverImg);
-    } catch (err) {
-      console.log('Eroor: ', err);
-      onError({ err });
-    }
-  };
-
-  //   const uploadGalleryImage = async options => {
-  //     const { onSuccess, onError, file } = options;
-
-  //     const fmData = new FormData();
-  //     const config = {
-  //       headers: {
-  //         'content-type': 'multipart/form-data',
-  //         Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //       },
-  //     };
-  //     fmData.append('image[]', file);
-  //     try {
-  //       const res = await axios.post(
-  //         'https://api.nhivo-rentcar.me/api/images/',
-  //         fmData,
-  //         config,
-  //       );
-  //       onSuccess('Ok');
-  //       const tempCoverImg = {
-  //         id: res.data.data[0]?.id,
-  //         type: 'gallery',
-  //         file,
-  //       };
-  //       setGalleryImage([...galleryImage, tempCoverImg]);
-  //     } catch (err) {
-  //       console.log('Eroor: ', err);
-  //       onError({ err });
-  //     }
-  //   };
-
-  const onEditFormCoverImage = values => {
-    console.log(values);
-    console.log(valueCover);
-  };
-
-  const onEditFormGallery = values => {
-    console.log(values);
-  };
-
-  const handleCancelCover = () => setPreviewVisibleCover(false);
-  const handleCancelGallery = () => setPreviewVisibleGallery(false);
-
-  const handlePreviewCover = async file => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-
-    setPreviewImageCover(file.url || file.preview);
-    setPreviewVisibleCover(true);
-  };
-
-  const handlePreviewGallery = async file => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-
-    setPreviewImageGallery(file.url || file.preview);
-    setPreviewVisibleGallery(true);
-  };
-
-  const handleChangeCover = ({ fileList: newFileList }) => {
-    setCover(newFileList);
-    if (_.isEqual(newFileList, valueCover)) setDisableUpdateCover(true);
-    else setDisableUpdateCover(false);
-  };
-
-  const handleChangeGallery = ({ fileList: newFileList }) => {
-    setGallery(newFileList);
-    if (_.isEqual(newFileList, valueGallery)) setDisableUpdateGallery(true);
-    else setDisableUpdateGallery(false);
-  };
-
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </div>
-  );
   return (
     <>
       <Breadcrumb
@@ -410,189 +225,6 @@ const CMSEditTour = () => {
               </Form.Item>
             </Form>
           </TabPane>
-          <TabPane tab="Cover Image" key="2" className="card__tab-pane">
-            <Form
-              form={formCover}
-              name="form-edit-tour-image-cover"
-              onFinish={onEditFormCoverImage}
-              layout="vertical"
-              autoComplete="off"
-            >
-              {!_.isEmpty(cover) && (
-                <>
-                  <Upload
-                    beforeUpload={beforeUpload}
-                    customRequest={uploadCoverImage}
-                    listType="picture-card"
-                    fileList={cover}
-                    onPreview={handlePreviewCover}
-                    onChange={handleChangeCover}
-                  >
-                    {cover.length !== 0 ? null : uploadButton}
-                  </Upload>
-                  <Modal
-                    visible={previewVisibleCover}
-                    footer={null}
-                    onCancel={handleCancelCover}
-                  >
-                    <img
-                      alt="example"
-                      style={{
-                        width: '100%',
-                      }}
-                      src={previewImageCover}
-                    />
-                  </Modal>
-                </>
-              )}
-
-              <Form.Item>
-                <Button
-                  disabled={disableUpdateCover}
-                  style={{ marginTop: '1rem' }}
-                  block
-                  type="primary"
-                  size="large"
-                  icon={<CloudSyncOutlined />}
-                  htmlType="submit"
-                >
-                  Update cover image
-                </Button>
-              </Form.Item>
-            </Form>
-          </TabPane>
-          <TabPane tab="Gallery" key="3" className="card__tab-pane">
-            <Form
-              form={formGallery}
-              name="form-edit-tour-image"
-              onFinish={onEditFormGallery}
-              layout="vertical"
-              autoComplete="off"
-            >
-              <Form.Item name="gallery">
-                <Upload
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  listType="picture-card"
-                  fileList={gallery}
-                  onPreview={handlePreviewGallery}
-                  onChange={handleChangeGallery}
-                >
-                  {gallery.length >= 10 ? null : uploadButton}
-                </Upload>
-                <Modal
-                  visible={previewVisibleGallery}
-                  footer={null}
-                  onCancel={handleCancelGallery}
-                >
-                  <img
-                    alt="example"
-                    style={{
-                      width: '100%',
-                    }}
-                    src={previewImageGallery}
-                  />
-                </Modal>
-              </Form.Item>
-
-              <Form.Item>
-                <Button
-                  disabled={disableUpdateGallery}
-                  block
-                  type="primary"
-                  size="large"
-                  icon={<CloudSyncOutlined />}
-                  htmlType="submit"
-                >
-                  Update gallery image
-                </Button>
-              </Form.Item>
-            </Form>
-          </TabPane>
-          {/* <TabPane tab="Tour Plans" key="4" className="card__tab-pane">
-            <Form
-              form={formTourPlans}
-              name="form-edit-tour-plans"
-              onFinish={onEditFormTourPlans}
-              layout="vertical"
-              autoComplete="off">
-              <Collapse defaultActiveKey={['1']}>
-                {Array.from(Array(duration), (_, i) => {
-                  return (
-                    <Panel header={`Day ${i + 1}`} key={i + 1}>
-                      <Form.Item
-                        style={{ padding: '0 1rem' }}
-                        label="Title"
-                        name={['tourPlans', `${i + 1}`, 'title']}
-                        rules={[
-                          {
-                            required: true,
-                            message: `Please input title of day ${i + 1}`,
-                          },
-                        ]}>
-                        <Input
-                          style={{ resize: 'none' }}
-                          rows={3}
-                          size="large"
-                        />
-                      </Form.Item>
-                      <Form.Item
-                        style={{ padding: '0 1rem' }}
-                        label="Destination"
-                        name={['tourPlans', i + 1, 'destination']}
-                        rules={[
-                          {
-                            required: true,
-                            message: `Please input Description your tour plan day ${
-                              i + 1
-                            }`,
-                          },
-                        ]}>
-                        <Select size="large">
-                          {destinations.map((item, index) => {
-                            return (
-                              <Option key={index} value={item.id}>
-                                {item.name}
-                              </Option>
-                            );
-                          })}
-                        </Select>
-                      </Form.Item>
-                      <Form.Item
-                        style={{ padding: '0 1rem' }}
-                        label="Description"
-                        name={['tourPlans', i + 1, 'description']}
-                        rules={[
-                          {
-                            required: true,
-                            message: `Please input Description your tour plan day ${
-                              i + 1
-                            }`,
-                          },
-                        ]}>
-                        <TextArea
-                          style={{ resize: 'none' }}
-                          rows={3}
-                          size="large"
-                        />
-                      </Form.Item>
-                    </Panel>
-                  );
-                })}
-              </Collapse>
-
-              <Form.Item>
-                <Button
-                  style={{ marginTop: '1rem' }}
-                  block
-                  type="primary"
-                  size="large"
-                  icon={<CloudSyncOutlined />}
-                  htmlType="submit">
-                  Update your tour plans
-                </Button>
-              </Form.Item>
-            </Form>
-          </TabPane> */}
         </Tabs>
       </div>
     </>
