@@ -28,7 +28,10 @@ export default function Header() {
 
   useEffect(() => {
     const title = document.querySelectorAll('.section-subtitle');
-    if (localStorage.getItem('i18nextLng') !== 'en') {
+    if (
+      localStorage.getItem('i18nextLng') !== 'en' &&
+      localStorage.getItem('i18nextLng') !== 'en-US'
+    ) {
       document.body.style.fontFamily = "'Roboto', sans-serif";
       title.forEach(t => {
         t.style.fontFamily = "'Lavishly Yours', cursive";
