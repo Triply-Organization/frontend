@@ -115,7 +115,7 @@ const CMSAddTour = () => {
     fmData.append('image[]', file);
     try {
       const res = await axios.post(
-        import.meta.env.VITE_SERVER_BASE_URL,
+        import.meta.env.VITE_SERVER_BASE_URL + 'images/',
         fmData,
         config,
       );
@@ -145,7 +145,7 @@ const CMSAddTour = () => {
     fmData.append('image[]', file);
     try {
       const res = await axios.post(
-        import.meta.env.VITE_SERVER_BASE_URL,
+        import.meta.env.VITE_SERVER_BASE_URL + 'images/',
         fmData,
         config,
       );
