@@ -158,7 +158,6 @@ const adminSlice = createSlice({
             lineData.push({ month: key, value: val1, type: key1 });
           }
         }
-        // console.log(lineData);
         state.totalCommissionData = lineData;
       }
     });
@@ -240,7 +239,6 @@ const adminSlice = createSlice({
       state.loading = false;
       const data = action.payload;
       if (data.status === 'success') {
-        // console.log();
         const users = [];
         data.data.users?.map(item => {
           users.push({
@@ -303,7 +301,6 @@ const adminSlice = createSlice({
       state.loading = false;
       const data = action.payload;
       if (data.status === 'success') {
-        // console.log();
         const customers = [];
         data.data.customers?.map(item => {
           customers.push({

@@ -16,4 +16,8 @@ export const store = configureStore({
     checkout: checkoutSlice.reducer,
     order: orderSlice.reducer,
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });

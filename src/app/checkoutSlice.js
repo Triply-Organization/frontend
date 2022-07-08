@@ -78,7 +78,6 @@ const checkoutSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(getConfirmInfo.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.loading = false;
       state.confirmationData = action.payload.data.data;
     });

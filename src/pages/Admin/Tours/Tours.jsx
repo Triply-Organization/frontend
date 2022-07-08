@@ -79,7 +79,6 @@ export default function Tours() {
     if (!searchParams.get('page')) {
       setSearchParams({ page });
     } else {
-      console.log(totalPages);
       if (searchParams.get('page') > totalPages) {
         // setSearchParams({ page: totalPages });
       }

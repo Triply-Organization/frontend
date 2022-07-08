@@ -23,7 +23,6 @@ const CMSTours = () => {
   }, []);
 
   useEffect(() => {
-    console.log(selectedRowKeys);
     if (_.isEmpty(selectedRowKeys)) setDisableDelete(true);
     else setDisableDelete(false);
   }, [selectedRowKeys]);

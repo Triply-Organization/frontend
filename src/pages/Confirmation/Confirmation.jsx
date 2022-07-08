@@ -20,8 +20,6 @@ const Confirmation = () => {
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
 
-  console.log(confirmInfo);
-
   const handleBackToHome = () => {
     navigate('/');
     localStorage.removeItem('bookingInfo');
