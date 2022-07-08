@@ -92,6 +92,10 @@ const SettingAccount = () => {
         path: res.data.data[0]?.path,
       };
       setCoverImage(newCoverImg);
+      localStorage.setItem(
+        'user',
+        JSON.stringify({ ...userInfo, avatar: newCoverImg?.path }),
+      );
       console.log(res.data.data[0]);
     } catch (err) {
       console.log('Error: ', err);
@@ -179,7 +183,7 @@ const SettingAccount = () => {
                   <Avatar
                     size={48}
                     icon={<UserOutlined />}
-                    src={userInfo?.avatar}
+                    src={!coverImg.path ? userInfo?.avatar : coverImg?.path}
                   />
                 </Spin>
                 <div className="setting-account-wrapper__content__image__wrapper__info-wrapper">
@@ -191,7 +195,6 @@ const SettingAccount = () => {
                 name="avatar"
                 showUploadList={false}
                 beforeUpload={beforeUpload}
-                // onChange={handleChange}
                 customRequest={uploadCoverImage}
               >
                 <Button icon={<UploadOutlined />}>
