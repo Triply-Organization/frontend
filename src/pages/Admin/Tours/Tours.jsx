@@ -77,11 +77,8 @@ export default function Tours() {
   const loading = async () => {
     //loading some data
     if (!searchParams.get('page')) {
-      console.log('--KHONG CO PARAMS');
       setSearchParams({ page });
     } else {
-      console.log(totalPages);
-      console.log('--CO PARAMS');
       if (searchParams.get('page') > totalPages) {
         // setSearchParams({ page: totalPages });
       }

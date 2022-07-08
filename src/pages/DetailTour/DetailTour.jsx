@@ -105,7 +105,6 @@ export default function DetailTour() {
   };
 
   const userReviews = detailTour.reviews?.map(item => {
-    console.log(item);
     return {
       name: item.name,
       avatar: item.avatar,
@@ -150,8 +149,6 @@ export default function DetailTour() {
       point: detailTour.rating?.rooms,
     },
   ];
-
-  console.log(detailTour);
 
   const disabledDate = current => {
     return !availableDate.find(date => {

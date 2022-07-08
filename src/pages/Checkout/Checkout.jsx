@@ -71,10 +71,8 @@ const Checkout = () => {
     };
     if (voucherData.remain !== 0) {
       if (!values.discount) {
-        console.log(valueWithoutVoucher);
         dispatch(checkout(valueWithoutVoucher));
       } else {
-        console.log(newValues);
         dispatch(checkout(newValues));
       }
     } else {
@@ -91,7 +89,6 @@ const Checkout = () => {
         },
       });
       const taxData = res.data.data.percent;
-      console.log(taxData);
       setTaxInfo(taxData);
     };
     getTax();
@@ -136,7 +133,6 @@ const Checkout = () => {
   };
 
   const handleClickVoucherButton = () => {
-    console.log(voucherVal);
     const req = {
       code: voucherVal,
     };

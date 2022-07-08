@@ -94,7 +94,6 @@ export default function Users() {
 
       onOk() {
         // HANDLE DELETE ACCOUNT
-        // console.log(record)
         dispatch(
           deleteUser({
             id: record.id,

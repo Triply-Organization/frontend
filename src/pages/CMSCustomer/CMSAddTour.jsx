@@ -84,11 +84,9 @@ const CMSAddTour = () => {
     let resGallery = [];
 
     if (!_.isEmpty(galleryImage)) {
-      // console.log(galleryImageOnChange);
       // Delete gallery image is removed
       resGallery = galleryImage.filter(function (o1) {
         return galleryImageOnChange.fileList.some(function (o2) {
-          // console.log(galleryImage);
           return o1.file.uid === o2.uid; // return the ones with equal id
         });
       });

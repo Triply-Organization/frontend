@@ -218,7 +218,6 @@ export default function Header() {
   );
 
   const handleSetActiveTab = id => {
-    console.log('----CHANGE TAB');
     setActiveTab(id);
   };
 

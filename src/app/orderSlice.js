@@ -28,7 +28,6 @@ const orderSlice = createSlice({
     });
     builder.addCase(booking.fulfilled, (state, action) => {
       state.loading = false;
-      console.log(action.payload);
       state.checkout = action.payload.data.data;
       state.status = action.payload.data;
     });

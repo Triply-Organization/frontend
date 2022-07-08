@@ -195,7 +195,7 @@ const Register = () => {
           loading={loading}
           type="primary"
           onClick={() => {
-            submit().then(result => console.log(result));
+            submit();
           }}
           className="register-form-submit"
         >

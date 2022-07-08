@@ -10,7 +10,6 @@ const CurrencySelect = () => {
   ];
 
   const changCurrency = current => {
-    console.log(current.toLowerCase());
     localStorage.setItem('currencyItem', current);
     if (current === 'USD') {
       localStorage.setItem('currencyString', 'en-US');

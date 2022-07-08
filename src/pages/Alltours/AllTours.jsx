@@ -108,8 +108,6 @@ const AllTours = () => {
     dispatch(getToursByFilter(location.search));
   }, [searchParams]);
 
-  // console.log(listTours);
-
   const renderIconSortPrice = () => {
     if (sortPrice === 'asc')
       return (
