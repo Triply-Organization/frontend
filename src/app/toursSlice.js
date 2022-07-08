@@ -155,6 +155,7 @@ const toursSlice = createSlice({
     });
     builder.addCase(getDetailTour.fulfilled, (state, action) => {
       let data = action.payload;
+      console.log(action.payload);
       state.loading = false;
       let priceDate = [];
       let temp = [];

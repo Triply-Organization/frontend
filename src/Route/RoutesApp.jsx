@@ -47,18 +47,17 @@ const RoutesApp = () => {
           </>
         }
       >
-        <Route index element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<Home />} loading />
-        <Route path="/setting-account/:id" element={<SettingAccount />} />
-        <Route path="/tours">
+        <Route index element={<Home />} />
+        <Route path="setting-account/:id" element={<SettingAccount />} />
+        <Route path="tours">
           <Route index element={<AllTours />} loading />
           <Route path=":search" element={<AllTours />} loading />
         </Route>
-        <Route path="/my-tours" element={<MyTour />} loading />
-        <Route path="/detail/:id" element={<DetailTour />} />
+        <Route path="my-tours" element={<MyTour />} loading />
+        <Route path="detail/:id" element={<DetailTour />} />
         <Route path="confirmation/:id" element={<Confirmation />} />
       </Route>
-      <Route path="/admin" element={<Admin />}>
+      <Route path="admin" element={<Admin />}>
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} loading />
         <Route path="tours" element={<Tours />} loading />
@@ -66,12 +65,12 @@ const RoutesApp = () => {
         <Route path="customers" element={<Customers />} loading />
         <Route path="reviews" element={<Reviews />} loading />
       </Route>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
       <Route path="checkout/:id" element={<Checkout />} />
       <Route path="confirmation/:id" element={<Confirmation />} />
 
-      <Route path="/cms" element={<CMSCustomer />}>
+      <Route path="cms" element={<CMSCustomer />}>
         <Route index element={<Navigate to="dashboard" replace />} loading />
         <Route path="dashboard" element={<CMSDashBoard />} loading />
         <Route path="tours" element={<CMSTours />} loading />
