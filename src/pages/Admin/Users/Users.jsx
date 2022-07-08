@@ -114,7 +114,7 @@ export default function Users() {
         dispatch(
           changeRoleUser({
             id: currentValue.id,
-            body: JSON.stringify({ role: [val.role] }),
+            body: JSON.stringify({ roles: [val.role] }),
             searchParams: location.search,
           }),
         );
