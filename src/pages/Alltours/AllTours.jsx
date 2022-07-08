@@ -59,6 +59,8 @@ const AllTours = () => {
 
   // USE EFFECT
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     const loading = async () => {
       let temp = {
         destination: searchParams.get('destination'),

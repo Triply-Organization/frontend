@@ -201,6 +201,7 @@ export default function DetailTour() {
   }, [detailTour]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(getDetailTour(id));
   }, []);
 
