@@ -14,14 +14,11 @@ export default function MobileNav(props) {
   const user = JSON.parse(localStorage.getItem('user')) || null;
   const token = localStorage.getItem('token');
 
-  console.log(user);
-  console.log(token);
   const { t } = useTranslation();
   const {
     mobileNavStatus,
     onChangeNavbarStatus,
     navItem,
-    // eslint-disable-next-line no-unused-vars
     userDataLoginMobile,
   } = props;
   useEffect(() => {
@@ -61,6 +58,9 @@ export default function MobileNav(props) {
             </Title>
             <ul className="mobileNav__list">
               {userDataLoginMobile.map((item, index) => {
+                if (!item) {
+                  return;
+                }
                 return (
                   <li
                     onClick={item.onClick}

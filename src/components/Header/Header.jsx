@@ -18,7 +18,16 @@ import Navbar from './Navbar';
 
 export default function Header() {
   // state set for active tab
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(() => {
+    if (window.location.pathname.includes('home')) {
+      return 0;
+    } else if (window.location.pathname.includes('tour')) {
+      return 1;
+    }
+  });
+
+  const roles = JSON.parse(localStorage.getItem('user'))?.roles || [];
+
   // state set for window srollY
   const [scrollY, setScrollY] = useState(window.scrollY);
   // state set for window width
@@ -39,37 +48,74 @@ export default function Header() {
       items={[
         {
           key: '1',
-          label: (
-            <span className="header__language-item">
-              <Link to="/setting-account/1" className="header__language-words">
-                My profile
-              </Link>
-            </span>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <span className="header__language-item">
-              <Link to="/my-tours" className="header__language-words">
-                {t('header.logged_in.tour')}
-              </Link>
-            </span>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <span className="header__language-item">
-              <Link
-                onClick={handleLogout}
-                to="/login"
-                className="header__language-words"
-              >
-                {t('cta.logout')}
-              </Link>
-            </span>
-          ),
+          type: 'group',
+          label: `Hi ${
+            JSON.parse(localStorage.getItem('user'))?.name || 'there'
+          }`,
+          children: [
+            {
+              key: '1-1',
+              label: (
+                <span className="header__language-item">
+                  <Link
+                    to="/setting-account/1"
+                    className="header__language-words"
+                  >
+                    {t('header.logged_in.my_profile')}
+                  </Link>
+                </span>
+              ),
+            },
+            {
+              key: '1-2',
+              label: (
+                <span className="header__language-item">
+                  <Link to="/my-tours" className="header__language-words">
+                    {t('header.logged_in.tour')}
+                  </Link>
+                </span>
+              ),
+            },
+            roles.includes('ROLE_ADMIN')
+              ? !roles.includes('ROLE_USER')
+                ? {
+                    key: '1-21',
+                    label: (
+                      <span className="header__language-item">
+                        <Link to="/admin" className="header__language-words">
+                          {t('header.logged_in.dashboard')}
+                        </Link>
+                      </span>
+                    ),
+                  }
+                : null
+              : !roles.includes('ROLE_USER')
+              ? {
+                  key: '1-21',
+                  label: (
+                    <span className="header__language-item">
+                      <Link to="/cms" className="header__language-words">
+                        {t('header.logged_in.dashboard')}
+                      </Link>
+                    </span>
+                  ),
+                }
+              : null,
+            {
+              key: '1-3',
+              label: (
+                <span className="header__language-item">
+                  <Link
+                    onClick={handleLogout}
+                    to="/login"
+                    className="header__language-words"
+                  >
+                    {t('cta.logout')}
+                  </Link>
+                </span>
+              ),
+            },
+          ],
         },
       ]}
     />
@@ -83,6 +129,23 @@ export default function Header() {
       icon: <MdFeedback />,
       link: '/',
     },
+
+    roles.includes('ROLE_ADMIN')
+      ? !roles.includes('ROLE_USER')
+        ? {
+            title: `${t('header.logged_in.dashboard')}`,
+            icon: <UserOutlined />,
+            link: '/admin',
+          }
+        : null
+      : !roles.includes('ROLE_USER')
+      ? {
+          title: `${t('header.logged_in.dashboard')}`,
+          icon: <UserOutlined />,
+          link: '/cms',
+        }
+      : null,
+
     {
       title: `${t('cta.logout')}`,
       icon: <AiOutlineLogout />,
@@ -143,6 +206,7 @@ export default function Header() {
   );
 
   const handleSetActiveTab = id => {
+    console.log('----CHANGE TAB');
     setActiveTab(id);
   };
 
@@ -216,7 +280,17 @@ export default function Header() {
                   arrow
                 >
                   <div className="header__account-icon">
-                    <Avatar icon={<UserOutlined />} />
+                    <Avatar
+                      src={
+                        JSON.parse(localStorage.getItem('user'))?.avatar || null
+                      }
+                      icon={
+                        JSON.parse(localStorage.getItem('user'))
+                          ?.avatar ? null : (
+                          <UserOutlined />
+                        )
+                      }
+                    />
                   </div>
                 </Dropdown>
               </div>
