@@ -1,10 +1,64 @@
+.my-tour-wrapper {
+  width: 100%;
+  height: fit-content;
+  padding-top: 150px;
+  padding-bottom: 60px;
+  background-color: #f9f4f0;
+}
+
 .my-tour {
-  margin: 90px auto;
-  padding: 0 1rem;
-  &__title {
-    font-size: 36px;
+  margin: 0 auto;
+  width: 1290px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+  padding: 2rem;
+  &__price {
+    font-size: 26px;
     font-weight: bolder;
-    text-align: center;
-    margin-bottom: 1rem;
+    color: var(--primary);
   }
+
+  & .ant-list-item-extra {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.review {
+  &__rating {
+    & > .ant-rate-star {
+      margin-right: 8px !important;
+      color: #2ea452;
+    }
+  }
+}
+
+.rating-star-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 1rem;
+
+  & p {
+    width: 100px;
+    font-weight: 500;
+  }
+  & .ant-rate-star {
+    margin-right: 8px !important;
+    color: #2ea452;
+  }
+}
+
+
+.comment {
+  width: 100%;
+  height: fit-content;
+  padding: 1rem 0;
+  margin: 1rem 0;
+  border-top: 0.5px solid #f1f1f1;
+  border-bottom: 0.5px solid #f1f1f1;
+
 }

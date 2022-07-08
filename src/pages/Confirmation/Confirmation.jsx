@@ -17,6 +17,8 @@ const Confirmation = () => {
   const confirmInfo = useSelector(state => state.checkout.confirmationData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const currencyString = localStorage.getItem('currencyString') || 'en-US';
+  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
 
   console.log(confirmInfo);
 
@@ -62,7 +64,7 @@ const Confirmation = () => {
           <div className="ctn-confirmation__order-info__content">
             <div>
               <Text strong>Order number:</Text>
-              {confirmInfo.id}
+              {confirmInfo?.id}
             </div>
             <div>
               <Text strong>Date:</Text>
@@ -70,7 +72,15 @@ const Confirmation = () => {
             </div>
             <div>
               <Text strong>Total after VAT:</Text>
-              {confirmInfo.bill?.totalPrice}
+              {confirmInfo?.bill?.totalPrice
+                ? confirmInfo?.bill?.totalPrice?.toLocaleString(
+                    `${currencyString}`,
+                    {
+                      style: 'currency',
+                      currency: `${currencyItem}`,
+                    },
+                  )
+                : 'Unpaid Order'}
             </div>
           </div>
         </div>
