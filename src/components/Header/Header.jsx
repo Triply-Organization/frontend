@@ -1,11 +1,11 @@
 import { UserOutlined } from '@ant-design/icons';
+import { AreaChartOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu } from 'antd';
 import { Avatar } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineHome } from 'react-icons/ai';
 import { AiOutlineLogout } from 'react-icons/ai';
-import { MdFeedback } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -26,7 +26,9 @@ export default function Header() {
     }
   });
 
+  const token = localStorage.getItem('token');
   const roles = JSON.parse(localStorage.getItem('user'))?.roles || [];
+  const id = JSON.parse(localStorage.getItem('user'))?.id || 1;
 
   // state set for window srollY
   const [scrollY, setScrollY] = useState(window.scrollY);
@@ -36,7 +38,6 @@ export default function Header() {
   const [mobileNavStatus, setMobileNavStatus] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -53,29 +54,33 @@ export default function Header() {
             JSON.parse(localStorage.getItem('user'))?.name || 'there'
           }`,
           children: [
-            {
-              key: '1-1',
-              label: (
-                <span className="header__language-item">
-                  <Link
-                    to="/setting-account/1"
-                    className="header__language-words"
-                  >
-                    {t('header.logged_in.my_profile')}
-                  </Link>
-                </span>
-              ),
-            },
-            {
-              key: '1-2',
-              label: (
-                <span className="header__language-item">
-                  <Link to="/my-tours" className="header__language-words">
-                    {t('header.logged_in.tour')}
-                  </Link>
-                </span>
-              ),
-            },
+            roles.includes('ROLE_USER')
+              ? {
+                  key: '1-1',
+                  label: (
+                    <span className="header__language-item">
+                      <Link
+                        to="/setting-account/1"
+                        className="header__language-words"
+                      >
+                        {t('header.logged_in.my_profile')}
+                      </Link>
+                    </span>
+                  ),
+                }
+              : null,
+            roles.includes('ROLE_USER')
+              ? {
+                  key: '1-2',
+                  label: (
+                    <span className="header__language-item">
+                      <Link to="/my-tours" className="header__language-words">
+                        {t('header.logged_in.tour')}
+                      </Link>
+                    </span>
+                  ),
+                }
+              : null,
             roles.includes('ROLE_ADMIN')
               ? !roles.includes('ROLE_USER')
                 ? {
@@ -123,25 +128,32 @@ export default function Header() {
 
   //---------- User Data When Login ----------->
   const userDataLoginMobile = [
-    { title: `${t('header.logged_in.tour')}`, icon: <TbTicket />, link: '/' },
-    {
-      title: `${t('header.logged_in.review')}`,
-      icon: <MdFeedback />,
-      link: '/',
-    },
-
+    roles.includes('ROLE_USER')
+      ? {
+          title: `${t('header.logged_in.my_profile')}`,
+          icon: <UserOutlined />,
+          link: `/setting-account/${id}`,
+        }
+      : null,
+    roles.includes('ROLE_USER')
+      ? {
+          title: `${t('header.logged_in.tour')}`,
+          icon: <TbTicket />,
+          link: '/my-tours',
+        }
+      : null,
     roles.includes('ROLE_ADMIN')
       ? !roles.includes('ROLE_USER')
         ? {
             title: `${t('header.logged_in.dashboard')}`,
-            icon: <UserOutlined />,
+            icon: <AreaChartOutlined />,
             link: '/admin',
           }
         : null
       : !roles.includes('ROLE_USER')
       ? {
           title: `${t('header.logged_in.dashboard')}`,
-          icon: <UserOutlined />,
+          icon: <AreaChartOutlined />,
           link: '/cms',
         }
       : null,
@@ -160,13 +172,13 @@ export default function Header() {
       title: `${t('header.home')}`,
       icon: <AiOutlineHome />,
       subnav: [],
-      to: 'home',
+      link: '/home',
     },
     {
       title: `${t('header.tour')}`,
       icon: <TbTicket />,
       subnav: [],
-      to: 'tours',
+      link: '/tours',
     },
   ];
 

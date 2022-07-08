@@ -97,7 +97,7 @@ export default function MobileNav(props) {
             {navItem.map((item, index) => {
               return (
                 <li className="mobileNav__item" key={index}>
-                  <Link to={'#'} className="mobileNav__link">
+                  <Link to={item.link} className="mobileNav__link">
                     <span className="mobileNav__icon">{item.icon}</span>
                     <span className="mobileNav__words">{item.title}</span>
                   </Link>
