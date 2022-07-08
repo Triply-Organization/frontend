@@ -226,7 +226,7 @@ h3.detailTour__booking-heading {
     max-width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
   }
 
   & .ant-select.ant-select-single.ant-select-show-arrow {
@@ -293,6 +293,8 @@ button.ant-btn.ant-btn-primary.ant-btn-lg.detailTour__booking-btn {
 
 img.detailTour__img {
   width: 96%;
+  height: 432px;
+  object-fit: cover;
 }
 
 .detailTour__relatedTour {

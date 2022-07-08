@@ -1,0 +1,17 @@
+img.logo {
+  width: 100%;
+  padding: 20px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+span.ant-breadcrumb-link {
+  h3.ant-typography {
+    margin: 24px 0 0 24px;
+    font-size: 2.2rem;
+    text-shadow: 3px 3px 3px #0000004a;
+  }
+}

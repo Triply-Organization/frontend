@@ -2,15 +2,17 @@ import { Col, Divider, Image, Row, Typography } from 'antd';
 import moment from 'moment';
 import { PropTypes } from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import './OrderDetail.scss';
 
 const { Title, Text } = Typography;
 
 const OrderDetail = props => {
-  const { data, finalTotal, discountValue } = props;
-
-  console.log(data);
+  const { data, finalTotal, discountValue, taxInfo } = props;
+  const { t } = useTranslation();
+  const currencyString = localStorage.getItem('currencyString') || 'en-US';
+  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
 
   return (
     <>
@@ -18,55 +20,76 @@ const OrderDetail = props => {
       <div className="checkout-info-display">
         <Row gutter={8}>
           <Col lg={8} md={6} sm={6} xs={0}>
-            <Image width={150} src={data.imageTour.path} />
+            <Image width={200} src={data.imageTour?.path} />
           </Col>
-          <Col lg={12} md={15} sm={15} xs={18}>
+          <Col
+            lg={16}
+            md={18}
+            sm={18}
+            xs={22}
+            className="checkout-info-display__content"
+          >
             <Title level={4}>{data.tourTitle}</Title>
             <section>
-              <Text strong>Date: </Text>
-              <Text>{moment(data.startDay.date).format('YYYY-MM-DD')}</Text>
+              <Text strong>{t('checkout.order_detail.date')} </Text>
+              <Text>{moment(data.startDay?.date).format('YYYY-MM-DD')}</Text>
             </section>
             <section>
-              <Text strong>Time: </Text>
+              <Text strong>{t('checkout.order_detail.time')} </Text>
               <Text>12:00 pm</Text>
             </section>
-            <Text strong>Duration: </Text>
+            <Text strong>{t('checkout.order_detail.duration')} </Text>
             <Text>{data.duration} days</Text>
             <section>
-              <Text strong>Ticket:</Text>
+              <Text strong>{t('checkout.order_detail.ticket.title')} </Text>
             </section>
             <section className="checkout-info-display__ticket-ctn">
-              {data.tickets.adult ? (
+              {data.tickets?.adult ? (
                 <span>
-                  <Text>Adult: </Text>
+                  <Text>{t('checkout.order_detail.ticket.adult')} </Text>
                   <Text strong>
-                    ${data.tickets.adult.priceTick} x{' '}
-                    {data.tickets.adult.amount}
+                    {data.tickets.adult.priceTick?.toLocaleString(
+                      `${currencyString}`,
+                      {
+                        style: 'currency',
+                        currency: `${currencyItem}`,
+                      },
+                    )}{' '}
+                    x {data.tickets.adult.amount}
                   </Text>
                 </span>
               ) : null}
-              {data.tickets.youth ? (
+              {data.tickets?.youth ? (
                 <span>
-                  <Text>Youth</Text>
+                  <Text>{t('checkout.order_detail.ticket.youth')}</Text>
                   <Text strong>
-                    ${data.tickets.youth.priceTick} x{' '}
-                    {data.tickets.youth.amount}
+                    {data.tickets.youth.priceTick?.toLocaleString(
+                      `${currencyString}`,
+                      {
+                        style: 'currency',
+                        currency: `${currencyItem}`,
+                      },
+                    )}{' '}
+                    x {data.tickets.youth.amount}
                   </Text>
                 </span>
               ) : null}
-              {data.tickets.children ? (
+              {data.tickets?.children ? (
                 <span>
-                  <Text>Children: </Text>
+                  <Text>{t('checkout.order_detail.ticket.children')}</Text>
                   <Text strong>
-                    ${data.tickets.children.priceTick} x
-                    {data.tickets.children.amount}
+                    {data.tickets.children.priceTick?.toLocaleString(
+                      `${currencyString}`,
+                      {
+                        style: 'currency',
+                        currency: `${currencyItem}`,
+                      },
+                    )}{' '}
+                    x{data.tickets.children.amount}
                   </Text>
                 </span>
               ) : null}
             </section>
-          </Col>
-          <Col lg={4} md={3} sm={3} xs={6}>
-            <Title level={5}>${data.subTotal}</Title>
           </Col>
         </Row>
         <Divider />
@@ -75,25 +98,53 @@ const OrderDetail = props => {
           <Col lg={8} md={6} sm={6} xs={0}></Col>
           <Col className="synthetic-price" lg={12} md={15} sm={15} xs={18}>
             <section>
-              <Text strong>Subtotal</Text>
+              <Text strong>{t('checkout.order_detail.sub_total')}</Text>
             </section>
             <section>
-              <Text strong>Discount</Text>
+              <Text strong>{t('checkout.order_detail.discount')}</Text>
             </section>
             <section>
-              <Title level={4}>Total</Title>
+              <Text strong>{t('checkout.order_detail.tax')}</Text>
+            </section>
+            <section>
+              <Title level={4}>{t('checkout.order_detail.total')}</Title>
             </section>
           </Col>
-          <Col lg={4} md={3} sm={3} xs={6}>
+          <Col lg={3} md={3} sm={3} xs={6}>
             <section>
-              <Text strong>${data.subTotal}</Text>
+              <Text strong>
+                {data?.subTotal?.toLocaleString(`${currencyString}`, {
+                  style: 'currency',
+                  currency: `${currencyItem}`,
+                })}
+              </Text>
             </section>
             <section>
-              <Text strong>{discountValue ? `-${discountValue}%` : '0%'}</Text>
+              <Text strong>
+                {data?.bill?.discount
+                  ? data?.bill?.discount
+                  : discountValue
+                  ? `-${discountValue}%`
+                  : '0%'}
+              </Text>
+            </section>
+            <section>
+              <Text strong>{taxInfo ? taxInfo : 8}%</Text>
             </section>
             <section>
               <Title level={4} className="result-payment">
-                ${!finalTotal ? data.subTotal : finalTotal}
+                {!finalTotal?.toLocaleString(`${currencyString}`, {
+                  style: 'currency',
+                  currency: `${currencyItem}`,
+                })
+                  ? data.subTotal?.toLocaleString(`${currencyString}`, {
+                      style: 'currency',
+                      currency: `${currencyItem}`,
+                    })
+                  : finalTotal?.toLocaleString(`${currencyString}`, {
+                      style: 'currency',
+                      currency: `${currencyItem}`,
+                    })}
               </Title>
             </section>
           </Col>
@@ -107,6 +158,7 @@ OrderDetail.propTypes = {
   data: PropTypes.object,
   finalTotal: PropTypes.number,
   discountValue: PropTypes.number,
+  taxInfo: PropTypes.number,
 };
 
 export default OrderDetail;

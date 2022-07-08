@@ -1,10 +1,14 @@
 /* eslint-disable no-unused-vars */
-import { Button } from 'antd';
+import { Button, Form } from 'antd';
 import { Typography } from 'antd';
 import { Input } from 'antd';
+import { message } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsFacebook, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
+import { FcTwoSmartphones } from 'react-icons/fc';
+import { MdAlternateEmail } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/images/logo-white.png';
 import './Footer.scss';
@@ -36,26 +40,33 @@ export default function Footer() {
     `${t('footer.explore.item.shanghai')}`,
     `${t('footer.explore.item.tokyo')}`,
   ];
+
+  const [formFollowByEmail] = Form.useForm();
+  const navigate = useNavigate();
   return (
     <footer className="footer__wrapper">
       <div className="section-4">
-        <div>
-          <p className="section-4__text">
-            Don&apos;t wait any longer. Contact us!
-          </p>
+        <div className="section-4__contact-wrapper">
+          <p className="section-4__text">{t('home.banner.telephone')}</p>
           <a href="#" className="section-4__link">
-            +(84) 1800 - 333 5555
+            <span className="section-4__link-icon">
+              <FcTwoSmartphones />
+            </span>{' '}
+            <span className="section-4__link-words">+(84) 1800 - 333 5555</span>
           </a>
         </div>
-        <div>
+        <div className="section-4__contact-wrapper">
           <p style={{ opacity: '0' }}>a</p>
           <a href="#" className="section-4__link">
-            support@triply.com
+            <span className="section-4__link-icon">
+              <MdAlternateEmail />
+            </span>{' '}
+            <span className="section-4__link-words">support@triply.com</span>
           </a>
         </div>
 
         <div className="section-4__follow-us">
-          <p className="section-4__text">Follow us</p>
+          <p className="section-4__text">{t('home.banner.follow')}</p>
           <div className="section-4__wrapper-button">
             <Button
               className="section-4__button"
@@ -107,7 +118,7 @@ export default function Footer() {
         </div>
         <div className="footer__list-wrapper footer__list-mobile--left">
           <Title className="footer__heading" level={4}>
-            Our Services
+            {t('footer.service.title')}
           </Title>
           <ul className="footer__list">
             {services.map((item, index) => {
@@ -123,7 +134,7 @@ export default function Footer() {
         </div>
         <div className="footer__list-wrapper footer__list-mobile--right">
           <Title className="footer__heading" level={4}>
-            Explore
+            {t('footer.explore.title')}
           </Title>
           <ul className="footer__list">
             {explore.map((item, index) => {
@@ -145,14 +156,41 @@ export default function Footer() {
             {t('footer.get_update.content')}
           </p>
           <div className="footer__detail-form">
-            <Input
-              className="footer__detail-input"
-              size="large"
-              placeholder={t('cta.place_holder_input-email')}
-            />
-            <Button type="primary" size="large" className="footer__detail-btn">
-              {t('cta.subscribe')}
-            </Button>
+            <Form
+              form={formFollowByEmail}
+              onFinish={e => {
+                console.log(e);
+                formFollowByEmail.resetFields();
+                message.success(
+                  `Thank ${e.followByEmail} for signing up. We will always send you the latest rides`,
+                );
+              }}
+            >
+              <Form.Item
+                name="followByEmail"
+                rules={[
+                  {
+                    required: true,
+                    type: 'email',
+                    message: 'The input is not valid E-mail!',
+                  },
+                ]}
+              >
+                <Input
+                  className="footer__detail-input"
+                  size="large"
+                  placeholder={t('cta.place_holder_input-email')}
+                />
+              </Form.Item>
+              <Button
+                type="primary"
+                size="large"
+                htmlType="submit"
+                className="footer__detail-btn"
+              >
+                {t('cta.subscribe')}
+              </Button>
+            </Form>
           </div>
         </div>
       </div>

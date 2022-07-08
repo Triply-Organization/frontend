@@ -6,6 +6,7 @@ import { orderAPI } from '../api/orderAPI';
 const initialState = {
   loading: false,
   checkout: {},
+  status: {},
 };
 
 export const booking = createAsyncThunk('order/booking', async params => {
@@ -29,6 +30,7 @@ const orderSlice = createSlice({
       state.loading = false;
       console.log(action.payload);
       state.checkout = action.payload.data.data;
+      state.status = action.payload.data;
     });
   },
 });

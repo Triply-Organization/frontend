@@ -34,7 +34,7 @@
             }
 
             .paypal-img {
-                height: 24px;
+                height: 20px;
             }
 
             .button-checkout-page {
@@ -58,6 +58,10 @@
         }
 
         &__right-ctn {
+            width: 100%;
+        }
+
+        .voucher-btn {
             width: 100%;
         }
     }

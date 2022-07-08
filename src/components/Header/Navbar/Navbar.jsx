@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { PropTypes } from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -11,6 +12,7 @@ export default function Navbar(props) {
     <nav className="header__navbar-wrapper">
       <ul className="header__navbar">
         {navItem.map((item, index) => {
+          console.log(item.link);
           return (
             <>
               <li
@@ -19,7 +21,7 @@ export default function Navbar(props) {
                 key={index}
               >
                 <Link
-                  to={`/${item.to.toLowerCase()}`}
+                  to={`${item.link.toLowerCase()}`}
                   className={
                     activeTab === index
                       ? 'header__navbar-link header__navbar-link--active'
@@ -37,3 +39,9 @@ export default function Navbar(props) {
     </nav>
   );
 }
+
+Navbar.propTypes = {
+  activeTab: PropTypes.any,
+  handleSetActiveTab: PropTypes.func,
+  navItem: PropTypes.array,
+};

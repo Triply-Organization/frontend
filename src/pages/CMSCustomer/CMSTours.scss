@@ -1,0 +1,25 @@
+.cms-content-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  & > div {
+    display: flex;
+    gap: 1rem;
+  }
+}
+
+.cms-content-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.disabled-row {
+  color: crimson;
+  font-weight: bold;
+}
