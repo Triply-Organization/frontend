@@ -17,6 +17,7 @@ const CardTour = props => {
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const navigate = useNavigate();
+  console.log(tour.image);
   return (
     <div className="card-tour">
       {tag && <div className="card-tour__tag">{tag}</div>}

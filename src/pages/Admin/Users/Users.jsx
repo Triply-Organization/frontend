@@ -1,21 +1,31 @@
+/* eslint-disable no-unused-vars */
 import { UserOutlined } from '@ant-design/icons';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {
   Avatar,
   Breadcrumb,
   Button,
+  Col,
   Form,
-  Input,
+  Row,
   Select,
   Space,
+  Spin,
   Table,
 } from 'antd';
 import { Typography } from 'antd';
 import { Modal } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
+import {
+  changeRoleUser,
+  deleteUser,
+  getAllUsers,
+} from '../../../app/AdminSlice';
 import ModalForm from '../../../components/ModalForm/ModalForm';
-import './Users.scss';
 
 const { Option } = Select;
 
@@ -24,23 +34,51 @@ const { confirm } = Modal;
 const { Title } = Typography;
 
 export default function Users() {
-  const [isShowModalAdd, setShowModalAdd] = useState(false);
+  const dispatch = useDispatch();
+  // const usersData = useSelector(state => state.admin.usersData.users)
+  const isLoading = useSelector(state => state.admin.loading);
+  const totalUsers = useSelector(state => state.admin.usersData.totalUsers);
+  const usersData = useSelector(state => state.admin.usersData.users);
+  const totalPages = useSelector(state => state.admin.usersData.totalPages);
+
+  // const [isShowModalAdd, setShowModalAdd] = useState(false);
   const [isShowModalEdit, setShowModalEdit] = useState(false);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  // GET PAGINATION ...
+  const [page, setPage] = useState(searchParams.get('page') || 1);
+  // GET TOUR DATA
+
+  // FLAG PREVENT CALL API TWICE
+  const [flag, setFlag] = useState(0);
+
   // Set current row value
   const [currentValue, setCurrentValue] = useState(false);
-  const [formAddUser] = Form.useForm();
+  // const [formAddUser] = Form.useForm();
   const [formEditUser] = Form.useForm();
+  const loadingContext = useLoadingContext();
 
-  // HANDLE ADD NEW USER
-  const handleAddNewUser = () => {
-    formAddUser
-      .validateFields()
-      .then(val => {
-        console.log(val);
-        // HANDLE LOGIC ADD NEW USER
-      })
-      .catch(err => console.log(err));
+  const loading = async () => {
+    //loading some data
+    if (!searchParams.get('page')) {
+      setSearchParams({ page });
+    }
+    dispatch(getAllUsers(location.search));
+    //call method to indicate that loading is done
+    loadingContext.done();
   };
+
+  useEffect(() => {
+    loading();
+    setFlag(flag + 1);
+  }, []);
+
+  useEffect(() => {
+    if (flag !== 0) {
+      setSearchParams({ page });
+      dispatch(getAllUsers(location.search));
+    }
+  }, [page]);
 
   // HANDLE OPEN EDIT FORM
   const handleOpenEditForm = record => {
@@ -56,12 +94,14 @@ export default function Users() {
 
       onOk() {
         // HANDLE DELETE ACCOUNT
-        console.log(record);
+        // console.log(record)
+        dispatch(
+          deleteUser({
+            id: record.id,
+            searchParams: location.search,
+          }),
+        );
       },
-
-      // onCancel() {
-      //   console.log('Cancel');
-      // },
     });
   };
 
@@ -71,7 +111,15 @@ export default function Users() {
       .validateFields()
       .then(val => {
         // HANDLE LOGIC EDIT ROLE USER
-        console.log(val, currentValue);
+        dispatch(
+          changeRoleUser({
+            id: currentValue.id,
+            body: JSON.stringify({ role: [val.role] }),
+            searchParams: location.search,
+          }),
+        );
+        setShowModalEdit(false);
+        formEditUser.resetFields();
       })
       .catch(err => console.log(err));
   };
@@ -134,105 +182,15 @@ export default function Users() {
     },
   ];
 
-  const data = [
-    {
-      name: 'a',
-      key: '1',
-      avatar:
-        'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
-      email: '123@gmail.com',
-      phone: '0123123123',
-      address: '123 ASD BVCX',
-    },
-    {
-      name: 'b',
-      key: '2',
-      avatar: null,
-      email: '542@gmail.com',
-      phone: '012438123',
-      address: '142 ASD BVCX',
-    },
-    {
-      name: 'c',
-      key: '3',
-      avatar:
-        'https://th.bing.com/th/id/OIP.ieXmGxEGTcqBcPcmthIaBgHaEW?pid=ImgDet&rs=1',
-      email: '55555@gmail.com',
-      phone: '01234333223',
-      address: '554 ASD BVCX',
-    },
-  ];
-
   return (
-    <div className="user__wrapper">
-      <ModalForm
-        form={formAddUser}
-        modalTitle="Add new user"
-        formName="add-new-user"
-        isVisible={isShowModalAdd}
-        handleOk={handleAddNewUser}
-        handleCancel={() => setShowModalAdd(false)}
-        okText="Add"
-        afterClose={() => formAddUser.resetFields()}
-        // defaultValue={productToEdit}
-      >
-        <Form.Item
-          name="name"
-          label="Name"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user name!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user email!',
-            },
-            {
-              pattern: new RegExp('/S+@S+.S+/'),
-              message: 'Enter a valid email address!',
-            },
-          ]}
-        >
-          <Input type="email" />
-        </Form.Item>
-        <Form.Item
-          name="phone"
-          label="Phone"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user phone!',
-            },
-            {
-              pattern: /^(?:\d*)$/,
-              message: 'Input should contain just number!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="address"
-          label="Address"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the user address!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-      </ModalForm>
+    <Spin
+      tip="loading..."
+      // spinning={false}
+      spinning={isLoading}
+      style={{
+        marginTop: '100px',
+      }}
+    >
       {/* MODAL EDIT */}
       <ModalForm
         form={formEditUser}
@@ -242,7 +200,6 @@ export default function Users() {
         handleOk={handleEditRoleUser}
         handleCancel={handleCloseEditRoleForm}
         okText="Edit"
-        // defaultValue={productToEdit}
       >
         <Form.Item
           rules={[
@@ -283,16 +240,27 @@ export default function Users() {
             display: 'flex',
           }}
         >
-          <Button
-            type="primary"
-            size="large"
-            onClick={() => setShowModalAdd(true)}
-          >
-            Add new user
-          </Button>
-          <Table columns={columns} dataSource={data} />
+          <Row>
+            <Col span={24}>
+              <Table
+                size="large"
+                pagination={{
+                  current: page,
+                  total: totalUsers,
+                  // totalPages: totalPages,
+                  pageSize: 10,
+                  showSizeChanger: false,
+                  onChange: e => {
+                    setPage(e);
+                  },
+                }}
+                columns={columns}
+                dataSource={usersData}
+              />
+            </Col>
+          </Row>
         </Space>
       </div>
-    </div>
+    </Spin>
   );
 }
