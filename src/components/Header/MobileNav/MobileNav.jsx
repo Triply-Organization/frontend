@@ -19,7 +19,6 @@ export default function MobileNav(props) {
     mobileNavStatus,
     onChangeNavbarStatus,
     navItem,
-    // eslint-disable-next-line no-unused-vars
     userDataLoginMobile,
   } = props;
   useEffect(() => {
@@ -59,6 +58,9 @@ export default function MobileNav(props) {
             </Title>
             <ul className="mobileNav__list">
               {userDataLoginMobile.map((item, index) => {
+                if (!item) {
+                  return;
+                }
                 return (
                   <li
                     onClick={item.onClick}

@@ -5,141 +5,105 @@ import {
 } from '@ant-design/icons';
 import { Area } from '@ant-design/plots';
 import { Column } from '@ant-design/plots';
-import { Breadcrumb, Col, Row, Space, Statistic } from 'antd';
+import { Breadcrumb, Col, DatePicker, Row, Space, Spin, Statistic } from 'antd';
 import { Typography } from 'antd';
-import React, { useEffect } from 'react';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import CountUp from 'react-countup';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
+import {
+  getOverall,
+  getTotalBooking,
+  getTotalCommission,
+} from '../../../app/AdminSlice';
 import './Dashboard.scss';
 
 const { Title } = Typography;
 
 export function Dashboard() {
+  const dispatch = useDispatch();
+  // DATA FOR BOOKING CHART
+  const columnData = useSelector(state => state.admin.totalBookingData);
+  // DATA FOR COMMISSION CHART
+  const lineData = useSelector(state => state.admin.totalCommissionData);
+  const isLoading = useSelector(state => state.admin.loading);
+  const overall = useSelector(state => state.admin.overall);
   const loadingContext = useLoadingContext();
+
+  // FLAG TO PREVENT FIRST RENDER OF USE EFFECT
+  const [flag, setFlag] = useState(0);
+
+  const [searchParams, setSearchParams] = useSearchParams({});
+  const [year, setYear] = useState(
+    searchParams.get('year') || moment().format('YYYY'),
+  );
 
   const loading = async () => {
     //loading some data
+    if (
+      searchParams.get('year') &&
+      searchParams.get('year') <= moment().format('YYYY')
+    ) {
+      // CALL DATA
+      dispatch(getTotalBooking(year));
+      dispatch(getTotalCommission(year));
+    } else {
+      setSearchParams({ year });
+      // CALL DATA
+      dispatch(getTotalBooking(year));
+      dispatch(getTotalCommission(year));
+    }
+
+    dispatch(getOverall());
 
     //call method to indicate that loading is done
     loadingContext.done();
   };
 
   useEffect(() => {
+    if (flag !== 0) {
+      dispatch(getTotalCommission(year));
+      dispatch(getTotalBooking(year));
+    }
+    setSearchParams({ year });
+  }, [year]);
+
+  useEffect(() => {
     loading();
+
+    // PREVENT RECALL DISPATCH FROM PREVIOUS USE EFFECT
+    setFlag(state => state + 1);
   }, []);
-  const lineData = [
-    {
-      month: '1',
-      commission: 10,
-    },
-    {
-      month: '2',
-      commission: 12,
-    },
-    {
-      month: '3',
-      commission: 2.08,
-    },
-    {
-      month: '4',
-      commission: 2.2,
-    },
-    {
-      month: '5',
-      commission: 2.38,
-    },
-    {
-      month: '6',
-      commission: 2.59,
-    },
-    {
-      month: '7',
-      commission: 2.63,
-    },
-    {
-      month: '8',
-      commission: 2.67,
-    },
-    {
-      month: '9',
-      commission: 2.64,
-    },
-    {
-      month: '10',
-      commission: 2.5,
-    },
-    {
-      month: '11',
-      commission: 2.31,
-    },
-    {
-      month: '12',
-      commission: 2.04,
-    },
-  ];
+
+  const disabledDate = current => {
+    return current > moment().endOf('year');
+  };
+
   const lineConfig = {
     data: lineData,
     xField: 'month',
-    yField: 'commission',
+    yField: 'value',
+    seriesField: 'type',
     xAxis: {
+      label: {
+        formatter: v => `${v}/${year}`,
+      },
       range: [0, 1],
+    },
+    yAxis: {
+      label: {
+        formatter: v => `$${v}`,
+      },
     },
   };
 
-  const columnData = [
-    {
-      month: '1',
-      bookingNumber: 38,
-    },
-    {
-      month: '2',
-      bookingNumber: 52,
-    },
-    {
-      month: '3',
-      bookingNumber: 61,
-    },
-    {
-      month: '4',
-      bookingNumber: 145,
-    },
-    {
-      month: '5',
-      bookingNumber: 48,
-    },
-    {
-      month: '6',
-      bookingNumber: 38,
-    },
-    {
-      month: '7',
-      bookingNumber: 38,
-    },
-    {
-      month: '8',
-      bookingNumber: 38,
-    },
-    {
-      month: '9',
-      bookingNumber: 38,
-    },
-    {
-      month: '10',
-      bookingNumber: 38,
-    },
-    {
-      month: '11',
-      bookingNumber: 38,
-    },
-    {
-      month: '12',
-      bookingNumber: 900,
-    },
-  ];
   const columnConfig = {
     data: columnData,
     xField: 'month',
-    yField: 'bookingNumber',
+    yField: 'booking',
     label: {
       position: 'middle',
       style: {
@@ -149,21 +113,23 @@ export function Dashboard() {
     },
     xAxis: {
       label: {
-        autoHide: true,
-        autoRotate: false,
+        formatter: v => `${v}/${year}`,
       },
     },
-    meta: {
-      month: {
-        alias: 'month',
-      },
-      bookingNumber: {
-        alias: 'bookingNumber',
+    yAxis: {
+      label: {
+        formatter: v => `${v}`,
       },
     },
   };
   return (
-    <>
+    <Spin
+      tip="loading..."
+      spinning={isLoading}
+      style={{
+        marginTop: '100px',
+      }}
+    >
       <Breadcrumb
         style={{
           margin: '16px 0',
@@ -192,15 +158,17 @@ export function Dashboard() {
               <Statistic
                 className="admin__dashboard-statistic"
                 title="Total users"
-                value={1128}
                 prefix={<UserOutlined />}
+                value={overall.totalUsers}
+                formatter={v => <CountUp end={v} duration={0.8} />}
               />
             </Col>
             <Col span={8}>
               <Statistic
                 className="admin__dashboard-statistic"
-                title="Total orders"
-                value={1128}
+                title="Total booking"
+                value={overall.totalBooking}
+                formatter={v => <CountUp end={v} duration={0.8} />}
                 prefix={<DollarOutlined />}
               />
             </Col>
@@ -208,8 +176,27 @@ export function Dashboard() {
               <Statistic
                 className="admin__dashboard-statistic"
                 title="Total tours"
-                value={1128}
+                value={overall.totalTours}
+                formatter={v => <CountUp end={v} duration={0.8} />}
                 prefix={<EnvironmentOutlined />}
+              />
+            </Col>
+          </Row>
+          <Row
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <Col>
+              <DatePicker
+                onChange={e => {
+                  setYear(e.format('YYYY'));
+                }}
+                defaultValue={moment(year)}
+                disabledDate={disabledDate}
+                picker="year"
+                allowClear={false}
               />
             </Col>
           </Row>
@@ -231,6 +218,6 @@ export function Dashboard() {
           </Row>
         </Space>
       </div>
-    </>
+    </Spin>
   );
 }
