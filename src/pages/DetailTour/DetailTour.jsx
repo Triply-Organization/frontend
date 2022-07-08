@@ -72,7 +72,40 @@ export default function DetailTour() {
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
 
+  useEffect(() => {
+    if (dataCheckout.id) {
+      navigate(`/checkout/${dataCheckout.id}`);
+    }
+  }, [dataCheckout.id]);
+
+  useEffect(() => {
+    setTotal(
+      adultNumber.value * adultNumber.price +
+        youthNumber.value * youthNumber.price +
+        childrenNumber.value * childrenNumber.price,
+    );
+  }, [adultNumber, youthNumber, childrenNumber]);
+
+  localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
+
+  const handleChangePrice = (value, unique) => {
+    switch (unique.type) {
+      case 'adult':
+        setAdult({ priceListId: unique.id, amount: value });
+        setAdultNumber({ value, price: unique.price });
+        break;
+      case 'youth':
+        setYouth({ priceListId: unique.id, amount: value });
+        setYouthNumber({ value, price: unique.price });
+        break;
+      case 'children':
+        setChildren({ priceListId: unique.id, amount: value });
+        setChildrenNumber({ value, price: unique.price });
+    }
+  };
+
   const userReviews = detailTour.reviews?.map(item => {
+    console.log(item);
     return {
       name: item.name,
       avatar: item.avatar,
@@ -118,37 +151,7 @@ export default function DetailTour() {
     },
   ];
 
-  useEffect(() => {
-    if (dataCheckout.id) {
-      navigate(`/checkout/${dataCheckout.id}`);
-    }
-  }, [dataCheckout.id]);
-
-  useEffect(() => {
-    setTotal(
-      adultNumber.value * adultNumber.price +
-        youthNumber.value * youthNumber.price +
-        childrenNumber.value * childrenNumber.price,
-    );
-  }, [adultNumber, youthNumber, childrenNumber]);
-
-  localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
-
-  const handleChangePrice = (value, unique) => {
-    switch (unique.type) {
-      case 'adult':
-        setAdult({ priceListId: unique.id, amount: value });
-        setAdultNumber({ value, price: unique.price });
-        break;
-      case 'youth':
-        setYouth({ priceListId: unique.id, amount: value });
-        setYouthNumber({ value, price: unique.price });
-        break;
-      case 'children':
-        setChildren({ priceListId: unique.id, amount: value });
-        setChildrenNumber({ value, price: unique.price });
-    }
-  };
+  console.log(detailTour);
 
   const disabledDate = current => {
     return !availableDate.find(date => {

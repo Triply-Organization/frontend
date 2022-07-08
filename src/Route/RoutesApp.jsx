@@ -12,9 +12,10 @@ import Reviews from '../pages/Admin/Reviews/Reviews';
 import Tours from '../pages/Admin/Tours/Tours';
 import Users from '../pages/Admin/Users/Users';
 import AllTours from '../pages/Alltours/AllTours';
+import CMSAddTour from '../pages/CMSCustomer/CMSAddTour';
 import CMSCustomer from '../pages/CMSCustomer/CMSCustomer';
 import CMSDashBoard from '../pages/CMSCustomer/CMSDashBoard';
-import CMSHandleTour from '../pages/CMSCustomer/CMSHandleTour';
+import CMSEditTour from '../pages/CMSCustomer/CMSEditTour';
 import CMSTourSchedule from '../pages/CMSCustomer/CMSTourSchedule';
 import CMSTours from '../pages/CMSCustomer/CMSTours';
 import Checkout from '../pages/Checkout/Checkout';
@@ -46,15 +47,14 @@ const RoutesApp = () => {
           </>
         }
       >
-        <Route index element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<Home />} loading />
-        <Route path="/setting-account/:id" element={<SettingAccount />} />
-        <Route path="/tours">
+        <Route index element={<Home />} />
+        <Route path="setting-account/:id" element={<SettingAccount />} />
+        <Route path="tours">
           <Route index element={<AllTours />} loading />
           <Route path=":search" element={<AllTours />} loading />
         </Route>
-        <Route path="/my-tours" element={<MyTour />} loading />
-        <Route path="/detail/:id" element={<DetailTour />} />
+        <Route path="my-tours" element={<MyTour />} loading />
+        <Route path="detail/:id" element={<DetailTour />} />
         <Route path="confirmation/:id" element={<Confirmation />} />
       </Route>
       <Route path="/admin" element={<Admin />}>
@@ -65,18 +65,18 @@ const RoutesApp = () => {
         <Route path="customers" element={<Customers />} loading />
         <Route path="reviews" element={<Reviews />} loading />
       </Route>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
       <Route path="checkout/:id" element={<Checkout />} />
       <Route path="confirmation/:id" element={<Confirmation />} />
 
-      <Route path="/cms" element={<CMSCustomer />}>
-        <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<CMSDashBoard />} />
-        <Route path="tours" element={<CMSTours />} />
-        <Route path="add-tour" element={<CMSHandleTour />} />
-        <Route path="edit-tour/:id" element={<CMSHandleTour />} />
-        <Route path="set-schedule/:id" element={<CMSTourSchedule />} />
+      <Route path="cms" element={<CMSCustomer />}>
+        <Route index element={<Navigate to="dashboard" replace />} loading />
+        <Route path="dashboard" element={<CMSDashBoard />} loading />
+        <Route path="tours" element={<CMSTours />} loading />
+        <Route path="add-tour" element={<CMSAddTour />} loading />
+        <Route path="edit-tour/:id" element={<CMSEditTour />} loading />
+        <Route path="set-schedule/:id" element={<CMSTourSchedule />} loading />
       </Route>
       {/* <Route path="*" element={<NoMatch />} /> */}
     </Routes>
