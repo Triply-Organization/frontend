@@ -1,11 +1,13 @@
 import { Column, Line } from '@ant-design/plots';
 import { Breadcrumb } from 'antd';
+import { Typography } from 'antd';
 import moment from 'moment';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import './CMSDashBoard.scss';
+
+const { Title } = Typography;
 
 const CMSDashBoard = () => {
   const loadingContext = useLoadingContext();
@@ -104,15 +106,13 @@ const CMSDashBoard = () => {
     <>
       <Breadcrumb
         style={{
-          margin: '16px 0',
+          marginLeft: '-26px',
         }}
       >
         <Breadcrumb.Item>
-          <Link to="/home">Home</Link>
+          <Title level={3}>Dashboard</Title>
         </Breadcrumb.Item>
-        <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
       </Breadcrumb>
-      <h2>Dashboard</h2>
       <div className="customer-dashboard">
         <div className="customer-dashboard__section">
           <h3 style={{ marginBottom: '2rem' }}>Total revenue per day</h3>
