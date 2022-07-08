@@ -146,12 +146,8 @@ const SettingAccount = () => {
       okText: 'Delete permanently',
       okType: 'danger',
       cancelText: 'No',
-      onOk() {
-        console.log('Delete');
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
+      onOk() {},
+      onCancel() {},
     });
   };
 

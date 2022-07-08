@@ -94,7 +94,6 @@ export default function Users() {
 
       onOk() {
         // HANDLE DELETE ACCOUNT
-        // console.log(record)
         dispatch(
           deleteUser({
             id: record.id,
@@ -114,7 +113,7 @@ export default function Users() {
         dispatch(
           changeRoleUser({
             id: currentValue.id,
-            body: JSON.stringify({ role: [val.role] }),
+            body: JSON.stringify({ roles: [val.role] }),
             searchParams: location.search,
           }),
         );

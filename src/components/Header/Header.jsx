@@ -19,10 +19,10 @@ import Navbar from './Navbar';
 export default function Header() {
   // state set for active tab
   const [activeTab, setActiveTab] = useState(() => {
-    if (window.location.pathname.includes('home')) {
-      return 0;
-    } else if (window.location.pathname.includes('tour')) {
+    if (window.location.pathname.includes('/tours')) {
       return 1;
+    } else {
+      return 0;
     }
   });
 
@@ -172,7 +172,7 @@ export default function Header() {
       title: `${t('header.home')}`,
       icon: <AiOutlineHome />,
       subnav: [],
-      link: '/home',
+      link: '/',
     },
     {
       title: `${t('header.tour')}`,
@@ -218,7 +218,6 @@ export default function Header() {
   );
 
   const handleSetActiveTab = id => {
-    console.log('----CHANGE TAB');
     setActiveTab(id);
   };
 
@@ -247,7 +246,7 @@ export default function Header() {
       }
     >
       <div className="header__left-side">
-        <div className="header__logo-wrapper" onClick={() => navigate('/home')}>
+        <div className="header__logo-wrapper" onClick={() => navigate('/')}>
           <img src={logo} alt="logo" className="header__logo" />
         </div>
         {width < 1023 ? null : (

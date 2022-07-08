@@ -31,6 +31,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     Aos.init({
       duration: 1000,
     });
@@ -89,6 +90,18 @@ const Home = () => {
         }).toString(),
       });
     } else navigate('/tours');
+  };
+
+  const handleNavigateLogin = () => {
+    localStorage.clear('user');
+    localStorage.clear('token');
+    navigate('/login');
+  };
+
+  const handleNavigateRegister = () => {
+    localStorage.clear('user');
+    localStorage.clear('token');
+    navigate('/register');
   };
 
   return (
@@ -155,7 +168,7 @@ const Home = () => {
             <div className="section-2__auth__control">
               <Button
                 type="primary"
-                onClick={() => navigate('/login')}
+                onClick={handleNavigateLogin}
                 className="section-2__auth__control__btn"
                 data-aos="fade-left"
               >
@@ -164,7 +177,7 @@ const Home = () => {
               <Button
                 className="section-2__auth__control__btn"
                 data-aos="fade-right"
-                onClick={() => navigate('/register')}
+                onClick={handleNavigateRegister}
               >
                 {t('cta.register')} <BsArrowRight />
               </Button>

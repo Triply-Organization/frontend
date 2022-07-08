@@ -159,7 +159,6 @@ export default function Footer() {
             <Form
               form={formFollowByEmail}
               onFinish={e => {
-                console.log(e);
                 formFollowByEmail.resetFields();
                 message.success(
                   `Thank ${e.followByEmail} for signing up. We will always send you the latest rides`,

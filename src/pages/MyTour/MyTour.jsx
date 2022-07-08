@@ -41,6 +41,8 @@ const MyTour = () => {
   const today = moment(new Date()).format('YYYY-MM-DD');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const currencyString = localStorage.getItem('currencyString') || 'en-US';
+  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const loading = async () => {
     const response = await userAPI.getOrderList();
     const { data } = response.data;
@@ -63,41 +65,36 @@ const MyTour = () => {
   const [formReview] = Form.useForm();
 
   const handleReview = () => {
-    formReview
-      .validateFields()
-      .then(async values => {
-        values.rate.reviewAmentities = {
-          rate: values.rate.reviewAmentities,
-          id: 5,
-        };
-        values.rate.reviewLocation = {
-          rate: values.rate.reviewLocation,
-          id: 4,
-        };
-        values.rate.reviewServices = {
-          rate: values.rate.reviewServices,
-          id: 3,
-        };
-        values.rate.reviewPrices = {
-          rate: values.rate.reviewPrices,
-          id: 2,
-        };
-        values.rate.reviewRooms = {
-          rate: values.rate.reviewRooms,
-          id: 1,
-        };
-        await userAPI.addReview({
-          body: values,
-          id: idTourToReview.id,
-        });
-        loading();
-        message.success('Comment this tour successful');
-        setIsVisible(false);
-        formReview.resetFields();
-      })
-      .catch(info => {
-        console.log('Validate Failed:', info);
+    formReview.validateFields().then(async values => {
+      values.rate.reviewAmentities = {
+        rate: values.rate.reviewAmentities,
+        id: 5,
+      };
+      values.rate.reviewLocation = {
+        rate: values.rate.reviewLocation,
+        id: 4,
+      };
+      values.rate.reviewServices = {
+        rate: values.rate.reviewServices,
+        id: 3,
+      };
+      values.rate.reviewPrices = {
+        rate: values.rate.reviewPrices,
+        id: 2,
+      };
+      values.rate.reviewRooms = {
+        rate: values.rate.reviewRooms,
+        id: 1,
+      };
+      await userAPI.addReview({
+        body: values,
+        id: idTourToReview.id,
       });
+      loading();
+      message.success('Comment this tour successful');
+      setIsVisible(false);
+      formReview.resetFields();
+    });
   };
 
   const handleRefund = async value => {
@@ -111,20 +108,17 @@ const MyTour = () => {
       ),
       currency: localStorage.getItem('currencyItem').toLowerCase(),
     };
-    console.log(req);
     try {
       await userAPI.refundOrder(req);
       loading();
       message.success({ content: 'Refund Successful!', key: 'success' });
     } catch (error) {
-      console.log(error);
       message.error({ content: 'Refund Failed!', key: 'failed' });
     }
   };
 
   const handleCheckout = value => {
     const req = value.id;
-    console.log(req);
     dispatch(getConfirmInfo(req));
   };
 
@@ -245,9 +239,9 @@ const MyTour = () => {
                     </p>
 
                     <h3 className="my-tour__price">
-                      {item.totalPrice?.toLocaleString('en-US', {
+                      {item.totalPrice?.toLocaleString(`${currencyString}`, {
                         style: 'currency',
-                        currency: 'USD',
+                        currency: `${currencyItem}`,
                       })}
                     </h3>
 
@@ -266,7 +260,6 @@ const MyTour = () => {
                         <Popconfirm
                           title="Do you want to refund now?"
                           onConfirm={() => handleRefund(item)}
-                          onCancel={() => console.log('cancle')}
                           okText="Yes"
                           cancelText="No"
                         >
