@@ -83,6 +83,15 @@ const RoutesApp = () => {
             </PrivateRoute>
           }
         />
+
+        <Route
+          path="checkout/:id"
+          element={
+            <PrivateRoute role={['ROLE_USER']}>
+              <Checkout />
+            </PrivateRoute>
+          }
+        />
       </Route>
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
@@ -141,14 +150,6 @@ const RoutesApp = () => {
           loading
         />
       </Route>
-      <Route
-        path="checkout/:id"
-        element={
-          <PrivateRoute role={['ROLE_ADMIN']}>
-            <Checkout />
-          </PrivateRoute>
-        }
-      />
 
       <Route
         path="cms"

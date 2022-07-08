@@ -28,6 +28,7 @@ export default function Header() {
 
   useEffect(() => {
     const title = document.querySelectorAll('.section-subtitle');
+
     if (
       localStorage.getItem('i18nextLng') !== 'en' &&
       localStorage.getItem('i18nextLng') !== 'en-US'
