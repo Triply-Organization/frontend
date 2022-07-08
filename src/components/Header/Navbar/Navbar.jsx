@@ -12,6 +12,7 @@ export default function Navbar(props) {
     <nav className="header__navbar-wrapper">
       <ul className="header__navbar">
         {navItem.map((item, index) => {
+          console.log(item.link);
           return (
             <>
               <li
@@ -20,7 +21,7 @@ export default function Navbar(props) {
                 key={index}
               >
                 <Link
-                  to={`/${item.to.toLowerCase()}`}
+                  to={`${item.link.toLowerCase()}`}
                   className={
                     activeTab === index
                       ? 'header__navbar-link header__navbar-link--active'

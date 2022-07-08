@@ -7,14 +7,16 @@
       "explore": "Khám phá",
       "view": "Tìm trên bản đồ",
       "refresh": "Refresh",
-      "save": "Save",
+      "save": "Lưu thay đổi",
       "delete": "Delete",
+      "delete_account": "Xóa tài khoản này",
       "move": "Move",
       "adjust": "Adjust",
       "split": "Split",
-      "upload": "Upload",
+      "upload": "Đăng",
+      "upload_photo": "Tải ảnh lên",
       "download": "Download",
-      "apply": "Apply",
+      "apply": "Xác nhận",
       "report": "Report",
       "cancel_order": "Cancel Order",
       "force_supplier_approve": "Force Supplier Approval",
@@ -35,7 +37,8 @@
       "buy-it-now": "MUA NGAY",
       "add": "Thêm",
       "cancle": "Trở về",
-      "update": "Cập nhật"
+      "update": "Cập nhật",
+      "complete_order": "Xác nhận thanh toán"
     },
   
     "header": {
@@ -48,7 +51,7 @@
       "logged_in": {
         "tour": "Chuyến đi của tôi",
         "review": "Đánh giá của tôi",
-        "save_tour": "Những chuyến đã đi",
+        "my_account": "Tài khoản của tôi",
         "my_profile": "Hồ sơ của tôi"
       },
 
@@ -86,8 +89,124 @@
         "content": "Chuyến đi phổ biến"
       },
       "banner": {
-        "telephone": "Đừng chần chừ. Hãy liên hệ chúng tôi ngay!",
+        "telephone": "Đừng chần chờ. Hãy liên hệ chúng tôi ngay!",
         "follow": "Theo dõi chúng tôi"
+      }
+    },
+
+    "my_profile": {
+      "title": "Hồ sơ",
+      "note": "Cài đặt hồ sơ cá nhân",
+      "picture": "Ảnh cá nhân",
+      "google_notify": "Tài khoản này được kết nối với tài khoản Google của bạn. Thông tin chi tiết của bạn chỉ có thể được thay đổi từ tài khoản Google",
+      "form": {
+        "full_name": "Họ tên",
+        "phone": "Số điện thoại",
+        "address": "Địa chỉ"
+      },
+      "danger": {
+        "title": "Khu vực nguy hiểm",
+        "danger_note": "Xóa tài khoản của bạn",
+        "content": "Bằng cách xóa tài khoản của mình, bạn sẽ mất tất cả dữ liệu và quyền truy cập vào bất kỳ chuyến tham quan nào bạn đã đặt."
+      }
+    },
+
+    "my_tour": {
+      "title": "Các chuyến đi của tôi"
+    },
+
+    "all_tours": {
+      "tours": "Chuyến",
+      "filter": {
+        "title": "Lọc",
+        "price": "Giá",
+        "rating": "Đánh giá"
+      },
+      "sort": "Sắp xếp theo giá: "
+    },
+
+    "detail_tour": {
+      "duration": {
+        "title": "Tổng ngày tham quan",
+        "content": "ngày"
+      },
+      "max_people": {
+        "title": "Số người tối đa",
+        "content": "người"
+      },
+      "min_age": "Tuổi cho phép",
+      "review": {
+        "title": "Đánh giá",
+        "content": "đánh giá"
+      },
+      "overview": "Tổng quan",
+      "service": "Dịch vụ",
+      "tour_plan": "Kế hoạch",
+      "you_may_like": "Có thể bạn quan tâm",
+
+      "booking_form": {
+        "title": "Đặt chuyến này",
+        "from": "Từ:",
+        "ticket": {
+          "title": "Vé:",
+          "notify": "Hãy chọn ngày!"
+        },
+        "total": "Tổng tiền:"
+      }
+    },
+
+    "checkout": {
+      "order_detail": {
+        "title": "Thanh toán:",
+        "date": "Ngày đi:",
+        "time": "Thời gian:",
+        "duration": "Số ngày tham quan:",
+        "ticket": {
+          "title": "Vé:",
+          "adult": "Người lớn: ",
+          "youth": "Vị thành niên: ",
+          "children": "Trẻ em: "
+        },
+        "sub_total": "Tạm tính",
+        "discount": "Giảm giá",
+        "tax": "Thuế",
+        "total": "Tổng cộng"
+      },
+
+      "contact_information": {
+        "title": "Thông tin liên hệ",
+        "first_name": "Tên",
+        "last_name": "Họ",
+        "email": "Email",
+        "phone": "Số điện thoại",
+        "payment": "Chọn loại thanh toán",
+        "voucher_notify": "Nhập voucher để được giảm giá!",
+        "voucher": "Mã Voucher",
+        "agreement": "Tôi đã đọc thỏa thuận"
+      }
+    },
+
+    "search": {
+      "destination": {
+        "title": "Điểm đến",
+        "place_holder": "Bạn muốn đến đâu?"
+      },
+      "service": {
+        "title":"Dịch vụ",
+        "place_holder": "Các hoạt động"
+      },
+      "when": {
+        "title": "Thời gian",
+        "place_holder": "Hãy chọn ngày"
+      },
+      "guest": {
+        "title": "Hành khách",
+        "place_holder": "Các loại vé",
+        "item": {
+          "adult": "Người lớn",
+          "young": "Vị thành niên",
+          "children": "Trẻ em"
+        }
       }
     },
 
@@ -104,13 +223,13 @@
         }
       },
       "explore": {
-        "tilte": "Explore",
+        "title": "Khám phá",
         "item": {
-          "madrid": "Marid Tour",
-          "stockhome": "StockHome City",
-          "rome": "Rome City",
-          "shanghai": "Shanghai City",
-          "tokyo": "Tokyo"
+          "madrid": "Thành phố Marid",
+          "stockhome": "Thành phố StockHome",
+          "rome": "Thành Rome",
+          "shanghai": "Thành phố Thượng Hải",
+          "tokyo": "Thành phố Tokyo"
         }
       },
       "get_update": {
