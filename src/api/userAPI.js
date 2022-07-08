@@ -45,4 +45,11 @@ export const userAPI = {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
   },
+
+  deleteUser(params) {
+    const url = `/users/${params}`;
+    return axiosClient.delete(url, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+  },
 };
