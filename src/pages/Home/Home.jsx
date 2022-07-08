@@ -9,7 +9,7 @@ import { createSearchParams, useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import { getDestinationsServiceTours } from '../../app/toursSlice';
-import section1Background from '../../assets/images/section-1-background.png';
+import section1Background from '../../assets/images/section-1-bg.jpg';
 import section2Banner1 from '../../assets/images/section-2_banner-1.jpg';
 import section2Banner2 from '../../assets/images/section-2_banner-2.jpg';
 import section2Banner3 from '../../assets/images/section-2_banner-3.jpg';
@@ -107,6 +107,8 @@ const Home = () => {
     <div className="home-wrapper">
       <div className="section-1">
         <img
+          width={1275}
+          height={800}
           className="section-1__bg"
           src={section1Background}
           alt="triply"

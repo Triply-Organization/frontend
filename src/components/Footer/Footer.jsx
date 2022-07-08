@@ -61,7 +61,7 @@ export default function Footer() {
             <span className="section-4__link-icon">
               <MdAlternateEmail />
             </span>{' '}
-            <span className="section-4__link-words">support@triply.com</span>
+            <span className="section-4__link-words">support@triply.asia</span>
           </a>
         </div>
 
