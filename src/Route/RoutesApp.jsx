@@ -24,8 +24,10 @@ import DetailTour from '../pages/DetailTour/DetailTour';
 import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
 import MyTour from '../pages/MyTour/MyTour';
+import { Page404 } from '../pages/Page404/Page404';
 import Register from '../pages/Register/Register';
 import SettingAccount from '../pages/SettingAccount/SettingAccount';
+import PrivateRoute from './PrivateRoute';
 
 const RoutesApp = () => {
   topbar.config({
@@ -48,37 +50,163 @@ const RoutesApp = () => {
         }
       >
         <Route index element={<Home />} />
-        <Route path="setting-account/:id" element={<SettingAccount />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
         <Route path="tours">
           <Route index element={<AllTours />} loading />
           <Route path=":search" element={<AllTours />} loading />
         </Route>
-        <Route path="my-tours" element={<MyTour />} loading />
-        <Route path="detail/:id" element={<DetailTour />} />
-        <Route path="confirmation/:id" element={<Confirmation />} />
-      </Route>
-      <Route path="/admin" element={<Admin />}>
-        <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<Dashboard />} loading />
-        <Route path="tours" element={<Tours />} loading />
-        <Route path="users" element={<Users />} loading />
-        <Route path="customers" element={<Customers />} loading />
-        <Route path="reviews" element={<Reviews />} loading />
-      </Route>
-      <Route path="login" element={<Login />} />
-      <Route path="register" element={<Register />} />
-      <Route path="checkout/:id" element={<Checkout />} />
-      <Route path="confirmation/:id" element={<Confirmation />} />
 
-      <Route path="cms" element={<CMSCustomer />}>
-        <Route index element={<Navigate to="dashboard" replace />} loading />
-        <Route path="dashboard" element={<CMSDashBoard />} loading />
-        <Route path="tours" element={<CMSTours />} loading />
-        <Route path="add-tour" element={<CMSAddTour />} loading />
-        <Route path="edit-tour/:id" element={<CMSEditTour />} loading />
-        <Route path="set-schedule/:id" element={<CMSTourSchedule />} loading />
+        <Route
+          path="setting-account/:id"
+          element={
+            <PrivateRoute role={['ROLE_USER']}>
+              <SettingAccount />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="my-tours"
+          element={
+            <PrivateRoute role={['ROLE_USER']}>
+              <MyTour />
+            </PrivateRoute>
+          }
+          loading
+        />
+
+        <Route path="detail/:id" element={<DetailTour />} />
+        <Route
+          path="confirmation/:id"
+          element={
+            <PrivateRoute role={['ROLE_USER']}>
+              <Confirmation />
+            </PrivateRoute>
+          }
+        />
       </Route>
-      {/* <Route path="*" element={<NoMatch />} /> */}
+
+      <Route
+        path="/admin"
+        element={
+          <PrivateRoute role={['ROLE_ADMIN']}>
+            <Admin />
+          </PrivateRoute>
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route
+          path="dashboard"
+          element={
+            <PrivateRoute role={['ROLE_ADMIN']}>
+              <Dashboard />
+            </PrivateRoute>
+          }
+          loading
+        />
+        <Route
+          path="tours"
+          element={
+            <PrivateRoute role={['ROLE_ADMIN']}>
+              <Tours />
+            </PrivateRoute>
+          }
+          loading
+        />
+        <Route
+          path="users"
+          element={
+            <PrivateRoute role={['ROLE_USER']}>
+              <Users />
+            </PrivateRoute>
+          }
+          loading
+        />
+        <Route
+          path="customers"
+          element={
+            <PrivateRoute role={['ROLE_ADMIN']}>
+              <Customers />
+            </PrivateRoute>
+          }
+          loading
+        />
+        <Route
+          path="reviews"
+          element={
+            <PrivateRoute role={['ROLE_ADMIN']}>
+              <Reviews />
+            </PrivateRoute>
+          }
+          loading
+        />
+      </Route>
+      <Route
+        path="checkout/:id"
+        element={
+          <PrivateRoute role={['ROLE_ADMIN']}>
+            <Checkout />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="cms"
+        element={
+          <PrivateRoute role={['ROLE_CUSTOMER']}>
+            <CMSCustomer />
+          </PrivateRoute>
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} loading />
+        <Route
+          path="dashboard"
+          element={
+            <PrivateRoute role={['ROLE_CUSTOMER']}>
+              <CMSDashBoard />
+            </PrivateRoute>
+          }
+          loading
+        />
+        <Route
+          path="tours"
+          element={
+            <PrivateRoute role={['ROLE_CUSTOMER']}>
+              <CMSTours />
+            </PrivateRoute>
+          }
+          loading
+        />
+        <Route
+          path="add-tour"
+          element={
+            <PrivateRoute role={['ROLE_CUSTOMER']}>
+              <CMSAddTour />
+            </PrivateRoute>
+          }
+          loading
+        />
+        <Route
+          path="edit-tour/:id"
+          element={
+            <PrivateRoute role={['ROLE_CUSTOMER']}>
+              <CMSEditTour />
+            </PrivateRoute>
+          }
+          loading
+        />
+        <Route
+          path="set-schedule/:id"
+          element={
+            <PrivateRoute role={['ROLE_CUSTOMER']}>
+              <CMSTourSchedule />
+            </PrivateRoute>
+          }
+          loading
+        />
+      </Route>
+      <Route path="*" element={<Page404 />} />
     </Routes>
   );
 };
