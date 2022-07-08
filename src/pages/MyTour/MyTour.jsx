@@ -2,6 +2,7 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   SyncOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import {
   Avatar,
@@ -10,58 +11,75 @@ import {
   Image,
   List,
   Rate,
-  Skeleton,
   Space,
   Tag,
+  message,
 } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import { userAPI } from '../../api/userApi';
+import { userAPI } from '../../api/userAPI';
 import ModalForm from '../../components/ModalForm/ModalForm';
 import './MyTour.scss';
 
 const MyTour = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [idTourToReview, setIdTourToReview] = useState({});
-  const [dataSource, setDataSource] = useState([]);
+  const [listOrder, setListOrder] = useState([]);
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
   const loadingContext = useLoadingContext();
-
+  const loading = async () => {
+    const response = await userAPI.getOrderList();
+    const { data } = response.data;
+    setListOrder(data.orders);
+    setUser(data.user);
+  };
   useEffect(() => {
-    const loadingData = async () => {
-      //loading some data
-      setLoading(true);
-      try {
-        const response = await userAPI.getAllOrder();
-        const { data } = response;
-        setLoading(true);
-        setUser(data.data.user);
-        setDataSource(data.data.orders);
-      } catch (error) {
-        console.log(error);
-      }
-      //call method to indicate that loading is done
-      loadingContext.done();
-    };
-
-    loadingData();
+    loading();
+    loadingContext.done();
   }, []);
 
-  console.log(dataSource);
+  console.log(listOrder);
 
   const [formReview] = Form.useForm();
 
   const handleReview = () => {
     formReview
       .validateFields()
-      .then(values => {
+      .then(async values => {
+        values.rate.reviewAmentities = {
+          rate: values.rate.reviewAmentities,
+          id: 5,
+        };
+        values.rate.reviewLocation = {
+          rate: values.rate.reviewLocation,
+          id: 4,
+        };
+        values.rate.reviewServices = {
+          rate: values.rate.reviewServices,
+          id: 3,
+        };
+        values.rate.reviewPrices = {
+          rate: values.rate.reviewPrices,
+          id: 2,
+        };
+        values.rate.reviewRooms = {
+          rate: values.rate.reviewRooms,
+          id: 1,
+        };
+        await userAPI.addReview({
+          body: values,
+          id: idTourToReview.id,
+        });
+        loading();
+        message.success('Comment this tour successful');
+        setIsVisible(false);
         formReview.resetFields();
-        console.log({ ...values, idTour: idTourToReview.id, userId: user.id });
       })
       .catch(info => {
         console.log('Validate Failed:', info);
@@ -69,40 +87,73 @@ const MyTour = () => {
   };
 
   return (
-    <div className="my-tour">
-      <ModalForm
-        form={formReview}
-        title={`Review: ${idTourToReview?.title}`}
-        isVisible={isVisible}
-        handleOk={handleReview}
-        handleCancel={() => setIsVisible(false)}
-        cancelText="Cancel"
-        okText="Submit"
-      >
-        <Form.Item label="Rating" name="rating" rules={[{ required: true }]}>
-          <Rate allowHalf />
-        </Form.Item>
-        <Form.Item label="Comment" name={'comment'}>
-          <TextArea size="large" rows={3} />
-        </Form.Item>
-      </ModalForm>
-      <h1 style={{ textAlign: 'center' }}>My Tours</h1>
-      <List
-        itemLayout="vertical"
-        size="large"
-        pagination={{
-          defaultPageSize: 3,
-          hideOnSinglePage: true,
-          pageSize: 3,
-          total: dataSource?.length,
-        }}
-        dataSource={dataSource}
-        renderItem={item => {
-          if (_.isEmpty(item.review)) {
-            return (
-              <Skeleton active loading={loading} style={{ margin: '3rem 0' }}>
+    <div className="my-tour-wrapper">
+      <div className="my-tour">
+        <ModalForm
+          form={formReview}
+          title={`Review: ${idTourToReview?.title}`}
+          isVisible={isVisible}
+          handleOk={handleReview}
+          handleCancel={() => setIsVisible(false)}
+          cancelText="Cancel"
+          okText="Submit"
+        >
+          <Form.Item
+            label="Rating Room"
+            name={['rate', 'reviewRooms']}
+            rules={[{ required: true, message: 'Please rating here' }]}
+          >
+            <Rate allowHalf className="review__rating" />
+          </Form.Item>
+          <Form.Item
+            label="Rating Price"
+            name={['rate', 'reviewPrices']}
+            rules={[{ required: true, message: 'Please rating here' }]}
+          >
+            <Rate allowHalf className="review__rating" />
+          </Form.Item>
+          <Form.Item
+            label="Rating Services"
+            name={['rate', 'reviewServices']}
+            rules={[{ required: true, message: 'Please rating here' }]}
+          >
+            <Rate allowHalf className="review__rating" />
+          </Form.Item>
+          <Form.Item
+            label="Rating Location"
+            name={['rate', 'reviewLocation']}
+            rules={[{ required: true, message: 'Please rating here' }]}
+          >
+            <Rate allowHalf className="review__rating" />
+          </Form.Item>
+          <Form.Item
+            label="Rating Amentities"
+            name={['rate', 'reviewAmentities']}
+            rules={[{ required: true, message: 'Please rating here' }]}
+          >
+            <Rate allowHalf className="review__rating" />
+          </Form.Item>
+          <Form.Item label="Comment" name={'comment'}>
+            <TextArea rows={3} />
+          </Form.Item>
+        </ModalForm>
+
+        <h1 style={{ textAlign: 'center' }}>{t('my_tour.title')}</h1>
+        <List
+          itemLayout="vertical"
+          size="large"
+          pagination={{
+            pageSize: 3,
+            defaultPageSize: 3,
+            total: listOrder?.length,
+            hideOnSinglePage: true,
+          }}
+          dataSource={listOrder}
+          renderItem={item => {
+            if (_.isEmpty(item.review)) {
+              return (
                 <List.Item
-                  key={item.title}
+                  key={item.id}
                   actions={
                     item.status === 'paid'
                       ? [
@@ -131,7 +182,9 @@ const MyTour = () => {
                   extra={<Image width={272} alt="logo" src={item.cover} />}
                 >
                   <List.Item.Meta
-                    avatar={<Avatar src={user.avatar} />}
+                    avatar={
+                      <Avatar src={user.avatar} icon={<UserOutlined />} />
+                    }
                     title={<b>{user.fullname}</b>}
                     description={item.bookedAt}
                   />
@@ -141,7 +194,7 @@ const MyTour = () => {
                     </p>
 
                     <h3 className="my-tour__price">
-                      {item?.price?.toLocaleString('en-US', {
+                      {item.totalPrice?.toLocaleString('en-US', {
                         style: 'currency',
                         currency: 'USD',
                       })}
@@ -162,11 +215,9 @@ const MyTour = () => {
                     )}
                   </Space>
                 </List.Item>
-              </Skeleton>
-            );
-          } else {
-            return (
-              <Skeleton active loading={loading} style={{ margin: '3rem 0' }}>
+              );
+            } else {
+              return (
                 <List.Item
                   key={item.title}
                   extra={<Image width={272} alt="logo" src={item.cover} />}
@@ -182,7 +233,7 @@ const MyTour = () => {
                     </p>
 
                     <h2 className="my-tour__price">
-                      {item.price.toLocaleString('en-US', {
+                      {item.price?.toLocaleString('en-US', {
                         style: 'currency',
                         currency: 'USD',
                       })}
@@ -194,16 +245,36 @@ const MyTour = () => {
                       </Tag>
                       <Tag color="warning">Reviewed</Tag>
                     </Space>
-
-                    <p>{item.review.value}</p>
-                    <Rate disabled defaultValue={item.review.rating} />
                   </Space>
+                  <p className="comment">{item.review.comment}</p>
+                  <div className="rating-star-wrapper">
+                    <Space>
+                      <p>Room</p>
+                      <Rate disabled defaultValue={item.review['0']?.rate} />
+                    </Space>
+                    <Space>
+                      <p>Price</p>
+                      <Rate disabled defaultValue={item.review['1']?.rate} />
+                    </Space>
+                    <Space>
+                      <p>Services</p>
+                      <Rate disabled defaultValue={item.review['2']?.rate} />
+                    </Space>
+                    <Space>
+                      <p>Location</p>
+                      <Rate disabled defaultValue={item.review['3']?.rate} />
+                    </Space>
+                    <Space>
+                      <p>Amentities</p>
+                      <Rate disabled defaultValue={item.review['4']?.rate} />
+                    </Space>
+                  </div>
                 </List.Item>
-              </Skeleton>
-            );
-          }
-        }}
-      />
+              );
+            }
+          }}
+        />
+      </div>
     </div>
   );
 };

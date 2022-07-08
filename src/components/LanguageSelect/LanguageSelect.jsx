@@ -24,9 +24,9 @@ const LanguageSelect = () => {
   const changeLanguage = lng => {
     i18n.changeLanguage(lng);
   };
-
   return (
     <Select
+      style={{ width: '150px' }}
       defaultValue={i18n.language}
       options={languageOptions}
       onChange={changeLanguage}

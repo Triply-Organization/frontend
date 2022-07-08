@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { login } from '../../app/loginSlice';
 import LanguageSelect from '../../components/LanguageSelect/LanguageSelect';
 import './Login.scss';
-import { login } from './LoginSlice';
 
 const { Title, Text } = Typography;
 
@@ -25,12 +25,12 @@ const Login = () => {
 
   useEffect(() => {
     if (user && user.roles) {
-      if (user.roles.role === 'ROLE_USER') {
-        navigate('/home');
-      } else if (user.roles.role === 'ROLE_ADMIN') {
+      if (user.roles.includes('ROLE_ADMIN')) {
         navigate('/admin');
-      } else if (user.roles.role === 'ROLE_CUSTOMER') {
+      } else if (user.roles.includes('ROLE_CUSTOMER')) {
         navigate('/cms');
+      } else if (user.roles.includes('ROLE_USER')) {
+        navigate('/home');
       }
     }
   }, [user]);

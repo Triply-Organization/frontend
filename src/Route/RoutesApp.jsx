@@ -46,13 +46,13 @@ const RoutesApp = () => {
         }
       >
         <Route index element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<Home />} loading />
         <Route path="/setting-account/:id" element={<SettingAccount />} />
         <Route path="/tours">
           <Route index element={<AllTours />} loading />
           <Route path=":search" element={<AllTours />} loading />
         </Route>
-        <Route path="/my-tour" element={<MyTour />} loading />
+        <Route path="/my-tours" element={<MyTour />} loading />
         <Route path="/detail/:id" element={<DetailTour />} />
         <Route path="confirmation/:id" element={<Confirmation />} />
       </Route>

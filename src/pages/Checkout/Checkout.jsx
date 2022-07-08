@@ -1,67 +1,140 @@
 import {
   Button,
   Checkbox,
+  Col,
   Divider,
   Form,
   Input,
   Radio,
-  Select,
+  Row,
+  Tooltip,
   Typography,
+  message,
 } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { checkout } from '../../app/checkoutSlice';
+import { axiosClient } from '../../api/config/axiosClient';
+import { checkout, getVoucherInfo } from '../../app/checkoutSlice';
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
+import paypal from '../../assets/images/paypal-logo.png';
 import stripe from '../../assets/images/stripe-logo.png';
 import { ImageBreadcrumb, OrderDetail } from '../../components';
 import './Checkout.scss';
 
 const { Title } = Typography;
-const { Option } = Select;
 
 const Checkout = () => {
-  const checkoutData = JSON.parse(localStorage.getItem('bookingTour'));
-  const [form] = Form.useForm();
-  const [finalTotal, setFinalTotal] = useState(checkoutData.total);
+  const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
+  const [finalTotal, setFinalTotal] = useState(checkoutData.subTotal);
   const [discountValue, setDiscountValue] = useState(0);
-  const dispatch = useDispatch();
+  const [taxInfo, setTaxInfo] = useState(0);
+  const [voucherVal, setVoucherVal] = useState('');
   const loading = useSelector(state => state.checkout.loading);
-  // const url = useSelector(state => state.checkout.data);
+  const voucherData = useSelector(state => state.checkout.voucher);
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const filterTimeout = useRef(null);
+  const { t } = useTranslation();
 
   const onFinish = values => {
-    const newValues = {
-      email: values.email,
-      tourId: checkoutData.id,
-      date: checkoutData.date,
-      orderDetails: 1,
-      amount: finalTotal,
-      currency: 'usd',
+    const valueWithoutVoucher = {
+      orderId: checkoutData.id,
+      tourId: checkoutData.tourId,
+      voucherId: null,
+      scheduleId: checkoutData.scheduleId,
+      totalPrice: finalTotal,
+      discountPrice: 0,
+      taxPrice: (checkoutData.subTotal * taxInfo) / 100,
+      currency: localStorage.getItem('currencyItem').toLowerCase(),
       phone: values.phone,
+      tourName: checkoutData.tourTitle,
+      email: values.email,
       name: `${values.first_name} ${values.last_name}`,
     };
-    console.log('Received values of form: ', newValues);
-    dispatch(checkout(newValues));
-  };
-
-  const voucherDiscount = [
-    {
-      title: 'KAKA',
-      value: 10,
-    },
-    { title: 'HUHU', value: 20 },
-    { title: 'HAHA', value: 30 },
-  ];
-
-  const handleChangeFinalTotal = value => {
-    console.log(value);
-    setDiscountValue(value);
-    if (voucherDiscount && voucherDiscount.length > 0) {
-      setFinalTotal(checkoutData.total - (checkoutData.total * value) / 100);
-    } else if (!value) {
-      setFinalTotal(checkoutData.total);
+    const newValues = {
+      orderId: checkoutData.id,
+      tourId: checkoutData.tourId,
+      voucherId: voucherData.id,
+      scheduleId: checkoutData.scheduleId,
+      totalPrice: finalTotal,
+      discountPrice: (checkoutData.subTotal * voucherData.discount) / 100,
+      taxPrice: (checkoutData.subTotal * taxInfo) / 100,
+      currency: localStorage.getItem('currencyItem').toLowerCase(),
+      phone: values.phone,
+      tourName: checkoutData.tourTitle,
+      email: values.email,
+      name: `${values.first_name} ${values.last_name}`,
+    };
+    if (voucherData.remain !== 0) {
+      if (!values.discount) {
+        console.log(valueWithoutVoucher);
+        dispatch(checkout(valueWithoutVoucher));
+      } else {
+        console.log(newValues);
+        dispatch(checkout(newValues));
+      }
+    } else {
+      message.error('Your voucher is expired!');
     }
   };
+
+  useEffect(() => {
+    const getTax = async () => {
+      const url = '/taxes/getinfo?currency=vn';
+      const res = await axiosClient.get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      const taxData = res.data.data.percent;
+      console.log(taxData);
+      setTaxInfo(taxData);
+    };
+    getTax();
+  }, []);
+
+  useEffect(() => {
+    setDiscountValue(voucherData.discount);
+    if (voucherData.discount) {
+      setFinalTotal(
+        checkoutData.subTotal -
+          (checkoutData.subTotal * voucherData.discount) / 100,
+      );
+    } else if (!voucherData.id) {
+      setFinalTotal(
+        checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
+      );
+    }
+  }, [voucherData]);
+
+  const handleChangInputVoucher = e => {
+    if (filterTimeout.current) {
+      clearTimeout(filterTimeout.current);
+    }
+
+    if (!e.target.value) {
+      setVoucherVal('');
+      setFinalTotal(
+        checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
+      );
+      setDiscountValue(0);
+    }
+
+    filterTimeout.current = setTimeout(() => {
+      setVoucherVal(e.target.value);
+    }, 500);
+  };
+
+  const handleClickVoucherButton = () => {
+    console.log(voucherVal);
+    const req = {
+      code: voucherVal,
+    };
+    dispatch(getVoucherInfo(req));
+  };
+
   return (
     <>
       <ImageBreadcrumb
@@ -73,18 +146,21 @@ const Checkout = () => {
       <div className="ctn ctn-checkout">
         <div className="ctn-checkout__left-ctn">
           <div className="ctn-checkout__left-ctn__title">
-            <Title level={2}>Order</Title>
+            <Title level={2}>
+              {t('checkout.order_detail.title')} #{checkoutData.id}
+            </Title>
           </div>
           <OrderDetail
             data={checkoutData}
             finalTotal={finalTotal}
             discountValue={discountValue}
+            taxInfo={taxInfo}
           />
         </div>
 
         <div className="ctn-checkout__right-ctn">
           <div className="ctn-checkout__right-ctn__title">
-            <Title level={2}>Contact information</Title>
+            <Title level={2}>{t('checkout.contact_information.title')}</Title>
           </div>
           <div className="ctn-checkout__right-ctn__form">
             <Form
@@ -106,7 +182,9 @@ const Checkout = () => {
                   },
                 ]}
               >
-                <Input placeholder="First name" />
+                <Input
+                  placeholder={t('checkout.contact_information.first_name')}
+                />
               </Form.Item>
               <Form.Item
                 name="last_name"
@@ -117,7 +195,9 @@ const Checkout = () => {
                   },
                 ]}
               >
-                <Input placeholder="Last name" />
+                <Input
+                  placeholder={t('checkout.contact_information.last_name')}
+                />
               </Form.Item>
               <Form.Item
                 name="email"
@@ -132,7 +212,7 @@ const Checkout = () => {
                   },
                 ]}
               >
-                <Input placeholder="Email" />
+                <Input placeholder={t('checkout.contact_information.email')} />
               </Form.Item>
               <Form.Item
                 name="phone"
@@ -147,11 +227,11 @@ const Checkout = () => {
                   },
                 ]}
               >
-                <Input placeholder="Contact number" />
+                <Input placeholder={t('checkout.contact_information.phone')} />
               </Form.Item>
 
               <Title level={2} className="payment-title">
-                Payment Method
+                {t('checkout.contact_information.payment')}
               </Title>
 
               <Form.Item name="payment">
@@ -161,24 +241,50 @@ const Checkout = () => {
                       <img className="stripe-img" src={stripe} alt="stripe" />
                     </div>
                   </Radio>
+                  <Radio value="paypal" disabled>
+                    <Tooltip title="System will update later">
+                      <div>
+                        <img className="paypal-img" src={paypal} alt="paypal" />
+                      </div>
+                    </Tooltip>
+                  </Radio>
                 </Radio.Group>
               </Form.Item>
 
               <Form.Item
                 name="discount"
-                label={<Title level={5}>Apply your voucher to discount!</Title>}
+                label={
+                  <Title level={5}>
+                    {t('checkout.contact_information.voucher_notify')}
+                  </Title>
+                }
+                rules={[
+                  {
+                    pattern: /^[A-Z]*$/,
+                    message: "Please uppercase the voucher's code",
+                  },
+                ]}
               >
-                <Select
-                  allowClear
-                  onChange={handleChangeFinalTotal}
-                  placeholder="Choose your voucher"
-                >
-                  {voucherDiscount.map((item, index) => (
-                    <Option key={index} value={item.value}>
-                      {item.title}
-                    </Option>
-                  ))}
-                </Select>
+                <Row gutter={[8, 8]}>
+                  <Col lg={18} md={18} sm={24} xs={24}>
+                    <Form.Item name="discount" noStyle>
+                      <Input
+                        allowClear
+                        placeholder={t('checkout.contact_information.voucher')}
+                        onChange={handleChangInputVoucher}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col lg={6} md={6} sm={24} xs={24}>
+                    <Button
+                      disabled={voucherVal === '' ? true : false}
+                      onClick={handleClickVoucherButton}
+                      className="voucher-btn"
+                    >
+                      {t('cta.apply')}
+                    </Button>
+                  </Col>
+                </Row>
               </Form.Item>
 
               <Divider />
@@ -196,7 +302,8 @@ const Checkout = () => {
                 ]}
               >
                 <Checkbox>
-                  I have read the <a href="">agreement</a>
+                  {t('checkout.contact_information.agreement')}{' '}
+                  <a href="">agreement</a>
                 </Checkbox>
               </Form.Item>
 
@@ -207,7 +314,7 @@ const Checkout = () => {
                   type="primary"
                   className="button-checkout-page"
                 >
-                  Complete My Order
+                  {t('cta.complete_order')}
                 </Button>
               </Form.Item>
             </Form>

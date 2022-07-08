@@ -14,7 +14,10 @@ import './CardTour.scss';
 
 const CardTour = props => {
   const { tour, tag } = props;
+  const currencyString = localStorage.getItem('currencyString') || 'en-US';
+  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const navigate = useNavigate();
+  console.log(tour.image);
   return (
     <div className="card-tour">
       {tag && <div className="card-tour__tag">{tag}</div>}
@@ -41,7 +44,7 @@ const CardTour = props => {
         <div className="card-tour__meta__review">
           <Rate
             disabled
-            defaultValue={4.5}
+            defaultValue={tour?.rating}
             allowHalf
             className="card-tour__meta__review__rate"
           />
@@ -61,14 +64,14 @@ const CardTour = props => {
         <div>
           <p>From USD</p>
           <b>
-            {tour?.minPrice?.toLocaleString('en-US', {
+            {tour?.minPrice?.toLocaleString(`${currencyString}`, {
               style: 'currency',
-              currency: 'USD',
+              currency: `${currencyItem}`,
             })}{' '}
             -{' '}
-            {tour?.maxPrice?.toLocaleString('en-US', {
+            {tour?.maxPrice?.toLocaleString(`${currencyString}`, {
               style: 'currency',
-              currency: 'USD',
+              currency: `${currencyItem}`,
             })}
           </b>
         </div>
