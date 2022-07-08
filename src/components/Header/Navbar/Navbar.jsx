@@ -12,27 +12,24 @@ export default function Navbar(props) {
     <nav className="header__navbar-wrapper">
       <ul className="header__navbar">
         {navItem.map((item, index) => {
-          console.log(item.link);
           return (
-            <>
-              <li
-                className="header__navbar-item"
-                onClick={() => handleSetActiveTab(index)}
-                key={index}
+            <li
+              className="header__navbar-item"
+              onClick={() => handleSetActiveTab(index)}
+              key={index}
+            >
+              <Link
+                to={`${item.link.toLowerCase()}`}
+                className={
+                  activeTab === index
+                    ? 'header__navbar-link header__navbar-link--active'
+                    : 'header__navbar-link'
+                }
               >
-                <Link
-                  to={`${item.link.toLowerCase()}`}
-                  className={
-                    activeTab === index
-                      ? 'header__navbar-link header__navbar-link--active'
-                      : 'header__navbar-link'
-                  }
-                >
-                  {item.title}
-                </Link>
-                <Subnav subnavItem={item.subnav} />
-              </li>
-            </>
+                {item.title}
+              </Link>
+              <Subnav subnavItem={item.subnav} />
+            </li>
           );
         })}
       </ul>
