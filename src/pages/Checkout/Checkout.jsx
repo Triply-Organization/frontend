@@ -33,6 +33,7 @@ const Checkout = () => {
   );
   const [discountValue, setDiscountValue] = useState(0);
   const [voucherVal, setVoucherVal] = useState('');
+  const [isDisableBtn, setDisableBtn] = useState(false);
   const loading = useSelector(state => state.checkout.loading);
   const voucherData = useSelector(state => state.checkout.voucher);
   const [form] = Form.useForm();
@@ -41,6 +42,7 @@ const Checkout = () => {
   const { t } = useTranslation();
 
   const onFinish = values => {
+    setDisableBtn(true);
     const valueWithoutVoucher = {
       orderId: checkoutData.id,
       tourId: checkoutData.tourId,
@@ -77,6 +79,7 @@ const Checkout = () => {
       }
     } else {
       message.error('Your voucher is expired!');
+      setDisableBtn(false);
     }
   };
 
@@ -313,6 +316,7 @@ const Checkout = () => {
 
               <Form.Item>
                 <Button
+                  disabled={isDisableBtn}
                   loading={loading}
                   htmlType="submit"
                   type="primary"
