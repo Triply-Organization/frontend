@@ -38,9 +38,15 @@ const Search = props => {
               <OptGroup label="All destinations">
                 {destinations &&
                   destinations.map((item, index) => (
-                    <Option key={index} value={item.id}>
-                      {item.name}
-                    </Option>
+                    <>
+                      <Option
+                        key={index}
+                        value={item.id}
+                        data-testid="option-search-destination"
+                      >
+                        {item.name}
+                      </Option>
+                    </>
                   ))}
               </OptGroup>
             </Select>
