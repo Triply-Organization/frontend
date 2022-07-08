@@ -34,6 +34,7 @@ const Search = props => {
               style={{ border: 'none' }}
               placeholder={t('search.destination.place_holder')}
               showArrow
+              data-testid="select-search-destination"
             >
               <OptGroup label="All destinations">
                 {destinations &&
@@ -64,13 +65,18 @@ const Search = props => {
               className="search-form__item__field"
               allowClear
               bordered={false}
+              data-testid="select-search-services"
               placeholder={t('search.service.place_holder')}
               style={{ border: 'none' }}
             >
               <OptGroup label="All Activity">
                 {services &&
                   services.map((item, index) => (
-                    <Option key={index} value={item.id}>
+                    <Option
+                      key={index}
+                      value={item.id}
+                      data-testid="option-search-services"
+                    >
                       {item.name}
                     </Option>
                   ))}
