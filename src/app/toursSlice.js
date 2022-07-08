@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
+import moment from 'moment';
 
 import { tourAPI } from '../api/tourAPI';
 
@@ -12,6 +13,8 @@ const initialState = {
   loading: false,
   booking: {},
   totalTours: 0,
+  idTourJustCreated: null,
+  toursCustomer: [],
 };
 
 export const getDetailTour = createAsyncThunk('tours/detail', async params => {
@@ -39,10 +42,47 @@ export const getToursByFilter = createAsyncThunk(
   },
 );
 
+export const createTour = createAsyncThunk(
+  'tours/create-tour',
+  async params => {
+    const res = await tourAPI.createTour(params);
+    return res;
+  },
+);
+
+export const getToursCustomer = createAsyncThunk(
+  'tours/get-tour-customer',
+  async () => {
+    const res = await tourAPI.getToursOfCustomer();
+    return res;
+  },
+);
+
+export const deleteTour = createAsyncThunk(
+  'tours/delete-tour',
+  async params => {
+    const res = await tourAPI.deleteTour(params);
+    return res;
+  },
+);
+
+export const updateTour = createAsyncThunk(
+  'tours/update-tour',
+  async (params, thunkAPI) => {
+    const res = await tourAPI.updateTour(params);
+    thunkAPI.dispatch(getDetailTour(params.id));
+    return res;
+  },
+);
+
 const toursSlice = createSlice({
   name: 'tour',
   initialState,
-  reducers: {},
+  reducers: {
+    clearIdTourJustCreate: state => {
+      state.idTourJustCreated = null;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(getDestinationsServiceTours.pending, state => {
       state.loading = true;
@@ -138,7 +178,57 @@ const toursSlice = createSlice({
         relatedTour: relatedTours,
       };
     });
+
+    builder.addCase(createTour.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(createTour.rejected, state => {
+      state.loading = false;
+      message.error('Can not connect to server. Please check your internet');
+    });
+    builder.addCase(createTour.fulfilled, (state, action) => {
+      const { data } = action.payload;
+      state.loading = false;
+      state.idTourJustCreated = data.data.id;
+    });
+    builder.addCase(getToursCustomer.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(getToursCustomer.rejected, state => {
+      state.loading = false;
+      message.error('Can not connect to server. Please check your internet');
+    });
+    builder.addCase(getToursCustomer.fulfilled, (state, action) => {
+      state.loading = false;
+      const { data } = action.payload;
+      const tempData = data.data.map(item => ({
+        id: item.id,
+        key: item.id,
+        title: item.title,
+        destination: item.destination[0],
+        duration: item.duration,
+        availableDay: item.schedule,
+        max_people: item.maxPeople,
+        min_age: item.minAge,
+        status: item.status,
+        createdAt: moment(item.createdAt.date).format('YYYY-MM-DD'),
+      }));
+      state.toursCustomer = tempData;
+    });
+
+    builder.addCase(updateTour.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(updateTour.rejected, state => {
+      state.loading = false;
+      message.error('Can not connect to server. Please check your internet');
+    });
+    builder.addCase(updateTour.fulfilled, state => {
+      state.loading = false;
+      message.success('Update successful');
+    });
   },
 });
 
+export const { clearIdTourJustCreate } = toursSlice.actions;
 export default toursSlice;

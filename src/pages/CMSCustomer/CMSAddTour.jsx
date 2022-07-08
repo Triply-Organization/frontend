@@ -3,7 +3,6 @@ import {
   Button,
   Collapse,
   Form,
-  Image,
   Input,
   InputNumber,
   Select,
@@ -13,18 +12,15 @@ import {
   message,
 } from 'antd';
 import axios from 'axios';
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import {
-  AiOutlineDelete,
-  AiOutlineFormatPainter,
-  AiOutlineInbox,
-  AiOutlinePlus,
-} from 'react-icons/ai';
+import { AiOutlineInbox, AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
-import { getDestinationsServiceTours } from '../../app/toursSlice';
-import './CMSHandleTour.scss';
+import { createTour, getDestinationsServiceTours } from '../../app/toursSlice';
+import './CMSAddTour.scss';
 
 const { TabPane } = Tabs;
 const { TextArea } = Input;
@@ -36,60 +32,67 @@ const CMSAddTour = () => {
   const [duration, setDuration] = useState(null);
   const [coverImage, setCoverImage] = useState({});
   const [galleryImage, setGalleryImage] = useState([]);
-  const [type, setType] = useState('');
+  const [galleryImageOnChange, setGalleryImageonChange] = useState({});
   const destinations = useSelector(state => state.tours.destinations);
+  const services = useSelector(state => state.tours.services);
+  const idTourJustCreated = useSelector(state => state.tours.idTourJustCreated);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
+  const loadingContext = useLoadingContext();
 
-  const fakeGallery = [
-    {
-      id: 1,
-      src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      name: 'nameoftheimage.png',
-    },
-    {
-      id: 2,
-      src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      name: 'nameoftheimag2.png',
-    },
-  ];
+  const [form] = Form.useForm();
 
   useEffect(() => {
-    if (destinations.length === 0) {
+    if (
+      (destinations && destinations.length === 0) ||
+      (services && services.length === 0)
+    ) {
       dispatch(getDestinationsServiceTours());
-
-      console.log(destinations.length);
     }
+    loadingContext.done();
   }, []);
 
   useEffect(() => {
-    if (location.pathname.includes('add-tour')) setType('add');
-    else setType('edit');
-  }, [location.pathname]);
+    if (idTourJustCreated) {
+      message.success({
+        content: 'Create tour successful',
+        key: 'create-tour',
+      });
+      navigate(`/cms/set-schedule/${idTourJustCreated}`);
+    }
+  }, [idTourJustCreated]);
 
   const beforeUpload = file => {
-    const isPNG = file.type === 'image/png';
-    const isJPG = file.type === 'image/jpeg';
-    if (!isPNG && !isJPG) {
-      message.error(`${file.name} is not a png/jpg file`);
-      return Upload.LIST_IGNORE;
-    } else {
-      return true;
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
     }
+
+    const isLt2M = file.size / 1024 / 1024 < 10;
+
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!');
+    }
+
+    return isJpgOrPng && isLt2M;
   };
 
   const onAddTour = values => {
-    // Delete gallery image is removed
-    const resGallery = galleryImage.filter(function (o1) {
-      return values.tourImages.gallery.fileList.some(function (o2) {
-        console.log(o1.uid);
-        return o1.file.uid === o2.uid; // return the ones with equal id
-      });
-    });
     // Convert tourplans to array
     const propertyValues = Object.values(values.tourPlans);
+    let resGallery = [];
 
+    if (!_.isEmpty(galleryImage)) {
+      // console.log(galleryImageOnChange);
+      // Delete gallery image is removed
+      resGallery = galleryImage.filter(function (o1) {
+        return galleryImageOnChange.fileList.some(function (o2) {
+          // console.log(galleryImage);
+          return o1.file.uid === o2.uid; // return the ones with equal id
+        });
+      });
+    }
     const response = {
       ...values,
       tourImages: [{ ...coverImage }, ...resGallery],
@@ -98,14 +101,12 @@ const CMSAddTour = () => {
         day: index + 1,
       })),
     };
-
-    console.log(response);
+    form.resetFields();
+    dispatch(createTour(response));
   };
 
   const uploadCoverImage = async options => {
     const { onSuccess, onError, file } = options;
-    console.log(`first`);
-
     const fmData = new FormData();
     const config = {
       headers: {
@@ -123,7 +124,7 @@ const CMSAddTour = () => {
       onSuccess('Ok');
       const tempCoverImg = {
         id: res.data.data[0]?.id,
-        type: 'COVER',
+        type: 'cover',
         file,
       };
       setCoverImage(tempCoverImg);
@@ -135,7 +136,6 @@ const CMSAddTour = () => {
 
   const uploadGalleryImage = async options => {
     const { onSuccess, onError, file } = options;
-    console.log(`first`);
 
     const fmData = new FormData();
     const config = {
@@ -154,7 +154,7 @@ const CMSAddTour = () => {
       onSuccess('Ok');
       const tempCoverImg = {
         id: res.data.data[0]?.id,
-        type: 'GALLERY',
+        type: 'gallery',
         file,
       };
       setGalleryImage([...galleryImage, tempCoverImg]);
@@ -163,6 +163,7 @@ const CMSAddTour = () => {
       onError({ err });
     }
   };
+
   return (
     <>
       <Breadcrumb
@@ -178,7 +179,9 @@ const CMSAddTour = () => {
         </Breadcrumb.Item>
         <Breadcrumb.Item>Add Tour</Breadcrumb.Item>
       </Breadcrumb>
+
       <Form
+        form={form}
         className="form-tour"
         name="form-tour"
         onFinish={onAddTour}
@@ -186,36 +189,32 @@ const CMSAddTour = () => {
         autoComplete="off"
       >
         <div className="form-tour__content__left">
-          <Form.Item
-            name="title"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your tour title!',
-              },
-            ]}
-          >
-            <div className="form-tour__control-header">
+          <div className="form-tour__control-header">
+            <Form.Item
+              name="title"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your tour title!',
+                },
+              ]}
+            >
               <Input
                 size="large"
                 placeholder="Tour title"
-                style={{ width: '30%' }}
+                style={{ width: '500px' }}
               />
+            </Form.Item>
+            <Form.Item>
               <Space>
                 <Button
                   type="primary"
                   size="large"
-                  icon={
-                    type === 'add' ? (
-                      <AiOutlinePlus />
-                    ) : (
-                      <AiOutlineFormatPainter />
-                    )
-                  }
+                  icon={<AiOutlinePlus />}
                   htmlType="submit"
                   className="form-tour__control-header__btn"
                 >
-                  {type === 'add' ? 'Add now' : 'Update'}
+                  Add now
                 </Button>
                 <Button
                   size="large"
@@ -225,8 +224,8 @@ const CMSAddTour = () => {
                   Cancel
                 </Button>
               </Space>
-            </div>
-          </Form.Item>
+            </Form.Item>
+          </div>
 
           <div className="card-container">
             <Tabs type="card">
@@ -281,9 +280,9 @@ const CMSAddTour = () => {
                     ]}
                   >
                     <Select size="large" style={{ width: 200 }}>
-                      <Option value="0">0</Option>
-                      <Option value="12">12</Option>
-                      <Option value="18">18</Option>
+                      <Option value={0}>0</Option>
+                      <Option value={12}>12</Option>
+                      <Option value={18}>18</Option>
                     </Select>
                   </Form.Item>
                 </Space>
@@ -316,7 +315,15 @@ const CMSAddTour = () => {
                     },
                   ]}
                 >
-                  <Select size="large" />
+                  <Select size="large" mode="multiple">
+                    {services.map((item, index) => {
+                      return (
+                        <Option key={index} value={parseInt(item.id)}>
+                          {item.name}
+                        </Option>
+                      );
+                    })}
+                  </Select>
                 </Form.Item>
 
                 <Collapse
@@ -328,12 +335,6 @@ const CMSAddTour = () => {
                       style={{ padding: '0 1rem' }}
                       label="Cover image"
                       name={['tourImages', 'cover']}
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please input your tour cover image',
-                        },
-                      ]}
                     >
                       <Dragger
                         multiple={false}
@@ -354,27 +355,6 @@ const CMSAddTour = () => {
                           interface.
                         </p>
                       </Dragger>
-
-                      {type === 'edit' && (
-                        <div className="tour-image-wrapper">
-                          <div className="tour-image-wrapper__item">
-                            <Space>
-                              <Image
-                                height={48}
-                                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                                alt=""
-                              />
-                              <p>nameoftheimage.png</p>
-                            </Space>
-
-                            <Button
-                              danger
-                              type="text"
-                              icon={<AiOutlineDelete />}
-                            />
-                          </div>
-                        </div>
-                      )}
                     </Form.Item>
                     <Form.Item
                       label="Gallery"
@@ -386,6 +366,7 @@ const CMSAddTour = () => {
                         beforeUpload={beforeUpload}
                         customRequest={uploadGalleryImage}
                         listType="picture"
+                        onChange={e => setGalleryImageonChange(e)}
                         maxCount={5}
                       >
                         <p className="ant-upload-drag-icon">
@@ -399,35 +380,6 @@ const CMSAddTour = () => {
                           will help people understand your tour.
                         </p>
                       </Dragger>
-
-                      {type === 'edit' && (
-                        <div className="tour-image-wrapper">
-                          {fakeGallery.map((item, index) => (
-                            <div
-                              className="tour-image-wrapper__item"
-                              key={index}
-                            >
-                              <Space>
-                                <Image
-                                  height={48}
-                                  src={item.src}
-                                  alt={item.name}
-                                />
-                                <p>{item.name}</p>
-                              </Space>
-
-                              <Button
-                                danger
-                                type="text"
-                                onClick={() => {
-                                  console.log(item.id);
-                                }}
-                                icon={<AiOutlineDelete />}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
                     </Form.Item>
                   </Panel>
                 </Collapse>
@@ -457,6 +409,29 @@ const CMSAddTour = () => {
                         </Form.Item>
                         <Form.Item
                           style={{ padding: '0 1rem' }}
+                          label="Destination"
+                          name={['tourPlans', i + 1, 'destination']}
+                          rules={[
+                            {
+                              required: true,
+                              message: `Please input Description your tour plan day ${
+                                i + 1
+                              }`,
+                            },
+                          ]}
+                        >
+                          <Select size="large">
+                            {destinations.map((item, index) => {
+                              return (
+                                <Option key={index} value={item.id}>
+                                  {item.name}
+                                </Option>
+                              );
+                            })}
+                          </Select>
+                        </Form.Item>
+                        <Form.Item
+                          style={{ padding: '0 1rem' }}
                           label="Description"
                           name={['tourPlans', i + 1, 'description']}
                           rules={[
@@ -473,23 +448,6 @@ const CMSAddTour = () => {
                             rows={3}
                             size="large"
                           />
-                        </Form.Item>
-                        <Form.Item
-                          style={{ padding: '0 1rem' }}
-                          label="Description"
-                          name={['tourPlans', i + 1, 'destinations']}
-                          rules={[
-                            {
-                              required: true,
-                              message: `Please input Description your tour plan day ${
-                                i + 1
-                              }`,
-                            },
-                          ]}
-                        >
-                          <Select>
-                            {/* {destinations.map((item, index) => <Option value={item.id}>Jack</Option>)} */}
-                          </Select>
                         </Form.Item>
                       </Panel>
                     );
