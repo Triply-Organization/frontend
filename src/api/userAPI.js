@@ -29,4 +29,13 @@ export const userAPI = {
       },
     });
   },
+
+  refundOrder(params) {
+    const url = `/refund/`;
+    return axiosClient.post(url, params, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+  },
 };

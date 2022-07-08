@@ -27,9 +27,11 @@ const { Title } = Typography;
 
 const Checkout = () => {
   const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
-  const [finalTotal, setFinalTotal] = useState(checkoutData.subTotal);
-  const [discountValue, setDiscountValue] = useState(0);
   const [taxInfo, setTaxInfo] = useState(0);
+  const [finalTotal, setFinalTotal] = useState(
+    checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
+  );
+  const [discountValue, setDiscountValue] = useState(0);
   const [voucherVal, setVoucherVal] = useState('');
   const loading = useSelector(state => state.checkout.loading);
   const voucherData = useSelector(state => state.checkout.voucher);
@@ -94,6 +96,12 @@ const Checkout = () => {
     };
     getTax();
   }, []);
+
+  useEffect(() => {
+    setFinalTotal(
+      checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
+    );
+  }, [taxInfo]);
 
   useEffect(() => {
     setDiscountValue(voucherData.discount);

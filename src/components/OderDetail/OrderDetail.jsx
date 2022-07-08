@@ -11,6 +11,8 @@ const { Title, Text } = Typography;
 const OrderDetail = props => {
   const { data, finalTotal, discountValue, taxInfo } = props;
   const { t } = useTranslation();
+  const currencyString = localStorage.getItem('currencyString') || 'en-US';
+  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
 
   return (
     <>
@@ -46,8 +48,14 @@ const OrderDetail = props => {
                 <span>
                   <Text>{t('checkout.order_detail.ticket.adult')} </Text>
                   <Text strong>
-                    ${data.tickets.adult.priceTick} x{' '}
-                    {data.tickets.adult.amount}
+                    {data.tickets.adult.priceTick?.toLocaleString(
+                      `${currencyString}`,
+                      {
+                        style: 'currency',
+                        currency: `${currencyItem}`,
+                      },
+                    )}{' '}
+                    x {data.tickets.adult.amount}
                   </Text>
                 </span>
               ) : null}
@@ -55,8 +63,14 @@ const OrderDetail = props => {
                 <span>
                   <Text>{t('checkout.order_detail.ticket.youth')}</Text>
                   <Text strong>
-                    ${data.tickets.youth.priceTick} x{' '}
-                    {data.tickets.youth.amount}
+                    {data.tickets.youth.priceTick?.toLocaleString(
+                      `${currencyString}`,
+                      {
+                        style: 'currency',
+                        currency: `${currencyItem}`,
+                      },
+                    )}{' '}
+                    x {data.tickets.youth.amount}
                   </Text>
                 </span>
               ) : null}
@@ -64,8 +78,14 @@ const OrderDetail = props => {
                 <span>
                   <Text>{t('checkout.order_detail.ticket.children')}</Text>
                   <Text strong>
-                    ${data.tickets.children.priceTick} x
-                    {data.tickets.children.amount}
+                    {data.tickets.children.priceTick?.toLocaleString(
+                      `${currencyString}`,
+                      {
+                        style: 'currency',
+                        currency: `${currencyItem}`,
+                      },
+                    )}{' '}
+                    x{data.tickets.children.amount}
                   </Text>
                 </span>
               ) : null}
@@ -92,12 +112,17 @@ const OrderDetail = props => {
           </Col>
           <Col lg={3} md={3} sm={3} xs={6}>
             <section>
-              <Text strong>${data?.subTotal}</Text>
+              <Text strong>
+                {data?.subTotal?.toLocaleString(`${currencyString}`, {
+                  style: 'currency',
+                  currency: `${currencyItem}`,
+                })}
+              </Text>
             </section>
             <section>
               <Text strong>
                 {data?.bill?.discount
-                  ? `-${data?.bill?.discount}%`
+                  ? data?.bill?.discount
                   : discountValue
                   ? `-${discountValue}%`
                   : '0%'}
@@ -108,7 +133,18 @@ const OrderDetail = props => {
             </section>
             <section>
               <Title level={4} className="result-payment">
-                ${!finalTotal ? data.subTotal : finalTotal}
+                {!finalTotal?.toLocaleString(`${currencyString}`, {
+                  style: 'currency',
+                  currency: `${currencyItem}`,
+                })
+                  ? data.subTotal?.toLocaleString(`${currencyString}`, {
+                      style: 'currency',
+                      currency: `${currencyItem}`,
+                    })
+                  : finalTotal?.toLocaleString(`${currencyString}`, {
+                      style: 'currency',
+                      currency: `${currencyItem}`,
+                    })}
               </Title>
             </section>
           </Col>
