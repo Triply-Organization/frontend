@@ -26,6 +26,23 @@ export default function Header() {
     }
   });
 
+  useEffect(() => {
+    const title = document.querySelectorAll('.section-subtitle');
+    if (localStorage.getItem('i18nextLng') !== 'en') {
+      document.body.style.fontFamily = "'Roboto', sans-serif";
+      title.forEach(t => {
+        t.style.fontFamily = "'Lavishly Yours', cursive";
+        t.style.fontSize = '44px';
+      });
+    } else {
+      document.body.style.fontFamily = 'poppins';
+      title.forEach(t => {
+        t.style.fontFamily = 'thea amelia';
+        t.style.fontSize = '34px';
+      });
+    }
+  }, [localStorage.getItem('i18nextLng')]);
+
   const token = localStorage.getItem('token');
   const roles = JSON.parse(localStorage.getItem('user'))?.roles || [];
   const id = JSON.parse(localStorage.getItem('user'))?.id || 1;
