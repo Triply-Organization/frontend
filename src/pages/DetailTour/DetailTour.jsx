@@ -69,6 +69,8 @@ export default function DetailTour() {
   const [total, setTotal] = useState(0);
   const [priceFollowDate, setPriceFollowDate] = useState([]);
   const { t } = useTranslation();
+  const currencyString = localStorage.getItem('currencyString') || 'en-US';
+  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
 
   const userReviews = detailTour.reviews?.map(item => {
     return {
@@ -510,7 +512,7 @@ export default function DetailTour() {
             </div>
           </div>
 
-          {userData?.roles[0] === 'ROLE_USER' && (
+          {localStorage.getItem('token') && userData?.roles[0] === 'ROLE_USER' && (
             <div className="detailTour__booking-wrapper">
               <div className="detailTour__booking">
                 <h3 className="detailTour__booking-heading">
@@ -553,7 +555,16 @@ export default function DetailTour() {
                                       : 'Children (0-12 years)'}
                                   </Text>
 
-                                  <Text strong>${e.price} :</Text>
+                                  <Text strong>
+                                    {e.price?.toLocaleString(
+                                      `${currencyString}`,
+                                      {
+                                        style: 'currency',
+                                        currency: `${currencyItem}`,
+                                      },
+                                    )}{' '}
+                                    :
+                                  </Text>
                                 </div>
                                 <Form.Item
                                   key={e.id}
@@ -580,7 +591,10 @@ export default function DetailTour() {
                         {t('detail_tour.booking_form.total')}
                       </span>
                       <span className="detailTour__booking-total">
-                        ${total}
+                        {total?.toLocaleString(`${currencyString}`, {
+                          style: 'currency',
+                          currency: `${currencyItem}`,
+                        })}
                       </span>
                     </div>
                     <Form.Item>
