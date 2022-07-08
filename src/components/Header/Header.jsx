@@ -172,7 +172,7 @@ export default function Header() {
       title: `${t('header.home')}`,
       icon: <AiOutlineHome />,
       subnav: [],
-      link: '/home',
+      link: '/',
     },
     {
       title: `${t('header.tour')}`,
@@ -246,7 +246,7 @@ export default function Header() {
       }
     >
       <div className="header__left-side">
-        <div className="header__logo-wrapper" onClick={() => navigate('/home')}>
+        <div className="header__logo-wrapper" onClick={() => navigate('/')}>
           <img src={logo} alt="logo" className="header__logo" />
         </div>
         {width < 1023 ? null : (

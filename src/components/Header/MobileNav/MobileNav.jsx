@@ -83,10 +83,10 @@ export default function MobileNav(props) {
             </Title>
             <div className="mobileNav__account-btn">
               <Button type="primary" size="large">
-                {t('mobileNav.login')}
+                <Link to="/login">{t('mobileNav.login')}</Link>
               </Button>
               <Button type="default" size="large">
-                {t('mobileNav.register')}
+                <Link to="/register">{t('mobileNav.register')}</Link>
               </Button>
             </div>
           </div>

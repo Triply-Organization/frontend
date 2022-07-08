@@ -17,7 +17,6 @@ import './Admin.scss';
 const { Content, Footer, Sider } = Layout;
 
 export default function Admin() {
-  const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   const [url, setUrl] = useState(location.pathname.slice(7));
 
@@ -46,20 +45,11 @@ export default function Admin() {
         minHeight: '100vh',
       }}
     >
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={value => setCollapsed(value)}
-      >
-        <Link to="/home">
+      <Sider>
+        <Link to="/">
           <img src={logo} alt="logo" className="logo" />
         </Link>
-        <Menu
-          inlineCollapsed={true}
-          theme="dark"
-          selectedKeys={[url]}
-          mode="inline"
-        >
+        <Menu theme="dark" selectedKeys={[url]} mode="inline">
           <Menu.Item key="dashboard" icon={<PieChartOutlined />}>
             <Link to="dashboard">Dashboard</Link>
           </Menu.Item>
