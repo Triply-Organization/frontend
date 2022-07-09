@@ -99,6 +99,9 @@ const Search = props => {
               bordered={false}
               style={{ paddingLeft: 0, border: 'none' }}
               allowClear
+              disabledDate={current =>
+                current && current.valueOf() < Date.now()
+              }
               placeholder={t('search.when.place_holder')}
             />
           </Form.Item>
