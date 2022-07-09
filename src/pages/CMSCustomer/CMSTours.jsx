@@ -14,6 +14,7 @@ const { Title } = Typography;
 const CMSTours = () => {
   const navigate = useNavigate();
   const data = useSelector(state => state.tours.toursCustomer);
+  const loading = useSelector(state => state.tours.loading);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const loadingContext = useLoadingContext();
   const [disableDelete, setDisableDelete] = useState(true);
@@ -63,15 +64,12 @@ const CMSTours = () => {
       key: 'action',
       render: (_, record) => (
         <>
-          {record.status === 'disabled' ? (
-            <Button
-              type="primary"
-              danger
-              onClick={() => handleDelete(record.id)}
-            >
-              Reopen
-            </Button>
-          ) : (
+          {record.status === 'disabled' ? //   type="primary" // <Button
+          //   danger
+          //   onClick={() => handleDelete(record.id)}>
+          //   Reopen
+          // </Button>
+          null : (
             <Space>
               <Button
                 type="primary"
@@ -151,6 +149,7 @@ const CMSTours = () => {
       </div>
 
       <Table
+        loading={loading}
         columns={columns}
         dataSource={data}
         pagination={{
