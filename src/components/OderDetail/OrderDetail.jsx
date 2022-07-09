@@ -9,7 +9,7 @@ import './OrderDetail.scss';
 const { Title, Text } = Typography;
 
 const OrderDetail = props => {
-  const { data, finalTotal, discountValue, taxInfo } = props;
+  const { data, finalTotal, discountValue, taxInfo, voucherCode } = props;
   const { t } = useTranslation();
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
@@ -112,6 +112,9 @@ const OrderDetail = props => {
               </Text>
             </section>
             <section>
+              <Text strong>{voucherCode ? 'Voucher Applied' : null}</Text>
+            </section>
+            <section>
               <Text strong>{t('checkout.order_detail.tax')}</Text>
             </section>
             <section>
@@ -135,6 +138,9 @@ const OrderDetail = props => {
                   ? `-${discountValue}%`
                   : null}
               </Text>
+            </section>
+            <section>
+              <Text type="success">{voucherCode ? voucherCode : null}</Text>
             </section>
             <section>
               <Text strong>{taxInfo ? taxInfo : 8}%</Text>
@@ -171,6 +177,7 @@ OrderDetail.propTypes = {
   finalTotal: PropTypes.number,
   discountValue: PropTypes.number,
   taxInfo: PropTypes.number,
+  voucherCode: PropTypes.string,
 };
 
 export default OrderDetail;
