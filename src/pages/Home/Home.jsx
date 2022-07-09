@@ -28,7 +28,7 @@ const Home = () => {
   const destinations = useSelector(state => state.tours.destinations);
   const services = useSelector(state => state.tours.services);
   const popularTours = useSelector(state => state.tours.popularTours);
-  console.log(popularTours);
+
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
