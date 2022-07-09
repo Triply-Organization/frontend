@@ -8,7 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import { getDestinationsServiceTours } from '../../app/toursSlice';
+import {
+  getDestinationsServiceTours,
+  getPopularTours,
+} from '../../app/toursSlice';
 import section1Background from '../../assets/images/section-1-bg.jpg';
 import section2Banner1 from '../../assets/images/section-2_banner-1.jpg';
 import section2Banner2 from '../../assets/images/section-2_banner-2.jpg';
@@ -24,6 +27,8 @@ const Home = () => {
   const listTours = useSelector(state => state.tours.list);
   const destinations = useSelector(state => state.tours.destinations);
   const services = useSelector(state => state.tours.services);
+  const popularTours = useSelector(state => state.tours.popularTours);
+  console.log(popularTours);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -49,18 +54,9 @@ const Home = () => {
       services.length === 0
     )
       dispatch(getDestinationsServiceTours());
+    dispatch(getPopularTours());
     //call method to indicate that loading is done
     loadingContext.done();
-  };
-
-  const tour = {
-    image:
-      'https://demo2wpopal.b-cdn.net/triply/wp-content/uploads/2020/11/5c62cf53ebd1d70c3b6378fd_candre-mandawe-770529-unsplash-copy-820x520.jpg',
-    duration: 7,
-    destination: 'Bryce Canyon National Park, USA',
-    name: 'Waterfalls, Geysers and Glacier',
-    price: 100,
-    maxPeople: 40,
   };
 
   const onSearch = values => {
@@ -196,12 +192,9 @@ const Home = () => {
           </h1>
         </div>
         <div className="section-3__content-wrapper">
-          <CardTour tour={tour} tag={'featured'} />
-          <CardTour tour={tour} tag={'featured'} />
-          <CardTour tour={tour} tag={'featured'} />
-          <CardTour tour={tour} tag={'featured'} />
-          <CardTour tour={tour} tag={'featured'} />
-          <CardTour tour={tour} tag={'featured'} />
+          {popularTours.map((item, index) => {
+            return <CardTour key={index} tour={item} tag="" />;
+          })}
         </div>
       </div>
     </div>
