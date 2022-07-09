@@ -41,7 +41,7 @@ const Search = props => {
                   destinations.map((item, index) => (
                     <Option
                       key={index}
-                      value={item.id}
+                      value={item.name}
                       data-testid="option-search-destination"
                     >
                       {item.name}

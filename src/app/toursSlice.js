@@ -162,6 +162,13 @@ const toursSlice = createSlice({
       let relatedTours = [];
       priceDate = data.data.data.schedule.map(item => item);
       temp = data.data.data.schedule.map(item => item.startDate);
+
+      const maxPrice = Math.max(
+        ...data.data.data.schedule.map(s => s.ticket.map(t => t.price))[0],
+      );
+      const minPrice = Math.min(
+        ...data.data.data.schedule.map(s => s.ticket.map(t => t.price))[0],
+      );
       relatedTours = data.data.data.relatedTour.map(item => ({
         id: item.id,
         image: item.tourImages,
@@ -174,6 +181,8 @@ const toursSlice = createSlice({
       }));
       state.tour = {
         ...data.data.data,
+        maxPrice,
+        minPrice,
         availableDate: temp,
         priceFollowDate: priceDate,
         relatedTour: relatedTours,

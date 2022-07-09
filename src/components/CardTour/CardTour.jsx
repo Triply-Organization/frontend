@@ -13,12 +13,12 @@ import { useNavigate } from 'react-router-dom';
 import './CardTour.scss';
 
 const CardTour = props => {
-  const { tour, tag } = props;
+  const { tour, tag, ...prop } = props;
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const navigate = useNavigate();
   return (
-    <div className="card-tour">
+    <div className="card-tour" {...prop}>
       {tag && <div className="card-tour__tag">{tag}</div>}
       <div className="card-tour__image-wrapper">
         <div className="card-tour__image-wrapper__overlay" />
