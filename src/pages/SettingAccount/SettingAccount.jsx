@@ -18,6 +18,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLoadingContext } from 'react-router-loading';
 
 import { userAPI } from '../../api/userAPI';
 import './SettingAccount.scss';
@@ -37,6 +38,7 @@ const SettingAccount = () => {
     phone: userInfo?.phone,
     address: userInfo?.address,
   };
+  const loadingContext = useLoadingContext();
 
   const { t } = useTranslation();
 
@@ -45,6 +47,12 @@ const SettingAccount = () => {
       text.toLowerCase().charAt(0).toUpperCase() + text.slice(1).toLowerCase()
     );
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
+  }, []);
 
   const [form] = Form.useForm();
 

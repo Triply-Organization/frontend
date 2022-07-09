@@ -3,6 +3,7 @@ import { Layout, Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { AiFillDashboard, AiOutlineUnorderedList } from 'react-icons/ai';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
 import logo from '../../assets/images/logo.png';
 import './CMSCustomer.scss';
@@ -18,10 +19,12 @@ const CMSCustomer = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   };
+  const loadingContext = useLoadingContext();
 
   useEffect(() => {
     if (location.pathname.includes('dashboard')) setUrl(['dashboard']);
     else setUrl('tours');
+    loadingContext.done();
   }, [location.pathname]);
 
   return (

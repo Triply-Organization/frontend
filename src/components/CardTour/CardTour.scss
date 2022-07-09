@@ -7,6 +7,12 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  &__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   &__tag {
     position: absolute;
     top: 2rem;
@@ -59,7 +65,8 @@
     transform: translateX(-50%);
     width: 80%;
     height: 50px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+      rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
     background-color: #fff;
     border-radius: 8px;
     z-index: 2;
