@@ -6,7 +6,7 @@ footer.footer__wrapper {
   background: #202f59;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 2fr;
-  padding: 50px 30px;
+  padding: 50px 315px;
   text-align: left;
   gap: 30px;
 }
@@ -79,15 +79,6 @@ input.ant-input.ant-input-lg.footer__detail-input {
   text-align: center;
   padding: 10px 16px;
 }
-
-.footer__lower {
-  background: #1b2951;
-  display: flex;
-  padding: 0 30px;
-  align-items: center;
-  justify-content: space-between;
-}
-
 button.ant-btn.ant-btn-default.ant-btn-lg.footer__info-view-map-btn {
   border: none;
   &:hover {
@@ -126,7 +117,7 @@ button.ant-btn.ant-btn-primary.footer__detail-btn {
   background: #1b2951;
   display: flex;
   height: 130px;
-  padding: 0 30px;
+  padding: 0 315px;
   align-items: center;
   justify-content: space-between;
 }
@@ -173,7 +164,7 @@ a.footer__low-link {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 3rem 30px;
+  padding: 3rem 315px;
   margin: 0 auto;
   background-image: url('../../assets/images/background-home.png');
   background: #f9f4f082;
@@ -263,7 +254,7 @@ a.footer__low-link {
 
   .footer__lower {
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-evenly;;
   }
 
   .footer__heading--center {

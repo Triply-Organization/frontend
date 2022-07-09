@@ -14,6 +14,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLoadingContext } from 'react-router-loading';
 
 import { axiosClient } from '../../api/config/axiosClient';
 import { checkout, getVoucherInfo } from '../../app/checkoutSlice';
@@ -26,6 +27,7 @@ import './Checkout.scss';
 const { Title } = Typography;
 
 const Checkout = () => {
+  const loadingContext = useLoadingContext();
   const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
   const [taxInfo, setTaxInfo] = useState(0);
   const [finalTotal, setFinalTotal] = useState(
@@ -95,6 +97,7 @@ const Checkout = () => {
       setTaxInfo(taxData);
     };
     getTax();
+    loadingContext.done();
   }, []);
 
   useEffect(() => {

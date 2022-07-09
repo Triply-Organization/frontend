@@ -10,9 +10,13 @@
   margin: 90px auto;
 
   &__filter {
-    margin-bottom: 1rem;
+    width: 100%;
     & .ant-collapse-header {
       padding: 1rem 0 !important;
+    }
+
+    & .ant-form-item {
+      margin: 0;
     }
 
     &__item {
@@ -25,13 +29,10 @@
 
   &__header {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
-
+    & .ant-collapse-header {
+      align-items: flex-end;
+    }
     &__sort {
       display: flex;
       align-items: center;
