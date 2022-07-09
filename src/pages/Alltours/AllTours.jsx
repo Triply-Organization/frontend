@@ -5,6 +5,7 @@ import {
   Collapse,
   Empty,
   Form,
+  InputNumber,
   Pagination,
   Rate,
   Skeleton,
@@ -13,6 +14,7 @@ import {
   Spin,
   Tag,
 } from 'antd';
+import { Tooltip } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -46,6 +48,12 @@ const AllTours = () => {
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams({});
   const loadingContext = useLoadingContext();
+  const [inputValueStartSlider, setInputValueStartSlider] = useState(0);
+  const [inputValueEndSlider, setInputValueEndSlider] = useState(1000);
+  const [inputValueSlider, setInputValueSlider] = useState([
+    inputValueStartSlider,
+    inputValueEndSlider,
+  ]);
 
   const location = useLocation();
   const [formSearch] = Form.useForm();
@@ -53,22 +61,22 @@ const AllTours = () => {
   const listFilter = useSelector(state => state.tours.listFilter);
   const destinations = useSelector(state => state.tours.destinations);
   const services = useSelector(state => state.tours.services);
-  const loadingCallAPI = useSelector(state => state.tours.loading);
+  const loadingCallAPI = useSelector(state => state.tours.loadingFilter);
   const totalTours = useSelector(state => state.tours.totalTours);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   // USE EFFECT
   useEffect(() => {
-    window.scrollTo(0, 0);
-
-    const loading = async () => {
+    const loading = () => {
       let temp = {
         destination: searchParams.get('destination'),
         'guests[]': searchParams.getAll('guests'),
-        service: searchParams.get('service'),
+        'services[]': searchParams.getAll('services'),
         startDate: searchParams.get('startDate'),
         orderBy: searchParams.get('orderBy'),
+        orderType: 'price',
+        page: '1',
       };
 
       let o = Object.fromEntries(
@@ -84,9 +92,9 @@ const AllTours = () => {
         });
       }
 
-      if (temp?.service) {
+      if (temp['services[]']) {
         formSearch.setFieldsValue({
-          services: parseInt(temp.service),
+          services: temp['services[]'],
         });
       }
 
@@ -102,45 +110,67 @@ const AllTours = () => {
         });
       }
       //call method to indicate that loading is done
-      loadingContext.done();
+      setTimeout(() => {
+        loadingContext.done();
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        });
+      }, 600);
     };
     loading();
   }, []);
 
   useEffect(() => {
-    dispatch(getToursByFilter(location.search));
+    if (!_.isEmpty(location.search)) {
+      dispatch(getToursByFilter(location.search));
+    }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (!_.isEmpty(location.search) && _.isEmpty(listFilter)) {
+      dispatch(getToursByFilter(location.search));
+    }
+  }, [listFilter]);
 
   const renderIconSortPrice = () => {
     if (sortPrice === 'desc')
       return (
-        <Button
-          className="all-tours__header__sort__button"
-          type="ghost"
-          onClick={() => setSortPrice('asc')}
-          icon={
-            <BsSortNumericDownAlt className="all-tours__header__sort__icon" />
-          }
-        />
+        <Tooltip title="Descending">
+          <Button
+            className="all-tours__header__sort__button"
+            type="ghost"
+            onClick={() => setSortPrice('asc')}
+            icon={
+              <BsSortNumericDownAlt className="all-tours__header__sort__icon" />
+            }
+          />
+        </Tooltip>
       );
     else
       return (
-        <Button
-          className="all-tours__header__sort__button"
-          type="ghost"
-          onClick={() => setSortPrice('desc')}
-          icon={<BsSortNumericDown className="all-tours__header__sort__icon" />}
-        />
+        <Tooltip title="Ascending">
+          <Button
+            className="all-tours__header__sort__button"
+            type="ghost"
+            onClick={() => setSortPrice('desc')}
+            icon={
+              <BsSortNumericDown className="all-tours__header__sort__icon" />
+            }
+          />
+        </Tooltip>
       );
   };
 
   const onSearch = values => {
     const searchParams = {};
+    console.log(values);
     if (values.destinations) {
       searchParams.destination = values.destinations;
     }
-    if (values.services) {
-      searchParams.service = values.services;
+    if (values['services[]']) {
+      searchParams['services[]'] = values['services[]'];
     }
 
     if (values.when) {
@@ -166,32 +196,15 @@ const AllTours = () => {
     }
   };
 
-  const onFilter = values => {
-    if (values?.filter_by_price) {
-      setFilterPrice(values?.filter_by_price);
-    }
-    if (values?.filter_by_rating) {
-      setFilterRating(values?.filter_by_rating);
-    }
-  };
-
   const onCloseFilterPrice = () => {
     setFilterPrice([]);
   };
-
-  const onCloseFilterRating = () => {
-    setFilterRating();
-  };
-
   useEffect(() => {
     const tempSearchParams = {};
-    if (filterPrice && filterPrice.length > 0) {
-      tempSearchParams.startPrice = filterPrice[0];
-      tempSearchParams.endPrice = filterPrice[1];
-    }
-    if (filterRating) {
-      tempSearchParams.filter_by_rating = filterRating;
-    }
+    tempSearchParams.startPrice = inputValueStartSlider;
+    tempSearchParams.endPrice = inputValueEndSlider;
+    setFilterPrice([inputValueStartSlider, inputValueEndSlider]);
+
     if (!_.isEmpty(currentSearch))
       setSearchParams({
         ...currentSearch,
@@ -200,9 +213,20 @@ const AllTours = () => {
         orderType: 'price',
         page: page,
       });
-  }, [filterPrice, filterRating, sortPrice, page]);
+  }, [sortPrice, page, inputValueStartSlider, inputValueEndSlider]);
   const navigate = useNavigate();
-  console.log(listFilter);
+
+  const onChangeStartSlider = value => {
+    if (inputValueEndSlider > value) setInputValueStartSlider(value);
+  };
+  const onChangeEndSlider = value => {
+    if (inputValueStartSlider < value) setInputValueEndSlider(value);
+  };
+
+  const onChangeSlider = value => {
+    setInputValueStartSlider(value[0]);
+    setInputValueEndSlider(value[1]);
+  };
 
   return (
     // <Spin spinning={loadingCallAPI}>
@@ -257,37 +281,35 @@ const AllTours = () => {
                 </div>
               }
             >
-              <Form
-                className="all-tours__filter__item"
-                layout={'vertical'}
-                onValuesChange={_.debounce(onFilter, 300)}
-                initialValues={{
-                  filter_by_price: [0, 1000],
-                  filter_by_rating: 0,
-                }}
-              >
-                <Form.Item
-                  name="filter_by_price"
-                  label={t('all_tours.filter.price')}
-                >
-                  <Slider
-                    range
-                    max={1000}
-                    tipFormatter={value =>
-                      value.toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                      })
-                    }
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="filter_by_rating"
-                  label={t('all_tours.filter.rating')}
-                >
-                  <Rate allowHalf />
-                </Form.Item>
-              </Form>
+              <Slider
+                range={true}
+                min={0}
+                max={1000}
+                onChange={_.debounce(onChangeSlider, 300)}
+                value={[inputValueStartSlider, inputValueEndSlider]}
+                defaultValue={[inputValueStartSlider, inputValueEndSlider]}
+                tipFormatter={value =>
+                  value.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                  })
+                }
+              />
+
+              <div className="slider-input-wrapper">
+                <InputNumber
+                  min={0}
+                  max={inputValueEndSlider - 1}
+                  value={inputValueStartSlider}
+                  onChange={onChangeStartSlider}
+                />
+                <InputNumber
+                  min={inputValueStartSlider + 1}
+                  max={1000}
+                  value={inputValueEndSlider}
+                  onChange={onChangeEndSlider}
+                />
+              </div>
             </Panel>
           </Collapse>
         </div>
@@ -301,10 +323,10 @@ const AllTours = () => {
               {filterPrice[0]} - {filterPrice[1]}
             </Tag>
           )}
-          {filterRating && (
-            <Tag closable onClose={() => onCloseFilterRating()}>
-              <b>Rating: </b>
-              {filterRating}
+          {sortPrice && (
+            <Tag>
+              <b>Sort Price: </b>
+              {sortPrice === 'desc' ? 'Descending' : 'Ascending'}
             </Tag>
           )}
         </div>

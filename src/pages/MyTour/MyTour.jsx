@@ -55,7 +55,9 @@ const MyTour = () => {
   };
   useEffect(() => {
     loading();
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   }, []);
 
   useEffect(() => {

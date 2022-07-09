@@ -9,6 +9,7 @@ import {
   Form,
   InputNumber,
   Rate,
+  Spin,
   Typography,
   notification,
 } from 'antd';
@@ -31,6 +32,7 @@ import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
 import { getDetailTour } from '../../app/toursSlice';
 import CardTour from '../../components/CardTour/CardTour';
@@ -73,6 +75,21 @@ export default function DetailTour() {
   const { t } = useTranslation();
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
+  const loadingContext = useLoadingContext();
+  const [visibleGallery, setVisibleGallery] = useState(false);
+  const [gallery, setGallery] = useState([]);
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const [remainC, setRemainC] = useState(0);
+  const [remainY, setRemainY] = useState(0);
+  const [remainA, setRemainA] = useState(0);
+  const loading = useSelector(state => state.tours.loading);
+  useEffect(() => {
+    if (!_.isEmpty(detailTour)) {
+      setGallery(detailTour?.tourImages?.map(item => item.path));
+    }
+  }, [detailTour]);
+
+  const [formTicket] = Form.useForm();
 
   useEffect(() => {
     if (dataCheckout.id) {
@@ -149,14 +166,15 @@ export default function DetailTour() {
         item.startDate.includes(dateString),
       );
       setPriceFollowDate(result);
-      setBookingDate(dateString);
       setTotal(0);
+      setBookingDate(dateString);
     } else {
+      setTotal(0);
       setPriceFollowDate([]);
       setBookingDate('');
       setTotal(0);
     }
-  };
+    formTicket.setFieldsValue({ adult: 0, youth: 0, children: 0 });};
 
   const detailTourItem = useMemo(() => {
     return [
@@ -205,12 +223,21 @@ export default function DetailTour() {
     ];
   }, [detailTour]);
   useEffect(() => {
-    window.scrollTo(0, 0);
     dispatch(getDetailTour(id));
+
+    setTimeout(() => {
+      loadingContext.done();
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }, 600);
   }, []);
 
   // validate booking
   const handleSubmit = values => {
+    console.log(values);
     const request = {
       children: children,
       adult: adult,
@@ -243,227 +270,229 @@ export default function DetailTour() {
       }
     }
   };
-  const [visibleGallery, setVisibleGallery] = useState(false);
-  const [gallery, setGallery] = useState([]);
-  const [photoIndex, setPhotoIndex] = useState(0);
-  useEffect(() => {
-    if (!_.isEmpty(detailTour)) {
-      setGallery(detailTour?.tourImages?.map(item => item.path));
-    }
-  }, [detailTour]);
-  return (
-    <section className="detailTour">
-      {visibleGallery && !_.isEmpty(gallery) && (
-        <Lightbox
-          reactModalStyle={{ width: '100px' }}
-          mainSrc={gallery[photoIndex]}
-          nextSrc={gallery[(photoIndex + 1) % gallery.length]}
-          prevSrc={gallery[(photoIndex + gallery.length - 1) % gallery.length]}
-          onCloseRequest={() => setVisibleGallery(false)}
-          onMovePrevRequest={() =>
-            setPhotoIndex((photoIndex + gallery.length - 1) % gallery.length)
-          }
-          onMoveNextRequest={() =>
-            setPhotoIndex((photoIndex + 1) % gallery.length)
-          }
-        />
-      )}
-      <div className="detailTour__intro-wrapper">
-        <div className="detailTour__intro-content">
-          <div className="detailTour__carousel-wrapper">
-            <Button
-              shape="round"
-              size="large"
-              onClick={() => {
-                setVisibleGallery(true);
-              }}
-              icon={<CameraOutlined />}
-              className={'detailTour__carousel-wrapper__btn'}
-            >
-              Gallery
-            </Button>
-            <div className="detailTour__carousel-wrapper__content">
-              <h1 className="detailTour__intro-heading">
-                {detailTour.title ? detailTour.title : 'Tour title'}
-              </h1>
-              <div className="detailTour__location">
-                <span className="detailTour__icon">
-                  <GoLocation style={{ fontSize: '1rem' }} />
-                </span>
-                <span className="detailTour__words">
-                  {detailTour.tourPlans && detailTour.tourPlans.length > 0
-                    ? detailTour.tourPlans[0].destination
-                    : 'Location'}
-                </span>
-              </div>
-            </div>
 
-            <Carousel
-              autoplay
-              arrows
-              prevArrow={<LeftOutlined />}
-              nextArrow={<RightOutlined />}
-              effect="fade"
-              className="detailTour__carousel"
-              draggable={true}
-              slidesToShow={1}
-            >
-              {detailTour.tourImages && detailTour.tourImages.length > 0
-                ? detailTour.tourImages.map(item => {
-                    return (
-                      <div key={item.id} className="detailTour__img-wrapper">
-                        <img
-                          src={item.path}
-                          alt="photo"
-                          className="detailTour__img"
-                        />
-                      </div>
-                    );
-                  })
-                : null}
-            </Carousel>
-          </div>
-          <div className="detailTour__information">
-            {detailTourItem.map((item, index) => {
-              return (
-                <div className="detailTour__information-item" key={index}>
-                  <span className="detailTour__information-icon">
-                    {item.icon}
+  return (
+    <Spin spinning={loading}>
+      <section className="detailTour">
+        {visibleGallery && !_.isEmpty(gallery) && (
+          <Lightbox
+            reactModalStyle={{ width: '100px' }}
+            mainSrc={gallery[photoIndex]}
+            nextSrc={gallery[(photoIndex + 1) % gallery.length]}
+            prevSrc={
+              gallery[(photoIndex + gallery.length - 1) % gallery.length]
+            }
+            onCloseRequest={() => setVisibleGallery(false)}
+            onMovePrevRequest={() =>
+              setPhotoIndex((photoIndex + gallery.length - 1) % gallery.length)
+            }
+            onMoveNextRequest={() =>
+              setPhotoIndex((photoIndex + 1) % gallery.length)
+            }
+          />
+        )}
+        <div className="detailTour__intro-wrapper">
+          <div className="detailTour__intro-content">
+            <div className="detailTour__carousel-wrapper">
+              <Button
+                shape="round"
+                size="large"
+                onClick={() => {
+                  setVisibleGallery(true);
+                }}
+                icon={<CameraOutlined />}
+                className={'detailTour__carousel-wrapper__btn'}
+              >
+                Gallery
+              </Button>
+              <div className="detailTour__carousel-wrapper__content">
+                <h1 className="detailTour__intro-heading">
+                  {detailTour.title ? detailTour.title : 'Tour title'}
+                </h1>
+                <div className="detailTour__location">
+                  <span className="detailTour__icon">
+                    <GoLocation style={{ fontSize: '1rem' }} />
                   </span>
-                  <span className="detailTour__information-words">
-                    <p className="detailTour__information-heading-words">
-                      {item.title}
-                    </p>
-                    <p className="detailTour__information-detail">
-                      {item.detail}
-                    </p>
+                  <span className="detailTour__words">
+                    {detailTour.tourPlans && detailTour.tourPlans.length > 0
+                      ? detailTour.tourPlans[0].destination
+                      : 'Location'}
                   </span>
                 </div>
-              );
-            })}
+              </div>
+
+              <Carousel
+                autoplay
+                arrows
+                prevArrow={<LeftOutlined />}
+                nextArrow={<RightOutlined />}
+                effect="fade"
+                className="detailTour__carousel"
+                draggable={true}
+                slidesToShow={1}
+              >
+                {detailTour.tourImages && detailTour.tourImages.length > 0
+                  ? detailTour.tourImages.map(item => {
+                      return (
+                        <div key={item.id} className="detailTour__img-wrapper">
+                          <img
+                            src={item.path}
+                            alt="photo"
+                            className="detailTour__img"
+                          />
+                        </div>
+                      );
+                    })
+                  : null}
+              </Carousel>
+            </div>
+            <div className="detailTour__information">
+              {detailTourItem.map((item, index) => {
+                return (
+                  <div className="detailTour__information-item" key={index}>
+                    <span className="detailTour__information-icon">
+                      {item.icon}
+                    </span>
+                    <span className="detailTour__information-words">
+                      <p className="detailTour__information-heading-words">
+                        {item.title}
+                      </p>
+                      <p className="detailTour__information-detail">
+                        {item.detail}
+                      </p>
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="detailTour__information-section">
-        <div className="detailTour__content-wrapper">
-          <div className="detailTour__content">
-            <div className="detailTour__overview">
-              <h2>{t('detail_tour.overview')}</h2>
-              <p className="detailTour__overview-description">
-                {detailTour.overView ? detailTour.overView : null}
-              </p>
-            </div>
-            <div className="detailTour__services">
-              <h2 className="detailTour__content-heading">
-                {t('detail_tour.service')}
-              </h2>
-              <ul className="detailTour__services-list">
-                {detailTour.services && detailTour.services.length > 0
-                  ? detailTour.services.map(item => {
-                      return (
-                        <li className="detailTour__services-item" key={item.id}>
-                          <AiOutlineCheckCircle className="detailTour__services-item-icon"></AiOutlineCheckCircle>
-                          {item.name}
-                        </li>
-                      );
-                    })
-                  : null}
-              </ul>
-            </div>
-            <div className="detailTour__plan">
-              <h2 className="detailTour__content-heading detailTour__content-heading--primary">
-                {t('detail_tour.tour_plan')}
-              </h2>
-              <Collapse
-                accordion
-                className="detailTour__plan"
-                expandIconPosition="end"
-              >
-                {detailTour.tourPlans && detailTour.tourPlans?.length > 0
-                  ? detailTour.tourPlans.map(item => {
-                      return (
-                        <Panel
-                          className="detailTour__plan-item"
-                          header={
-                            <span className="detailTour__plan-heading">
-                              <GoLocation className="detailTour__plan-icon" />
-                              <span className="detailTour__plan-heading-word">
-                                Day {item.day}
-                                <span className="detailTour__place-words">
-                                  {item.destination}
+        <div className="detailTour__information-section">
+          <div className="detailTour__content-wrapper">
+            <div className="detailTour__content">
+              <div className="detailTour__overview">
+                <h2>{t('detail_tour.overview')}</h2>
+                <p className="detailTour__overview-description">
+                  {detailTour.overView ? detailTour.overView : null}
+                </p>
+              </div>
+              <div className="detailTour__services">
+                <h2 className="detailTour__content-heading">
+                  {t('detail_tour.service')}
+                </h2>
+                <ul className="detailTour__services-list">
+                  {detailTour.services && detailTour.services.length > 0
+                    ? detailTour.services.map(item => {
+                        return (
+                          <li
+                            className="detailTour__services-item"
+                            key={item.id}
+                          >
+                            <AiOutlineCheckCircle className="detailTour__services-item-icon"></AiOutlineCheckCircle>
+                            {item.name}
+                          </li>
+                        );
+                      })
+                    : null}
+                </ul>
+              </div>
+              <div className="detailTour__plan">
+                <h2 className="detailTour__content-heading detailTour__content-heading--primary">
+                  {t('detail_tour.tour_plan')}
+                </h2>
+                <Collapse
+                  accordion
+                  className="detailTour__plan"
+                  expandIconPosition="end"
+                >
+                  {detailTour.tourPlans && detailTour.tourPlans?.length > 0
+                    ? detailTour.tourPlans.map(item => {
+                        return (
+                          <Panel
+                            className="detailTour__plan-item"
+                            header={
+                              <span className="detailTour__plan-heading">
+                                <GoLocation className="detailTour__plan-icon" />
+                                <span className="detailTour__plan-heading-word">
+                                  Day {item.day}
+                                  <span className="detailTour__place-words">
+                                    {item.destination}
+                                  </span>
                                 </span>
                               </span>
-                            </span>
-                          }
-                          key={item.id}
-                        >
-                          <p className="detail__plan-description">
-                            {item.description}
-                          </p>
-                        </Panel>
-                      );
-                    })
-                  : null}
-              </Collapse>
-            </div>
-            <div className="detailTour__review-wrapper">
-              <div className="detailTour__review-detail-wrapper">
-                {userReviews?.map((item, index) => {
-                  return (
-                    <div key={index} className="detailTour__review-detail-item">
-                      <div className="detailTour__review-item-avatar">
-                        <Avatar
-                          src={item.avatar}
-                          size="large"
-                          icon={<UserOutlined />}
-                        />
-                      </div>
-                      <div className="detailTour__review-item-section">
-                        <p className="detailTour__review-item-name">
-                          {item.name}
-                        </p>
-                        <p className="detailTour__review-item-date">
-                          {item.date}
-                        </p>
-                        <div className="detailTour__review-item-rating-wrapper">
-                          {item.rating.map((rItem, rIndex) => {
-                            return (
-                              <>
-                                <div
-                                  className="detailTour__review-item-rating"
-                                  key={rIndex}
-                                >
-                                  <p className="detailTour__review-item-title">
-                                    {rItem.title}
-                                  </p>
-                                  <Rate
-                                    disabled
-                                    defaultValue={rItem.point}
-                                    className="detailTour__review-item-point"
-                                  />
-                                </div>
-                              </>
-                            );
-                          })}
+                            }
+                            key={item.id}
+                          >
+                            <p className="detail__plan-description">
+                              {item.description}
+                            </p>
+                          </Panel>
+                        );
+                      })
+                    : null}
+                </Collapse>
+              </div>
+              <div className="detailTour__review-wrapper">
+                <div className="detailTour__review-detail-wrapper">
+                  {userReviews?.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="detailTour__review-detail-item"
+                      >
+                        <div className="detailTour__review-item-avatar">
+                          <Avatar
+                            src={item.avatar}
+                            size="large"
+                            icon={<UserOutlined />}
+                          />
                         </div>
-                        <p className="detailTour__review-item-comment">
-                          {item.comment}
-                        </p>
+                        <div className="detailTour__review-item-section">
+                          <p className="detailTour__review-item-name">
+                            {item.name}
+                          </p>
+                          <p className="detailTour__review-item-date">
+                            {item.date}
+                          </p>
+                          <div className="detailTour__review-item-rating-wrapper">
+                            {item.rating.map((rItem, rIndex) => {
+                              return (
+                                <>
+                                  <div
+                                    className="detailTour__review-item-rating"
+                                    key={rIndex}
+                                  >
+                                    <p className="detailTour__review-item-title">
+                                      {rItem.title}
+                                    </p>
+                                    <Rate
+                                      disabled
+                                      defaultValue={rItem.point}
+                                      className="detailTour__review-item-point"
+                                    />
+                                  </div>
+                                </>
+                              );
+                            })}
+                          </div>
+                          <p className="detailTour__review-item-comment">
+                            {item.comment}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </div>
 
-          {localStorage.getItem('token') && userData?.roles[0] === 'ROLE_USER' && (
             <div className="detailTour__booking-wrapper">
               <div className="detailTour__booking">
                 <h3 className="detailTour__booking-heading">
                   {t('detail_tour.booking_form.title')}
                 </h3>
                 <Form
+                  form={formTicket}
                   layout="horizontal"
                   onFinish={handleSubmit}
                   autoComplete="off"
@@ -494,7 +523,10 @@ export default function DetailTour() {
                           item.ticket.map((e, index) => {
                             return (
                               <>
-                                <div className="booking-ticket__item">
+                                <div
+                                  className="booking-ticket__item"
+                                  key={index}
+                                >
                                   <Space
                                     direction="vertical"
                                     size={'small'}
@@ -552,49 +584,64 @@ export default function DetailTour() {
                       </span>
                     </div>
                     <Form.Item>
-                      <Button
-                        htmlType="submit"
-                        className="detailTour__booking-btn"
-                        type="primary"
-                        size="large"
-                      >
-                        book now
-                      </Button>
+                      {_.isEmpty(localStorage.getItem('token')) ? (
+                        <Button
+                          className="detailTour__booking-btn"
+                          type="primary"
+                          onClick={() => navigate('/login')}
+                          size="large"
+                        >
+                          Sign in to book
+                        </Button>
+                      ) : (
+                        <Button
+                          htmlType="submit"
+                          className="detailTour__booking-btn"
+                          type="primary"
+                          disabled={localStorage
+                            .getItem('user')
+                            .includes(['ROLE_CUSTOMER'])}
+                          size="large"
+                        >
+                          book now
+                        </Button>
+                      )}
                     </Form.Item>
                   </div>
                 </Form>
               </div>
             </div>
-          )}
+          </div>
         </div>
-      </div>
-      {relatedTours?.length > 0 && (
-        <div className="detailTour__relatedTour">
-          <h2 className="detailTour__content-heading">
-            {t('detail_tour.you_may_like')}
-          </h2>
-          <Carousel
-            infinite={false}
-            autoplay
-            variableWidth={true}
-            className="detailTour__relatedTour-carousel"
-            draggable={true}
-            slidesToShow={2}
-          >
-            {relatedTours && relatedTours.length > 0 ? (
-              relatedTours?.map(item => {
-                return (
-                  <div key={item.id} className="detailTour__relatedTour-item">
-                    <CardTour tour={item} />
-                  </div>
-                );
-              })
-            ) : (
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-            )}
-          </Carousel>
-        </div>
-      )}
-    </section>
+        {relatedTours?.length > 0 && (
+          <div className="detailTour__relatedTour">
+            <h2 className="detailTour__content-heading">
+              {t('detail_tour.you_may_like')}
+            </h2>
+            <Carousel
+              infinite={false}
+              variableWidth={true}
+              className="detailTour__relatedTour-carousel"
+              draggable={true}
+              slidesToShow={3}
+            >
+              {relatedTours && relatedTours.length > 0 ? (
+                relatedTours?.map(item => {
+                  return (
+                    <CardTour
+                      tour={item}
+                      key={item.id}
+                      style={{ width: '405px', marginRight: '1rem' }}
+                    />
+                  );
+                })
+              ) : (
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+              )}
+            </Carousel>
+          </div>
+        )}
+      </section>
+    </Spin>
   );
 }

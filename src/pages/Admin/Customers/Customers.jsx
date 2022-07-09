@@ -50,7 +50,9 @@ export default function Customers() {
     }
     dispatch(getAllCustomers(location.search));
     //call method to indicate that loading is done
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   };
 
   useEffect(() => {

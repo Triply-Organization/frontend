@@ -65,7 +65,9 @@ export default function Users() {
     }
     dispatch(getAllUsers(location.search));
     //call method to indicate that loading is done
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   };
 
   useEffect(() => {

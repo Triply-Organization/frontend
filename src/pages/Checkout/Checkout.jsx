@@ -21,7 +21,8 @@ import { checkout, getVoucherInfo } from '../../app/checkoutSlice';
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import paypal from '../../assets/images/paypal-logo.png';
 import stripe from '../../assets/images/stripe-logo.png';
-import { ImageBreadcrumb, OrderDetail } from '../../components';
+import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
+import OrderDetail from '../../components/OderDetail/OrderDetail';
 import './Checkout.scss';
 
 const { Title, Text } = Typography;
@@ -100,7 +101,14 @@ const Checkout = () => {
       setTaxInfo(taxData);
     };
     getTax();
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }, 600);
   }, []);
 
   useEffect(() => {

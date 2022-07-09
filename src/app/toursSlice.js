@@ -11,6 +11,7 @@ const initialState = {
   tour: {},
   listFilter: [],
   loading: false,
+  loadingFilter: false,
   booking: {},
   totalTours: 0,
   idTourJustCreated: null,
@@ -114,17 +115,17 @@ const toursSlice = createSlice({
     });
 
     builder.addCase(getToursByFilter.pending, state => {
-      state.loading = true;
+      state.loadingFilter = true;
     });
     builder.addCase(getToursByFilter.rejected, state => {
-      state.loading = false;
+      state.loadingFilter = false;
       message.error({
         content: 'Can not connect to server. Please check your internet',
         key: 'tour-rejected',
       });
     });
     builder.addCase(getToursByFilter.fulfilled, (state, action) => {
-      state.loading = false;
+      state.loadingFilter = false;
       let { data } = action.payload;
       state.destinations = data.data?.destinations;
       state.services = data.data?.services;
