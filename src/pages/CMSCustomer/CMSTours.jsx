@@ -22,7 +22,9 @@ const CMSTours = () => {
 
   useEffect(() => {
     dispatch(getToursCustomer());
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   }, []);
 
   useEffect(() => {
@@ -64,9 +66,8 @@ const CMSTours = () => {
       key: 'action',
       render: (_, record) => (
         <>
-          {record.status === 'disabled' ? //   type="primary" // <Button
-          //   danger
-          //   onClick={() => handleDelete(record.id)}>
+          {record.status ===
+          'disabled' ? //   onClick={() => handleDelete(record.id)}> //   danger //   type="primary" // <Button
           //   Reopen
           // </Button>
           null : (

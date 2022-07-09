@@ -80,7 +80,7 @@ p.detailTour__information-detail {
 .detailTour__content-wrapper {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 1290px;
 }
 
 .detailTour__content {
@@ -171,6 +171,7 @@ svg.detailTour__plan-icon {
 p.detail__plan-description {
   font-size: 1rem;
   color: #666;
+  white-space: pre-line;
 }
 
 span.detailTour__place-words {
@@ -325,18 +326,19 @@ img.detailTour__img {
 }
 
 .detailTour__relatedTour {
-  padding-bottom: 2rem;
   margin: 0 auto;
   width: 1290px;
+  padding-bottom: 90px;
 
   & .slick-list {
-    width: 1290px;
+    padding: 2rem;
   }
-}
 
-.detailTour__relatedTour-item {
-  padding: 1rem;
-  margin: 0 auto;
+  & .slick-track {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+  }
 }
 
 .detailTour {
@@ -412,9 +414,6 @@ span.detailTour__review-chart-title {
 
 span.detailTour__review-chart-point {
   font-size: 0.9rem;
-}
-
-.detailTour__review-wrapper {
 }
 
 .detailTour__review-detail-item {
@@ -533,7 +532,7 @@ p.detailTour__booking-label {
   &__btn {
     position: absolute;
     bottom: 2rem;
-    right: 300px;
+    right: 2rem;
     z-index: 10;
   }
 }
