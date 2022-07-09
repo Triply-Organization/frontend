@@ -8,6 +8,7 @@ import {
   Select,
   Space,
   Tabs,
+  Typography,
   Upload,
   message,
 } from 'antd';
@@ -16,13 +17,14 @@ import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineInbox, AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import { createTour, getDestinationsServiceTours } from '../../app/toursSlice';
 import './CMSAddTour.scss';
 
 const { TabPane } = Tabs;
+const { Title } = Typography;
 const { TextArea } = Input;
 const { Panel } = Collapse;
 const { Dragger } = Upload;
@@ -166,18 +168,14 @@ const CMSAddTour = () => {
     <>
       <Breadcrumb
         style={{
-          margin: '16px 0',
+          marginLeft: '-26px',
+          marginBottom: '20px',
         }}
       >
         <Breadcrumb.Item>
-          <Link to="/home">Home</Link>
+          <Title level={3}>Dashboard</Title>
         </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <Link to="/cms/tours">Tours</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>Add Tour</Breadcrumb.Item>
       </Breadcrumb>
-
       <Form
         form={form}
         className="form-tour"

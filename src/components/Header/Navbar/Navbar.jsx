@@ -21,7 +21,7 @@ export default function Navbar(props) {
               <Link
                 to={`${item.link.toLowerCase()}`}
                 className={
-                  activeTab === index
+                  activeTab == index
                     ? 'header__navbar-link header__navbar-link--active'
                     : 'header__navbar-link'
                 }

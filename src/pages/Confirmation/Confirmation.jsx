@@ -3,6 +3,7 @@ import moment from 'moment';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import { OrderDetail } from '../../components';
@@ -13,6 +14,7 @@ import './Confirmation.scss';
 const { Title, Text } = Typography;
 
 const Confirmation = () => {
+  const loadingContext = useLoadingContext();
   const { id } = useParams();
   const confirmInfo = useSelector(state => state.checkout.confirmationData);
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ const Confirmation = () => {
 
   useEffect(() => {
     dispatch(getConfirmInfo(id));
+    loadingContext.done();
   }, []);
 
   return (

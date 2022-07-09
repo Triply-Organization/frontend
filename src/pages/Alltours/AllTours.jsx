@@ -111,12 +111,12 @@ const AllTours = () => {
   }, [searchParams]);
 
   const renderIconSortPrice = () => {
-    if (sortPrice === 'asc')
+    if (sortPrice === 'desc')
       return (
         <Button
           className="all-tours__header__sort__button"
           type="ghost"
-          onClick={() => setSortPrice('desc')}
+          onClick={() => setSortPrice('asc')}
           icon={
             <BsSortNumericDownAlt className="all-tours__header__sort__icon" />
           }
@@ -127,7 +127,7 @@ const AllTours = () => {
         <Button
           className="all-tours__header__sort__button"
           type="ghost"
-          onClick={() => setSortPrice('asc')}
+          onClick={() => setSortPrice('desc')}
           icon={<BsSortNumericDown className="all-tours__header__sort__icon" />}
         />
       );
@@ -224,59 +224,67 @@ const AllTours = () => {
       </div>
 
       <div className="all-tours">
-        <Collapse
-          defaultActiveKey={['1']}
-          ghost
-          className="all-tours__filter"
-          expandIconPosition="end"
-        >
-          <Panel header={t('all_tours.filter.title')} key="1">
-            <Form
-              className="all-tours__filter__item"
-              layout={'vertical'}
-              onValuesChange={_.debounce(onFilter, 300)}
-              initialValues={{
-                filter_by_price: [0, 1000],
-                filter_by_rating: 0,
-              }}
-            >
-              <Form.Item
-                name="filter_by_price"
-                label={t('all_tours.filter.price')}
-              >
-                <Slider
-                  range
-                  max={1000}
-                  tipFormatter={value =>
-                    value.toLocaleString('en-US', {
-                      style: 'currency',
-                      currency: 'USD',
-                    })
-                  }
-                />
-              </Form.Item>
-              <Form.Item
-                name="filter_by_rating"
-                label={t('all_tours.filter.rating')}
-              >
-                <Rate allowHalf />
-              </Form.Item>
-            </Form>
-          </Panel>
-        </Collapse>
         <div className="all-tours__header">
-          <p>
-            <b>{totalTours}</b> {t('all_tours.tours')}
-          </p>
-
-          <div className="all-tours__header__sort">
-            <Space>
-              <p>{t('all_tours.sort')}</p>
-              {renderIconSortPrice()}
-            </Space>
-          </div>
+          <Collapse
+            ghost
+            className="all-tours__filter"
+            expandIconPosition="start"
+          >
+            <Panel
+              header={t('all_tours.filter.title')}
+              key="1"
+              extra={
+                <div
+                  className="all-tours__header__sort"
+                  onClick={event => {
+                    event.stopPropagation();
+                  }}
+                >
+                  <Space>
+                    <p>{t('all_tours.sort')}</p>
+                    {renderIconSortPrice()}
+                  </Space>
+                </div>
+              }
+            >
+              <Form
+                className="all-tours__filter__item"
+                layout={'vertical'}
+                onValuesChange={_.debounce(onFilter, 300)}
+                initialValues={{
+                  filter_by_price: [0, 1000],
+                  filter_by_rating: 0,
+                }}
+              >
+                <Form.Item
+                  name="filter_by_price"
+                  label={t('all_tours.filter.price')}
+                >
+                  <Slider
+                    range
+                    max={1000}
+                    tipFormatter={value =>
+                      value.toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                      })
+                    }
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="filter_by_rating"
+                  label={t('all_tours.filter.rating')}
+                >
+                  <Rate allowHalf />
+                </Form.Item>
+              </Form>
+            </Panel>
+          </Collapse>
         </div>
         <div style={{ margin: '1rem 0' }}>
+          <Tag>
+            <b>{totalTours}</b> {t('all_tours.tours')}
+          </Tag>
           {filterPrice && filterPrice.length > 0 && (
             <Tag closable onClose={() => onCloseFilterPrice()}>
               <b>Price: </b>
