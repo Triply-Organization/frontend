@@ -91,7 +91,7 @@ const MyTour = () => {
         id: idTourToReview.id,
       });
       loading();
-      message.success('Comment this tour successful');
+      message.success('Comment this tour successfull');
       setIsVisible(false);
       formReview.resetFields();
     });
@@ -169,7 +169,11 @@ const MyTour = () => {
           >
             <Rate allowHalf className="review__rating" />
           </Form.Item>
-          <Form.Item label="Comment" name={'comment'}>
+          <Form.Item
+            label="Comment"
+            name={'comment'}
+            rules={{ require: true, message: 'Please give your comment' }}
+          >
             <TextArea rows={3} />
           </Form.Item>
         </ModalForm>
@@ -189,6 +193,7 @@ const MyTour = () => {
             if (_.isEmpty(item.review)) {
               return (
                 <List.Item
+                  className="list-item"
                   key={item.id}
                   actions={
                     item.status === 'paid' &&
@@ -226,7 +231,12 @@ const MyTour = () => {
                 >
                   <List.Item.Meta
                     avatar={
-                      <Avatar src={user.avatar} icon={<UserOutlined />} />
+                      <Avatar
+                        src={
+                          'https://favpng.com/png_view/pawn-samsung-galaxy-a8-a8-user-login-telephone-avatar-png/peutPpGD'
+                        }
+                        icon={<UserOutlined />}
+                      />
                     }
                     title={<b>{user.fullname}</b>}
                     description={moment(item.bookedAt.date).format(
@@ -287,7 +297,13 @@ const MyTour = () => {
                   extra={<Image width={272} alt="logo" src={item.cover} />}
                 >
                   <List.Item.Meta
-                    avatar={<Avatar src={user.avatar} />}
+                    avatar={
+                      <Avatar
+                        src={
+                          'https://favpng.com/png_view/pawn-samsung-galaxy-a8-a8-user-login-telephone-avatar-png/peutPpGD'
+                        }
+                      />
+                    }
                     title={<b>{user.fullname}</b>}
                     description={moment(item.bookedAt.date).format(
                       'YYYY-MM-DD',

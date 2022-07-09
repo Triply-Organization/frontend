@@ -107,7 +107,8 @@ const Checkout = () => {
     setDiscountValue(voucherData.discount);
     if (voucherData.discount) {
       setFinalTotal(
-        checkoutData.subTotal -
+        checkoutData.subTotal +
+          (checkoutData.subTotal * taxInfo) / 100 -
           (checkoutData.subTotal * voucherData.discount) / 100,
       );
     } else if (!voucherData.id) {

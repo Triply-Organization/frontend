@@ -18,6 +18,10 @@
     color: var(--primary);
   }
 
+  & .ant-list-item {
+    border-bottom: 1px solid #979797;
+  }
+
   & .ant-list-item-extra {
     display: flex;
     flex-direction: column;
@@ -52,7 +56,6 @@
   }
 }
 
-
 .comment {
   width: 100%;
   height: fit-content;
@@ -60,5 +63,4 @@
   margin: 1rem 0;
   border-top: 0.5px solid #f1f1f1;
   border-bottom: 0.5px solid #f1f1f1;
-
 }
