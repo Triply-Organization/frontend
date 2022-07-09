@@ -29,7 +29,9 @@ const Confirmation = () => {
 
   useEffect(() => {
     dispatch(getConfirmInfo(id));
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   }, []);
 
   return (

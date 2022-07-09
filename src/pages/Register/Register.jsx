@@ -31,7 +31,9 @@ const Register = () => {
         'url(' + src + ')';
     });
     image.src = src;
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   }, []);
 
   const { t } = useTranslation();

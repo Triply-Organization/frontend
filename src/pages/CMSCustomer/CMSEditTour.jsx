@@ -43,12 +43,13 @@ const CMSEditTour = () => {
     if (_.isEmpty()) {
       dispatch(getDestinationsServiceTours());
     }
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   }, []);
 
   useEffect(() => {
     if (id) dispatch(getDetailTour(id));
-    loadingContext.done();
   }, [id]);
 
   useEffect(() => {

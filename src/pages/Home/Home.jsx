@@ -54,9 +54,12 @@ const Home = () => {
       services.length === 0
     )
       dispatch(getDestinationsServiceTours());
+
     dispatch(getPopularTours());
     //call method to indicate that loading is done
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   };
 
   const onSearch = values => {
@@ -82,9 +85,19 @@ const Home = () => {
         search: createSearchParams({
           ...searchParams,
           orderBy: 'asc',
+          orderType: 'price',
+          page: '1',
         }).toString(),
       });
-    } else navigate('/tours');
+    } else
+      navigate({
+        pathname: '/tours',
+        search: createSearchParams({
+          orderBy: 'asc',
+          orderType: 'price',
+          page: '1',
+        }).toString(),
+      });
   };
 
   const handleNavigateLogin = () => {

@@ -39,7 +39,9 @@ export default function Admin() {
     } else if (location.pathname.includes('reviews')) {
       setUrl('reviews');
     }
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   }, [location.pathname]);
 
   return (

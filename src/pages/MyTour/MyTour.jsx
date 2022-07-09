@@ -51,7 +51,9 @@ const MyTour = () => {
   };
   useEffect(() => {
     loading();
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   }, []);
 
   console.log(listOrder);

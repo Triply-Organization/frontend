@@ -39,7 +39,9 @@ const CMSTourSchedule = () => {
       }
     };
     loading();
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   }, []);
 
   const onSetAvailableDay = newValue => {

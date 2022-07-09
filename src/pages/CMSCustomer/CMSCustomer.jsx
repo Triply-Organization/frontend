@@ -24,7 +24,9 @@ const CMSCustomer = () => {
   useEffect(() => {
     if (location.pathname.includes('dashboard')) setUrl(['dashboard']);
     else setUrl('tours');
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   }, [location.pathname]);
 
   return (

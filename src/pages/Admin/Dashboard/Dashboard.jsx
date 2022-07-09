@@ -60,7 +60,9 @@ export function Dashboard() {
     dispatch(getOverall());
 
     //call method to indicate that loading is done
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   };
 
   useEffect(() => {

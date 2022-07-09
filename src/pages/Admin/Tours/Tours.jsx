@@ -87,7 +87,9 @@ export default function Tours() {
     dispatch(getTours(location.search));
 
     //call method to indicate that loading is done
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   };
 
   // HANDLE CONFIRM DISABLED

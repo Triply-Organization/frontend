@@ -45,7 +45,9 @@ export default function Reviews() {
     dispatch(getAllReviews(location.search));
 
     //call method to indicate that loading is done
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   };
 
   useEffect(() => {

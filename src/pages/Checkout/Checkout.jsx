@@ -100,7 +100,9 @@ const Checkout = () => {
       setTaxInfo(taxData);
     };
     getTax();
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   }, []);
 
   useEffect(() => {

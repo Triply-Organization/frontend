@@ -51,7 +51,7 @@ const SettingAccount = () => {
   useEffect(() => {
     setTimeout(() => {
       loadingContext.done();
-    }, 600);
+    }, 1000);
   }, []);
 
   const [form] = Form.useForm();

@@ -207,6 +207,7 @@ export default function DetailTour() {
     ];
   }, [detailTour]);
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(getDetailTour(id));
 
     setTimeout(() => {
@@ -502,7 +503,7 @@ export default function DetailTour() {
                         item.ticket.map((e, index) => {
                           return (
                             <>
-                              <div className="booking-ticket__item">
+                              <div className="booking-ticket__item" key={index}>
                                 <Space
                                   direction="vertical"
                                   size={'small'}

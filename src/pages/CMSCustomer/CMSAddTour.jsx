@@ -51,7 +51,9 @@ const CMSAddTour = () => {
     ) {
       dispatch(getDestinationsServiceTours());
     }
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   }, []);
 
   useEffect(() => {
