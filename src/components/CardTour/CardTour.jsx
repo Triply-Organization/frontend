@@ -8,7 +8,7 @@ import {
 } from 'react-icons/ai';
 import { BsArrowRight } from 'react-icons/bs';
 import { GoLocation } from 'react-icons/go';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './CardTour.scss';
 
@@ -20,14 +20,14 @@ const CardTour = props => {
   return (
     <div className="card-tour" {...prop}>
       {tag && <div className="card-tour__tag">{tag}</div>}
-      <div className="card-tour__image-wrapper">
+      <Link to={`/detail/${tour.id}`} className="card-tour__image-wrapper">
         <div className="card-tour__image-wrapper__overlay" />
         <img
           src={tour.image}
           alt={tour.name}
           className="card-tour__image-wrapper__image"
         />
-      </div>
+      </Link>
       <div className="card-tour__meta">
         <div className="card-tour__meta__item-wrapper">
           <div className="card-tour__meta__item">
@@ -49,7 +49,7 @@ const CardTour = props => {
           />
           <div className="card-tour__meta__review__counter">
             <AiOutlineComment />
-            <p>10</p>
+            <p>{tour?.totalReviews}</p>
           </div>
         </div>
       </div>

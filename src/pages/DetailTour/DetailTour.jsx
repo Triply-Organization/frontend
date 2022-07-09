@@ -150,10 +150,12 @@ export default function DetailTour() {
       );
       setPriceFollowDate(result);
       setBookingDate(dateString);
+      setTotal(0);
     } else {
       setPriceFollowDate([]);
       setBookingDate('');
     }
+    console.log(dateString);
   };
 
   const detailTourItem = useMemo(() => {
@@ -213,7 +215,7 @@ export default function DetailTour() {
       children: children,
       adult: adult,
       youth: youth,
-      currency: 'usd',
+      currency: localStorage.getItem('currencyItem').toLowerCase(),
     };
 
     if (!bookingDate) {
@@ -520,7 +522,7 @@ export default function DetailTour() {
                                 >
                                   <InputNumber
                                     min={0}
-                                    max={10}
+                                    max={detailTour.maxPeople}
                                     onChange={values =>
                                       handleChangePrice(values, e)
                                     }

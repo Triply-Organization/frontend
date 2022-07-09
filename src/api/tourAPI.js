@@ -60,4 +60,9 @@ export const tourAPI = {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
   },
+
+  getPopularTours() {
+    const url = `/tours/`;
+    return axiosClient.get(url);
+  },
 };

@@ -15,6 +15,7 @@ const initialState = {
   totalTours: 0,
   idTourJustCreated: null,
   toursCustomer: [],
+  popularTours: [],
 };
 
 export const getDetailTour = createAsyncThunk('tours/detail', async params => {
@@ -73,6 +74,14 @@ export const updateTour = createAsyncThunk(
     const res = await tourAPI.updateTour(params);
     thunkAPI.dispatch(getDetailTour(params.id));
     return res;
+  },
+);
+
+export const getPopularTours = createAsyncThunk(
+  'tours/popular-tours',
+  async () => {
+    const res = await tourAPI.getPopularTours();
+    return res.data;
   },
 );
 
@@ -236,6 +245,44 @@ const toursSlice = createSlice({
     builder.addCase(updateTour.fulfilled, state => {
       state.loading = false;
       message.success('Update successful');
+    });
+
+    builder.addCase(getPopularTours.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(getPopularTours.rejected, state => {
+      state.loading = false;
+      message.error('Can not connect to server. Please check your internet');
+    });
+    builder.addCase(getPopularTours.fulfilled, (state, action) => {
+      state.loading = false;
+      const data = action.payload;
+      if (data.status === 'success') {
+        const popularData = data.data.popularTour;
+        const popularTours = [];
+        popularData?.map(item => {
+          let tourMinPrice = 0;
+          let tourMaxPrice = 0;
+          item.schedule?.forEach(i => {
+            tourMinPrice = Math.max(tourMinPrice, i.ticket[0].price);
+            tourMaxPrice = Math.max(tourMaxPrice, i.ticket[2].price);
+          });
+
+          popularTours.push({
+            tourDestination: item.destinations[0].destination,
+            image: item.image,
+            duration: item.duration,
+            maxPeople: item.maxPeople,
+            rating: item.rate,
+            name: item.title,
+            minPrice: tourMinPrice,
+            maxPrice: tourMaxPrice,
+            id: item.id,
+            totalReviews: item.totalReview,
+          });
+        });
+        state.popularTours = popularTours;
+      }
     });
   },
 });

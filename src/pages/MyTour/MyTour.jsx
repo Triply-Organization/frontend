@@ -54,6 +54,8 @@ const MyTour = () => {
     loadingContext.done();
   }, []);
 
+  console.log(listOrder);
+
   useEffect(() => {
     if (checkoutInfo.id) {
       navigate(`/checkout/${checkoutInfo.id}`);
@@ -91,7 +93,7 @@ const MyTour = () => {
         id: idTourToReview.id,
       });
       loading();
-      message.success('Comment this tour successful');
+      message.success('Comment this tour successfull');
       setIsVisible(false);
       formReview.resetFields();
     });
@@ -169,7 +171,11 @@ const MyTour = () => {
           >
             <Rate allowHalf className="review__rating" />
           </Form.Item>
-          <Form.Item label="Comment" name={'comment'}>
+          <Form.Item
+            label="Comment"
+            name={'comment'}
+            rules={[{ required: true, message: 'Please give a comment here' }]}
+          >
             <TextArea rows={3} />
           </Form.Item>
         </ModalForm>
@@ -189,6 +195,7 @@ const MyTour = () => {
             if (_.isEmpty(item.review)) {
               return (
                 <List.Item
+                  className="list-item"
                   key={item.id}
                   actions={
                     item.status === 'paid' &&
@@ -226,7 +233,7 @@ const MyTour = () => {
                 >
                   <List.Item.Meta
                     avatar={
-                      <Avatar src={user.avatar} icon={<UserOutlined />} />
+                      <Avatar src={user?.avatar} icon={<UserOutlined />} />
                     }
                     title={<b>{user.fullname}</b>}
                     description={moment(item.bookedAt.date).format(
@@ -287,7 +294,7 @@ const MyTour = () => {
                   extra={<Image width={272} alt="logo" src={item.cover} />}
                 >
                   <List.Item.Meta
-                    avatar={<Avatar src={user.avatar} />}
+                    avatar={<Avatar src={user?.avatar} />}
                     title={<b>{user.fullname}</b>}
                     description={moment(item.bookedAt.date).format(
                       'YYYY-MM-DD',
@@ -299,7 +306,7 @@ const MyTour = () => {
                     </p>
 
                     <h2 className="my-tour__price">
-                      {item.price?.toLocaleString('en-US', {
+                      {item.totalPrice?.toLocaleString('en-US', {
                         style: 'currency',
                         currency: 'USD',
                       })}
@@ -316,23 +323,23 @@ const MyTour = () => {
                   <div className="rating-star-wrapper">
                     <Space>
                       <p>Room</p>
-                      <Rate disabled defaultValue={item.review['0']?.rate} />
-                    </Space>
-                    <Space>
-                      <p>Price</p>
-                      <Rate disabled defaultValue={item.review['1']?.rate} />
-                    </Space>
-                    <Space>
-                      <p>Services</p>
                       <Rate disabled defaultValue={item.review['2']?.rate} />
                     </Space>
                     <Space>
+                      <p>Price</p>
+                      <Rate disabled defaultValue={item.review['4']?.rate} />
+                    </Space>
+                    <Space>
+                      <p>Services</p>
+                      <Rate disabled defaultValue={item.review['1']?.rate} />
+                    </Space>
+                    <Space>
                       <p>Location</p>
-                      <Rate disabled defaultValue={item.review['3']?.rate} />
+                      <Rate disabled defaultValue={item.review['0']?.rate} />
                     </Space>
                     <Space>
                       <p>Amentities</p>
-                      <Rate disabled defaultValue={item.review['4']?.rate} />
+                      <Rate disabled defaultValue={item.review['3']?.rate} />
                     </Space>
                   </div>
                 </List.Item>
