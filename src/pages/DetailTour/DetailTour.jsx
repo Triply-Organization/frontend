@@ -154,8 +154,8 @@ export default function DetailTour() {
     } else {
       setPriceFollowDate([]);
       setBookingDate('');
+      setTotal(0);
     }
-    console.log(dateString);
   };
 
   const detailTourItem = useMemo(() => {
@@ -163,12 +163,12 @@ export default function DetailTour() {
       {
         icon: <AiOutlineDollar />,
         title: 'Price',
-        detail: `${detailTour.minPrice?.toLocaleString('en-US', {
+        detail: `${detailTour.minPrice?.toLocaleString(`${currencyString}`, {
           style: 'currency',
-          currency: 'USD',
-        })} - ${detailTour.maxPrice?.toLocaleString('en-US', {
+          currency: `${currencyItem}`,
+        })} - ${detailTour.maxPrice?.toLocaleString(`${currencyString}`, {
           style: 'currency',
-          currency: 'USD',
+          currency: `${currencyItem}`,
         })}`,
       },
       {
@@ -239,10 +239,6 @@ export default function DetailTour() {
           description: 'You should login before book tour!',
         });
       } else {
-        notification.success({
-          message: 'Book successfully!',
-        });
-
         dispatch(booking(request));
       }
     }

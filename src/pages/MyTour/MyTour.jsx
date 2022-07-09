@@ -1,16 +1,18 @@
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
+  ExclamationCircleOutlined,
   SyncOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import {
   Avatar,
+  Badge,
   Button,
   Form,
   Image,
   List,
-  Popconfirm,
+  Modal,
   Rate,
   Space,
   Tag,
@@ -29,6 +31,8 @@ import { userAPI } from '../../api/userAPI';
 import { getConfirmInfo } from '../../app/checkoutSlice';
 import ModalForm from '../../components/ModalForm/ModalForm';
 import './MyTour.scss';
+
+const { confirm } = Modal;
 
 const MyTour = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -54,8 +58,6 @@ const MyTour = () => {
     loadingContext.done();
   }, []);
 
-  console.log(listOrder);
-
   useEffect(() => {
     if (checkoutInfo.id) {
       navigate(`/checkout/${checkoutInfo.id}`);
@@ -63,7 +65,6 @@ const MyTour = () => {
   }, [checkoutInfo.id]);
 
   localStorage.setItem('bookingInfo', JSON.stringify(checkoutInfo));
-
   const [formReview] = Form.useForm();
 
   const handleReview = () => {
@@ -101,13 +102,12 @@ const MyTour = () => {
 
   const handleRefund = async value => {
     const req = {
-      billId: value.bill.id,
-      orderId: value.id,
-      stripeId: value.bill.stripe,
-      dayRemain: moment(moment(value.startDay.date).format('YYYY-MM-DD')).diff(
-        moment(today),
-        'days',
-      ),
+      billId: value?.bill?.id,
+      orderId: value?.id,
+      stripeId: value?.bill?.stripe,
+      dayRemain: moment(
+        moment(value?.startDay?.date).format('YYYY-MM-DD'),
+      ).diff(moment(today), 'days'),
       currency: localStorage.getItem('currencyItem').toLowerCase(),
     };
     try {
@@ -122,6 +122,38 @@ const MyTour = () => {
   const handleCheckout = value => {
     const req = value.id;
     dispatch(getConfirmInfo(req));
+    console.log(value);
+    localStorage.setItem('status', value.status);
+  };
+
+  const showPolicyRefund = values => {
+    confirm({
+      title: 'Refund Policy',
+      icon: <ExclamationCircleOutlined />,
+      content: (
+        <>
+          <Badge
+            color="green"
+            text="Cancellation 7 days in advance: 30% of the total value of the tour"
+          />
+          <Badge
+            color="red"
+            text="Cancellation from 2 to 6 days: 50% of the total value of the tour program."
+          />
+          <Badge
+            color="purple"
+            text="Cancellation within 48 hours: 100% of the total value of the tour."
+          />
+        </>
+      ),
+      okText: 'Refund permanently',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        handleRefund(values);
+      },
+      onCancel() {},
+    });
   };
 
   return (
@@ -242,7 +274,10 @@ const MyTour = () => {
                   />
                   <Space direction="vertical">
                     <p>
-                      Tour: <Link to="#">{item.title}</Link>
+                      Tour:{' '}
+                      <Button type="link" onClick={() => handleCheckout(item)}>
+                        {item.title}
+                      </Button>
                     </p>
 
                     <h3 className="my-tour__price">
@@ -264,16 +299,13 @@ const MyTour = () => {
                         <Tag icon={<CheckCircleOutlined />} color="success">
                           Paid
                         </Tag>
-                        <Popconfirm
-                          title="Do you want to refund now?"
-                          onConfirm={() => handleRefund(item)}
-                          okText="Yes"
-                          cancelText="No"
+                        <Button
+                          type="primary"
+                          danger
+                          onClick={() => showPolicyRefund(item)}
                         >
-                          <Button type="primary" danger>
-                            Refund
-                          </Button>
-                        </Popconfirm>
+                          Refund
+                        </Button>
                       </>
                     ) : item.status === 'refund' ? (
                       <Tag icon={<CloseCircleOutlined />} color="error">
