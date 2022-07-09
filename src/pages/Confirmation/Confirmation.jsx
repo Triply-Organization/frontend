@@ -52,7 +52,7 @@ const Confirmation = () => {
             subTitle={
               confirmInfo.status === 'unpaid'
                 ? 'Please payment your order'
-                : 'Your order is completed and received, and a confirmation email was sent to you. You will pay the full amount later. Thank you!'
+                : 'Your order is completed and received, and a confirmation email was sent to you. Thank you!'
             }
             extra={[
               <Button type="primary" key="console" onClick={handleBackToHome}>

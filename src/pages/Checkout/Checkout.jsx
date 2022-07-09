@@ -36,6 +36,7 @@ const Checkout = () => {
   const [discountValue, setDiscountValue] = useState(0);
   const [voucherVal, setVoucherVal] = useState('');
   const [isDisableBtn, setDisableBtn] = useState(false);
+  const [voucherRemain, setVoucherRemain] = useState(0);
   const loading = useSelector(state => state.checkout.loading);
   const voucherData = useSelector(state => state.checkout.voucher);
   const [form] = Form.useForm();
@@ -73,7 +74,7 @@ const Checkout = () => {
       email: values.email,
       name: `${values.first_name} ${values.last_name}`,
     };
-    if (voucherData.remain !== 0) {
+    if (voucherRemain !== 0) {
       if (!values.discount) {
         dispatch(checkout(valueWithoutVoucher));
       } else {
@@ -84,6 +85,8 @@ const Checkout = () => {
       setDisableBtn(false);
     }
   };
+
+  console.log(voucherRemain);
 
   useEffect(() => {
     const getTax = async () => {
@@ -108,6 +111,7 @@ const Checkout = () => {
 
   useEffect(() => {
     setDiscountValue(voucherData.discount);
+    setVoucherRemain(voucherData.remain);
     if (voucherData.discount) {
       setFinalTotal(
         checkoutData.subTotal +
@@ -132,6 +136,7 @@ const Checkout = () => {
         checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
       );
       setDiscountValue(0);
+      setVoucherRemain('');
     }
 
     filterTimeout.current = setTimeout(() => {

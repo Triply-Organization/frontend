@@ -54,6 +54,8 @@ const MyTour = () => {
     loadingContext.done();
   }, []);
 
+  console.log(listOrder);
+
   useEffect(() => {
     if (checkoutInfo.id) {
       navigate(`/checkout/${checkoutInfo.id}`);
@@ -172,7 +174,7 @@ const MyTour = () => {
           <Form.Item
             label="Comment"
             name={'comment'}
-            rules={{ require: true, message: 'Please give your comment' }}
+            rules={[{ required: true, message: 'Please give a comment here' }]}
           >
             <TextArea rows={3} />
           </Form.Item>
@@ -304,7 +306,7 @@ const MyTour = () => {
                     </p>
 
                     <h2 className="my-tour__price">
-                      {item.price?.toLocaleString('en-US', {
+                      {item.totalPrice?.toLocaleString('en-US', {
                         style: 'currency',
                         currency: 'USD',
                       })}
@@ -321,23 +323,23 @@ const MyTour = () => {
                   <div className="rating-star-wrapper">
                     <Space>
                       <p>Room</p>
-                      <Rate disabled defaultValue={item.review['0']?.rate} />
-                    </Space>
-                    <Space>
-                      <p>Price</p>
-                      <Rate disabled defaultValue={item.review['1']?.rate} />
-                    </Space>
-                    <Space>
-                      <p>Services</p>
                       <Rate disabled defaultValue={item.review['2']?.rate} />
                     </Space>
                     <Space>
+                      <p>Price</p>
+                      <Rate disabled defaultValue={item.review['4']?.rate} />
+                    </Space>
+                    <Space>
+                      <p>Services</p>
+                      <Rate disabled defaultValue={item.review['1']?.rate} />
+                    </Space>
+                    <Space>
                       <p>Location</p>
-                      <Rate disabled defaultValue={item.review['3']?.rate} />
+                      <Rate disabled defaultValue={item.review['0']?.rate} />
                     </Space>
                     <Space>
                       <p>Amentities</p>
-                      <Rate disabled defaultValue={item.review['4']?.rate} />
+                      <Rate disabled defaultValue={item.review['3']?.rate} />
                     </Space>
                   </div>
                 </List.Item>

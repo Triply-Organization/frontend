@@ -9,8 +9,7 @@
 .my-tour {
   margin: 0 auto;
   width: 1290px;
-  background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+  background-color: #f9f4f0;
   padding: 2rem;
   &__price {
     font-size: 26px;
@@ -19,7 +18,11 @@
   }
 
   & .ant-list-item {
-    border-bottom: 1px solid #979797;
+    background-color: #fff;
+    margin: 1rem 1rem;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+    padding: 2rem;
   }
 
   & .ant-list-item-extra {
