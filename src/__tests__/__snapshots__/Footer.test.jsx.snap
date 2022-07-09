@@ -113,7 +113,7 @@ exports[`component/Footer > render correctly 1`] = `
               <span
                 class="section-4__link-words"
               >
-                support@triply.com
+                support@triply.asia
               </span>
             </a>
           </div>
@@ -612,7 +612,7 @@ exports[`component/Footer > render correctly 1`] = `
             <span
               class="section-4__link-words"
             >
-              support@triply.com
+              support@triply.asia
             </span>
           </a>
         </div>

@@ -19,8 +19,18 @@ const CardTour = props => {
   const navigate = useNavigate();
   return (
     <div className="card-tour">
-      {tag && <div className="card-tour__tag">{tag}</div>}
-      <Link to={`/detail/${tour.id}`} className="card-tour__image-wrapper">
+      <div data-testid="cardTour-tag">
+        {tag && (
+          <div data-testid="cardTour-tag-text" className="card-tour__tag">
+            {tag}
+          </div>
+        )}
+      </div>
+      <Link
+        data-testid="cardTour-img"
+        to={`/detail/${tour?.id}`}
+        className="card-tour__image-wrapper"
+      >
         <div className="card-tour__image-wrapper__overlay" />
         <img
           src={tour?.image}
@@ -54,8 +64,8 @@ const CardTour = props => {
         </div>
       </div>
       <div className="card-tour__content">
-        <Tooltip title={tour.name}>
-          <h2 className="card-tour__title">{tour.name}</h2>
+        <Tooltip title={tour?.name}>
+          <h2 className="card-tour__title">{tour?.name}</h2>
         </Tooltip>
         <p className="card-tour__destination">
           <GoLocation /> {tour?.tourDestination}
@@ -64,7 +74,7 @@ const CardTour = props => {
       <div className="card-tour__footer">
         <div>
           <p>From USD</p>
-          <b>
+          <b data-testid="cardTour-priceRange">
             {tour?.minPrice?.toLocaleString(`${currencyString}`, {
               style: 'currency',
               currency: `${currencyItem}`,
@@ -78,6 +88,7 @@ const CardTour = props => {
         </div>
 
         <Button
+          data-testid="cardTour_explore"
           onClick={() => navigate(`/detail/${tour?.id}`)}
           type="link"
           className="card-tour__footer__button"

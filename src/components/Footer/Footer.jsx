@@ -42,7 +42,6 @@ export default function Footer() {
   ];
 
   const [formFollowByEmail] = Form.useForm();
-  const navigate = useNavigate();
   return (
     <footer className="footer__wrapper">
       <div className="section-4">

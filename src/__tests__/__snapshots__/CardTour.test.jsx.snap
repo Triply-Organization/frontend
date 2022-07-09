@@ -9,7 +9,12 @@ exports[`component/CardTour > render correctly 1`] = `
         class="card-tour"
       >
         <div
+          data-testid="cardTour-tag"
+        />
+        <a
           class="card-tour__image-wrapper"
+          data-testid="cardTour-img"
+          href="/detail/undefined"
         >
           <div
             class="card-tour__image-wrapper__overlay"
@@ -17,7 +22,7 @@ exports[`component/CardTour > render correctly 1`] = `
           <img
             class="card-tour__image-wrapper__image"
           />
-        </div>
+        </a>
         <div
           class="card-tour__meta"
         >
@@ -389,9 +394,7 @@ exports[`component/CardTour > render correctly 1`] = `
                   d="M433 421c-23.1 0-41 17.9-41 40s17.9 40 41 40c21.1 0 39-17.9 39-40s-17.9-40-39-40z"
                 />
               </svg>
-              <p>
-                10
-              </p>
+              <p />
             </div>
           </div>
         </div>
@@ -428,7 +431,9 @@ exports[`component/CardTour > render correctly 1`] = `
             <p>
               From USD
             </p>
-            <b>
+            <b
+              data-testid="cardTour-priceRange"
+            >
                
               -
                
@@ -436,6 +441,7 @@ exports[`component/CardTour > render correctly 1`] = `
           </div>
           <button
             class="ant-btn ant-btn-link card-tour__footer__button"
+            data-testid="cardTour_explore"
             type="button"
           >
             <span>
@@ -465,7 +471,12 @@ exports[`component/CardTour > render correctly 1`] = `
       class="card-tour"
     >
       <div
+        data-testid="cardTour-tag"
+      />
+      <a
         class="card-tour__image-wrapper"
+        data-testid="cardTour-img"
+        href="/detail/undefined"
       >
         <div
           class="card-tour__image-wrapper__overlay"
@@ -473,7 +484,7 @@ exports[`component/CardTour > render correctly 1`] = `
         <img
           class="card-tour__image-wrapper__image"
         />
-      </div>
+      </a>
       <div
         class="card-tour__meta"
       >
@@ -845,9 +856,7 @@ exports[`component/CardTour > render correctly 1`] = `
                 d="M433 421c-23.1 0-41 17.9-41 40s17.9 40 41 40c21.1 0 39-17.9 39-40s-17.9-40-39-40z"
               />
             </svg>
-            <p>
-              10
-            </p>
+            <p />
           </div>
         </div>
       </div>
@@ -884,7 +893,9 @@ exports[`component/CardTour > render correctly 1`] = `
           <p>
             From USD
           </p>
-          <b>
+          <b
+            data-testid="cardTour-priceRange"
+          >
              
             -
              
@@ -892,6 +903,7 @@ exports[`component/CardTour > render correctly 1`] = `
         </div>
         <button
           class="ant-btn ant-btn-link card-tour__footer__button"
+          data-testid="cardTour_explore"
           type="button"
         >
           <span>

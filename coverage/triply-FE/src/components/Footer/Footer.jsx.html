@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.68% </span>
+                <span class="strong">97.64% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>211/216</span>
+                <span class='fraction'>207/212</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.68% </span>
+                <span class="strong">97.64% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>211/216</span>
+                <span class='fraction'>207/212</span>
             </div>
         
             
@@ -275,11 +275,7 @@
 <a name='L210'></a><a href='#L210'>210</a>
 <a name='L211'></a><a href='#L211'>211</a>
 <a name='L212'></a><a href='#L212'>212</a>
-<a name='L213'></a><a href='#L213'>213</a>
-<a name='L214'></a><a href='#L214'>214</a>
-<a name='L215'></a><a href='#L215'>215</a>
-<a name='L216'></a><a href='#L216'>216</a>
-<a name='L217'></a><a href='#L217'>217</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L213'></a><a href='#L213'>213</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -402,8 +398,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -418,8 +414,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -445,9 +440,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -539,7 +531,6 @@ export default function Footer() {
   ];
 &nbsp;
   const [formFollowByEmail] = Form.useForm();
-  const navigate = useNavigate();
   return (
     &lt;footer className="footer__wrapper"&gt;
       &lt;div className="section-4"&gt;
@@ -558,7 +549,7 @@ export default function Footer() {
             &lt;span className="section-4__link-icon"&gt;
               &lt;MdAlternateEmail /&gt;
             &lt;/span&gt;{' '}
-            &lt;span className="section-4__link-words"&gt;support@triply.com&lt;/span&gt;
+            &lt;span className="section-4__link-words"&gt;support@triply.asia&lt;/span&gt;
           &lt;/a&gt;
         &lt;/div&gt;
 &nbsp;
@@ -660,8 +651,7 @@ export default function Footer() {
 <span class="cstat-no" title="statement not covered" >                message.success(</span>
 <span class="cstat-no" title="statement not covered" >                  `Thank ${e.followByEmail} for signing up. We will always send you the latest rides`,</span>
 <span class="cstat-no" title="statement not covered" >                );</span>
-<span class="cstat-no" title="statement not covered" >              }}</span>
-            &gt;
+<span class="cstat-no" title="statement not covered" >              }}&gt;</span>
               &lt;Form.Item
                 name="followByEmail"
                 rules={[
@@ -670,8 +660,7 @@ export default function Footer() {
                     type: 'email',
                     message: 'The input is not valid E-mail!',
                   },
-                ]}
-              &gt;
+                ]}&gt;
                 &lt;Input
                   className="footer__detail-input"
                   size="large"
@@ -682,8 +671,7 @@ export default function Footer() {
                 type="primary"
                 size="large"
                 htmlType="submit"
-                className="footer__detail-btn"
-              &gt;
+                className="footer__detail-btn"&gt;
                 {t('cta.subscribe')}
               &lt;/Button&gt;
             &lt;/Form&gt;
@@ -718,7 +706,7 @@ export default function Footer() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sat Jul 09 2022 13:09:37 GMT+0700 (Indochina Time)
+                at Sat Jul 09 2022 18:42:07 GMT+0700 (Indochina Time)
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
