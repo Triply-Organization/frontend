@@ -119,7 +119,7 @@ const Home = () => {
             Natural beauty
           </h2>
           <h1>Discover the most engaging places</h1>
-          <button data-aos="fade-right" onClick={() => navigate('/tours')}>
+          <button onClick={() => navigate('/tours')}>
             {t('cta.explore')}
             <BsArrowRight />
           </button>

@@ -59,7 +59,7 @@ const RoutesApp = () => {
           path="setting-account/:id"
           element={
             <PrivateRoute role={['ROLE_USER']}>
-              <SettingAccount />
+              <SettingAccount loading />
             </PrivateRoute>
           }
         />
@@ -68,7 +68,7 @@ const RoutesApp = () => {
           path="my-tours"
           element={
             <PrivateRoute role={['ROLE_USER']}>
-              <MyTour />
+              <MyTour loading />
             </PrivateRoute>
           }
           loading
@@ -79,7 +79,7 @@ const RoutesApp = () => {
           path="confirmation/:id"
           element={
             <PrivateRoute role={['ROLE_USER']}>
-              <Confirmation />
+              <Confirmation loading />
             </PrivateRoute>
           }
         />
@@ -88,18 +88,18 @@ const RoutesApp = () => {
           path="checkout/:id"
           element={
             <PrivateRoute role={['ROLE_USER']}>
-              <Checkout />
+              <Checkout loading />
             </PrivateRoute>
           }
         />
       </Route>
-      <Route path="login" element={<Login />} />
+      <Route path="login" element={<Login />} loading />
       <Route path="register" element={<Register />} />
       <Route
         path="/admin"
         element={
           <PrivateRoute role={['ROLE_ADMIN']}>
-            <Admin />
+            <Admin loading />
           </PrivateRoute>
         }
       >
@@ -108,7 +108,7 @@ const RoutesApp = () => {
           path="dashboard"
           element={
             <PrivateRoute role={['ROLE_ADMIN']}>
-              <Dashboard />
+              <Dashboard loading />
             </PrivateRoute>
           }
           loading
@@ -117,7 +117,7 @@ const RoutesApp = () => {
           path="tours"
           element={
             <PrivateRoute role={['ROLE_ADMIN']}>
-              <Tours />
+              <Tours loading />
             </PrivateRoute>
           }
           loading
@@ -126,7 +126,7 @@ const RoutesApp = () => {
           path="users"
           element={
             <PrivateRoute role={['ROLE_ADMIN']}>
-              <Users />
+              <Users loading />
             </PrivateRoute>
           }
           loading
@@ -135,7 +135,7 @@ const RoutesApp = () => {
           path="customers"
           element={
             <PrivateRoute role={['ROLE_ADMIN']}>
-              <Customers />
+              <Customers loading />
             </PrivateRoute>
           }
           loading
@@ -144,7 +144,7 @@ const RoutesApp = () => {
           path="reviews"
           element={
             <PrivateRoute role={['ROLE_ADMIN']}>
-              <Reviews />
+              <Reviews loading />
             </PrivateRoute>
           }
           loading
@@ -155,7 +155,7 @@ const RoutesApp = () => {
         path="cms"
         element={
           <PrivateRoute role={['ROLE_CUSTOMER']}>
-            <CMSCustomer />
+            <CMSCustomer loading />
           </PrivateRoute>
         }
       >
@@ -164,7 +164,7 @@ const RoutesApp = () => {
           path="dashboard"
           element={
             <PrivateRoute role={['ROLE_CUSTOMER']}>
-              <CMSDashBoard />
+              <CMSDashBoard loading />
             </PrivateRoute>
           }
           loading
@@ -173,7 +173,7 @@ const RoutesApp = () => {
           path="tours"
           element={
             <PrivateRoute role={['ROLE_CUSTOMER']}>
-              <CMSTours />
+              <CMSTours loading />
             </PrivateRoute>
           }
           loading
@@ -191,7 +191,7 @@ const RoutesApp = () => {
           path="edit-tour/:id"
           element={
             <PrivateRoute role={['ROLE_CUSTOMER']}>
-              <CMSEditTour />
+              <CMSEditTour loading />
             </PrivateRoute>
           }
           loading
@@ -200,7 +200,7 @@ const RoutesApp = () => {
           path="set-schedule/:id"
           element={
             <PrivateRoute role={['ROLE_CUSTOMER']}>
-              <CMSTourSchedule />
+              <CMSTourSchedule loading />
             </PrivateRoute>
           }
           loading
