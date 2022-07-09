@@ -126,6 +126,10 @@ export default function DetailTour() {
           title: 'rooms',
           point: item.rating.rooms,
         },
+        {
+          title: 'amenities',
+          point: item.rating.amenities,
+        },
       ],
       comment: item.comment,
     };
@@ -148,6 +152,10 @@ export default function DetailTour() {
       title: 'rooms',
       point: detailTour.rating?.rooms,
     },
+    {
+      title: 'amenities',
+      point: detailTour.amenities?.amenities,
+    },
   ];
 
   const disabledDate = current => {
@@ -163,19 +171,16 @@ export default function DetailTour() {
       );
       setPriceFollowDate(result);
       setBookingDate(dateString);
+      setTotal(0);
     } else {
       setPriceFollowDate([]);
       setBookingDate('');
     }
+    console.log(dateString);
   };
 
   const detailTourItem = useMemo(() => {
     return [
-      // {
-      //   icon: <AiOutlineDollar />,
-      //   title: 'price',
-      //   detail: detailTour.price,
-      // },
       {
         icon: <BiTimeFive />,
         title: `${t('detail_tour.duration.title')}`,
@@ -195,7 +200,7 @@ export default function DetailTour() {
       {
         icon: <BiCommentDetail />,
         title: `${t('detail_tour.review.title')}`,
-        detail: `8 ${t('detail_tour.review.content')}`,
+        detail: `${detailTour.reviews?.length} `,
       },
     ];
   }, [detailTour]);
@@ -211,7 +216,7 @@ export default function DetailTour() {
       children: children,
       adult: adult,
       youth: youth,
-      currency: 'usd',
+      currency: localStorage.getItem('currencyItem').toLowerCase(),
     };
 
     if (!bookingDate) {
@@ -564,7 +569,7 @@ export default function DetailTour() {
                                 >
                                   <InputNumber
                                     min={0}
-                                    max={10}
+                                    max={detailTour.maxPeople}
                                     onChange={values =>
                                       handleChangePrice(values, e)
                                     }
