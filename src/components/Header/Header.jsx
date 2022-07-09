@@ -18,14 +18,8 @@ import Navbar from './Navbar';
 
 export default function Header() {
   // state set for active tab
-  const [activeTab, setActiveTab] = useState(() => {
-    if (window.location.pathname.includes('/tours')) {
-      return 1;
-    } else {
-      return 0;
-    }
-  });
-
+  // const [activeTab, setActiveTab] = useState(0);
+  const activeTab = localStorage.getItem('activeTab' || 0);
   const token = localStorage.getItem('token');
   const roles = JSON.parse(localStorage.getItem('user'))?.roles || [];
   const id = JSON.parse(localStorage.getItem('user'))?.id || 1;
@@ -218,7 +212,7 @@ export default function Header() {
   );
 
   const handleSetActiveTab = id => {
-    setActiveTab(id);
+    localStorage.setItem('activeTab', id);
   };
 
   const onChangeNavbarStatus = () => {
