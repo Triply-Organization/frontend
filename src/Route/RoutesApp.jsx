@@ -113,7 +113,7 @@ const RoutesApp = () => {
         />
       </Route>
       <Route path="login" element={<Login />} loading />
-      <Route path="register" element={<Register />} />
+      <Route path="register" element={<Register />} loading />
       <Route
         path="/admin"
         element={

@@ -1,4 +1,4 @@
-import { Button, Rate } from 'antd';
+import { Button, Rate, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
@@ -8,26 +8,26 @@ import {
 } from 'react-icons/ai';
 import { BsArrowRight } from 'react-icons/bs';
 import { GoLocation } from 'react-icons/go';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './CardTour.scss';
 
 const CardTour = props => {
-  const { tour, tag } = props;
+  const { tour, tag, ...prop } = props;
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const navigate = useNavigate();
   return (
-    <div className="card-tour">
+    <div className="card-tour" {...prop}>
       {tag && <div className="card-tour__tag">{tag}</div>}
-      <div className="card-tour__image-wrapper">
+      <Link to={`/detail/${tour.id}`} className="card-tour__image-wrapper">
         <div className="card-tour__image-wrapper__overlay" />
         <img
           src={tour.image}
           alt={tour.name}
           className="card-tour__image-wrapper__image"
         />
-      </div>
+      </Link>
       <div className="card-tour__meta">
         <div className="card-tour__meta__item-wrapper">
           <div className="card-tour__meta__item">
@@ -49,12 +49,14 @@ const CardTour = props => {
           />
           <div className="card-tour__meta__review__counter">
             <AiOutlineComment />
-            <p>10</p>
+            <p>{tour?.totalReviews || 0}</p>
           </div>
         </div>
       </div>
       <div className="card-tour__content">
-        <h2 className="card-tour__title">{tour.name}</h2>
+        <Tooltip title={tour.name}>
+          <h2 className="card-tour__title">{tour.name}</h2>
+        </Tooltip>
         <p className="card-tour__destination">
           <GoLocation /> {tour.tourDestination}
         </p>

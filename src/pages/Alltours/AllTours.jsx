@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { FilterFilled, FilterOutlined } from '@ant-design/icons';
 import {
   Button,
   Collapse,
@@ -16,6 +17,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AiFillFilter } from 'react-icons/ai';
 import { BsSortNumericDown, BsSortNumericDownAlt } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -48,7 +50,6 @@ const AllTours = () => {
   const location = useLocation();
   const [formSearch] = Form.useForm();
   // Redux
-  const listTours = useSelector(state => state.tours.list);
   const listFilter = useSelector(state => state.tours.listFilter);
   const destinations = useSelector(state => state.tours.destinations);
   const services = useSelector(state => state.tours.services);
@@ -79,7 +80,7 @@ const AllTours = () => {
 
       if (temp?.destination) {
         formSearch.setFieldsValue({
-          destinations: parseInt(temp.destination),
+          destinations: temp.destination,
         });
       }
 
@@ -200,6 +201,8 @@ const AllTours = () => {
         page: page,
       });
   }, [filterPrice, filterRating, sortPrice, page]);
+  const navigate = useNavigate();
+  console.log(listFilter);
 
   return (
     // <Spin spinning={loadingCallAPI}>
@@ -229,6 +232,13 @@ const AllTours = () => {
             ghost
             className="all-tours__filter"
             expandIconPosition="start"
+            expandIcon={({ isActive }) =>
+              isActive ? (
+                <FilterFilled style={{ fontSize: '1rem' }} />
+              ) : (
+                <FilterOutlined style={{ fontSize: '1rem' }} />
+              )
+            }
           >
             <Panel
               header={t('all_tours.filter.title')}
@@ -300,10 +310,22 @@ const AllTours = () => {
         </div>
 
         {listFilter.length > 0 ? (
-          <div className="all-tours__list-wrapper">
+          <div
+            className="all-tours__list-wrapper"
+            style={{ height: listFilter.length < 4 && '100%' }}
+          >
             {listFilter.map((tour, index) => (
-              <Skeleton key={index} loading={loadingCallAPI} active>
-                <CardTour key={index} tour={tour} />
+              <Skeleton
+                key={index}
+                loading={loadingCallAPI}
+                active
+                style={{ height: '433px' }}
+              >
+                <CardTour
+                  key={index}
+                  tour={tour}
+                  onClick={() => navigate(`/detail/${tour.id}`)}
+                />
               </Skeleton>
             ))}
           </div>
