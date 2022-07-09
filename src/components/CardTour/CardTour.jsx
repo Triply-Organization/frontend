@@ -23,8 +23,8 @@ const CardTour = props => {
       <div className="card-tour__image-wrapper">
         <div className="card-tour__image-wrapper__overlay" />
         <img
-          src={tour.image}
-          alt={tour.name}
+          src={tour?.image}
+          alt={tour?.name}
           className="card-tour__image-wrapper__image"
         />
       </div>
@@ -32,12 +32,12 @@ const CardTour = props => {
         <div className="card-tour__meta__item-wrapper">
           <div className="card-tour__meta__item">
             <AiOutlineCalendar className="card-tour__meta__item__icon" />
-            <p>{tour.duration} days</p>
+            <p>{tour?.duration} days</p>
           </div>
           <div className="card-tour__meta__item">
             <AiOutlineUser className="card-tour__meta__item__icon" />
 
-            <p>{tour.maxPeople}</p>
+            <p>{tour?.maxPeople}</p>
           </div>
         </div>
         <div className="card-tour__meta__review">
@@ -54,9 +54,9 @@ const CardTour = props => {
         </div>
       </div>
       <div className="card-tour__content">
-        <h2 className="card-tour__title">{tour.name}</h2>
+        <h2 className="card-tour__title">{tour?.name}</h2>
         <p className="card-tour__destination">
-          <GoLocation /> {tour.tourDestination}
+          <GoLocation /> {tour?.tourDestination}
         </p>
       </div>
       <div className="card-tour__footer">
@@ -76,7 +76,7 @@ const CardTour = props => {
         </div>
 
         <Button
-          onClick={() => navigate(`/detail/${tour.id}`)}
+          onClick={() => navigate(`/detail/${tour?.id}`)}
           type="link"
           className="card-tour__footer__button"
         >
