@@ -153,7 +153,7 @@ const CMSTourSchedule = () => {
         }}
       >
         <Breadcrumb.Item>
-          <Link to="/home">Home</Link>
+          <Link to="/">Home</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
           <Link to="/cms/tours">Tours</Link>

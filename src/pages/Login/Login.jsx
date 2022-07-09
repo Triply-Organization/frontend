@@ -42,9 +42,9 @@ const Login = () => {
       if (user.roles.includes('ROLE_ADMIN')) {
         navigate('/admin');
       } else if (user.roles.includes('ROLE_CUSTOMER')) {
-        navigate('/');
+        navigate(-1);
       } else if (user.roles.includes('ROLE_USER')) {
-        navigate('/');
+        navigate(-1);
       }
     }
   }, [user]);

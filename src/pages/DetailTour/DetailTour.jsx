@@ -31,6 +31,7 @@ import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
 import { getDetailTour } from '../../app/toursSlice';
 import CardTour from '../../components/CardTour/CardTour';
@@ -73,6 +74,7 @@ export default function DetailTour() {
   const { t } = useTranslation();
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
+  const loadingContext = useLoadingContext();
 
   useEffect(() => {
     if (dataCheckout.id) {
@@ -205,8 +207,11 @@ export default function DetailTour() {
     ];
   }, [detailTour]);
   useEffect(() => {
-    window.scrollTo(0, 0);
     dispatch(getDetailTour(id));
+
+    setTimeout(() => {
+      loadingContext.done();
+    }, 1000);
   }, []);
 
   // validate booking
@@ -461,101 +466,110 @@ export default function DetailTour() {
             </div>
           </div>
 
-          {localStorage.getItem('token') && userData?.roles[0] === 'ROLE_USER' && (
-            <div className="detailTour__booking-wrapper">
-              <div className="detailTour__booking">
-                <h3 className="detailTour__booking-heading">
-                  {t('detail_tour.booking_form.title')}
-                </h3>
-                <Form
-                  layout="horizontal"
-                  onFinish={handleSubmit}
-                  autoComplete="off"
-                  initialValues={{ adult: 0, youth: 0, children: 0 }}
-                  className="detailTour__booking-form"
-                >
-                  <p className="detailTour__booking-label">
-                    {t('detail_tour.booking_form.from')}
+          <div className="detailTour__booking-wrapper">
+            <div className="detailTour__booking">
+              <h3 className="detailTour__booking-heading">
+                {t('detail_tour.booking_form.title')}
+              </h3>
+              <Form
+                layout="horizontal"
+                onFinish={handleSubmit}
+                autoComplete="off"
+                initialValues={{ adult: 0, youth: 0, children: 0 }}
+                className="detailTour__booking-form"
+              >
+                <p className="detailTour__booking-label">
+                  {t('detail_tour.booking_form.from')}
+                </p>
+                <Form.Item className="detailTour__booking-date" name="date">
+                  <DatePicker
+                    disabledDate={disabledDate}
+                    onChange={handleDatePickerChange}
+                    format="YYYY-MM-DD"
+                    className="detailTour__booking-date-input"
+                  />
+                </Form.Item>
+                <div className="detailTour__booking-tickets">
+                  <p
+                    className="detailTour__booking-label"
+                    style={{ marginBottom: '1rem' }}
+                  >
+                    {t('detail_tour.booking_form.ticket.title')}
                   </p>
-                  <Form.Item className="detailTour__booking-date" name="date">
-                    <DatePicker
-                      disabledDate={disabledDate}
-                      onChange={handleDatePickerChange}
-                      format="YYYY-MM-DD"
-                      className="detailTour__booking-date-input"
-                    />
-                  </Form.Item>
-                  <div className="detailTour__booking-tickets">
-                    <p
-                      className="detailTour__booking-label"
-                      style={{ marginBottom: '1rem' }}
-                    >
-                      {t('detail_tour.booking_form.ticket.title')}
-                    </p>
 
-                    {priceFollowDate && priceFollowDate.length > 0
-                      ? priceFollowDate.map(item =>
-                          item.ticket.map((e, index) => {
-                            return (
-                              <>
-                                <div className="booking-ticket__item">
-                                  <Space
-                                    direction="vertical"
-                                    size={'small'}
-                                    style={{ gap: 0 }}
-                                  >
-                                    <Text level={5}>
-                                      {e.type === 'adult'
-                                        ? 'Adult (18+ years)'
-                                        : e.type === 'youth'
-                                        ? 'Youth (13-17 years)'
-                                        : 'Children (0-12 years)'}
-                                    </Text>
+                  {priceFollowDate && priceFollowDate.length > 0
+                    ? priceFollowDate.map(item =>
+                        item.ticket.map((e, index) => {
+                          return (
+                            <>
+                              <div className="booking-ticket__item">
+                                <Space
+                                  direction="vertical"
+                                  size={'small'}
+                                  style={{ gap: 0 }}
+                                >
+                                  <Text level={5}>
+                                    {e.type === 'adult'
+                                      ? 'Adult (18+ years)'
+                                      : e.type === 'youth'
+                                      ? 'Youth (13-17 years)'
+                                      : 'Children (0-12 years)'}
+                                  </Text>
 
-                                    <Text strong>
-                                      {e.price?.toLocaleString(
-                                        `${currencyString}`,
-                                        {
-                                          style: 'currency',
-                                          currency: `${currencyItem}`,
-                                        },
-                                      )}{' '}
-                                      :
-                                    </Text>
-                                  </Space>
-                                  <Form.Item
-                                    key={e.id}
-                                    className="detailTour__booking-tickets-section"
-                                    name={e.type}
-                                  >
-                                    <InputNumber
-                                      min={0}
-                                      max={detailTour.maxPeople}
-                                      onChange={values =>
-                                        handleChangePrice(values, e)
-                                      }
-                                    />
-                                  </Form.Item>
-                                </div>
-                              </>
-                            );
-                          }),
-                        )
-                      : t('detail_tour.booking_form.ticket.notify')}
+                                  <Text strong>
+                                    {e.price?.toLocaleString(
+                                      `${currencyString}`,
+                                      {
+                                        style: 'currency',
+                                        currency: `${currencyItem}`,
+                                      },
+                                    )}{' '}
+                                    :
+                                  </Text>
+                                </Space>
+                                <Form.Item
+                                  key={e.id}
+                                  className="detailTour__booking-tickets-section"
+                                  name={e.type}
+                                >
+                                  <InputNumber
+                                    min={0}
+                                    max={detailTour.maxPeople}
+                                    onChange={values =>
+                                      handleChangePrice(values, e)
+                                    }
+                                  />
+                                </Form.Item>
+                              </div>
+                            </>
+                          );
+                        }),
+                      )
+                    : t('detail_tour.booking_form.ticket.notify')}
+                </div>
+                <div className="detailTour__booking-footer">
+                  <div className="detailTour__booking-count">
+                    <span className="detailTour__booking-count-words">
+                      {t('detail_tour.booking_form.total')}
+                    </span>
+                    <span className="detailTour__booking-total">
+                      {total?.toLocaleString(`${currencyString}`, {
+                        style: 'currency',
+                        currency: `${currencyItem}`,
+                      })}
+                    </span>
                   </div>
-                  <div className="detailTour__booking-footer">
-                    <div className="detailTour__booking-count">
-                      <span className="detailTour__booking-count-words">
-                        {t('detail_tour.booking_form.total')}
-                      </span>
-                      <span className="detailTour__booking-total">
-                        {total?.toLocaleString(`${currencyString}`, {
-                          style: 'currency',
-                          currency: `${currencyItem}`,
-                        })}
-                      </span>
-                    </div>
-                    <Form.Item>
+                  <Form.Item>
+                    {_.isEmpty(localStorage.getItem('token')) ? (
+                      <Button
+                        className="detailTour__booking-btn"
+                        type="primary"
+                        onClick={() => navigate('/login')}
+                        size="large"
+                      >
+                        Sign in to book
+                      </Button>
+                    ) : (
                       <Button
                         htmlType="submit"
                         className="detailTour__booking-btn"
@@ -564,12 +578,12 @@ export default function DetailTour() {
                       >
                         book now
                       </Button>
-                    </Form.Item>
-                  </div>
-                </Form>
-              </div>
+                    )}
+                  </Form.Item>
+                </div>
+              </Form>
             </div>
-          )}
+          </div>
         </div>
       </div>
       {relatedTours?.length > 0 && (

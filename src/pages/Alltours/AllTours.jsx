@@ -53,7 +53,7 @@ const AllTours = () => {
   const listFilter = useSelector(state => state.tours.listFilter);
   const destinations = useSelector(state => state.tours.destinations);
   const services = useSelector(state => state.tours.services);
-  const loadingCallAPI = useSelector(state => state.tours.loading);
+  const loadingCallAPI = useSelector(state => state.tours.loadingFilter);
   const totalTours = useSelector(state => state.tours.totalTours);
   const dispatch = useDispatch();
   const { t } = useTranslation();
