@@ -39,8 +39,12 @@ const Home = () => {
       duration: 1000,
     });
     Aos.refresh();
-
     loading();
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
   }, []);
 
   const loading = async () => {

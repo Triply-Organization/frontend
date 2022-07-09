@@ -68,7 +68,6 @@ const AllTours = () => {
 
   // USE EFFECT
   useEffect(() => {
-    window.scrollTo(0, 0);
     const loading = () => {
       let temp = {
         destination: searchParams.get('destination'),
@@ -113,6 +112,11 @@ const AllTours = () => {
       //call method to indicate that loading is done
       setTimeout(() => {
         loadingContext.done();
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        });
       }, 600);
     };
     loading();

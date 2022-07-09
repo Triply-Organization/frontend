@@ -25,6 +25,7 @@ const CardTour = props => {
         <img
           src={tour.image}
           alt={tour.name}
+          draggable={false}
           className="card-tour__image-wrapper__image"
         />
       </Link>
@@ -54,7 +55,7 @@ const CardTour = props => {
         </div>
       </div>
       <div className="card-tour__content">
-        <Tooltip title={tour.name}>
+        <Tooltip title={tour.name} placement="bottom">
           <h2 className="card-tour__title">{tour.name}</h2>
         </Tooltip>
         <p className="card-tour__destination">

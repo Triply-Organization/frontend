@@ -13,6 +13,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    user-select: none;
+    font-size: 20px;
   }
   &__tag {
     position: absolute;
@@ -56,6 +58,7 @@
       background-size: cover;
       border-radius: 16px;
       transition: ease 400ms;
+      pointer-events: none;
     }
   }
 
@@ -91,11 +94,13 @@
       & > p {
         font-size: 14px;
         font-weight: 500;
+        user-select: none;
       }
 
       &__icon {
         color: var(--global-color-primary);
         font-size: 20px;
+        user-select: none;
       }
     }
     &__review {
@@ -111,6 +116,7 @@
         top: 50%;
         transform: translateY(-50%);
         transition: ease 300ms;
+        user-select: none;
 
         & .ant-rate-star {
           margin-right: 2px;
@@ -129,6 +135,7 @@
         transform: translateY(10px);
         opacity: 0;
         transition: ease 300ms;
+        user-select: none;
       }
     }
   }
@@ -143,10 +150,12 @@
     & h2 {
       color: black;
       font-weight: bold;
+      user-select: none;
     }
 
     & p {
       color: #999;
+      user-select: none;
     }
   }
 
@@ -166,11 +175,13 @@
         color: #ccc;
         font-weight: bold;
         font-size: 14px;
+        user-select: none;
       }
 
       & b {
         color: var(--global-color-primary);
         font-size: 22px;
+        user-select: none;
       }
     }
 
@@ -179,6 +190,7 @@
       justify-content: center;
       align-items: center;
       gap: 1rem;
+      user-select: none;
     }
   }
 
