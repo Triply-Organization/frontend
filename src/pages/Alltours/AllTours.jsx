@@ -13,6 +13,7 @@ import {
   Spin,
   Tag,
 } from 'antd';
+import { Tooltip } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -65,7 +66,7 @@ const AllTours = () => {
       let temp = {
         destination: searchParams.get('destination'),
         'guests[]': searchParams.getAll('guests'),
-        service: searchParams.get('service'),
+        'services[]': searchParams.getAll('services'),
         startDate: searchParams.get('startDate'),
         orderBy: searchParams.get('orderBy'),
         orderType: 'price',
@@ -85,9 +86,9 @@ const AllTours = () => {
         });
       }
 
-      if (temp?.service) {
+      if (temp['services[]']) {
         formSearch.setFieldsValue({
-          services: parseInt(temp.service),
+          services: temp['services[]'],
         });
       }
 
@@ -125,33 +126,40 @@ const AllTours = () => {
   const renderIconSortPrice = () => {
     if (sortPrice === 'desc')
       return (
-        <Button
-          className="all-tours__header__sort__button"
-          type="ghost"
-          onClick={() => setSortPrice('asc')}
-          icon={
-            <BsSortNumericDownAlt className="all-tours__header__sort__icon" />
-          }
-        />
+        <Tooltip title="Descending">
+          <Button
+            className="all-tours__header__sort__button"
+            type="ghost"
+            onClick={() => setSortPrice('asc')}
+            icon={
+              <BsSortNumericDownAlt className="all-tours__header__sort__icon" />
+            }
+          />
+        </Tooltip>
       );
     else
       return (
-        <Button
-          className="all-tours__header__sort__button"
-          type="ghost"
-          onClick={() => setSortPrice('desc')}
-          icon={<BsSortNumericDown className="all-tours__header__sort__icon" />}
-        />
+        <Tooltip title="Ascending">
+          <Button
+            className="all-tours__header__sort__button"
+            type="ghost"
+            onClick={() => setSortPrice('desc')}
+            icon={
+              <BsSortNumericDown className="all-tours__header__sort__icon" />
+            }
+          />
+        </Tooltip>
       );
   };
 
   const onSearch = values => {
     const searchParams = {};
+    console.log(values);
     if (values.destinations) {
       searchParams.destination = values.destinations;
     }
-    if (values.services) {
-      searchParams.service = values.services;
+    if (values['services[]']) {
+      searchParams['services[]'] = values['services[]'];
     }
 
     if (values.when) {
@@ -291,12 +299,6 @@ const AllTours = () => {
                     }
                   />
                 </Form.Item>
-                <Form.Item
-                  name="filter_by_rating"
-                  label={t('all_tours.filter.rating')}
-                >
-                  <Rate allowHalf />
-                </Form.Item>
               </Form>
             </Panel>
           </Collapse>
@@ -315,6 +317,12 @@ const AllTours = () => {
             <Tag closable onClose={() => onCloseFilterRating()}>
               <b>Rating: </b>
               {filterRating}
+            </Tag>
+          )}
+          {sortPrice && (
+            <Tag>
+              <b>Sort Price: </b>
+              {sortPrice === 'desc' ? 'Descending' : 'Ascending'}
             </Tag>
           )}
         </div>
