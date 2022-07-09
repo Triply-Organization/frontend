@@ -231,12 +231,7 @@ const MyTour = () => {
                 >
                   <List.Item.Meta
                     avatar={
-                      <Avatar
-                        src={
-                          'https://favpng.com/png_view/pawn-samsung-galaxy-a8-a8-user-login-telephone-avatar-png/peutPpGD'
-                        }
-                        icon={<UserOutlined />}
-                      />
+                      <Avatar src={user?.avatar} icon={<UserOutlined />} />
                     }
                     title={<b>{user.fullname}</b>}
                     description={moment(item.bookedAt.date).format(
@@ -297,13 +292,7 @@ const MyTour = () => {
                   extra={<Image width={272} alt="logo" src={item.cover} />}
                 >
                   <List.Item.Meta
-                    avatar={
-                      <Avatar
-                        src={
-                          'https://favpng.com/png_view/pawn-samsung-galaxy-a8-a8-user-login-telephone-avatar-png/peutPpGD'
-                        }
-                      />
-                    }
+                    avatar={<Avatar src={user?.avatar} />}
                     title={<b>{user.fullname}</b>}
                     description={moment(item.bookedAt.date).format(
                       'YYYY-MM-DD',
