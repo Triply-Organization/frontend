@@ -134,6 +134,7 @@ const toursSlice = createSlice({
         const res = data.data.tours?.map(item => {
           return {
             id: item.id,
+            totalReviews: item.totalReview,
             rating: item.rating?.avg,
             duration: item.duration,
             maxPeople: item.maxPeople,

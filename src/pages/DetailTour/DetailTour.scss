@@ -325,9 +325,13 @@ img.detailTour__img {
 }
 
 .detailTour__relatedTour {
-  width: 1320px;
-  margin: 0 auto;
   padding-bottom: 2rem;
+  margin: 0 auto;
+  width: 1290px;
+
+  & .slick-list {
+    width: 1290px;
+  }
 }
 
 .detailTour__relatedTour-item {
@@ -536,4 +540,16 @@ p.detailTour__booking-label {
 
 .ant-rate-star:not(:last-child) {
   margin: 0;
+}
+
+.booking-ticket__item {
+  display: flex;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:not(:last-child) {
+    margin-bottom: 2rem;
+  }
 }

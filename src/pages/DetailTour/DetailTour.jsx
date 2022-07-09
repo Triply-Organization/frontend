@@ -486,7 +486,10 @@ export default function DetailTour() {
                     />
                   </Form.Item>
                   <div className="detailTour__booking-tickets">
-                    <p className="detailTour__booking-label">
+                    <p
+                      className="detailTour__booking-label"
+                      style={{ marginBottom: '1rem' }}
+                    >
                       {t('detail_tour.booking_form.ticket.title')}
                     </p>
 
@@ -495,39 +498,45 @@ export default function DetailTour() {
                           item.ticket.map((e, index) => {
                             return (
                               <>
-                                <div className="inputNumber-style" key={index}>
-                                  <Text strong level={5}>
-                                    {e.type === 'adult'
-                                      ? 'Adult (18+ years)'
-                                      : e.type === 'youth'
-                                      ? 'Youth (13-17 years)'
-                                      : 'Children (0-12 years)'}
-                                  </Text>
+                                <div className="booking-ticket__item">
+                                  <Space
+                                    direction="vertical"
+                                    size={'small'}
+                                    style={{ gap: 0 }}
+                                  >
+                                    <Text level={5}>
+                                      {e.type === 'adult'
+                                        ? 'Adult (18+ years)'
+                                        : e.type === 'youth'
+                                        ? 'Youth (13-17 years)'
+                                        : 'Children (0-12 years)'}
+                                    </Text>
 
-                                  <Text strong>
-                                    {e.price?.toLocaleString(
-                                      `${currencyString}`,
-                                      {
-                                        style: 'currency',
-                                        currency: `${currencyItem}`,
-                                      },
-                                    )}{' '}
-                                    :
-                                  </Text>
+                                    <Text strong>
+                                      {e.price?.toLocaleString(
+                                        `${currencyString}`,
+                                        {
+                                          style: 'currency',
+                                          currency: `${currencyItem}`,
+                                        },
+                                      )}{' '}
+                                      :
+                                    </Text>
+                                  </Space>
+                                  <Form.Item
+                                    key={e.id}
+                                    className="detailTour__booking-tickets-section"
+                                    name={e.type}
+                                  >
+                                    <InputNumber
+                                      min={0}
+                                      max={detailTour.maxPeople}
+                                      onChange={values =>
+                                        handleChangePrice(values, e)
+                                      }
+                                    />
+                                  </Form.Item>
                                 </div>
-                                <Form.Item
-                                  key={e.id}
-                                  className="detailTour__booking-tickets-section"
-                                  name={e.type}
-                                >
-                                  <InputNumber
-                                    min={0}
-                                    max={detailTour.maxPeople}
-                                    onChange={values =>
-                                      handleChangePrice(values, e)
-                                    }
-                                  />
-                                </Form.Item>
                               </>
                             );
                           }),
@@ -569,10 +578,12 @@ export default function DetailTour() {
             {t('detail_tour.you_may_like')}
           </h2>
           <Carousel
+            infinite={false}
             autoplay
+            variableWidth={true}
             className="detailTour__relatedTour-carousel"
             draggable={true}
-            slidesToShow={relatedTours?.length > 1 ? 3 : 1}
+            slidesToShow={2}
           >
             {relatedTours && relatedTours.length > 0 ? (
               relatedTours?.map(item => {
