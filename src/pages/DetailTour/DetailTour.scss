@@ -330,11 +330,14 @@ img.detailTour__img {
   width: 1290px;
   padding-bottom: 90px;
 
+  & .slick-list {
+    padding: 2rem;
+  }
+
   & .slick-track {
     width: 100%;
     display: flex;
     gap: 1rem;
-    padding: 1rem;
   }
 }
 

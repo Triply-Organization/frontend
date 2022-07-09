@@ -623,7 +623,7 @@ export default function DetailTour() {
                     <CardTour
                       tour={item}
                       key={item.id}
-                      style={{ width: '410px', marginRight: '1rem' }}
+                      style={{ width: '405px', marginRight: '1rem' }}
                     />
                   );
                 })
