@@ -116,6 +116,12 @@ const AllTours = () => {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    if (!_.isEmpty(location.search) && _.isEmpty(listFilter)) {
+      dispatch(getToursByFilter(location.search));
+    }
+  }, [listFilter]);
+
   const renderIconSortPrice = () => {
     if (sortPrice === 'desc')
       return (
