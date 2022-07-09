@@ -6,8 +6,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
-import { OrderDetail } from '../../components';
-import { ImageBreadcrumb } from '../../components/';
+import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
+import OrderDetail from '../../components/OderDetail/OrderDetail';
 import { getConfirmInfo } from './../../app/checkoutSlice';
 import './Confirmation.scss';
 
@@ -31,7 +31,7 @@ const Confirmation = () => {
     dispatch(getConfirmInfo(id));
     setTimeout(() => {
       loadingContext.done();
-    }, 1000);
+    }, 600);
   }, []);
 
   return (

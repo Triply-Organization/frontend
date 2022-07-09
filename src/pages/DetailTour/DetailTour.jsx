@@ -212,7 +212,7 @@ export default function DetailTour() {
 
     setTimeout(() => {
       loadingContext.done();
-    }, 1000);
+    }, 600);
   }, []);
 
   // validate booking

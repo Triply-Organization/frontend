@@ -36,7 +36,7 @@ const Login = () => {
     image.src = src;
     setTimeout(() => {
       loadingContext.done();
-    }, 1000);
+    }, 600);
   }, []);
 
   useEffect(() => {

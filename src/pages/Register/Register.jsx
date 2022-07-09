@@ -33,7 +33,7 @@ const Register = () => {
     image.src = src;
     setTimeout(() => {
       loadingContext.done();
-    }, 1000);
+    }, 600);
   }, []);
 
   const { t } = useTranslation();

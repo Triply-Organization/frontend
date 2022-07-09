@@ -13,7 +13,7 @@ const CMSDashBoard = () => {
   const loadingContext = useLoadingContext();
   setTimeout(() => {
     loadingContext.done();
-  }, 1000);
+  }, 600);
 
   let data = [];
   let dataCol = [];

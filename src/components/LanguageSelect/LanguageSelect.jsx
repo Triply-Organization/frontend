@@ -1,9 +1,9 @@
+import { Select } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import englishIcon from '../../assets/images/united-kingdom.png';
 import vietnameIcon from '../../assets/images/vietnam.png';
-import { Select } from '../../components';
 
 const languageOptions = [
   {

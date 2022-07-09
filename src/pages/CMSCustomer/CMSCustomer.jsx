@@ -26,7 +26,7 @@ const CMSCustomer = () => {
     else setUrl('tours');
     setTimeout(() => {
       loadingContext.done();
-    }, 1000);
+    }, 600);
   }, [location.pathname]);
 
   return (

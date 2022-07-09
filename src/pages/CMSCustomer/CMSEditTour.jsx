@@ -45,7 +45,7 @@ const CMSEditTour = () => {
     }
     setTimeout(() => {
       loadingContext.done();
-    }, 1000);
+    }, 600);
   }, []);
 
   useEffect(() => {

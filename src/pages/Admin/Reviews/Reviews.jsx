@@ -47,7 +47,7 @@ export default function Reviews() {
     //call method to indicate that loading is done
     setTimeout(() => {
       loadingContext.done();
-    }, 1000);
+    }, 600);
   };
 
   useEffect(() => {

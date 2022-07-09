@@ -89,7 +89,7 @@ export default function Tours() {
     //call method to indicate that loading is done
     setTimeout(() => {
       loadingContext.done();
-    }, 1000);
+    }, 600);
   };
 
   // HANDLE CONFIRM DISABLED

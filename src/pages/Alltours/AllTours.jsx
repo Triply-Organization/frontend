@@ -61,14 +61,15 @@ const AllTours = () => {
   // USE EFFECT
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    const loading = async () => {
+    const loading = () => {
       let temp = {
         destination: searchParams.get('destination'),
         'guests[]': searchParams.getAll('guests'),
         service: searchParams.get('service'),
         startDate: searchParams.get('startDate'),
         orderBy: searchParams.get('orderBy'),
+        orderType: 'price',
+        page: '1',
       };
 
       let o = Object.fromEntries(
@@ -102,13 +103,17 @@ const AllTours = () => {
         });
       }
       //call method to indicate that loading is done
-      loadingContext.done();
+      setTimeout(() => {
+        loadingContext.done();
+      }, 600);
     };
     loading();
   }, []);
 
   useEffect(() => {
-    dispatch(getToursByFilter(location.search));
+    if (!_.isEmpty(location.search)) {
+      dispatch(getToursByFilter(location.search));
+    }
   }, [searchParams]);
 
   const renderIconSortPrice = () => {
@@ -202,7 +207,6 @@ const AllTours = () => {
       });
   }, [filterPrice, filterRating, sortPrice, page]);
   const navigate = useNavigate();
-  console.log(listFilter);
 
   return (
     // <Spin spinning={loadingCallAPI}>

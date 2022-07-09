@@ -41,7 +41,7 @@ export default function Admin() {
     }
     setTimeout(() => {
       loadingContext.done();
-    }, 1000);
+    }, 600);
   }, [location.pathname]);
 
   return (

@@ -53,7 +53,7 @@ const MyTour = () => {
     loading();
     setTimeout(() => {
       loadingContext.done();
-    }, 1000);
+    }, 600);
   }, []);
 
   console.log(listOrder);
