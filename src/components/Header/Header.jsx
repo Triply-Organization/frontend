@@ -44,6 +44,10 @@ export default function Header() {
     localStorage.removeItem('user');
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   const userDataLogin = (
     <Menu
       items={[
