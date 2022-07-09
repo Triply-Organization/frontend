@@ -8,6 +8,7 @@ exports[`component/CurrencySelect > render correctly 1`] = `
       <div>
         <div
           class="ant-select ant-select-single ant-select-show-arrow"
+          data-testid="currency_select"
           style="width: 80px;"
         >
           <div
@@ -71,6 +72,7 @@ exports[`component/CurrencySelect > render correctly 1`] = `
     <div>
       <div
         class="ant-select ant-select-single ant-select-show-arrow"
+        data-testid="currency_select"
         style="width: 80px;"
       >
         <div
