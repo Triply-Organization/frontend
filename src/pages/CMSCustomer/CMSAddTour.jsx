@@ -101,8 +101,8 @@ const CMSAddTour = () => {
         day: index + 1,
       })),
     };
-    form.resetFields();
     dispatch(createTour(response));
+    form.resetFields();
   };
 
   const uploadCoverImage = async options => {
@@ -363,7 +363,7 @@ const CMSAddTour = () => {
                         customRequest={uploadGalleryImage}
                         listType="picture"
                         onChange={e => setGalleryImageonChange(e)}
-                        maxCount={5}
+                        maxCount={10}
                       >
                         <p className="ant-upload-drag-icon">
                           <AiOutlineInbox />
