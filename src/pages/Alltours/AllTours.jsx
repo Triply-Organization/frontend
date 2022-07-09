@@ -5,6 +5,7 @@ import {
   Collapse,
   Empty,
   Form,
+  InputNumber,
   Pagination,
   Rate,
   Skeleton,
@@ -47,6 +48,12 @@ const AllTours = () => {
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams({});
   const loadingContext = useLoadingContext();
+  const [inputValueStartSlider, setInputValueStartSlider] = useState(0);
+  const [inputValueEndSlider, setInputValueEndSlider] = useState(1000);
+  const [inputValueSlider, setInputValueSlider] = useState([
+    inputValueStartSlider,
+    inputValueEndSlider,
+  ]);
 
   const location = useLocation();
   const [formSearch] = Form.useForm();
@@ -185,32 +192,15 @@ const AllTours = () => {
     }
   };
 
-  const onFilter = values => {
-    if (values?.filter_by_price) {
-      setFilterPrice(values?.filter_by_price);
-    }
-    if (values?.filter_by_rating) {
-      setFilterRating(values?.filter_by_rating);
-    }
-  };
-
   const onCloseFilterPrice = () => {
     setFilterPrice([]);
   };
-
-  const onCloseFilterRating = () => {
-    setFilterRating();
-  };
-
   useEffect(() => {
     const tempSearchParams = {};
-    if (filterPrice && filterPrice.length > 0) {
-      tempSearchParams.startPrice = filterPrice[0];
-      tempSearchParams.endPrice = filterPrice[1];
-    }
-    if (filterRating) {
-      tempSearchParams.filter_by_rating = filterRating;
-    }
+    tempSearchParams.startPrice = inputValueStartSlider;
+    tempSearchParams.endPrice = inputValueEndSlider;
+    setFilterPrice([inputValueStartSlider, inputValueEndSlider]);
+
     if (!_.isEmpty(currentSearch))
       setSearchParams({
         ...currentSearch,
@@ -219,8 +209,20 @@ const AllTours = () => {
         orderType: 'price',
         page: page,
       });
-  }, [filterPrice, filterRating, sortPrice, page]);
+  }, [sortPrice, page, inputValueStartSlider, inputValueEndSlider]);
   const navigate = useNavigate();
+
+  const onChangeStartSlider = value => {
+    if (inputValueEndSlider > value) setInputValueStartSlider(value);
+  };
+  const onChangeEndSlider = value => {
+    if (inputValueStartSlider < value) setInputValueEndSlider(value);
+  };
+
+  const onChangeSlider = value => {
+    setInputValueStartSlider(value[0]);
+    setInputValueEndSlider(value[1]);
+  };
 
   return (
     // <Spin spinning={loadingCallAPI}>
@@ -275,31 +277,35 @@ const AllTours = () => {
                 </div>
               }
             >
-              <Form
-                className="all-tours__filter__item"
-                layout={'vertical'}
-                onValuesChange={_.debounce(onFilter, 300)}
-                initialValues={{
-                  filter_by_price: [0, 1000],
-                  filter_by_rating: 0,
-                }}
-              >
-                <Form.Item
-                  name="filter_by_price"
-                  label={t('all_tours.filter.price')}
-                >
-                  <Slider
-                    range
-                    max={1000}
-                    tipFormatter={value =>
-                      value.toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                      })
-                    }
-                  />
-                </Form.Item>
-              </Form>
+              <Slider
+                range={true}
+                min={0}
+                max={1000}
+                onChange={_.debounce(onChangeSlider, 300)}
+                value={[inputValueStartSlider, inputValueEndSlider]}
+                defaultValue={[inputValueStartSlider, inputValueEndSlider]}
+                tipFormatter={value =>
+                  value.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                  })
+                }
+              />
+
+              <div className="slider-input-wrapper">
+                <InputNumber
+                  min={0}
+                  max={inputValueEndSlider - 1}
+                  value={inputValueStartSlider}
+                  onChange={onChangeStartSlider}
+                />
+                <InputNumber
+                  min={inputValueStartSlider + 1}
+                  max={1000}
+                  value={inputValueEndSlider}
+                  onChange={onChangeEndSlider}
+                />
+              </div>
             </Panel>
           </Collapse>
         </div>
@@ -311,12 +317,6 @@ const AllTours = () => {
             <Tag closable onClose={() => onCloseFilterPrice()}>
               <b>Price: </b>
               {filterPrice[0]} - {filterPrice[1]}
-            </Tag>
-          )}
-          {filterRating && (
-            <Tag closable onClose={() => onCloseFilterRating()}>
-              <b>Rating: </b>
-              {filterRating}
             </Tag>
           )}
           {sortPrice && (
