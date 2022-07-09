@@ -10,7 +10,6 @@ import { TbTicket } from 'react-icons/tb';
 import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.png';
-import CurrencySelect from '../CurrencySelect/CurrencySelect';
 import LanguageSelect from './../LanguageSelect/LanguageSelect';
 import './Header.scss';
 import MobileNav from './MobileNav/MobileNav';
@@ -267,9 +266,6 @@ export default function Header() {
           />
         ) : (
           <>
-            <div className="header__multi-currency">
-              <CurrencySelect />
-            </div>
             <div className="header__multi-lang-wrapper">
               <LanguageSelect />
             </div>

@@ -76,6 +76,20 @@ export default function DetailTour() {
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const loadingContext = useLoadingContext();
+  const [visibleGallery, setVisibleGallery] = useState(false);
+  const [gallery, setGallery] = useState([]);
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const [remainC, setRemainC] = useState(0);
+  const [remainY, setRemainY] = useState(0);
+  const [remainA, setRemainA] = useState(0);
+  const loading = useSelector(state => state.tours.loading);
+  useEffect(() => {
+    if (!_.isEmpty(detailTour)) {
+      setGallery(detailTour?.tourImages?.map(item => item.path));
+    }
+  }, [detailTour]);
+
+  const [formTicket] = Form.useForm();
 
   useEffect(() => {
     if (dataCheckout.id) {
@@ -152,13 +166,14 @@ export default function DetailTour() {
         item.startDate.includes(dateString),
       );
       setPriceFollowDate(result);
-      setBookingDate(dateString);
       setTotal(0);
+      setBookingDate(dateString);
     } else {
+      setTotal(0);
       setPriceFollowDate([]);
       setBookingDate('');
     }
-    console.log(dateString);
+    formTicket.setFieldsValue({ adult: 0, youth: 0, children: 0 });
   };
 
   const detailTourItem = useMemo(() => {
@@ -222,6 +237,7 @@ export default function DetailTour() {
 
   // validate booking
   const handleSubmit = values => {
+    console.log(values);
     const request = {
       children: children,
       adult: adult,
@@ -258,15 +274,7 @@ export default function DetailTour() {
       }
     }
   };
-  const [visibleGallery, setVisibleGallery] = useState(false);
-  const [gallery, setGallery] = useState([]);
-  const [photoIndex, setPhotoIndex] = useState(0);
-  const loading = useSelector(state => state.tours.loading);
-  useEffect(() => {
-    if (!_.isEmpty(detailTour)) {
-      setGallery(detailTour?.tourImages?.map(item => item.path));
-    }
-  }, [detailTour]);
+
   return (
     <Spin spinning={loading}>
       <section className="detailTour">
@@ -488,6 +496,7 @@ export default function DetailTour() {
                   {t('detail_tour.booking_form.title')}
                 </h3>
                 <Form
+                  form={formTicket}
                   layout="horizontal"
                   onFinish={handleSubmit}
                   autoComplete="off"
@@ -593,6 +602,9 @@ export default function DetailTour() {
                           htmlType="submit"
                           className="detailTour__booking-btn"
                           type="primary"
+                          disabled={localStorage
+                            .getItem('user')
+                            .includes(['ROLE_CUSTOMER'])}
                           size="large"
                         >
                           book now
