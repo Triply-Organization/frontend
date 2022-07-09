@@ -49,7 +49,7 @@ const CardTour = props => {
           />
           <div className="card-tour__meta__review__counter">
             <AiOutlineComment />
-            <p>{tour?.totalReviews}</p>
+            <p>{tour?.totalReviews || 0}</p>
           </div>
         </div>
       </div>
