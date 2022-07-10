@@ -44,7 +44,7 @@ const Login = () => {
       if (user.roles.includes('ROLE_ADMIN')) {
         navigate('/admin');
       } else if (user.roles.includes('ROLE_CUSTOMER')) {
-        navigate(-1);
+        navigate('/cms/dashboard');
       } else if (user.roles.includes('ROLE_USER')) {
         navigate(-1);
       }
