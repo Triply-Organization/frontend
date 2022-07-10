@@ -478,7 +478,7 @@ export default function DetailTour() {
                                 <span className="detailTour__plan-heading-word">
                                   Day {item.day}
                                   <span className="detailTour__place-words">
-                                    {item.destination}
+                                    {item.title}
                                   </span>
                                 </span>
                               </span>
