@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.43% </span>
+                <span class="strong">83.7% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>262/314</span>
+                <span class='fraction'>262/313</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.63% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/22</span>
+                <span class='fraction'>6/24</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.43% </span>
+                <span class="strong">83.7% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>262/314</span>
+                <span class='fraction'>262/313</span>
             </div>
         
             
@@ -376,8 +376,7 @@
 <a name='L311'></a><a href='#L311'>311</a>
 <a name='L312'></a><a href='#L312'>312</a>
 <a name='L313'></a><a href='#L313'>313</a>
-<a name='L314'></a><a href='#L314'>314</a>
-<a name='L315'></a><a href='#L315'>315</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L314'></a><a href='#L314'>314</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -398,9 +397,9 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -448,7 +447,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -485,7 +483,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -605,6 +602,15 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -613,15 +619,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -754,8 +752,7 @@ export default function Header() {
                     &lt;span className="header__language-item"&gt;
                       &lt;Link
                         to={`/setting-account/${id}`}
-                        className="header__language-words"
-                      &gt;
+                        className="header__language-words"&gt;
                         {t('header.logged_in.my_profile')}
                       &lt;/Link&gt;
                     &lt;/span&gt;
@@ -806,8 +803,7 @@ export default function Header() {
                   &lt;Link
                     onClick={handleLogout}
                     to="/login"
-                    className="header__language-words"
-                  &gt;
+                    className="header__language-words"&gt;
                     {t('cta.logout')}
                   &lt;/Link&gt;
                 &lt;/span&gt;
@@ -932,25 +928,27 @@ export default function Header() {
 &nbsp;
   return (
     &lt;header
+      data-testid="header"
       className={
-        scrollY &gt; <span class="branch-0 cbranch-no" title="branch not covered" >0</span>
-<span class="cstat-no" title="statement not covered" >          ? 'header__wrapper header__wrapper--transition'</span>
+        scrollY &gt; 0
+          ? 'header__wrapper header__wrapper--transition'
           : 'header__wrapper'
-      }
-    &gt;
+      }&gt;
       &lt;div className="header__left-side"&gt;
         &lt;div className="header__logo-wrapper" onClick={<span class="fstat-no" title="function not covered" >() =&gt; navigate('</span>/')}&gt;
           &lt;img src={logo} alt="logo" className="header__logo" /&gt;
         &lt;/div&gt;
-        {width &lt; <span class="branch-0 cbranch-no" title="branch not covered" >1023 ? null : (</span>
-          &lt;Navbar
-            activeTab={activeTab}
-            handleSetActiveTab={handleSetActiveTab}
-            navItem={navItem}
-          /&gt;
-        )}
+        &lt;div data-testid="header-navbar"&gt;
+          {width &lt; <span class="branch-0 cbranch-no" title="branch not covered" >1023 ? null : (</span>
+            &lt;Navbar
+              activeTab={activeTab}
+              handleSetActiveTab={handleSetActiveTab}
+              navItem={navItem}
+            /&gt;
+          )}
+        &lt;/div&gt;
       &lt;/div&gt;
-      &lt;div className="header__right-side"&gt;
+      &lt;div className="header__right-side" data-testid="header-right"&gt;
         {width &lt; <span class="branch-0 cbranch-no" title="branch not covered" >1023 ? (</span>
           &lt;MobileNav
             mobileNavStatus={mobileNavStatus}
@@ -981,8 +979,7 @@ export default function Header() {
                   overlay={userDataNoLogin}
                   overlayClassName="header__account-dropdown"
                   placement="bottomRight"
-                  arrow
-                &gt;
+                  arrow&gt;
                   &lt;div className="header__account-icon"&gt;
                     &lt;Avatar
                       src={
@@ -1012,7 +1009,7 @@ export default function Header() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sat Jul 09 2022 21:46:39 GMT+0700 (Indochina Time)
+                at Sun Jul 10 2022 11:27:32 GMT+0700 (Indochina Time)
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

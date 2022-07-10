@@ -42,6 +42,7 @@ export default function MobileNav(props) {
       <div className="mobileNav__overlays">
         <div className="mobileNav_close-btn-wrapper">
           <button
+            data-testid="mobileNav_btn"
             className="mobileNav_close-btn"
             onClick={() => {
               onChangeNavbarStatus();

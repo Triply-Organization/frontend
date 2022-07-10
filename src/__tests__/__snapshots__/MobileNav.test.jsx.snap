@@ -33,6 +33,7 @@ exports[`MobileNav component > should render correctly 1`] = `
           >
             <button
               class="mobileNav_close-btn"
+              data-testid="mobileNav_btn"
             >
               <svg
                 fill="currentColor"
@@ -124,6 +125,7 @@ exports[`MobileNav component > should render correctly 1`] = `
         >
           <button
             class="mobileNav_close-btn"
+            data-testid="mobileNav_btn"
           >
             <svg
               fill="currentColor"

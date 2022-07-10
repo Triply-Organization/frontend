@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.67% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>210/215</span>
+                <span class='fraction'>214/214</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.67% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>210/215</span>
+                <span class='fraction'>214/214</span>
             </div>
         
             
@@ -277,8 +277,7 @@
 <a name='L212'></a><a href='#L212'>212</a>
 <a name='L213'></a><a href='#L213'>213</a>
 <a name='L214'></a><a href='#L214'>214</a>
-<a name='L215'></a><a href='#L215'>215</a>
-<a name='L216'></a><a href='#L216'>216</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L215'></a><a href='#L215'>215</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -401,7 +400,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -417,7 +416,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -438,11 +437,10 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -651,14 +649,14 @@ export default function Footer() {
           &lt;/p&gt;
           &lt;div className="footer__detail-form"&gt;
             &lt;Form
+              data-testid="footer_form"
               form={formFollowByEmail}
-              onFinish={<span class="fstat-no" title="function not covered" >e =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >                formFollowByEmail.resetFields();</span>
-<span class="cstat-no" title="statement not covered" >                message.success(</span>
-<span class="cstat-no" title="statement not covered" >                  `Thank ${e.followByEmail} for signing up. We will always send you the latest rides`,</span>
-<span class="cstat-no" title="statement not covered" >                );</span>
-<span class="cstat-no" title="statement not covered" >              }}</span>
-            &gt;
+              onFinish={e =&gt; {
+                formFollowByEmail.resetFields();
+                message.success(
+                  `Thank ${e.followByEmail} for signing up. We will always send you the latest rides`,
+                );
+              }}&gt;
               &lt;Form.Item
                 name="followByEmail"
                 rules={[
@@ -667,9 +665,9 @@ export default function Footer() {
                     type: 'email',
                     message: 'The input is not valid E-mail!',
                   },
-                ]}
-              &gt;
+                ]}&gt;
                 &lt;Input
+                  data-testid="footer-input"
                   className="footer__detail-input"
                   size="large"
                   placeholder={t('cta.place_holder_input-email')}
@@ -679,8 +677,7 @@ export default function Footer() {
                 type="primary"
                 size="large"
                 htmlType="submit"
-                className="footer__detail-btn"
-              &gt;
+                className="footer__detail-btn"&gt;
                 {t('cta.subscribe')}
               &lt;/Button&gt;
             &lt;/Form&gt;
@@ -715,7 +712,7 @@ export default function Footer() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sat Jul 09 2022 21:46:39 GMT+0700 (Indochina Time)
+                at Sun Jul 10 2022 11:27:32 GMT+0700 (Indochina Time)
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

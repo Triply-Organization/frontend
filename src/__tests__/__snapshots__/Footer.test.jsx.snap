@@ -393,6 +393,7 @@ exports[`component/Footer > render correctly 1`] = `
             >
               <form
                 class="ant-form ant-form-horizontal"
+                data-testid="footer_form"
               >
                 <div
                   class="ant-row ant-form-item"
@@ -408,6 +409,7 @@ exports[`component/Footer > render correctly 1`] = `
                       >
                         <input
                           class="ant-input ant-input-lg footer__detail-input"
+                          data-testid="footer-input"
                           id="followByEmail"
                           placeholder="cta.place_holder_input-email"
                           type="text"
@@ -892,6 +894,7 @@ exports[`component/Footer > render correctly 1`] = `
           >
             <form
               class="ant-form ant-form-horizontal"
+              data-testid="footer_form"
             >
               <div
                 class="ant-row ant-form-item"
@@ -907,6 +910,7 @@ exports[`component/Footer > render correctly 1`] = `
                     >
                       <input
                         class="ant-input ant-input-lg footer__detail-input"
+                        data-testid="footer-input"
                         id="followByEmail"
                         placeholder="cta.place_holder_input-email"
                         type="text"

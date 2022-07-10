@@ -7,6 +7,7 @@ exports[`Header component > should render correctly 1`] = `
     <div>
       <header
         class="header__wrapper"
+        data-testid="header"
       >
         <div
           class="header__left-side"
@@ -20,40 +21,45 @@ exports[`Header component > should render correctly 1`] = `
               src="/src/assets/images/logo.png"
             />
           </div>
-          <nav
-            class="header__navbar-wrapper"
+          <div
             data-testid="header-navbar"
           >
-            <ul
-              class="header__navbar"
+            <nav
+              class="header__navbar-wrapper"
+              data-testid="header-navbar"
             >
-              <li
-                class="header__navbar-item"
-                data-testid="header-navbar-item"
+              <ul
+                class="header__navbar"
               >
-                <a
-                  class="header__navbar-link header__navbar-link--active"
-                  href="/"
+                <li
+                  class="header__navbar-item"
+                  data-testid="header-navbar-item"
                 >
-                  header.home
-                </a>
-              </li>
-              <li
-                class="header__navbar-item"
-                data-testid="header-navbar-item"
-              >
-                <a
-                  class="header__navbar-link"
-                  href="/tours"
+                  <a
+                    class="header__navbar-link header__navbar-link--active"
+                    href="/"
+                  >
+                    header.home
+                  </a>
+                </li>
+                <li
+                  class="header__navbar-item"
+                  data-testid="header-navbar-item"
                 >
-                  header.tour
-                </a>
-              </li>
-            </ul>
-          </nav>
+                  <a
+                    class="header__navbar-link"
+                    href="/tours"
+                  >
+                    header.tour
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
         <div
           class="header__right-side"
+          data-testid="header-right"
         >
           <div
             class="header__multi-currency"
@@ -220,6 +226,7 @@ exports[`Header component > should render correctly 1`] = `
   "container": <div>
     <header
       class="header__wrapper"
+      data-testid="header"
     >
       <div
         class="header__left-side"
@@ -233,40 +240,45 @@ exports[`Header component > should render correctly 1`] = `
             src="/src/assets/images/logo.png"
           />
         </div>
-        <nav
-          class="header__navbar-wrapper"
+        <div
           data-testid="header-navbar"
         >
-          <ul
-            class="header__navbar"
+          <nav
+            class="header__navbar-wrapper"
+            data-testid="header-navbar"
           >
-            <li
-              class="header__navbar-item"
-              data-testid="header-navbar-item"
+            <ul
+              class="header__navbar"
             >
-              <a
-                class="header__navbar-link header__navbar-link--active"
-                href="/"
+              <li
+                class="header__navbar-item"
+                data-testid="header-navbar-item"
               >
-                header.home
-              </a>
-            </li>
-            <li
-              class="header__navbar-item"
-              data-testid="header-navbar-item"
-            >
-              <a
-                class="header__navbar-link"
-                href="/tours"
+                <a
+                  class="header__navbar-link header__navbar-link--active"
+                  href="/"
+                >
+                  header.home
+                </a>
+              </li>
+              <li
+                class="header__navbar-item"
+                data-testid="header-navbar-item"
               >
-                header.tour
-              </a>
-            </li>
-          </ul>
-        </nav>
+                <a
+                  class="header__navbar-link"
+                  href="/tours"
+                >
+                  header.tour
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
       <div
         class="header__right-side"
+        data-testid="header-right"
       >
         <div
           class="header__multi-currency"
