@@ -13,7 +13,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './CardTour.scss';
 
 const CardTour = props => {
-  const { tour, tag } = props;
+  const { tour, tag, ...prop } = props;
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ const CardTour = props => {
           />
           <div className="card-tour__meta__review__counter">
             <AiOutlineComment />
-            <p>{tour?.totalReviews}</p>
+            <p>{tour?.totalReviews || 0}</p>
           </div>
         </div>
       </div>

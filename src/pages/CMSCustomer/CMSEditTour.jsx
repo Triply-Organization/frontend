@@ -43,12 +43,13 @@ const CMSEditTour = () => {
     if (_.isEmpty()) {
       dispatch(getDestinationsServiceTours());
     }
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   }, []);
 
   useEffect(() => {
     if (id) dispatch(getDetailTour(id));
-    loadingContext.done();
   }, [id]);
 
   useEffect(() => {
@@ -100,7 +101,7 @@ const CMSEditTour = () => {
         }}
       >
         <Breadcrumb.Item>
-          <Link to="/home">Home</Link>
+          <Link to="/">Home</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
           <Link to="/cms/tours">Tours</Link>

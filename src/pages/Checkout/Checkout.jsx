@@ -21,14 +21,16 @@ import { checkout, getVoucherInfo } from '../../app/checkoutSlice';
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import paypal from '../../assets/images/paypal-logo.png';
 import stripe from '../../assets/images/stripe-logo.png';
-import { ImageBreadcrumb, OrderDetail } from '../../components';
+import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
+import OrderDetail from '../../components/OderDetail/OrderDetail';
 import './Checkout.scss';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const Checkout = () => {
   const loadingContext = useLoadingContext();
   const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
+  const status = localStorage.getItem('status');
   const [taxInfo, setTaxInfo] = useState(0);
   const [finalTotal, setFinalTotal] = useState(
     checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
@@ -37,6 +39,7 @@ const Checkout = () => {
   const [voucherVal, setVoucherVal] = useState('');
   const [isDisableBtn, setDisableBtn] = useState(false);
   const [voucherRemain, setVoucherRemain] = useState(0);
+  const [voucherCode, setVoucherCode] = useState('');
   const loading = useSelector(state => state.checkout.loading);
   const voucherData = useSelector(state => state.checkout.voucher);
   const [form] = Form.useForm();
@@ -86,8 +89,6 @@ const Checkout = () => {
     }
   };
 
-  console.log(voucherRemain);
-
   useEffect(() => {
     const getTax = async () => {
       const url = '/taxes/getinfo?currency=vn';
@@ -100,7 +101,14 @@ const Checkout = () => {
       setTaxInfo(taxData);
     };
     getTax();
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }, 600);
   }, []);
 
   useEffect(() => {
@@ -112,6 +120,7 @@ const Checkout = () => {
   useEffect(() => {
     setDiscountValue(voucherData.discount);
     setVoucherRemain(voucherData.remain);
+    setVoucherCode(voucherData.code);
     if (voucherData.discount) {
       setFinalTotal(
         checkoutData.subTotal +
@@ -137,6 +146,7 @@ const Checkout = () => {
       );
       setDiscountValue(0);
       setVoucherRemain('');
+      setVoucherCode('');
     }
 
     filterTimeout.current = setTimeout(() => {
@@ -165,12 +175,21 @@ const Checkout = () => {
             <Title level={2}>
               {t('checkout.order_detail.title')} #{checkoutData.id}
             </Title>
+            {status === 'refund' ? (
+              <Text type="danger">
+                You already refunded this tour. Booking unavailable!
+              </Text>
+            ) : status === 'paid' ? (
+              <Text type="success">You already paid this tour</Text>
+            ) : null}
           </div>
           <OrderDetail
             data={checkoutData}
             finalTotal={finalTotal}
             discountValue={discountValue}
             taxInfo={taxInfo}
+            voucherCode={voucherCode}
+            refundStatus={status}
           />
         </div>
 
@@ -323,17 +342,35 @@ const Checkout = () => {
                 </Checkbox>
               </Form.Item>
 
-              <Form.Item>
-                <Button
-                  disabled={isDisableBtn}
-                  loading={loading}
-                  htmlType="submit"
-                  type="primary"
-                  className="button-checkout-page"
-                >
-                  {t('cta.complete_order')}
-                </Button>
-              </Form.Item>
+              {status === 'refund' ? (
+                <Form.Item>
+                  <Button
+                    danger
+                    type="primary"
+                    className="button-checkout-page"
+                  >
+                    You are refuned
+                  </Button>
+                </Form.Item>
+              ) : status === 'paid' ? (
+                <Form.Item>
+                  <Button type="dashed" className="button-checkout-page">
+                    You already paid this tour
+                  </Button>
+                </Form.Item>
+              ) : (
+                <Form.Item>
+                  <Button
+                    disabled={isDisableBtn}
+                    loading={loading}
+                    htmlType="submit"
+                    type="primary"
+                    className="button-checkout-page"
+                  >
+                    {t('cta.complete_order')}
+                  </Button>
+                </Form.Item>
+              )}
             </Form>
           </div>
         </div>

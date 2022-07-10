@@ -1,12 +1,12 @@
 import { Button } from 'antd';
 import Aos from 'aos';
+import _ from 'lodash';
 import moment from 'moment';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsArrowRight } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSearchParams, useNavigate } from 'react-router-dom';
-import { useLoadingContext } from 'react-router-loading';
 
 import {
   getDestinationsServiceTours,
@@ -24,7 +24,6 @@ import './Home.scss';
 
 const Home = () => {
   // Redux
-  const listTours = useSelector(state => state.tours.list);
   const destinations = useSelector(state => state.tours.destinations);
   const services = useSelector(state => state.tours.services);
   const popularTours = useSelector(state => state.tours.popularTours);
@@ -40,23 +39,18 @@ const Home = () => {
       duration: 1000,
     });
     Aos.refresh();
-
     loading();
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
   }, []);
 
-  const loadingContext = useLoadingContext();
-
   const loading = async () => {
-    //loading some data
-    if (
-      listTours.length === 0 ||
-      destinations.length === 0 ||
-      services.length === 0
-    )
+    if (_.isEmpty(destinations) || _.isEmpty(services))
       dispatch(getDestinationsServiceTours());
-    dispatch(getPopularTours());
-    //call method to indicate that loading is done
-    loadingContext.done();
+    if (_.isEmpty(popularTours)) dispatch(getPopularTours());
   };
 
   const onSearch = values => {
@@ -82,9 +76,19 @@ const Home = () => {
         search: createSearchParams({
           ...searchParams,
           orderBy: 'asc',
+          orderType: 'price',
+          page: '1',
         }).toString(),
       });
-    } else navigate('/tours');
+    } else
+      navigate({
+        pathname: '/tours',
+        search: createSearchParams({
+          orderBy: 'asc',
+          orderType: 'price',
+          page: '1',
+        }).toString(),
+      });
   };
 
   const handleNavigateLogin = () => {

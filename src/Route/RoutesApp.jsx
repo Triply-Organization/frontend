@@ -71,7 +71,6 @@ const RoutesApp = () => {
         <Route index element={<Home />} />
         <Route path="tours">
           <Route index element={<AllTours />} loading />
-          <Route path=":search" element={<AllTours />} loading />
         </Route>
 
         <Route
@@ -93,7 +92,7 @@ const RoutesApp = () => {
           loading
         />
 
-        <Route path="detail/:id" element={<DetailTour />} />
+        <Route path="detail/:id" element={<DetailTour />} loading />
         <Route
           path="confirmation/:id"
           element={

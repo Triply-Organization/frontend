@@ -11,6 +11,7 @@ const initialState = {
   tour: {},
   listFilter: [],
   loading: false,
+  loadingFilter: false,
   booking: {},
   totalTours: 0,
   idTourJustCreated: null,
@@ -114,17 +115,17 @@ const toursSlice = createSlice({
     });
 
     builder.addCase(getToursByFilter.pending, state => {
-      state.loading = true;
+      state.loadingFilter = true;
     });
     builder.addCase(getToursByFilter.rejected, state => {
-      state.loading = false;
+      state.loadingFilter = false;
       message.error({
         content: 'Can not connect to server. Please check your internet',
         key: 'tour-rejected',
       });
     });
     builder.addCase(getToursByFilter.fulfilled, (state, action) => {
-      state.loading = false;
+      state.loadingFilter = false;
       let { data } = action.payload;
       state.destinations = data.data?.destinations;
       state.services = data.data?.services;
@@ -134,6 +135,7 @@ const toursSlice = createSlice({
         const res = data.data.tours?.map(item => {
           return {
             id: item.id,
+            totalReviews: item.totalReview,
             rating: item.rating?.avg,
             duration: item.duration,
             maxPeople: item.maxPeople,
@@ -171,6 +173,13 @@ const toursSlice = createSlice({
       let relatedTours = [];
       priceDate = data.data.data.schedule.map(item => item);
       temp = data.data.data.schedule.map(item => item.startDate);
+
+      const maxPrice = Math.max(
+        ...data.data.data.schedule.map(s => s.ticket.map(t => t.price))[0],
+      );
+      const minPrice = Math.min(
+        ...data.data.data.schedule.map(s => s.ticket.map(t => t.price))[0],
+      );
       relatedTours = data.data.data.relatedTour.map(item => ({
         id: item.id,
         image: item.tourImages,
@@ -183,6 +192,8 @@ const toursSlice = createSlice({
       }));
       state.tour = {
         ...data.data.data,
+        maxPrice,
+        minPrice,
         availableDate: temp,
         priceFollowDate: priceDate,
         relatedTour: relatedTours,

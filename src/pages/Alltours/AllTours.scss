@@ -7,7 +7,8 @@
 .all-tours {
   width: 1290px;
   height: fit-content;
-  margin: 90px auto;
+  padding: 60px 0;
+  margin: 0 auto;
 
   &__filter {
     width: 100%;
@@ -59,10 +60,18 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
+    height: calc(961.961px + 2rem);
   }
 
   &__pagination {
     width: 100%;
     text-align: center;
   }
+}
+
+.slider-input-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

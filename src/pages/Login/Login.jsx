@@ -34,7 +34,9 @@ const Login = () => {
         'url(' + src + ')';
     });
     image.src = src;
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   }, []);
 
   useEffect(() => {
@@ -42,9 +44,9 @@ const Login = () => {
       if (user.roles.includes('ROLE_ADMIN')) {
         navigate('/admin');
       } else if (user.roles.includes('ROLE_CUSTOMER')) {
-        navigate('/');
+        navigate(-1);
       } else if (user.roles.includes('ROLE_USER')) {
-        navigate('/');
+        navigate(-1);
       }
     }
   }, [user]);

@@ -28,6 +28,7 @@ const Search = props => {
             className="search-form__item search-form__destinations "
           >
             <Select
+              showSearch
               className="search-form__item__field"
               allowClear
               bordered={false}
@@ -41,7 +42,7 @@ const Search = props => {
                   destinations.map((item, index) => (
                     <Option
                       key={index}
-                      value={item.id}
+                      value={item.name}
                       data-testid="option-search-destination"
                     >
                       {item.name}
@@ -58,15 +59,18 @@ const Search = props => {
         <div>
           <b>{t('search.service.title')}</b>
           <Form.Item
-            name="services"
+            name="services[]"
             className="search-form__item search-form__activity"
           >
             <Select
-              className="search-form__item__field"
+              className="search-form__item__field select-mul"
               allowClear
               bordered={false}
+              showSearch={false}
               data-testid="select-search-services"
               placeholder={t('search.service.place_holder')}
+              mode="multiple"
+              maxTagCount={1}
               style={{ border: 'none' }}
             >
               <OptGroup label="All Activity">
@@ -117,9 +121,11 @@ const Search = props => {
             className="search-form__item search-form__guests"
           >
             <Select
-              className="select-guest-mul search-form__item__field"
+              className="select-mul search-form__item__field"
               mode="multiple"
+              maxTagCount={1}
               showArrow
+              showSearch={false}
               bordered={false}
               style={{ padding: 0, border: 'none' }}
               placeholder={t('search.guest.place_holder')}

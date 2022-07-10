@@ -6,8 +6,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
-import { OrderDetail } from '../../components';
-import { ImageBreadcrumb } from '../../components/';
+import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
+import OrderDetail from '../../components/OderDetail/OrderDetail';
 import { getConfirmInfo } from './../../app/checkoutSlice';
 import './Confirmation.scss';
 
@@ -29,7 +29,14 @@ const Confirmation = () => {
 
   useEffect(() => {
     dispatch(getConfirmInfo(id));
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }, 600);
   }, []);
 
   return (
