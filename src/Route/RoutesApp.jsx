@@ -1,3 +1,5 @@
+import { CaretUpOutlined } from '@ant-design/icons';
+import { BackTop } from 'antd';
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { Route, Routes } from 'react-router-loading';
@@ -37,6 +39,18 @@ const RoutesApp = () => {
     },
   });
 
+  const style = {
+    height: 50,
+    width: 50,
+    lineHeight: '50px',
+    borderRadius: 9999,
+    backgroundColor: 'rgb(220, 131, 78)',
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 14,
+    marginLeft: 40,
+  };
+
   return (
     <Routes>
       <Route
@@ -45,23 +59,25 @@ const RoutesApp = () => {
           <>
             <Header />
             <Outlet />
+            <BackTop>
+              <div style={style}>
+                <CaretUpOutlined />
+              </div>
+            </BackTop>
             <Footer />
           </>
         }
       >
         <Route index element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
         <Route path="tours">
           <Route index element={<AllTours />} loading />
-          <Route path=":search" element={<AllTours />} loading />
         </Route>
 
         <Route
           path="setting-account/:id"
           element={
             <PrivateRoute role={['ROLE_USER']}>
-              <SettingAccount />
+              <SettingAccount loading />
             </PrivateRoute>
           }
         />
@@ -70,28 +86,38 @@ const RoutesApp = () => {
           path="my-tours"
           element={
             <PrivateRoute role={['ROLE_USER']}>
-              <MyTour />
+              <MyTour loading />
             </PrivateRoute>
           }
           loading
         />
 
-        <Route path="detail/:id" element={<DetailTour />} />
+        <Route path="detail/:id" element={<DetailTour />} loading />
         <Route
           path="confirmation/:id"
           element={
             <PrivateRoute role={['ROLE_USER']}>
-              <Confirmation />
+              <Confirmation loading />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="checkout/:id"
+          element={
+            <PrivateRoute role={['ROLE_USER']}>
+              <Checkout loading />
             </PrivateRoute>
           }
         />
       </Route>
-
+      <Route path="login" element={<Login />} loading />
+      <Route path="register" element={<Register />} loading />
       <Route
         path="/admin"
         element={
           <PrivateRoute role={['ROLE_ADMIN']}>
-            <Admin />
+            <Admin loading />
           </PrivateRoute>
         }
       >
@@ -100,7 +126,7 @@ const RoutesApp = () => {
           path="dashboard"
           element={
             <PrivateRoute role={['ROLE_ADMIN']}>
-              <Dashboard />
+              <Dashboard loading />
             </PrivateRoute>
           }
           loading
@@ -109,7 +135,7 @@ const RoutesApp = () => {
           path="tours"
           element={
             <PrivateRoute role={['ROLE_ADMIN']}>
-              <Tours />
+              <Tours loading />
             </PrivateRoute>
           }
           loading
@@ -117,8 +143,8 @@ const RoutesApp = () => {
         <Route
           path="users"
           element={
-            <PrivateRoute role={['ROLE_USER']}>
-              <Users />
+            <PrivateRoute role={['ROLE_ADMIN']}>
+              <Users loading />
             </PrivateRoute>
           }
           loading
@@ -127,7 +153,7 @@ const RoutesApp = () => {
           path="customers"
           element={
             <PrivateRoute role={['ROLE_ADMIN']}>
-              <Customers />
+              <Customers loading />
             </PrivateRoute>
           }
           loading
@@ -136,26 +162,18 @@ const RoutesApp = () => {
           path="reviews"
           element={
             <PrivateRoute role={['ROLE_ADMIN']}>
-              <Reviews />
+              <Reviews loading />
             </PrivateRoute>
           }
           loading
         />
       </Route>
-      <Route
-        path="checkout/:id"
-        element={
-          <PrivateRoute role={['ROLE_ADMIN']}>
-            <Checkout />
-          </PrivateRoute>
-        }
-      />
 
       <Route
         path="cms"
         element={
           <PrivateRoute role={['ROLE_CUSTOMER']}>
-            <CMSCustomer />
+            <CMSCustomer loading />
           </PrivateRoute>
         }
       >
@@ -164,7 +182,7 @@ const RoutesApp = () => {
           path="dashboard"
           element={
             <PrivateRoute role={['ROLE_CUSTOMER']}>
-              <CMSDashBoard />
+              <CMSDashBoard loading />
             </PrivateRoute>
           }
           loading
@@ -173,7 +191,7 @@ const RoutesApp = () => {
           path="tours"
           element={
             <PrivateRoute role={['ROLE_CUSTOMER']}>
-              <CMSTours />
+              <CMSTours loading />
             </PrivateRoute>
           }
           loading
@@ -191,7 +209,7 @@ const RoutesApp = () => {
           path="edit-tour/:id"
           element={
             <PrivateRoute role={['ROLE_CUSTOMER']}>
-              <CMSEditTour />
+              <CMSEditTour loading />
             </PrivateRoute>
           }
           loading
@@ -200,13 +218,22 @@ const RoutesApp = () => {
           path="set-schedule/:id"
           element={
             <PrivateRoute role={['ROLE_CUSTOMER']}>
-              <CMSTourSchedule />
+              <CMSTourSchedule loading />
             </PrivateRoute>
           }
           loading
         />
       </Route>
-      <Route path="*" element={<Page404 />} />
+      <Route
+        path="*"
+        element={
+          <>
+            <Header />
+            <Page404 />
+            <Footer />
+          </>
+        }
+      />
     </Routes>
   );
 };

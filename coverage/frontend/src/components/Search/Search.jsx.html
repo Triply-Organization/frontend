@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>140/140</span>
+                <span class='fraction'>153/153</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>140/140</span>
+                <span class='fraction'>153/153</span>
             </div>
         
             
@@ -203,7 +203,20 @@
 <a name='L138'></a><a href='#L138'>138</a>
 <a name='L139'></a><a href='#L139'>139</a>
 <a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -241,7 +254,6 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -266,12 +278,26 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -370,25 +396,27 @@ const Search = props =&gt; {
           &lt;b&gt;{t('search.destination.title')}&lt;/b&gt;
           &lt;Form.Item
             name="destinations"
-            className="search-form__item search-form__destinations "&gt;
+            className="search-form__item search-form__destinations "
+          &gt;
             &lt;Select
               className="search-form__item__field"
               allowClear
               bordered={false}
               style={{ border: 'none' }}
               placeholder={t('search.destination.place_holder')}
-              showArrow&gt;
+              showArrow
+              data-testid="select-search-destination"
+            &gt;
               &lt;OptGroup label="All destinations"&gt;
                 {destinations &amp;&amp;
                   destinations.map((item, index) =&gt; (
-                    &lt;&gt;
-                      &lt;Option
-                        key={index}
-                        value={item.id}
-                        data-testid="option-search-destination"&gt;
-                        {item.name}
-                      &lt;/Option&gt;
-                    &lt;/&gt;
+                    &lt;Option
+                      key={index}
+                      value={item.id}
+                      data-testid="option-search-destination"
+                    &gt;
+                      {item.name}
+                    &lt;/Option&gt;
                   ))}
               &lt;/OptGroup&gt;
             &lt;/Select&gt;
@@ -402,17 +430,24 @@ const Search = props =&gt; {
           &lt;b&gt;{t('search.service.title')}&lt;/b&gt;
           &lt;Form.Item
             name="services"
-            className="search-form__item search-form__activity"&gt;
+            className="search-form__item search-form__activity"
+          &gt;
             &lt;Select
               className="search-form__item__field"
               allowClear
               bordered={false}
+              data-testid="select-search-services"
               placeholder={t('search.service.place_holder')}
-              style={{ border: 'none' }}&gt;
+              style={{ border: 'none' }}
+            &gt;
               &lt;OptGroup label="All Activity"&gt;
                 {services &amp;&amp;
                   services.map((item, index) =&gt; (
-                    &lt;Option key={index} value={item.id}&gt;
+                    &lt;Option
+                      key={index}
+                      value={item.id}
+                      data-testid="option-search-services"
+                    &gt;
                       {item.name}
                     &lt;/Option&gt;
                   ))}
@@ -428,7 +463,8 @@ const Search = props =&gt; {
           &lt;b&gt;{t('search.when.title')}&lt;/b&gt;
           &lt;Form.Item
             name="when"
-            className="search-form__item search-form__when"&gt;
+            className="search-form__item search-form__when"
+          &gt;
             &lt;DatePicker
               className="search-form__item__field"
               bordered={false}
@@ -446,14 +482,16 @@ const Search = props =&gt; {
           &lt;b&gt;{t('search.guest.title')}&lt;/b&gt;
           &lt;Form.Item
             name="guests[]"
-            className="search-form__item search-form__guests"&gt;
+            className="search-form__item search-form__guests"
+          &gt;
             &lt;Select
               className="select-guest-mul search-form__item__field"
               mode="multiple"
               showArrow
               bordered={false}
               style={{ padding: 0, border: 'none' }}
-              placeholder={t('search.guest.place_holder')}&gt;
+              placeholder={t('search.guest.place_holder')}
+            &gt;
               &lt;Option value="1"&gt;{t('search.guest.item.adult')}&lt;/Option&gt;
               &lt;Option value="2"&gt;{t('search.guest.item.young')}&lt;/Option&gt;
               &lt;Option value="3"&gt;{t('search.guest.item.children')}&lt;/Option&gt;
@@ -467,7 +505,8 @@ const Search = props =&gt; {
           type="primary"
           htmlType="submit"
           className="search-form__item__button"
-          icon={&lt;AiOutlineSearch style={{ fontSize: '20px' }} /&gt;}&gt;
+          icon={&lt;AiOutlineSearch style={{ fontSize: '20px' }} /&gt;}
+        &gt;
           {t('cta.search')}
         &lt;/Button&gt;
       &lt;/Form.Item&gt;
@@ -490,7 +529,7 @@ export default Search;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Fri Jul 08 2022 00:05:26 GMT+0700 (Indochina Time)
+                at Sat Jul 09 2022 11:57:06 GMT+0700 (Indochina Time)
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

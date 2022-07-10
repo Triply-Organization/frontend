@@ -4,8 +4,10 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
 import { login } from '../../app/loginSlice';
+import bgLogin from '../../assets/images/bg-2.jpg';
 import LanguageSelect from '../../components/LanguageSelect/LanguageSelect';
 import './Login.scss';
 
@@ -20,23 +22,37 @@ const Login = () => {
   const [form] = Form.useForm();
   const onFinish = values => {
     dispatch(login(values));
-    form.resetFields();
   };
+
+  const loadingContext = useLoadingContext();
+
+  useEffect(() => {
+    var src = bgLogin;
+    var image = new Image();
+    image.addEventListener('load', function () {
+      document.getElementById('bgLogin').style.backgroundImage =
+        'url(' + src + ')';
+    });
+    image.src = src;
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
+  }, []);
 
   useEffect(() => {
     if (user && user.roles) {
       if (user.roles.includes('ROLE_ADMIN')) {
         navigate('/admin');
       } else if (user.roles.includes('ROLE_CUSTOMER')) {
-        navigate('/');
+        navigate(-1);
       } else if (user.roles.includes('ROLE_USER')) {
-        navigate('/');
+        navigate(-1);
       }
     }
   }, [user]);
 
   return (
-    <div className="ctn ctn-login">
+    <div className="ctn ctn-login" id="bgLogin">
       <div className="ctn-login__login-form">
         <div className="ctn-login__login-form__title">
           <Title level={2}>{t('login.welcome_back')}</Title>

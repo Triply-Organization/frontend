@@ -10,7 +10,6 @@ import { TbTicket } from 'react-icons/tb';
 import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.png';
-import CurrencySelect from '../CurrencySelect/CurrencySelect';
 import LanguageSelect from './../LanguageSelect/LanguageSelect';
 import './Header.scss';
 import MobileNav from './MobileNav/MobileNav';
@@ -19,10 +18,10 @@ import Navbar from './Navbar';
 export default function Header() {
   // state set for active tab
   const [activeTab, setActiveTab] = useState(() => {
-    if (window.location.pathname.includes('tour')) {
-      return 1;
-    } else {
+    if (location.pathname === '/') {
       return 0;
+    } else {
+      return 1;
     }
   });
 
@@ -60,7 +59,7 @@ export default function Header() {
                   label: (
                     <span className="header__language-item">
                       <Link
-                        to="/setting-account/1"
+                        to={`/setting-account/${id}`}
                         className="header__language-words"
                       >
                         {t('header.logged_in.my_profile')}
@@ -267,9 +266,6 @@ export default function Header() {
           />
         ) : (
           <>
-            <div className="header__multi-currency">
-              <CurrencySelect />
-            </div>
             <div className="header__multi-lang-wrapper">
               <LanguageSelect />
             </div>

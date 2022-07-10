@@ -9,7 +9,7 @@ import './OrderDetail.scss';
 const { Title, Text } = Typography;
 
 const OrderDetail = props => {
-  const { data, finalTotal, discountValue, taxInfo } = props;
+  const { data, finalTotal, discountValue, taxInfo, voucherCode } = props;
   const { t } = useTranslation();
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
@@ -20,7 +20,11 @@ const OrderDetail = props => {
       <div className="checkout-info-display">
         <Row gutter={8}>
           <Col lg={8} md={6} sm={6} xs={0}>
-            <Image width={200} src={data.imageTour?.path} />
+            <Image
+              data-testid="test-imageUrl"
+              width={200}
+              src={data?.imageTour?.path}
+            />
           </Col>
           <Col
             lg={16}
@@ -29,22 +33,22 @@ const OrderDetail = props => {
             xs={22}
             className="checkout-info-display__content"
           >
-            <Title level={4}>{data.tourTitle}</Title>
+            <Title level={4}>{data?.tourTitle}</Title>
             <section>
               <Text strong>{t('checkout.order_detail.date')} </Text>
-              <Text>{moment(data.startDay?.date).format('YYYY-MM-DD')}</Text>
+              <Text>{moment(data?.startDay?.date).format('YYYY-MM-DD')}</Text>
             </section>
             <section>
               <Text strong>{t('checkout.order_detail.time')} </Text>
               <Text>12:00 pm</Text>
             </section>
             <Text strong>{t('checkout.order_detail.duration')} </Text>
-            <Text>{data.duration} days</Text>
+            <Text>{data?.duration} days</Text>
             <section>
               <Text strong>{t('checkout.order_detail.ticket.title')} </Text>
             </section>
             <section className="checkout-info-display__ticket-ctn">
-              {data.tickets?.adult ? (
+              {data?.tickets?.adult ? (
                 <span>
                   <Text>{t('checkout.order_detail.ticket.adult')} </Text>
                   <Text strong>
@@ -59,11 +63,11 @@ const OrderDetail = props => {
                   </Text>
                 </span>
               ) : null}
-              {data.tickets?.youth ? (
+              {data?.tickets?.youth ? (
                 <span>
                   <Text>{t('checkout.order_detail.ticket.youth')}</Text>
                   <Text strong>
-                    {data.tickets.youth.priceTick?.toLocaleString(
+                    {data?.tickets?.youth.priceTick?.toLocaleString(
                       `${currencyString}`,
                       {
                         style: 'currency',
@@ -74,7 +78,7 @@ const OrderDetail = props => {
                   </Text>
                 </span>
               ) : null}
-              {data.tickets?.children ? (
+              {data?.tickets?.children ? (
                 <span>
                   <Text>{t('checkout.order_detail.ticket.children')}</Text>
                   <Text strong>
@@ -85,7 +89,7 @@ const OrderDetail = props => {
                         currency: `${currencyItem}`,
                       },
                     )}{' '}
-                    x{data.tickets.children.amount}
+                    x{data?.tickets?.children?.amount}
                   </Text>
                 </span>
               ) : null}
@@ -101,7 +105,14 @@ const OrderDetail = props => {
               <Text strong>{t('checkout.order_detail.sub_total')}</Text>
             </section>
             <section>
-              <Text strong>{t('checkout.order_detail.discount')}</Text>
+              <Text strong>
+                {data?.bill?.discount || discountValue
+                  ? t('checkout.order_detail.discount')
+                  : null}
+              </Text>
+            </section>
+            <section>
+              <Text strong>{voucherCode ? 'Voucher Applied' : null}</Text>
             </section>
             <section>
               <Text strong>{t('checkout.order_detail.tax')}</Text>
@@ -120,24 +131,31 @@ const OrderDetail = props => {
               </Text>
             </section>
             <section>
-              <Text strong>
+              <Text strong data-testid="text-discount">
                 {data?.bill?.discount
                   ? data?.bill?.discount
                   : discountValue
                   ? `-${discountValue}%`
-                  : '0%'}
+                  : null}
               </Text>
+            </section>
+            <section>
+              <Text type="success">{voucherCode ? voucherCode : null}</Text>
             </section>
             <section>
               <Text strong>{taxInfo ? taxInfo : 8}%</Text>
             </section>
             <section>
-              <Title level={4} className="result-payment">
+              <Title
+                level={4}
+                className="result-payment"
+                data-testid="text-finalTotal"
+              >
                 {!finalTotal?.toLocaleString(`${currencyString}`, {
                   style: 'currency',
                   currency: `${currencyItem}`,
                 })
-                  ? data.subTotal?.toLocaleString(`${currencyString}`, {
+                  ? data?.subTotal?.toLocaleString(`${currencyString}`, {
                       style: 'currency',
                       currency: `${currencyItem}`,
                     })
@@ -159,6 +177,7 @@ OrderDetail.propTypes = {
   finalTotal: PropTypes.number,
   discountValue: PropTypes.number,
   taxInfo: PropTypes.number,
+  voucherCode: PropTypes.string,
 };
 
 export default OrderDetail;

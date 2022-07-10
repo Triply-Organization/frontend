@@ -79,7 +79,6 @@ export default function Tours() {
     if (!searchParams.get('page')) {
       setSearchParams({ page });
     } else {
-      console.log(totalPages);
       if (searchParams.get('page') > totalPages) {
         // setSearchParams({ page: totalPages });
       }
@@ -88,7 +87,9 @@ export default function Tours() {
     dispatch(getTours(location.search));
 
     //call method to indicate that loading is done
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   };
 
   // HANDLE CONFIRM DISABLED

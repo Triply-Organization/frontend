@@ -23,7 +23,7 @@ export const tourAPI = {
     return axiosClient.post(url, params);
   },
   getToursByFilter(params) {
-    const url = `/tours${decodeURIComponent(params)}`;
+    const url = `/tours/${decodeURIComponent(params)}`;
     return axiosClient.get(url);
   },
 
@@ -59,5 +59,10 @@ export const tourAPI = {
     return axiosClient.patch(url, params.body, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
+  },
+
+  getPopularTours() {
+    const url = `/tours/`;
+    return axiosClient.get(url);
   },
 };

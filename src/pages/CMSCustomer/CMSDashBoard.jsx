@@ -11,7 +11,9 @@ const { Title } = Typography;
 
 const CMSDashBoard = () => {
   const loadingContext = useLoadingContext();
-  loadingContext.done();
+  setTimeout(() => {
+    loadingContext.done();
+  }, 600);
 
   let data = [];
   let dataCol = [];

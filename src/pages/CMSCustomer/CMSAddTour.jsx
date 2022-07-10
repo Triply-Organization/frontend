@@ -8,6 +8,7 @@ import {
   Select,
   Space,
   Tabs,
+  Typography,
   Upload,
   message,
 } from 'antd';
@@ -16,13 +17,14 @@ import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineInbox, AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import { createTour, getDestinationsServiceTours } from '../../app/toursSlice';
 import './CMSAddTour.scss';
 
 const { TabPane } = Tabs;
+const { Title } = Typography;
 const { TextArea } = Input;
 const { Panel } = Collapse;
 const { Dragger } = Upload;
@@ -49,7 +51,9 @@ const CMSAddTour = () => {
     ) {
       dispatch(getDestinationsServiceTours());
     }
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   }, []);
 
   useEffect(() => {
@@ -84,11 +88,9 @@ const CMSAddTour = () => {
     let resGallery = [];
 
     if (!_.isEmpty(galleryImage)) {
-      // console.log(galleryImageOnChange);
       // Delete gallery image is removed
       resGallery = galleryImage.filter(function (o1) {
         return galleryImageOnChange.fileList.some(function (o2) {
-          // console.log(galleryImage);
           return o1.file.uid === o2.uid; // return the ones with equal id
         });
       });
@@ -101,8 +103,8 @@ const CMSAddTour = () => {
         day: index + 1,
       })),
     };
-    form.resetFields();
     dispatch(createTour(response));
+    form.resetFields();
   };
 
   const uploadCoverImage = async options => {
@@ -117,7 +119,7 @@ const CMSAddTour = () => {
     fmData.append('image[]', file);
     try {
       const res = await axios.post(
-        import.meta.env.VITE_SERVER_BASE_URL,
+        import.meta.env.VITE_SERVER_BASE_URL + 'images/',
         fmData,
         config,
       );
@@ -147,7 +149,7 @@ const CMSAddTour = () => {
     fmData.append('image[]', file);
     try {
       const res = await axios.post(
-        import.meta.env.VITE_SERVER_BASE_URL,
+        import.meta.env.VITE_SERVER_BASE_URL + 'images/',
         fmData,
         config,
       );
@@ -168,18 +170,14 @@ const CMSAddTour = () => {
     <>
       <Breadcrumb
         style={{
-          margin: '16px 0',
+          marginLeft: '-26px',
+          marginBottom: '20px',
         }}
       >
         <Breadcrumb.Item>
-          <Link to="/home">Home</Link>
+          <Title level={3}>Dashboard</Title>
         </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <Link to="/cms/tours">Tours</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>Add Tour</Breadcrumb.Item>
       </Breadcrumb>
-
       <Form
         form={form}
         className="form-tour"
@@ -367,7 +365,7 @@ const CMSAddTour = () => {
                         customRequest={uploadGalleryImage}
                         listType="picture"
                         onChange={e => setGalleryImageonChange(e)}
-                        maxCount={5}
+                        maxCount={10}
                       >
                         <p className="ant-upload-drag-icon">
                           <AiOutlineInbox />

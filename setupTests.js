@@ -1,4 +1,7 @@
 /* eslint-disable no-undef */
+import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/extend-expect';
+
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation(query => ({

@@ -3,24 +3,24 @@ import moment from 'moment';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
-import { OrderDetail } from '../../components';
-import { ImageBreadcrumb } from '../../components/';
+import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
+import OrderDetail from '../../components/OderDetail/OrderDetail';
 import { getConfirmInfo } from './../../app/checkoutSlice';
 import './Confirmation.scss';
 
 const { Title, Text } = Typography;
 
 const Confirmation = () => {
+  const loadingContext = useLoadingContext();
   const { id } = useParams();
   const confirmInfo = useSelector(state => state.checkout.confirmationData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currencyString = localStorage.getItem('currencyString') || 'en-US';
   const currencyItem = localStorage.getItem('currencyItem') || 'USD';
-
-  console.log(confirmInfo);
 
   const handleBackToHome = () => {
     navigate('/');
@@ -29,6 +29,14 @@ const Confirmation = () => {
 
   useEffect(() => {
     dispatch(getConfirmInfo(id));
+    setTimeout(() => {
+      loadingContext.done();
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }, 600);
   }, []);
 
   return (
@@ -51,7 +59,7 @@ const Confirmation = () => {
             subTitle={
               confirmInfo.status === 'unpaid'
                 ? 'Please payment your order'
-                : 'Your order is completed and received, and a confirmation email was sent to you. You will pay the full amount later. Thank you!'
+                : 'Your order is completed and received, and a confirmation email was sent to you. Thank you!'
             }
             extra={[
               <Button type="primary" key="console" onClick={handleBackToHome}>

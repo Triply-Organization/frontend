@@ -14,25 +14,32 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLoadingContext } from 'react-router-loading';
 
 import { axiosClient } from '../../api/config/axiosClient';
 import { checkout, getVoucherInfo } from '../../app/checkoutSlice';
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import paypal from '../../assets/images/paypal-logo.png';
 import stripe from '../../assets/images/stripe-logo.png';
-import { ImageBreadcrumb, OrderDetail } from '../../components';
+import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
+import OrderDetail from '../../components/OderDetail/OrderDetail';
 import './Checkout.scss';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const Checkout = () => {
+  const loadingContext = useLoadingContext();
   const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
+  const status = localStorage.getItem('status');
   const [taxInfo, setTaxInfo] = useState(0);
   const [finalTotal, setFinalTotal] = useState(
     checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
   );
   const [discountValue, setDiscountValue] = useState(0);
   const [voucherVal, setVoucherVal] = useState('');
+  const [isDisableBtn, setDisableBtn] = useState(false);
+  const [voucherRemain, setVoucherRemain] = useState(0);
+  const [voucherCode, setVoucherCode] = useState('');
   const loading = useSelector(state => state.checkout.loading);
   const voucherData = useSelector(state => state.checkout.voucher);
   const [form] = Form.useForm();
@@ -41,6 +48,7 @@ const Checkout = () => {
   const { t } = useTranslation();
 
   const onFinish = values => {
+    setDisableBtn(true);
     const valueWithoutVoucher = {
       orderId: checkoutData.id,
       tourId: checkoutData.tourId,
@@ -69,16 +77,15 @@ const Checkout = () => {
       email: values.email,
       name: `${values.first_name} ${values.last_name}`,
     };
-    if (voucherData.remain !== 0) {
+    if (voucherRemain !== 0) {
       if (!values.discount) {
-        console.log(valueWithoutVoucher);
         dispatch(checkout(valueWithoutVoucher));
       } else {
-        console.log(newValues);
         dispatch(checkout(newValues));
       }
     } else {
       message.error('Your voucher is expired!');
+      setDisableBtn(false);
     }
   };
 
@@ -91,10 +98,17 @@ const Checkout = () => {
         },
       });
       const taxData = res.data.data.percent;
-      console.log(taxData);
       setTaxInfo(taxData);
     };
     getTax();
+    setTimeout(() => {
+      loadingContext.done();
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }, 600);
   }, []);
 
   useEffect(() => {
@@ -105,9 +119,12 @@ const Checkout = () => {
 
   useEffect(() => {
     setDiscountValue(voucherData.discount);
+    setVoucherRemain(voucherData.remain);
+    setVoucherCode(voucherData.code);
     if (voucherData.discount) {
       setFinalTotal(
-        checkoutData.subTotal -
+        checkoutData.subTotal +
+          (checkoutData.subTotal * taxInfo) / 100 -
           (checkoutData.subTotal * voucherData.discount) / 100,
       );
     } else if (!voucherData.id) {
@@ -128,6 +145,8 @@ const Checkout = () => {
         checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
       );
       setDiscountValue(0);
+      setVoucherRemain('');
+      setVoucherCode('');
     }
 
     filterTimeout.current = setTimeout(() => {
@@ -136,7 +155,6 @@ const Checkout = () => {
   };
 
   const handleClickVoucherButton = () => {
-    console.log(voucherVal);
     const req = {
       code: voucherVal,
     };
@@ -157,12 +175,21 @@ const Checkout = () => {
             <Title level={2}>
               {t('checkout.order_detail.title')} #{checkoutData.id}
             </Title>
+            {status === 'refund' ? (
+              <Text type="danger">
+                You already refunded this tour. Booking unavailable!
+              </Text>
+            ) : status === 'paid' ? (
+              <Text type="success">You already paid this tour</Text>
+            ) : null}
           </div>
           <OrderDetail
             data={checkoutData}
             finalTotal={finalTotal}
             discountValue={discountValue}
             taxInfo={taxInfo}
+            voucherCode={voucherCode}
+            refundStatus={status}
           />
         </div>
 
@@ -315,16 +342,35 @@ const Checkout = () => {
                 </Checkbox>
               </Form.Item>
 
-              <Form.Item>
-                <Button
-                  loading={loading}
-                  htmlType="submit"
-                  type="primary"
-                  className="button-checkout-page"
-                >
-                  {t('cta.complete_order')}
-                </Button>
-              </Form.Item>
+              {status === 'refund' ? (
+                <Form.Item>
+                  <Button
+                    danger
+                    type="primary"
+                    className="button-checkout-page"
+                  >
+                    You are refuned
+                  </Button>
+                </Form.Item>
+              ) : status === 'paid' ? (
+                <Form.Item>
+                  <Button type="dashed" className="button-checkout-page">
+                    You already paid this tour
+                  </Button>
+                </Form.Item>
+              ) : (
+                <Form.Item>
+                  <Button
+                    disabled={isDisableBtn}
+                    loading={loading}
+                    htmlType="submit"
+                    type="primary"
+                    className="button-checkout-page"
+                  >
+                    {t('cta.complete_order')}
+                  </Button>
+                </Form.Item>
+              )}
             </Form>
           </div>
         </div>

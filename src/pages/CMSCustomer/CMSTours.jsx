@@ -1,17 +1,20 @@
-import { Breadcrumb, Button, Space, Table, message } from 'antd';
+import { Breadcrumb, Button, Space, Table, Typography, message } from 'antd';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import { deleteTour, getToursCustomer } from '../../app/toursSlice';
 import './CMSTours.scss';
 
+const { Title } = Typography;
+
 const CMSTours = () => {
   const navigate = useNavigate();
   const data = useSelector(state => state.tours.toursCustomer);
+  const loading = useSelector(state => state.tours.loading);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const loadingContext = useLoadingContext();
   const [disableDelete, setDisableDelete] = useState(true);
@@ -19,11 +22,12 @@ const CMSTours = () => {
 
   useEffect(() => {
     dispatch(getToursCustomer());
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   }, []);
 
   useEffect(() => {
-    console.log(selectedRowKeys);
     if (_.isEmpty(selectedRowKeys)) setDisableDelete(true);
     else setDisableDelete(false);
   }, [selectedRowKeys]);
@@ -62,15 +66,9 @@ const CMSTours = () => {
       key: 'action',
       render: (_, record) => (
         <>
-          {record.status === 'disabled' ? (
-            <Button
-              type="primary"
-              danger
-              onClick={() => handleDelete(record.id)}
-            >
-              Reopen
-            </Button>
-          ) : (
+          {record.status === 'disabled' ? //   Reopen //   onClick={() => handleDelete(record.id)}> //   danger //   type="primary" // <Button
+          // </Button>
+          null : (
             <Space>
               <Button
                 type="primary"
@@ -116,19 +114,18 @@ const CMSTours = () => {
 
   return (
     <>
-      <Breadcrumb
-        style={{
-          margin: '16px 0',
-        }}
-      >
-        <Breadcrumb.Item>
-          <Link to="/home">Home</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>Tours</Breadcrumb.Item>
-      </Breadcrumb>
       <div className="cms-content-header">
-        <h2>Tours</h2>
-        <div>
+        <Breadcrumb
+          style={{
+            marginLeft: '-26px',
+            marginBottom: '20px',
+          }}
+        >
+          <Breadcrumb.Item>
+            <Title level={3}>Dashboard</Title>
+          </Breadcrumb.Item>
+        </Breadcrumb>
+        <div style={{ marginTop: '20px' }}>
           <Button
             type="primary"
             size="large"
@@ -151,6 +148,7 @@ const CMSTours = () => {
       </div>
 
       <Table
+        loading={loading}
         columns={columns}
         dataSource={data}
         pagination={{

@@ -65,7 +65,9 @@ export default function Users() {
     }
     dispatch(getAllUsers(location.search));
     //call method to indicate that loading is done
-    loadingContext.done();
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   };
 
   useEffect(() => {
@@ -94,7 +96,6 @@ export default function Users() {
 
       onOk() {
         // HANDLE DELETE ACCOUNT
-        // console.log(record)
         dispatch(
           deleteUser({
             id: record.id,

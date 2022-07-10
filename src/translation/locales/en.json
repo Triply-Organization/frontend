@@ -117,6 +117,7 @@
     },
 
     "all_tours": {
+      "tours": "Tours",
       "filter": {
         "title": "Filter",
         "price": "Price",
@@ -189,15 +190,15 @@
     "search": {
       "destination": {
         "title": "Destination",
-        "place_holder": "Where are you going?"
+        "place_holder": "Where will you go?"
       },
       "service": {
-        "title":"Service",
-        "place_holder": "All Activity"
+        "title":"Services",
+        "place_holder": "What do you need?"
       },
       "when": {
-        "title": "When",
-        "place_holder": "Select date"
+        "title": "Start from",
+        "place_holder": "When will you go?"
       },
       "guest": {
         "title": "Guest",

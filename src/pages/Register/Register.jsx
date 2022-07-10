@@ -3,9 +3,11 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 import { useStepsForm } from 'sunflower-antd';
 
 import { clearSuccess, register } from '../../app/registerSlice';
+import bgLogin from '../../assets/images/bg-2.jpg';
 import LanguageSelect from '../../components/LanguageSelect/LanguageSelect';
 import './Register.scss';
 
@@ -18,6 +20,21 @@ const Register = () => {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.register.loading);
   const isSuccess = useSelector(state => state.register.isSuccess);
+
+  const loadingContext = useLoadingContext();
+
+  useEffect(() => {
+    var src = bgLogin;
+    var image = new Image();
+    image.addEventListener('load', function () {
+      document.getElementById('bgLogin').style.backgroundImage =
+        'url(' + src + ')';
+    });
+    image.src = src;
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
+  }, []);
 
   const { t } = useTranslation();
 
@@ -195,7 +212,7 @@ const Register = () => {
           loading={loading}
           type="primary"
           onClick={() => {
-            submit().then(result => console.log(result));
+            submit();
           }}
           className="register-form-submit"
         >

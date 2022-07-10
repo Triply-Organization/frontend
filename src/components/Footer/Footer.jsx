@@ -61,7 +61,7 @@ export default function Footer() {
             <span className="section-4__link-icon">
               <MdAlternateEmail />
             </span>{' '}
-            <span className="section-4__link-words">support@triply.com</span>
+            <span className="section-4__link-words">support@triply.asia</span>
           </a>
         </div>
 
@@ -159,7 +159,6 @@ export default function Footer() {
             <Form
               form={formFollowByEmail}
               onFinish={e => {
-                console.log(e);
                 formFollowByEmail.resetFields();
                 message.success(
                   `Thank ${e.followByEmail} for signing up. We will always send you the latest rides`,

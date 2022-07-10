@@ -10,6 +10,7 @@ import { Layout, Menu } from 'antd';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
 import logo from '../../assets/images/logo-white.png';
 import './Admin.scss';
@@ -17,6 +18,7 @@ import './Admin.scss';
 const { Content, Footer, Sider } = Layout;
 
 export default function Admin() {
+  const loadingContext = useLoadingContext();
   const location = useLocation();
   const [url, setUrl] = useState(location.pathname.slice(7));
 
@@ -37,6 +39,9 @@ export default function Admin() {
     } else if (location.pathname.includes('reviews')) {
       setUrl('reviews');
     }
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   }, [location.pathname]);
 
   return (
