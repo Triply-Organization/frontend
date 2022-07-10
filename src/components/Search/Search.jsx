@@ -69,8 +69,6 @@ const Search = props => {
               showSearch={true}
               data-testid="select-search-services"
               placeholder={t('search.service.place_holder')}
-              mode="multiple"
-              maxTagCount={1}
               style={{ border: 'none' }}
             >
               <OptGroup label="All Activity">
