@@ -7,12 +7,17 @@
 .all-tours {
   width: 1290px;
   height: fit-content;
-  margin: 90px auto;
+  padding: 60px 0;
+  margin: 0 auto;
 
   &__filter {
-    margin-bottom: 1rem;
+    width: 100%;
     & .ant-collapse-header {
       padding: 1rem 0 !important;
+    }
+
+    & .ant-form-item {
+      margin: 0;
     }
 
     &__item {
@@ -25,13 +30,10 @@
 
   &__header {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
-
+    & .ant-collapse-header {
+      align-items: flex-end;
+    }
     &__sort {
       display: flex;
       align-items: center;
@@ -58,10 +60,18 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
+    height: calc(961.961px + 2rem);
   }
 
   &__pagination {
     width: 100%;
     text-align: center;
   }
+}
+
+.slider-input-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

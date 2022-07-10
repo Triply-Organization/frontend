@@ -1,16 +1,15 @@
 import { UserOutlined } from '@ant-design/icons';
+import { AreaChartOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu } from 'antd';
 import { Avatar } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineHome } from 'react-icons/ai';
 import { AiOutlineLogout } from 'react-icons/ai';
-import { MdFeedback } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
 import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.png';
-import CurrencySelect from '../CurrencySelect/CurrencySelect';
 import LanguageSelect from './../LanguageSelect/LanguageSelect';
 import './Header.scss';
 import MobileNav from './MobileNav/MobileNav';
@@ -18,8 +17,18 @@ import Navbar from './Navbar';
 
 export default function Header() {
   // state set for active tab
-  const [activeTab, setActiveTab] = useState(0);
-  console.log(activeTab);
+  const [activeTab, setActiveTab] = useState(() => {
+    if (location.pathname === '/') {
+      return 0;
+    } else {
+      return 1;
+    }
+  });
+
+  const token = localStorage.getItem('token');
+  const roles = JSON.parse(localStorage.getItem('user'))?.roles || [];
+  const id = JSON.parse(localStorage.getItem('user'))?.id || 1;
+
   // state set for window srollY
   const [scrollY, setScrollY] = useState(window.scrollY);
   // state set for window width
@@ -28,7 +37,6 @@ export default function Header() {
   const [mobileNavStatus, setMobileNavStatus] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -40,37 +48,78 @@ export default function Header() {
       items={[
         {
           key: '1',
-          label: (
-            <span className="header__language-item">
-              <Link to="/setting-account/1" className="header__language-words">
-                My profile
-              </Link>
-            </span>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <span className="header__language-item">
-              <Link to="/my-tours" className="header__language-words">
-                {t('header.logged_in.tour')}
-              </Link>
-            </span>
-          ),
-        },
-        {
-          key: '3',
-          label: (
-            <span className="header__language-item">
-              <Link
-                onClick={handleLogout}
-                to="/login"
-                className="header__language-words"
-              >
-                {t('cta.logout')}
-              </Link>
-            </span>
-          ),
+          type: 'group',
+          label: `Hi ${
+            JSON.parse(localStorage.getItem('user'))?.name || 'there'
+          }`,
+          children: [
+            roles.includes('ROLE_USER')
+              ? {
+                  key: '1-1',
+                  label: (
+                    <span className="header__language-item">
+                      <Link
+                        to={`/setting-account/${id}`}
+                        className="header__language-words"
+                      >
+                        {t('header.logged_in.my_profile')}
+                      </Link>
+                    </span>
+                  ),
+                }
+              : null,
+            roles.includes('ROLE_USER')
+              ? {
+                  key: '1-2',
+                  label: (
+                    <span className="header__language-item">
+                      <Link to="/my-tours" className="header__language-words">
+                        {t('header.logged_in.tour')}
+                      </Link>
+                    </span>
+                  ),
+                }
+              : null,
+            roles.includes('ROLE_ADMIN')
+              ? !roles.includes('ROLE_USER')
+                ? {
+                    key: '1-21',
+                    label: (
+                      <span className="header__language-item">
+                        <Link to="/admin" className="header__language-words">
+                          {t('header.logged_in.dashboard')}
+                        </Link>
+                      </span>
+                    ),
+                  }
+                : null
+              : !roles.includes('ROLE_USER')
+              ? {
+                  key: '1-21',
+                  label: (
+                    <span className="header__language-item">
+                      <Link to="/cms" className="header__language-words">
+                        {t('header.logged_in.dashboard')}
+                      </Link>
+                    </span>
+                  ),
+                }
+              : null,
+            {
+              key: '1-3',
+              label: (
+                <span className="header__language-item">
+                  <Link
+                    onClick={handleLogout}
+                    to="/login"
+                    className="header__language-words"
+                  >
+                    {t('cta.logout')}
+                  </Link>
+                </span>
+              ),
+            },
+          ],
         },
       ]}
     />
@@ -78,12 +127,36 @@ export default function Header() {
 
   //---------- User Data When Login ----------->
   const userDataLoginMobile = [
-    { title: `${t('header.logged_in.tour')}`, icon: <TbTicket />, link: '/' },
-    {
-      title: `${t('header.logged_in.review')}`,
-      icon: <MdFeedback />,
-      link: '/',
-    },
+    roles.includes('ROLE_USER')
+      ? {
+          title: `${t('header.logged_in.my_profile')}`,
+          icon: <UserOutlined />,
+          link: `/setting-account/${id}`,
+        }
+      : null,
+    roles.includes('ROLE_USER')
+      ? {
+          title: `${t('header.logged_in.tour')}`,
+          icon: <TbTicket />,
+          link: '/my-tours',
+        }
+      : null,
+    roles.includes('ROLE_ADMIN')
+      ? !roles.includes('ROLE_USER')
+        ? {
+            title: `${t('header.logged_in.dashboard')}`,
+            icon: <AreaChartOutlined />,
+            link: '/admin',
+          }
+        : null
+      : !roles.includes('ROLE_USER')
+      ? {
+          title: `${t('header.logged_in.dashboard')}`,
+          icon: <AreaChartOutlined />,
+          link: '/cms',
+        }
+      : null,
+
     {
       title: `${t('cta.logout')}`,
       icon: <AiOutlineLogout />,
@@ -98,13 +171,13 @@ export default function Header() {
       title: `${t('header.home')}`,
       icon: <AiOutlineHome />,
       subnav: [],
-      to: 'home',
+      link: '/',
     },
     {
       title: `${t('header.tour')}`,
       icon: <TbTicket />,
       subnav: [],
-      to: 'tours',
+      link: '/tours',
     },
   ];
 
@@ -144,7 +217,6 @@ export default function Header() {
   );
 
   const handleSetActiveTab = id => {
-    console.log('----CHANGE TAB');
     setActiveTab(id);
   };
 
@@ -173,7 +245,7 @@ export default function Header() {
       }
     >
       <div className="header__left-side">
-        <div className="header__logo-wrapper" onClick={() => navigate('/home')}>
+        <div className="header__logo-wrapper" onClick={() => navigate('/')}>
           <img src={logo} alt="logo" className="header__logo" />
         </div>
         {width < 1023 ? null : (
@@ -194,9 +266,6 @@ export default function Header() {
           />
         ) : (
           <>
-            <div className="header__multi-currency">
-              <CurrencySelect />
-            </div>
             <div className="header__multi-lang-wrapper">
               <LanguageSelect />
             </div>
@@ -218,7 +287,17 @@ export default function Header() {
                   arrow
                 >
                   <div className="header__account-icon">
-                    <Avatar icon={<UserOutlined />} />
+                    <Avatar
+                      src={
+                        JSON.parse(localStorage.getItem('user'))?.avatar || null
+                      }
+                      icon={
+                        JSON.parse(localStorage.getItem('user'))
+                          ?.avatar ? null : (
+                          <UserOutlined />
+                        )
+                      }
+                    />
                   </div>
                 </Dropdown>
               </div>

@@ -1,49 +1,22 @@
-/* eslint-disable no-unused-vars */
 import { Column, Line } from '@ant-design/plots';
 import { Breadcrumb } from 'antd';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Typography } from 'antd';
+import moment from 'moment';
+import React from 'react';
 import { useLoadingContext } from 'react-router-loading';
 
 import './CMSDashBoard.scss';
 
+const { Title } = Typography;
+
 const CMSDashBoard = () => {
   const loadingContext = useLoadingContext();
-  loadingContext.done();
+  setTimeout(() => {
+    loadingContext.done();
+  }, 600);
 
-  // LINE
-  const [data, setData] = useState([
-    {
-      date: '2021-12-01',
-      gdp: 0,
-      name: 'Vung Tau - Viet Nam',
-    },
-    {
-      date: '2022-12-01',
-      gdp: 6700,
-      name: 'Vung Tau - Viet Nam',
-    },
-    {
-      date: '2023-01-01',
-      gdp: 1000,
-      name: 'Vung Tau - Viet Nam',
-    },
-    {
-      date: '2021-12-01',
-      gdp: 0,
-      name: 'Can Tho - Viet Nam',
-    },
-    {
-      date: '2023-01-01',
-      gdp: 0,
-      name: 'Can Tho - Viet Nam',
-    },
-    {
-      date: '2023-02-01',
-      gdp: 1000,
-      name: 'Can Tho - Viet Nam',
-    },
-  ]);
+  let data = [];
+  let dataCol = [];
 
   const config = {
     data,
@@ -52,99 +25,104 @@ const CMSDashBoard = () => {
     seriesField: 'name',
     yAxis: {
       label: {
-        formatter: v => `$${v}`,
+        formatter: v =>
+          v.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
       },
     },
     legend: {
-      position: 'bottom',
+      position: 'top',
     },
     smooth: true,
+    animation: {
+      appear: {
+        animation: 'path-in',
+        duration: 5000,
+      },
+    },
   };
 
-  // COLOUM
-  const dataCol = [
-    {
-      date: '2023-01-01',
-      booking: 38,
-    },
-    {
-      date: '2023-02-01',
-      booking: 52,
-    },
-    {
-      date: '2023-03-01',
-      booking: 61,
-    },
-    {
-      date: '2023-04-01',
-      booking: 145,
-    },
-    {
-      date: '2023-05-01',
-      booking: 48,
-    },
-    {
-      date: '2023-06-01',
-      booking: 38,
-    },
-    {
-      date: '2023-07-01',
-      booking: 38,
-    },
-    {
-      date: '2023-08-01',
-      booking: 38,
-    },
-  ];
   const configCol = {
     data: dataCol,
+    isStack: true,
     xField: 'date',
     yField: 'booking',
+    seriesField: 'name',
     label: {
       position: 'middle',
-      style: {
-        fill: '#FFFFFF',
-        opacity: 0.6,
-      },
-    },
-    xAxis: {
-      label: {
-        autoHide: true,
-        autoRotate: false,
-      },
-    },
-    meta: {
-      type: {
-        alias: '类别',
-      },
-      sales: {
-        alias: '销售额',
-      },
+
+      layout: [
+        {
+          type: 'interval-adjust-position',
+        },
+        {
+          type: 'interval-hide-overlap',
+        },
+        {
+          type: 'adjust-color',
+        },
+      ],
     },
   };
+
+  for (let i = 1; i <= 6; i++) {
+    dataCol.push(
+      {
+        date: moment('2022-07-07').add(i, 'days').format('YYYY-MM-DD'),
+        booking: i === 1 ? 0 : Math.floor(Math.random() * 10 + 1),
+        name: 'Can Tho',
+      },
+      {
+        date: moment('2022-07-07').add(i, 'days').format('YYYY-MM-DD'),
+        booking: i === 1 ? 0 : Math.floor(Math.random() * 10 + 1),
+        name: 'Ha Noi',
+      },
+      {
+        date: moment('2022-07-07').add(i, 'days').format('YYYY-MM-DD'),
+        booking: i === 1 ? 0 : Math.floor(Math.random() * 10 + 1),
+        name: 'Phu Quoc',
+      },
+    );
+  }
+
+  for (let i = 1; i <= 6; i++) {
+    data.push(
+      {
+        date: moment('2022-07-07').add(i, 'days').format('YYYY-MM-DD'),
+        gdp: i === 1 ? 0 : Math.floor(Math.random() * 2000 + 1000),
+        name: 'Can Tho',
+      },
+      {
+        date: moment('2022-07-07').add(i, 'days').format('YYYY-MM-DD'),
+        gdp: i === 1 ? 0 : Math.floor(Math.random() * 2000 + 1000),
+        name: 'Ha Noi',
+      },
+      {
+        date: moment('2022-07-07').add(i, 'days').format('YYYY-MM-DD'),
+        gdp: i === 1 ? 0 : Math.floor(Math.random() * 2000 + 1500),
+        name: 'Phu Quoc',
+      },
+    );
+  }
+
   return (
     <>
       <Breadcrumb
         style={{
-          margin: '16px 0',
+          marginLeft: '-26px',
         }}
       >
         <Breadcrumb.Item>
-          <Link to="/home">Home</Link>
+          <Title level={3}>Dashboard</Title>
         </Breadcrumb.Item>
-        <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
       </Breadcrumb>
-      <h2>Dashboard</h2>
       <div className="customer-dashboard">
         <div className="customer-dashboard__section">
-          <h3 style={{ marginBottom: '2rem' }}>Total monthly revenue</h3>
-          <Line {...config} />
+          <h3 style={{ marginBottom: '2rem' }}>Total revenue per day</h3>
+          <Line {...config} style={{ width: '1541px' }} />
         </div>
         <div className="customer-dashboard__section">
-          <h3 style={{ marginBottom: '2rem' }}>
-            Total number of tours booked by month
-          </h3>
-          <Column {...configCol} />
+          <h3 style={{ marginBottom: '2rem' }}>Total booking per day</h3>
+          <Column {...configCol} style={{ width: '1541px' }} />
         </div>
       </div>
     </>

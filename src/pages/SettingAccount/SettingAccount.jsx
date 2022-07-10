@@ -14,26 +14,33 @@ import {
   Upload,
   message,
 } from 'antd';
+import axios from 'axios';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { FcGoogle } from 'react-icons/fc';
+import { useTranslation } from 'react-i18next';
+import { useLoadingContext } from 'react-router-loading';
 
+import { userAPI } from '../../api/userAPI';
 import './SettingAccount.scss';
 
 const { confirm } = Modal;
 
 const SettingAccount = () => {
+  const userInfo = JSON.parse(localStorage.getItem('user'));
+  const [coverImg, setCoverImage] = useState({});
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
   const [isDisableSave, setDisableSave] = useState(true);
   const defaultValues = {
-    role: 'CUSTOMER',
-    avatar: '',
-    email: 'ddkhoa1206@gmail.com',
-    fullName: '',
-    phone: '012039102932',
-    address: 'Vietnam',
+    role: userInfo?.roles[0],
+    avatar: userInfo?.avatar,
+    email: userInfo?.email,
+    fullName: userInfo?.name,
+    phone: userInfo?.phone,
+    address: userInfo?.address,
   };
+  const loadingContext = useLoadingContext();
+
+  const { t } = useTranslation();
 
   const capitalizeText = text => {
     return (
@@ -41,17 +48,17 @@ const SettingAccount = () => {
     );
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
+  }, []);
+
   const [form] = Form.useForm();
 
   useEffect(() => {
     form.setFieldsValue(defaultValues);
   }, [form, defaultValues]);
-
-  const getBase64 = (img, callback) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-  };
 
   const beforeUpload = file => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -69,23 +76,66 @@ const SettingAccount = () => {
     return isJpgOrPng && isLt2M;
   };
 
-  const handleChange = info => {
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
-    }
-
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, url => {
-        setLoading(false);
-        setImageUrl(url);
-      });
+  const uploadCoverImage = async options => {
+    const { onSuccess, onError, file } = options;
+    const fmData = new FormData();
+    setLoading(true);
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    };
+    fmData.append('image[]', file);
+    try {
+      const res = await axios.post(
+        import.meta.env.VITE_SERVER_BASE_URL + 'images/',
+        fmData,
+        config,
+      );
+      onSuccess('Ok');
+      setLoading(false);
+      const newCoverImg = {
+        id: res.data.data[0]?.id,
+        path: res.data.data[0]?.path,
+      };
+      setCoverImage(newCoverImg);
+      localStorage.setItem(
+        'user',
+        JSON.stringify({ ...userInfo, avatar: newCoverImg?.path }),
+      );
+      console.log(res.data.data[0]);
+    } catch (err) {
+      console.log('Error: ', err);
+      onError({ err });
     }
   };
 
-  const submitHandler = values => {
+  const submitHandler = async values => {
     console.log(values);
+    const req = {
+      address: values?.address,
+      avatar: coverImg?.id,
+      email: userInfo?.email,
+      id: userInfo?.id,
+      name: values?.fullName,
+      phone: values?.phone,
+      roles: [userInfo?.roles[0]],
+    };
+    try {
+      await userAPI.editUser({
+        id: userInfo?.id,
+        body: req,
+      });
+      message.success({ content: 'Update Successfull!', key: 'success' });
+      localStorage.setItem(
+        'user',
+        JSON.stringify({ ...req, avatar: coverImg?.path }),
+      );
+    } catch (error) {
+      console.log(error);
+      message.error({ content: 'Update Failed!', key: 'failed' });
+    }
   };
 
   const onValuesChange = (changedValues, allValues) => {
@@ -104,12 +154,8 @@ const SettingAccount = () => {
       okText: 'Delete permanently',
       okType: 'danger',
       cancelText: 'No',
-      onOk() {
-        console.log('Delete');
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
+      onOk() {},
+      onCancel() {},
     });
   };
 
@@ -118,27 +164,31 @@ const SettingAccount = () => {
       <div className="setting-account-wrapper">
         <div className="setting-account-wrapper__header">
           <div className="setting-account-wrapper__header__text">
-            <h3>Profile</h3>
-            <p>Settings for your personal profile</p>
+            <h3>{t('my_profile.title')}</h3>
+            <p>{t('my_profile.note')}</p>
           </div>
           <div>
-            <Button type="text">Cancel</Button>
+            <Button type="text">{t('cta.cancle')}</Button>
             <Button
               type="primary"
               onClick={() => form.submit()}
               disabled={isDisableSave}
             >
-              Save changes
+              {t('cta.save')}
             </Button>
           </div>
         </div>
         <div className="setting-account-wrapper__content">
           <div className="setting-account-wrapper__content__image">
-            <h4>Profile picture</h4>
+            <h4>{t('my_profile.picture')}</h4>
             <div className="setting-account-wrapper__content__image__wrapper">
               <Space>
                 <Spin spinning={loading}>
-                  <Avatar size={48} icon={<UserOutlined />} src={imageUrl} />
+                  <Avatar
+                    size={48}
+                    icon={<UserOutlined />}
+                    src={!coverImg.path ? userInfo?.avatar : coverImg?.path}
+                  />
                 </Spin>
                 <div className="setting-account-wrapper__content__image__wrapper__info-wrapper">
                   <b>{defaultValues.fullName || defaultValues.email}</b>
@@ -149,18 +199,13 @@ const SettingAccount = () => {
                 name="avatar"
                 showUploadList={false}
                 beforeUpload={beforeUpload}
-                onChange={handleChange}
+                customRequest={uploadCoverImage}
               >
-                <Button icon={<UploadOutlined />}>Upload photo</Button>
+                <Button icon={<UploadOutlined />}>
+                  {t('cta.upload_photo')}
+                </Button>
               </Upload>
             </div>
-          </div>
-          <div className="setting-account-wrapper__content__google">
-            <FcGoogle style={{ fontSize: '28px' }} />
-            <p>
-              This account is connected to your Google account. Your detail can
-              only be changed from the Google account
-            </p>
           </div>
           <Form
             form={form}
@@ -172,17 +217,17 @@ const SettingAccount = () => {
             layout="vertical"
             className="setting-account-wrapper__content__form"
           >
-            <Form.Item label="Full name" name="fullName">
+            <Form.Item label={t('my_profile.form.full_name')} name="fullName">
               <Input />
             </Form.Item>
             <Form.Item
-              label="Phone"
+              label={t('my_profile.form.phone')}
               name="phone"
               rules={[{ min: 10, message: 'Your phone number is not correct' }]}
             >
               <Input type={'number'} style={{ width: '100%' }} />
             </Form.Item>
-            <Form.Item label="Address" name="address">
+            <Form.Item label={t('my_profile.form.address')} name="address">
               <Input />
             </Form.Item>
           </Form>
@@ -190,16 +235,13 @@ const SettingAccount = () => {
       </div>
       <div className="setting-account-danger">
         <div className="setting-account-danger__header">
-          <h3>Danger zone</h3>
-          <p>Delete your account</p>
+          <h3>{t('my_profile.danger.title')}</h3>
+          <p>{t('my_profile.danger.danger_note')}</p>
         </div>
         <div className="setting-account-danger__content">
-          <p>
-            By deleting your account you will lose all your data and access to
-            any tours that you are booked.
-          </p>
+          <p>{t('my_profile.danger.content')}</p>
           <Button danger onClick={showDeleteConfirm}>
-            Delete this account
+            {t('cta.delete_account')}
           </Button>
         </div>
       </div>

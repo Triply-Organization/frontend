@@ -4,11 +4,13 @@ import {
   LoginOutlined,
   PieChartOutlined,
   UserOutlined,
+  UsergroupAddOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useLoadingContext } from 'react-router-loading';
 
 import logo from '../../assets/images/logo-white.png';
 import './Admin.scss';
@@ -16,7 +18,7 @@ import './Admin.scss';
 const { Content, Footer, Sider } = Layout;
 
 export default function Admin() {
-  const [collapsed, setCollapsed] = useState(false);
+  const loadingContext = useLoadingContext();
   const location = useLocation();
   const [url, setUrl] = useState(location.pathname.slice(7));
 
@@ -37,6 +39,9 @@ export default function Admin() {
     } else if (location.pathname.includes('reviews')) {
       setUrl('reviews');
     }
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   }, [location.pathname]);
 
   return (
@@ -45,32 +50,23 @@ export default function Admin() {
         minHeight: '100vh',
       }}
     >
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={value => setCollapsed(value)}
-      >
-        <img src={logo} alt="logo" className="logo" />
-        <Menu
-          inlineCollapsed={true}
-          theme="dark"
-          selectedKeys={[url]}
-          mode="inline"
-        >
+      <Sider>
+        <Link to="/">
+          <img src={logo} alt="logo" className="logo" />
+        </Link>
+        <Menu theme="dark" selectedKeys={[url]} mode="inline">
           <Menu.Item key="dashboard" icon={<PieChartOutlined />}>
             <Link to="dashboard">Dashboard</Link>
           </Menu.Item>
           <Menu.Item key="tours" icon={<EnvironmentOutlined />}>
             <Link to="tours">Tours</Link>
           </Menu.Item>
-          <Menu.SubMenu key="account" title="Account" icon={<UserOutlined />}>
-            <Menu.Item key="users">
-              <Link to="users">Users</Link>
-            </Menu.Item>
-            <Menu.Item key="customers">
-              <Link to="customers">Customers</Link>
-            </Menu.Item>
-          </Menu.SubMenu>
+          <Menu.Item key="users" icon={<UserOutlined />}>
+            <Link to="users">Users</Link>
+          </Menu.Item>
+          <Menu.Item key="customers" icon={<UsergroupAddOutlined />}>
+            <Link to="customers">Customers</Link>
+          </Menu.Item>
           <Menu.Item key="reviews" icon={<CommentOutlined />}>
             <Link to="reviews">Reviews</Link>
           </Menu.Item>

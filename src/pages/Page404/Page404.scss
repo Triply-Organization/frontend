@@ -1,0 +1,25 @@
+.page404 {
+  &-ctn {
+    margin-top: 90px;
+    width: 100%;
+  }
+
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 155px;
+  }
+
+  &-heading {
+    margin: 44px 0 0;
+    font-size: 2.7rem;
+    font-weight: 700;
+  }
+
+  &-content {
+    margin: 0 0 50px;
+    font-size: 1.3rem;
+  }
+}

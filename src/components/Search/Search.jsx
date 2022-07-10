@@ -1,6 +1,7 @@
 import { Button, DatePicker, Form, Select } from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   AiOutlineCalendar,
   AiOutlineCompass,
@@ -15,28 +16,35 @@ const { Option, OptGroup } = Select;
 
 const Search = props => {
   const { onFinish, destinations, services, form } = props;
+  const { t } = useTranslation();
   return (
     <Form name="search" className="search-form" onFinish={onFinish} form={form}>
       <div className="search-form__item__select">
         <AiOutlineCompass className="search-form__item__select__icon" />
         <div>
-          <b>Destination</b>
+          <b>{t('search.destination.title')}</b>
           <Form.Item
             name="destinations"
             className="search-form__item search-form__destinations "
           >
             <Select
+              showSearch
               className="search-form__item__field"
               allowClear
               bordered={false}
               style={{ border: 'none' }}
-              placeholder={'Where are you going?'}
+              placeholder={t('search.destination.place_holder')}
               showArrow
+              data-testid="select-search-destination"
             >
               <OptGroup label="All destinations">
                 {destinations &&
                   destinations.map((item, index) => (
-                    <Option key={index} value={item.id}>
+                    <Option
+                      key={index}
+                      value={item.name}
+                      data-testid="option-search-destination"
+                    >
                       {item.name}
                     </Option>
                   ))}
@@ -49,22 +57,30 @@ const Search = props => {
       <div className="search-form__item__select">
         <AiOutlineDribbble className="search-form__item__select__icon" />
         <div>
-          <b>Service</b>
+          <b>{t('search.service.title')}</b>
           <Form.Item
-            name="services"
+            name="services[]"
             className="search-form__item search-form__activity"
           >
             <Select
-              className="search-form__item__field"
+              className="search-form__item__field select-mul"
               allowClear
               bordered={false}
-              placeholder={'All Activity'}
+              showSearch={false}
+              data-testid="select-search-services"
+              placeholder={t('search.service.place_holder')}
+              mode="multiple"
+              maxTagCount={1}
               style={{ border: 'none' }}
             >
               <OptGroup label="All Activity">
                 {services &&
                   services.map((item, index) => (
-                    <Option key={index} value={item.id}>
+                    <Option
+                      key={index}
+                      value={item.id}
+                      data-testid="option-search-services"
+                    >
                       {item.name}
                     </Option>
                   ))}
@@ -77,7 +93,7 @@ const Search = props => {
       <div className="search-form__item__select">
         <AiOutlineCalendar className="search-form__item__select__icon" />
         <div>
-          <b>When</b>
+          <b>{t('search.when.title')}</b>
           <Form.Item
             name="when"
             className="search-form__item search-form__when"
@@ -87,6 +103,10 @@ const Search = props => {
               bordered={false}
               style={{ paddingLeft: 0, border: 'none' }}
               allowClear
+              disabledDate={current =>
+                current && current.valueOf() < Date.now()
+              }
+              placeholder={t('search.when.place_holder')}
             />
           </Form.Item>
         </div>
@@ -95,22 +115,24 @@ const Search = props => {
       <div className="search-form__item__select">
         <AiOutlineUser className="search-form__item__select__icon" />
         <div>
-          <b>Guests</b>
+          <b>{t('search.guest.title')}</b>
           <Form.Item
             name="guests[]"
             className="search-form__item search-form__guests"
           >
             <Select
-              className="select-guest-mul search-form__item__field"
+              className="select-mul search-form__item__field"
               mode="multiple"
+              maxTagCount={1}
               showArrow
+              showSearch={false}
               bordered={false}
               style={{ padding: 0, border: 'none' }}
-              placeholder="Whose ticket?"
+              placeholder={t('search.guest.place_holder')}
             >
-              <Option value="1">Adult</Option>
-              <Option value="2">Young</Option>
-              <Option value="3">Children</Option>
+              <Option value="1">{t('search.guest.item.adult')}</Option>
+              <Option value="2">{t('search.guest.item.young')}</Option>
+              <Option value="3">{t('search.guest.item.children')}</Option>
             </Select>
           </Form.Item>
         </div>
@@ -123,7 +145,7 @@ const Search = props => {
           className="search-form__item__button"
           icon={<AiOutlineSearch style={{ fontSize: '20px' }} />}
         >
-          Search
+          {t('cta.search')}
         </Button>
       </Form.Item>
     </Form>

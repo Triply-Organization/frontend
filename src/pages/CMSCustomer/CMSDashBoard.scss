@@ -4,8 +4,31 @@
   &__section {
     width: 100%;
     height: fit-content;
-    background-color: white;
     padding: 1rem;
     margin: 1rem 0;
+    position: relative;
+
+    &::before {
+      content: '';
+      background-color: rgba(0, 0, 0, 0.1);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+    }
+    &::after {
+      content: 'COMMING SOON';
+      font-weight: bold;
+      font-style: italic;
+      color: white;
+      font-size: 48px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
   }
 }

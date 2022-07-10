@@ -10,7 +10,6 @@ const CurrencySelect = () => {
   ];
 
   const changCurrency = current => {
-    console.log(current.toLowerCase());
     localStorage.setItem('currencyItem', current);
     if (current === 'USD') {
       localStorage.setItem('currencyString', 'en-US');
@@ -26,10 +25,10 @@ const CurrencySelect = () => {
         defaultValue={localStorage.getItem('currencyItem')}
         onChange={changCurrency}
       >
-        {currencyOptions.map(item => (
-          <>
-            <Option value={item.currency}>{item.currency}</Option>
-          </>
+        {currencyOptions.map((item, index) => (
+          <Option key={index} value={item.currency}>
+            {item.currency}
+          </Option>
         ))}
       </Select>
     </div>

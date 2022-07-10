@@ -1,58 +1,42 @@
-import { Breadcrumb, Button, Table } from 'antd';
-import moment from 'moment';
+import { Breadcrumb, Button, Space, Table, Typography, message } from 'antd';
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineDelete, AiOutlinePlus } from 'react-icons/ai';
-import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import { tourAPI } from '../../api/tourAPI';
+import { deleteTour, getToursCustomer } from '../../app/toursSlice';
 import './CMSTours.scss';
+
+const { Title } = Typography;
 
 const CMSTours = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState();
+  const data = useSelector(state => state.tours.toursCustomer);
+  const loading = useSelector(state => state.tours.loading);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const loadingContext = useLoadingContext();
-
-  // const deleteTour = () => {
-
-  // }
+  const [disableDelete, setDisableDelete] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const loading = async () => {
-      try {
-        const response = await tourAPI.getToursOfCustomer();
-
-        const tempData = response.data.data.map(item => ({
-          id: item.id,
-          key: item.id,
-          title: item.title,
-          destination: item.destination[0],
-          duration: item.duration,
-          availableDay: item.schedule,
-          max_people: item.maxPeople,
-          min_age: item.minAge,
-          createdAt: moment(item.createdAt.date).format('YYYY-MM-DD'),
-        }));
-        setData(tempData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    loading();
-    loadingContext.done();
+    dispatch(getToursCustomer());
+    setTimeout(() => {
+      loadingContext.done();
+    }, 600);
   }, []);
+
+  useEffect(() => {
+    if (_.isEmpty(selectedRowKeys)) setDisableDelete(true);
+    else setDisableDelete(false);
+  }, [selectedRowKeys]);
 
   const columns = [
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      render: text => (
-        <Button type="link" style={{ padding: '0' }}>
-          {text}
-        </Button>
-      ),
     },
     {
       title: 'Destination',
@@ -78,15 +62,29 @@ const CMSTours = () => {
     },
     {
       title: 'Action',
-      dataIndex: 'x',
-      key: 'x',
+      dataIndex: 'action',
+      key: 'action',
       render: (_, record) => (
-        <Button
-          type="dashed"
-          onClick={() => navigate(`/cms/set-schedule/${record.id}`)}
-        >
-          Set schedule
-        </Button>
+        <>
+          {record.status === 'disabled' ? //   Reopen //   onClick={() => handleDelete(record.id)}> //   danger //   type="primary" // <Button
+          // </Button>
+          null : (
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => navigate(`/cms/set-schedule/${record.id}`)}
+              >
+                Set schedule
+              </Button>
+              <Button
+                type="primary"
+                onClick={() => navigate(`/cms/edit-tour/${record.id}`)}
+              >
+                Update tour
+              </Button>
+            </Space>
+          )}
+        </>
       ),
     },
   ];
@@ -98,23 +96,36 @@ const CMSTours = () => {
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
+    getCheckboxProps: record => ({
+      disabled: record.status === 'disabled',
+    }),
+  };
+
+  const handleDelete = id => {
+    if (!_.isEmpty(selectedRowKeys)) {
+      selectedRowKeys.forEach(item => dispatch(deleteTour(item)));
+    }
+    if (_.isEmpty(selectedRowKeys) && id) {
+      dispatch(deleteTour(id));
+    }
+    dispatch(getToursCustomer());
+    message.success('Delete successful');
   };
 
   return (
     <>
-      <Breadcrumb
-        style={{
-          margin: '16px 0',
-        }}
-      >
-        <Breadcrumb.Item>
-          <Link to="/home">Home</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>Tours</Breadcrumb.Item>
-      </Breadcrumb>
       <div className="cms-content-header">
-        <h2>Tours</h2>
-        <div>
+        <Breadcrumb
+          style={{
+            marginLeft: '-26px',
+            marginBottom: '20px',
+          }}
+        >
+          <Breadcrumb.Item>
+            <Title level={3}>Dashboard</Title>
+          </Breadcrumb.Item>
+        </Breadcrumb>
+        <div style={{ marginTop: '20px' }}>
           <Button
             type="primary"
             size="large"
@@ -125,16 +136,19 @@ const CMSTours = () => {
             Add new tour
           </Button>
           <Button
+            disabled={disableDelete}
             type="primary"
             size="large"
             icon={<AiOutlineDelete />}
             className="cms-content-btn"
             danger
+            onClick={handleDelete}
           />
         </div>
       </div>
 
       <Table
+        loading={loading}
         columns={columns}
         dataSource={data}
         pagination={{
@@ -144,6 +158,7 @@ const CMSTours = () => {
           total: data?.length,
         }}
         rowSelection={rowSelection}
+        rowClassName={record => record.status === 'disabled' && 'disabled-row'}
       />
     </>
   );
