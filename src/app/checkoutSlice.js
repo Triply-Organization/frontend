@@ -80,6 +80,10 @@ const checkoutSlice = createSlice({
     builder.addCase(getConfirmInfo.fulfilled, (state, action) => {
       state.loading = false;
       state.confirmationData = action.payload.data.data;
+      localStorage.setItem(
+        'bookingInfo',
+        JSON.stringify(action.payload.data.data),
+      );
     });
   },
 });
