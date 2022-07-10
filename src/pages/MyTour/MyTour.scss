@@ -17,6 +17,10 @@
     color: var(--primary);
   }
 
+  & .ant-list-item-meta-title {
+    margin: 0;
+  }
+
   & .ant-list-item {
     background-color: #fff;
     margin: 1rem 1rem;
