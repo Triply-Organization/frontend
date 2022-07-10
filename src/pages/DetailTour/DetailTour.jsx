@@ -170,7 +170,8 @@ export default function DetailTour() {
 
   const disabledDate = current => {
     return !availableDate.find(date => {
-      return date === moment(current).format('YYYY-MM-DD');
+      if (current && current.valueOf() > Date.now())
+        return date === moment(current).format('YYYY-MM-DD');
     });
   };
 

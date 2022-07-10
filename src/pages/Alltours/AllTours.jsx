@@ -71,13 +71,15 @@ const AllTours = () => {
     const loading = () => {
       let temp = {
         destination: searchParams.get('destination'),
-        'guests[]': searchParams.getAll('guests'),
-        service: searchParams.getAll('services'),
+        'guests[]': searchParams.getAll('guests[]'),
+        service: searchParams.get('service'),
         startDate: searchParams.get('startDate'),
         orderBy: searchParams.get('orderBy'),
         orderType: 'price',
         page: '1',
       };
+
+      console.log(temp);
 
       let o = Object.fromEntries(
         Object.entries(temp).filter(([x, v]) => v != null),
@@ -98,8 +100,9 @@ const AllTours = () => {
       }
 
       if (temp['service']) {
+        if (services?.filter(item => item.id == temp.service)[0]);
         formSearch.setFieldsValue({
-          services: temp['service'],
+          service: services?.filter(item => item.id == temp.service)[0].name,
         });
       }
 
@@ -110,8 +113,9 @@ const AllTours = () => {
       }
 
       if (temp['guests[]']) {
+        console.log(temp['guests[]']);
         formSearch.setFieldsValue({
-          guests: temp['guests[]'],
+          'guests[]': temp['guests[]'],
         });
       }
       //call method to indicate that loading is done
