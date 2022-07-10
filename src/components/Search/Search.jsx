@@ -66,11 +66,9 @@ const Search = props => {
               className="search-form__item__field select-mul"
               allowClear
               bordered={false}
-              showSearch={true}
+              showSearch={false}
               data-testid="select-search-services"
               placeholder={t('search.service.place_holder')}
-              mode="multiple"
-              maxTagCount={1}
               style={{ border: 'none' }}
             >
               <OptGroup label="All Activity">
@@ -78,7 +76,7 @@ const Search = props => {
                   services.map((item, index) => (
                     <Option
                       key={index}
-                      value={item.name}
+                      value={item.id}
                       data-testid="option-search-services"
                     >
                       {item.name}
