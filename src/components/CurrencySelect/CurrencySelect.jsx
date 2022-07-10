@@ -21,12 +21,13 @@ const CurrencySelect = () => {
   return (
     <div>
       <Select
+        data-testid="currency_select"
         style={{ width: '80px' }}
         defaultValue={localStorage.getItem('currencyItem')}
         onChange={changCurrency}
       >
         {currencyOptions.map((item, index) => (
-          <Option key={index} value={item.currency}>
+          <Option data-testid="currency-item" key={index} value={item.currency}>
             {item.currency}
           </Option>
         ))}

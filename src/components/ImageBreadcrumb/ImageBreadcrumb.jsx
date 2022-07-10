@@ -13,10 +13,10 @@ const ImageBreadcrumb = props => {
       <div className="breadcrumb-content">
         <h2 className="breadcrumb-content__title">{title}</h2>
         <Breadcrumb className="breadcrumb-content__breadcrumb">
-          {beforePath.map((item, index) => {
+          {beforePath?.map((item, index) => {
             return (
               <Breadcrumb.Item key={index}>
-                <Link to={item.path}>{item.title}</Link>
+                <Link to={item?.path}>{item?.title}</Link>
               </Breadcrumb.Item>
             );
           })}

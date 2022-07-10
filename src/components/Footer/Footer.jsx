@@ -42,7 +42,6 @@ export default function Footer() {
   ];
 
   const [formFollowByEmail] = Form.useForm();
-  const navigate = useNavigate();
   return (
     <footer className="footer__wrapper">
       <div className="section-4">
@@ -157,6 +156,7 @@ export default function Footer() {
           </p>
           <div className="footer__detail-form">
             <Form
+              data-testid="footer_form"
               form={formFollowByEmail}
               onFinish={e => {
                 formFollowByEmail.resetFields();
@@ -176,6 +176,7 @@ export default function Footer() {
                 ]}
               >
                 <Input
+                  data-testid="footer-input"
                   className="footer__detail-input"
                   size="large"
                   placeholder={t('cta.place_holder_input-email')}

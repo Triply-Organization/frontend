@@ -238,6 +238,7 @@ export default function Header() {
 
   return (
     <header
+      data-testid="header"
       className={
         scrollY > 0
           ? 'header__wrapper header__wrapper--transition'
@@ -248,15 +249,17 @@ export default function Header() {
         <div className="header__logo-wrapper" onClick={() => navigate('/')}>
           <img src={logo} alt="logo" className="header__logo" />
         </div>
-        {width < 1023 ? null : (
-          <Navbar
-            activeTab={activeTab}
-            handleSetActiveTab={handleSetActiveTab}
-            navItem={navItem}
-          />
-        )}
+        <div data-testid="header-navbar">
+          {width < 1023 ? null : (
+            <Navbar
+              activeTab={activeTab}
+              handleSetActiveTab={handleSetActiveTab}
+              navItem={navItem}
+            />
+          )}
+        </div>
       </div>
-      <div className="header__right-side">
+      <div className="header__right-side" data-testid="header-right">
         {width < 1023 ? (
           <MobileNav
             mobileNavStatus={mobileNavStatus}
