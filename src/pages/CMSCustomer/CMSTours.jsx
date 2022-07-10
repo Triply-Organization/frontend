@@ -66,9 +66,7 @@ const CMSTours = () => {
       key: 'action',
       render: (_, record) => (
         <>
-          {record.status ===
-          'disabled' ? //   onClick={() => handleDelete(record.id)}> //   danger //   type="primary" // <Button
-          //   Reopen
+          {record.status === 'disabled' ? //   Reopen //   onClick={() => handleDelete(record.id)}> //   danger //   type="primary" // <Button
           // </Button>
           null : (
             <Space>

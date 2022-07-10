@@ -174,7 +174,8 @@ export default function DetailTour() {
       setBookingDate('');
       setTotal(0);
     }
-    formTicket.setFieldsValue({ adult: 0, youth: 0, children: 0 });};
+    formTicket.setFieldsValue({ adult: 0, youth: 0, children: 0 });
+  };
 
   const detailTourItem = useMemo(() => {
     return [

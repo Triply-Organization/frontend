@@ -132,7 +132,9 @@ const adminSlice = createSlice({
         const responseData = data.data;
         const columnData = [];
         for (const [key, value] of Object.entries(responseData)) {
-          columnData.push({ month: key, booking: value });
+          if (value !== 0) {
+            columnData.push({ month: key, booking: value });
+          }
         }
         state.totalBookingData = columnData;
       }
@@ -155,7 +157,9 @@ const adminSlice = createSlice({
         const lineData = [];
         for (const [key, val] of Object.entries(responseData)) {
           for (const [key1, val1] of Object.entries(val)) {
-            lineData.push({ month: key, value: val1, type: key1 });
+            if (val1 !== 0) {
+              lineData.push({ month: key, value: val1, type: key1 });
+            }
           }
         }
         state.totalCommissionData = lineData;
