@@ -55,22 +55,23 @@ const Home = () => {
 
   const onSearch = values => {
     const searchParams = {};
+    console.log(values);
     if (values.destinations) {
       searchParams.destination = values.destinations;
     }
-    if (values.services) {
-      searchParams.service = values.services;
+    if (values['service']) {
+      searchParams['service'] = values['service'];
     }
 
     if (values.when) {
       searchParams.startDate = moment(values.when).format('YYYY-MM-DD');
     }
 
-    if (values.guests) {
+    if (values['guests[]']) {
       searchParams['guests[]'] = values['guests[]'];
     }
 
-    if (searchParams) {
+    if (!_.isEmpty(searchParams)) {
       navigate({
         pathname: '/tours',
         search: createSearchParams({
@@ -80,15 +81,7 @@ const Home = () => {
           page: '1',
         }).toString(),
       });
-    } else
-      navigate({
-        pathname: '/tours',
-        search: createSearchParams({
-          orderBy: 'asc',
-          orderType: 'price',
-          page: '1',
-        }).toString(),
-      });
+    }
   };
 
   const handleNavigateLogin = () => {
