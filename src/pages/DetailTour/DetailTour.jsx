@@ -16,18 +16,32 @@ import {
 import { Collapse } from 'antd';
 import { DatePicker } from 'antd';
 import { Space } from 'antd';
+import { message } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AiOutlineCheckCircle } from 'react-icons/ai';
+import {
+  AiOutlineCheckCircle,
+  AiOutlineFire,
+  AiOutlineFlag,
+  AiOutlinePicture,
+} from 'react-icons/ai';
 import { AiOutlineDollar } from 'react-icons/ai';
-import { BiTimeFive } from 'react-icons/bi';
+import { BiSpa, BiTimeFive } from 'react-icons/bi';
 import { BiCommentDetail } from 'react-icons/bi';
-import { BsCursorFill } from 'react-icons/bs';
+import { BsBicycle, BsBinoculars } from 'react-icons/bs';
+import { GiMountainCave } from 'react-icons/gi';
 import { GoLocation } from 'react-icons/go';
+import {
+  MdOutlineDirectionsBoat,
+  MdOutlineDirectionsBus,
+  MdOutlineFastfood,
+  MdOutlineFestival,
+} from 'react-icons/md';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import { RiGroupLine } from 'react-icons/ri';
+import { TbSailboat } from 'react-icons/tb';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -247,7 +261,7 @@ export default function DetailTour() {
     };
 
     if (!bookingDate) {
-      notification.error({
+      message.error({
         error: 'Book failed!',
         description: 'Please choose the day!',
       });
@@ -256,19 +270,67 @@ export default function DetailTour() {
       youthNumber.value === 0 &&
       childrenNumber.value === 0
     ) {
-      notification.error({
-        message: 'Book failed!',
-        description: 'Please choose your ticket!',
+      message.error({
+        content: 'Please choose your ticket!',
+        key: 'booking',
       });
     } else {
       if (!localStorage.getItem('token')) {
-        notification.error({
-          message: 'Book failed!',
-          description: 'You should login before book tour!',
+        message.error({
+          content: 'You should login before book tour!',
+          key: 'booking',
+        });
+      } else if (
+        values.adult + values.youth + values.children >
+        detailTour.maxPeople
+      ) {
+        message.error({
+          content: 'You have overbooked for this tour!',
+          key: 'booking',
         });
       } else {
         dispatch(booking(request));
       }
+    }
+  };
+
+  const renderIconServies = key => {
+    switch (key.toLowerCase()) {
+      case 'sailing':
+        return <TbSailboat />;
+
+      case 'overland truck':
+        return <MdOutlineDirectionsBus />;
+
+      case 'river cruise':
+        return <MdOutlineDirectionsBoat />;
+
+      case 'health & wellness':
+        return <BiSpa />;
+
+      case 'explorer':
+        return <BsBinoculars />;
+
+      case 'in-depth cultural':
+        return <AiOutlinePicture />;
+
+      case 'food & culinary':
+        return <MdOutlineFastfood />;
+
+      case 'bicycle':
+        return <BsBicycle />;
+
+      case 'hiking & trekking':
+        return <GiMountainCave />;
+
+      case 'festival & events':
+        return <MdOutlineFestival />;
+
+      case 'active':
+        return <AiOutlineFlag />;
+
+      default:
+        return <AiOutlineFire />;
     }
   };
 
@@ -372,7 +434,9 @@ export default function DetailTour() {
           <div className="detailTour__content-wrapper">
             <div className="detailTour__content">
               <div className="detailTour__overview">
-                <h2>{t('detail_tour.overview')}</h2>
+                <h2 className="detailTour__content-heading">
+                  {t('detail_tour.overview')}
+                </h2>
                 <p className="detailTour__overview-description">
                   {detailTour.overView ? detailTour.overView : null}
                 </p>
@@ -389,8 +453,8 @@ export default function DetailTour() {
                             className="detailTour__services-item"
                             key={item.id}
                           >
-                            <AiOutlineCheckCircle className="detailTour__services-item-icon"></AiOutlineCheckCircle>
-                            {item.name}
+                            {renderIconServies(item.name)}
+                            <p>{item.name}</p>
                           </li>
                         );
                       })

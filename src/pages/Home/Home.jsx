@@ -116,9 +116,9 @@ const Home = () => {
         />
         <div className="section-1__content">
           <h2 className="section-subtitle" data-aos="fade-right">
-            Natural beauty
+            {t('home.natural_beauty')}
           </h2>
-          <h1>Discover the most engaging places</h1>
+          <h1> {t('home.slogan')}</h1>
           <button onClick={() => navigate('/tours')}>
             {t('cta.explore')}
             <BsArrowRight />

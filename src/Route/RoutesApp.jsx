@@ -51,6 +51,15 @@ const RoutesApp = () => {
     marginLeft: 40,
   };
 
+  // useEffect(() => {
+  //   if(localStorage.getItem('i18nextLng') === 'en') {
+  //     document.body.style.fontFamily = 'poppins'
+  //     document.querySelectorAll('.section-subtitle')?.forEach((item) => {
+  //         item.style.fontFamily =
+  //     })
+  //   }
+  // }, [])
+
   return (
     <Routes>
       <Route

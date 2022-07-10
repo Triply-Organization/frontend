@@ -177,7 +177,7 @@ export default function Header() {
       title: `${t('header.tour')}`,
       icon: <TbTicket />,
       subnav: [],
-      link: '/tours',
+      link: '/tours?orderType=price&page=1&orderBy=asc',
     },
   ];
 

@@ -72,7 +72,7 @@ const AllTours = () => {
       let temp = {
         destination: searchParams.get('destination'),
         'guests[]': searchParams.getAll('guests'),
-        'services[]': searchParams.getAll('services'),
+        service: searchParams.getAll('services'),
         startDate: searchParams.get('startDate'),
         orderBy: searchParams.get('orderBy'),
         orderType: 'price',
@@ -84,7 +84,12 @@ const AllTours = () => {
       );
 
       setCurrentSearch(o);
-      setSearchParams({ ...o, orderBy: sortPrice, page: 1 });
+      setSearchParams({
+        ...o,
+        orderBy: sortPrice,
+        orderType: 'price',
+        page: 1,
+      });
 
       if (temp?.destination) {
         formSearch.setFieldsValue({
@@ -92,9 +97,9 @@ const AllTours = () => {
         });
       }
 
-      if (temp['services[]']) {
+      if (temp['service']) {
         formSearch.setFieldsValue({
-          services: temp['services[]'],
+          services: temp['service'],
         });
       }
 
@@ -126,13 +131,7 @@ const AllTours = () => {
     if (!_.isEmpty(location.search)) {
       dispatch(getToursByFilter(location.search));
     }
-  }, [searchParams]);
-
-  useEffect(() => {
-    if (!_.isEmpty(location.search) && _.isEmpty(listFilter)) {
-      dispatch(getToursByFilter(location.search));
-    }
-  }, [listFilter]);
+  }, [location.search]);
 
   const renderIconSortPrice = () => {
     if (sortPrice === 'desc')
@@ -169,8 +168,8 @@ const AllTours = () => {
     if (values.destinations) {
       searchParams.destination = values.destinations;
     }
-    if (values['services[]']) {
-      searchParams['services[]'] = values['services[]'];
+    if (values['service']) {
+      searchParams['service'] = values['service'];
     }
 
     if (values.when) {
