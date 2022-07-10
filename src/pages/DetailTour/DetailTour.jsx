@@ -465,11 +465,7 @@ export default function DetailTour() {
                 <h2 className="detailTour__content-heading detailTour__content-heading--primary">
                   {t('detail_tour.tour_plan')}
                 </h2>
-                <Collapse
-                  accordion
-                  className="detailTour__plan"
-                  expandIconPosition="end"
-                >
+                <Collapse className="detailTour__plan" expandIconPosition="end">
                   {detailTour.tourPlans && detailTour.tourPlans?.length > 0
                     ? detailTour.tourPlans.map(item => {
                         return (

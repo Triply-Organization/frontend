@@ -17,6 +17,10 @@
     color: var(--primary);
   }
 
+  & .ant-list-item-meta-title {
+    margin: 0;
+  }
+
   & .ant-list-item {
     background-color: #fff;
     margin: 1rem 1rem;
@@ -40,6 +44,32 @@
       color: #2ea452;
     }
   }
+}
+
+.rating-star-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 1rem;
+
+  & p {
+    width: 100px;
+    font-weight: 500;
+  }
+  & .ant-rate-star {
+    margin-right: 8px !important;
+    color: #2ea452;
+  }
+}
+
+.comment {
+  width: 100%;
+  height: fit-content;
+  padding: 1rem 0;
+  margin: 1rem 0;
+  border-top: 0.5px solid #f1f1f1;
+  border-bottom: 0.5px solid #f1f1f1;
 }
 
 .rating-star-wrapper {
