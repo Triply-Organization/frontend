@@ -6,8 +6,8 @@
 
 .section-subtitle {
   color: var(--global-color-primary);
-  font-family: thea amelia, Sans-serif;
-  font-size: 30px;
+  font-family: 'WindSong', cursive;
+  font-size: 36px;
   z-index: 2;
 }
 
@@ -45,7 +45,7 @@
     & > h1 {
       font-size: 82px;
       font-weight: bolder;
-      line-height: 100px;
+      line-height: 80px;
       text-shadow: 0 1px 5px rgb(255 255 255 / 50%);
       width: 650px;
       transform: translateX(-5px);

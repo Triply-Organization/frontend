@@ -59,7 +59,7 @@ const Search = props => {
         <div>
           <b>{t('search.service.title')}</b>
           <Form.Item
-            name="services[]"
+            name="service"
             className="search-form__item search-form__activity"
           >
             <Select
@@ -69,8 +69,6 @@ const Search = props => {
               showSearch={false}
               data-testid="select-search-services"
               placeholder={t('search.service.place_holder')}
-              mode="multiple"
-              maxTagCount={1}
               style={{ border: 'none' }}
             >
               <OptGroup label="All Activity">
