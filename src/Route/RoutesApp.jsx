@@ -102,14 +102,7 @@ const RoutesApp = () => {
         />
 
         <Route path="detail/:id" element={<DetailTour />} loading />
-        <Route
-          path="confirmation/:id"
-          element={
-            <PrivateRoute role={['ROLE_USER']}>
-              <Confirmation loading />
-            </PrivateRoute>
-          }
-        />
+        <Route path="confirmation/:id" element={<Confirmation loading />} />
 
         <Route
           path="checkout/:id"
