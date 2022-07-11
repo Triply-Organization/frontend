@@ -117,7 +117,11 @@ const Home = () => {
             {t('home.natural_beauty')}
           </h2>
           <h1> {t('home.slogan')}</h1>
-          <button onClick={() => navigate('/tours')}>
+          <button
+            onClick={() =>
+              navigate('/tours?orderType=price&page=1&orderBy=asc')
+            }
+          >
             {t('cta.explore')}
             <BsArrowRight />
           </button>
@@ -140,7 +144,9 @@ const Home = () => {
             title={t('home.offer.item_1.title')}
             subTitle={t('home.offer.item_1.sub_title')}
             buttonContent={t('home.offer.item_1.btn')}
-            buttonOnClick={() => navigate('/tours')}
+            buttonOnClick={() =>
+              navigate('/tours?orderType=price&page=1&orderBy=asc')
+            }
           />
           <CardVoucher
             data-aos="fade-up"
@@ -148,7 +154,9 @@ const Home = () => {
             title={t('home.offer.item_2.title')}
             subTitle={t('home.offer.item_2.sub_title')}
             buttonContent={t('home.offer.item_2.btn')}
-            buttonOnClick={() => navigate('/tours')}
+            buttonOnClick={() =>
+              navigate('/tours?orderType=price&page=1&orderBy=asc')
+            }
           />
           <CardVoucher
             data-aos="fade-left"
@@ -156,7 +164,9 @@ const Home = () => {
             title={t('home.offer.item_3.title')}
             subTitle={t('home.offer.item_3.sub_title')}
             buttonContent={t('home.offer.item_3.btn')}
-            buttonOnClick={() => navigate('/tours')}
+            buttonOnClick={() =>
+              navigate('/tours?orderType=price&page=1&orderBy=asc')
+            }
           />
         </div>
         {_.isEmpty(localStorage.getItem('token')) && (
