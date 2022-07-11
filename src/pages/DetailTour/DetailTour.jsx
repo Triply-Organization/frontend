@@ -106,20 +106,12 @@ export default function DetailTour() {
   const [formTicket] = Form.useForm();
 
   useEffect(() => {
-    if (dataCheckout.id) {
-      navigate(`/checkout/${dataCheckout.id}`);
-    }
-  }, [dataCheckout.id]);
-
-  useEffect(() => {
     setTotal(
       adultNumber.value * adultNumber.price +
         youthNumber.value * youthNumber.price +
         childrenNumber.value * childrenNumber.price,
     );
   }, [adultNumber, youthNumber, childrenNumber]);
-
-  localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
 
   const handleChangePrice = (value, unique) => {
     switch (unique.type) {
@@ -262,7 +254,7 @@ export default function DetailTour() {
     };
 
     if (!bookingDate) {
-      message.error({
+      notification.error({
         error: 'Book failed!',
         description: 'Please choose the day!',
       });
@@ -271,13 +263,13 @@ export default function DetailTour() {
       youthNumber.value === 0 &&
       childrenNumber.value === 0
     ) {
-      message.error({
+      notification.error({
         content: 'Please choose your ticket!',
         key: 'booking',
       });
     } else {
       if (!localStorage.getItem('token')) {
-        message.error({
+        notification.error({
           content: 'You should login before book tour!',
           key: 'booking',
         });
@@ -285,12 +277,13 @@ export default function DetailTour() {
         values.adult + values.youth + values.children >
         detailTour.maxPeople
       ) {
-        message.error({
+        notification.error({
           content: 'You have overbooked for this tour!',
           key: 'booking',
         });
       } else {
         dispatch(booking(request));
+        navigate(`/checkout/${dataCheckout.id}`);
       }
     }
   };

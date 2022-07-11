@@ -30,6 +30,10 @@ const orderSlice = createSlice({
       state.loading = false;
       state.checkout = action.payload.data.data;
       state.status = action.payload.data;
+      localStorage.setItem(
+        'bookingInfo',
+        JSON.stringify(action.payload.data.data),
+      );
     });
   },
 });
