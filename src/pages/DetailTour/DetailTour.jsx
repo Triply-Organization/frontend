@@ -650,7 +650,11 @@ export default function DetailTour() {
                         <Button
                           className="detailTour__booking-btn"
                           type="primary"
-                          onClick={() => navigate('/login')}
+                          onClick={() => {
+                            localStorage.setItem('last_path', '/detail/15');
+
+                            setTimeout(() => navigate('/login'), 600);
+                          }}
                           size="large"
                         >
                           Sign in to book
