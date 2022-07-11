@@ -245,7 +245,6 @@ export default function DetailTour() {
 
   // validate booking
   const handleSubmit = values => {
-    console.log(values);
     const request = {
       children: children,
       adult: adult,
@@ -643,7 +642,11 @@ export default function DetailTour() {
                         <Button
                           className="detailTour__booking-btn"
                           type="primary"
-                          onClick={() => navigate('/login')}
+                          onClick={() => {
+                            localStorage.setItem('last_path', '/detail/15');
+
+                            setTimeout(() => navigate('/login'), 600);
+                          }}
                           size="large"
                         >
                           Sign in to book
