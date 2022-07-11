@@ -25,6 +25,7 @@ export default function Admin() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('last_path');
   };
 
   useEffect(() => {
