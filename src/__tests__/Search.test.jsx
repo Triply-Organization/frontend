@@ -11,7 +11,7 @@ import { describe } from 'vitest';
 
 import Search from '../components/Search/Search';
 
-describe('Search component', () => {
+describe('Seach component', () => {
   it('should render correctly', () => {
     const result = render(<Search />);
     expect(result).toMatchSnapshot();

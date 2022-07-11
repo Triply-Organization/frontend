@@ -73,18 +73,18 @@ describe('Orderdetail component', () => {
     );
   });
 
-  // it('should render bill discount number', () => {
-  //   const data = {
-  //     imageTour: {
-  //       path: 'https://car-rent-nhivo.s3.ap-southeast-1.amazonaws.com/upload/photo-1607356296477-5454f7a7f0f0-62c904df3523a.jpg',
-  //     },
-  //   };
+  it('should render bill discount number', () => {
+    const data = {
+      imageTour: {
+        path: 'https://car-rent-nhivo.s3.ap-southeast-1.amazonaws.com/upload/photo-1607356296477-5454f7a7f0f0-62c904df3523a.jpg',
+      },
+    };
 
-  //   render(<OrderDetail data={data} />);
-  //   expect(screen.getByTestId('test-imageUrl')).toContain(
-  //     'https://car-rent-nhivo.s3.ap-southeast-1.amazonaws.com/upload/photo-1607356296477-5454f7a7f0f0-62c904df3523a.jpg',
-  //   );
-  // });
+    render(<OrderDetail data={data} />);
+    expect(screen.getByTestId('test-imageUrl')).toContain(
+      'https://car-rent-nhivo.s3.ap-southeast-1.amazonaws.com/upload/photo-1607356296477-5454f7a7f0f0-62c904df3523a.jpg',
+    );
+  });
 
   it('should render Text discount value', () => {
     const data = {

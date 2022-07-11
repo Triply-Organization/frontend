@@ -27,7 +27,7 @@ const CurrencySelect = () => {
         onChange={changCurrency}
       >
         {currencyOptions.map((item, index) => (
-          <Option data-testid="currency-item" key={index} value={item.currency}>
+          <Option key={index} value={item.currency}>
             {item.currency}
           </Option>
         ))}

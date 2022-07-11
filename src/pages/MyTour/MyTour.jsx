@@ -60,12 +60,6 @@ const MyTour = () => {
     }, 600);
   }, []);
 
-  useEffect(() => {
-    if (checkoutInfo.id) {
-      navigate(`/checkout/${checkoutInfo.id}`);
-    }
-  }, [checkoutInfo.id]);
-
   localStorage.setItem('bookingInfo', JSON.stringify(checkoutInfo));
   const [formReview] = Form.useForm();
 
@@ -124,6 +118,8 @@ const MyTour = () => {
   const handleCheckout = value => {
     const req = value.id;
     dispatch(getConfirmInfo(req));
+    navigate(`/checkout/${req}`);
+
     console.log(value);
     localStorage.setItem('status', value.status);
   };
@@ -136,15 +132,15 @@ const MyTour = () => {
         <>
           <Badge
             color="green"
-            text="Cancellation 7 days in advance: 30% of the total value of the tour"
+            text="Cancellation 7 days in advance: Lose 30% of the total value of the tour"
           />
           <Badge
             color="red"
-            text="Cancellation from 2 to 6 days: 50% of the total value of the tour program."
+            text="Cancellation from 2 to 6 days: Lose 50% of the total value of the tour program."
           />
           <Badge
             color="purple"
-            text="Cancellation within 48 hours: 100% of the total value of the tour."
+            text="Cancellation within 48 hours: Lose 100% of the total value of the tour."
           />
         </>
       ),

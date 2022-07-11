@@ -1,5 +1,6 @@
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Typography } from 'antd';
+import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,11 +33,9 @@ const Login = () => {
     image.addEventListener('load', function () {
       document.getElementById('bgLogin').style.backgroundImage =
         'url(' + src + ')';
+      loadingContext.done();
     });
     image.src = src;
-    setTimeout(() => {
-      loadingContext.done();
-    }, 600);
   }, []);
 
   useEffect(() => {
@@ -44,9 +43,14 @@ const Login = () => {
       if (user.roles.includes('ROLE_ADMIN')) {
         navigate('/admin');
       } else if (user.roles.includes('ROLE_CUSTOMER')) {
-        navigate(-1);
-      } else if (user.roles.includes('ROLE_USER')) {
-        navigate(-1);
+        navigate('/cms/dashboard');
+      } else if (
+        user.roles.includes('ROLE_USER') &&
+        _.isEmpty(localStorage.getItem('last_path'))
+      ) {
+        navigate('/');
+      } else {
+        navigate(localStorage.getItem('last_path'));
       }
     }
   }, [user]);

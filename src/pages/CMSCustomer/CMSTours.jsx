@@ -120,7 +120,7 @@ const CMSTours = () => {
           }}
         >
           <Breadcrumb.Item>
-            <Title level={3}>Tours</Title>
+            <Title level={3}>Dashboard</Title>
           </Breadcrumb.Item>
         </Breadcrumb>
         <div style={{ marginTop: '20px' }}>

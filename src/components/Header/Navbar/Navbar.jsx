@@ -14,7 +14,6 @@ export default function Navbar(props) {
         {navItem?.map((item, index) => {
           return (
             <li
-              data-testid="header-navbar-item"
               className="header__navbar-item"
               onClick={() => handleSetActiveTab(index)}
               key={index}

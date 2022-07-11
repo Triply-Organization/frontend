@@ -58,7 +58,7 @@ export default function MobileNav(props) {
               Hi {user?.name}
             </Title>
             <ul className="mobileNav__list">
-              {userDataLoginMobile?.map((item, index) => {
+              {userDataLoginMobile.map((item, index) => {
                 if (!item) {
                   return;
                 }

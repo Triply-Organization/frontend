@@ -41,6 +41,7 @@ export default function Header() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('last_path');
   };
 
   const userDataLogin = (
@@ -177,7 +178,7 @@ export default function Header() {
       title: `${t('header.tour')}`,
       icon: <TbTicket />,
       subnav: [],
-      link: '/tours',
+      link: '/tours?orderType=price&page=1&orderBy=asc',
     },
   ];
 

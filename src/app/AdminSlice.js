@@ -139,7 +139,7 @@ const adminSlice = createSlice({
         state.totalBookingData = columnData;
       }
     });
-    // GET TOTAL REVENUE PER MONTH
+    // GET TOTAL COMMISSION PER MONTH
     builder.addCase(getTotalCommission.pending, state => {
       state.loading = true;
     });
@@ -354,7 +354,7 @@ const adminSlice = createSlice({
         responseData.reviews?.map(item => {
           reviews.push({
             key: item.id,
-            id: item.tour.id,
+            id: item.id,
             email: item.user?.email,
             createdAt: moment(item.createdAt?.date).format('YYYY-MM-DD'),
             comment: item.comment,

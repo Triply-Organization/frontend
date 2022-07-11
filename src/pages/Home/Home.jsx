@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import Aos from 'aos';
 import _ from 'lodash';
 import moment from 'moment';
@@ -55,22 +55,23 @@ const Home = () => {
 
   const onSearch = values => {
     const searchParams = {};
+    console.log(values);
     if (values.destinations) {
       searchParams.destination = values.destinations;
     }
-    if (values.services) {
-      searchParams.service = values.services;
+    if (values['service']) {
+      searchParams['service'] = values['service'];
     }
 
     if (values.when) {
       searchParams.startDate = moment(values.when).format('YYYY-MM-DD');
     }
 
-    if (values.guests) {
+    if (values['guests[]']) {
       searchParams['guests[]'] = values['guests[]'];
     }
 
-    if (searchParams) {
+    if (!_.isEmpty(searchParams)) {
       navigate({
         pathname: '/tours',
         search: createSearchParams({
@@ -80,15 +81,12 @@ const Home = () => {
           page: '1',
         }).toString(),
       });
-    } else
-      navigate({
-        pathname: '/tours',
-        search: createSearchParams({
-          orderBy: 'asc',
-          orderType: 'price',
-          page: '1',
-        }).toString(),
+    } else {
+      message.error({
+        content: 'Please choose at least one field to search tour!',
+        key: 'search-empty',
       });
+    }
   };
 
   const handleNavigateLogin = () => {
@@ -116,9 +114,9 @@ const Home = () => {
         />
         <div className="section-1__content">
           <h2 className="section-subtitle" data-aos="fade-right">
-            Natural beauty
+            {t('home.natural_beauty')}
           </h2>
-          <h1>Discover the most engaging places</h1>
+          <h1> {t('home.slogan')}</h1>
           <button onClick={() => navigate('/tours')}>
             {t('cta.explore')}
             <BsArrowRight />
@@ -161,30 +159,32 @@ const Home = () => {
             buttonOnClick={() => navigate('/tours')}
           />
         </div>
-        <div className="section-2__auth">
-          <img src={section2Shape} alt="auth" />
-          <div className="section-2__auth__typho">
-            <h2>{t('home.auth.title')}</h2>
-            <p>{t('home.auth.content')}</p>
-            <div className="section-2__auth__control">
-              <Button
-                type="primary"
-                onClick={handleNavigateLogin}
-                className="section-2__auth__control__btn"
-                data-aos="fade-left"
-              >
-                {t('cta.login')} <BsArrowRight />
-              </Button>
-              <Button
-                className="section-2__auth__control__btn"
-                data-aos="fade-right"
-                onClick={handleNavigateRegister}
-              >
-                {t('cta.register')} <BsArrowRight />
-              </Button>
+        {_.isEmpty(localStorage.getItem('token')) && (
+          <div className="section-2__auth">
+            <img src={section2Shape} alt="auth" />
+            <div className="section-2__auth__typho">
+              <h2>{t('home.auth.title')}</h2>
+              <p>{t('home.auth.content')}</p>
+              <div className="section-2__auth__control">
+                <Button
+                  type="primary"
+                  onClick={handleNavigateLogin}
+                  className="section-2__auth__control__btn"
+                  data-aos="fade-left"
+                >
+                  {t('cta.login')} <BsArrowRight />
+                </Button>
+                <Button
+                  className="section-2__auth__control__btn"
+                  data-aos="fade-right"
+                  onClick={handleNavigateRegister}
+                >
+                  {t('cta.register')} <BsArrowRight />
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="section-3">
         <div className="section-2__title">
