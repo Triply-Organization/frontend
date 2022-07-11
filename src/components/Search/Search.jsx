@@ -66,7 +66,6 @@ const Search = props => {
               className="search-form__item__field select-mul"
               allowClear
               bordered={false}
-              showSearch={true}
               data-testid="select-search-services"
               placeholder={t('search.service.place_holder')}
               style={{ border: 'none' }}
