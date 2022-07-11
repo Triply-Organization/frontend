@@ -93,13 +93,11 @@ export default function DetailTour() {
   const [visibleGallery, setVisibleGallery] = useState(false);
   const [gallery, setGallery] = useState([]);
   const [photoIndex, setPhotoIndex] = useState(0);
-  const [remainC, setRemainC] = useState(0);
-  const [remainY, setRemainY] = useState(0);
-  const [remainA, setRemainA] = useState(0);
   const loading = useSelector(state => state.tours.loading);
   useEffect(() => {
     if (!_.isEmpty(detailTour)) {
       setGallery(detailTour?.tourImages?.map(item => item.path));
+      document.title = detailTour.title.toString();
     }
   }, [detailTour]);
 

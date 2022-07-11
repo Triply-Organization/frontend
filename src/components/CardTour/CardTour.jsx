@@ -14,13 +14,14 @@ import './CardTour.scss';
 
 const CardTour = props => {
   const { tour, tag, ...prop } = props;
-  const currencyString = localStorage.getItem('currencyString') || 'en-US';
-  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const navigate = useNavigate();
   return (
     <div className="card-tour" {...prop}>
       {tag && <div className="card-tour__tag">{tag}</div>}
-      <Link to={`/detail/${tour.id}`} className="card-tour__image-wrapper">
+      <Link
+        to={`/detail/${tour.id}/${tour.name.split(' ').join('+')}`}
+        className="card-tour__image-wrapper"
+      >
         <div className="card-tour__image-wrapper__overlay" />
         <img
           src={tour.image}
@@ -65,22 +66,23 @@ const CardTour = props => {
       <div className="card-tour__footer">
         <div>
           <p>From USD</p>
-          <b data-testid="cardTour-priceRange">
-            {tour?.minPrice?.toLocaleString(`${currencyString}`, {
+          <b>
+            {tour?.minPrice?.toLocaleString('en-US', {
               style: 'currency',
-              currency: `${currencyItem}`,
+              currency: 'USD',
             })}{' '}
             -{' '}
-            {tour?.maxPrice?.toLocaleString(`${currencyString}`, {
+            {tour?.maxPrice?.toLocaleString('en-US', {
               style: 'currency',
-              currency: `${currencyItem}`,
+              currency: 'USD',
             })}
           </b>
         </div>
 
         <Button
-          data-testid="cardTour_explore"
-          onClick={() => navigate(`/detail/${tour?.id}`)}
+          onClick={() =>
+            navigate(`/detail/${tour.id}/${tour.name.split(' ').join('+')}`)
+          }
           type="link"
           className="card-tour__footer__button"
         >
