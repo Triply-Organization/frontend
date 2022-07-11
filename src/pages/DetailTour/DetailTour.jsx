@@ -253,22 +253,22 @@ export default function DetailTour() {
     };
 
     if (!bookingDate) {
-      notification.error({
-        error: 'Book failed!',
-        description: 'Please choose the day!',
+      message.error({
+        content: 'Please choose the day!',
+        key: 'booking',
       });
     } else if (
       adultNumber.value === 0 &&
       youthNumber.value === 0 &&
       childrenNumber.value === 0
     ) {
-      notification.error({
+      message.error({
         content: 'Please choose your ticket!',
         key: 'booking',
       });
     } else {
       if (!localStorage.getItem('token')) {
-        notification.error({
+        message.error({
           content: 'You should login before book tour!',
           key: 'booking',
         });
@@ -276,7 +276,7 @@ export default function DetailTour() {
         values.adult + values.youth + values.children >
         detailTour.maxPeople
       ) {
-        notification.error({
+        message.error({
           content: 'You have overbooked for this tour!',
           key: 'booking',
         });

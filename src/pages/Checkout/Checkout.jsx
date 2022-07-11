@@ -38,6 +38,9 @@ const Checkout = () => {
     checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
   );
   const [discountValue, setDiscountValue] = useState(0);
+  const [amountAdultTicket, setAmountAdultTicket] = useState(0);
+  const [amountYouthTicket, setAmountYouthTicket] = useState(0);
+  const [amountChidrenTicket, setAmountChildrenTicket] = useState(0);
   const [voucherVal, setVoucherVal] = useState('');
   const [voucherRemain, setVoucherRemain] = useState(0);
   const [voucherCode, setVoucherCode] = useState('');
@@ -48,13 +51,9 @@ const Checkout = () => {
   const filterTimeout = useRef(null);
   const { t } = useTranslation();
 
-  console.log(checkoutData);
-
   const onFinish = values => {
-    let totalTicket =
-      checkoutData?.tickets?.adult?.amount +
-      checkoutData?.tickets?.youth?.amount +
-      checkoutData?.tickets?.children?.amount;
+    const totalTicketAmount =
+      amountAdultTicket + amountYouthTicket + amountChidrenTicket;
     const valueWithoutVoucher = {
       orderId: checkoutData.id,
       tourId: checkoutData.tourId,
@@ -68,7 +67,7 @@ const Checkout = () => {
       tourName: checkoutData.tourTitle,
       email: values.email,
       name: `${values.first_name} ${values.last_name}`,
-      numberOfTickets: totalTicket,
+      numberOfTickets: totalTicketAmount,
     };
     const newValues = {
       orderId: checkoutData.id,
@@ -83,7 +82,7 @@ const Checkout = () => {
       tourName: checkoutData.tourTitle,
       email: values.email,
       name: `${values.first_name} ${values.last_name}`,
-      numberOfTickets: totalTicket,
+      numberOfTickets: totalTicketAmount,
     };
     if (voucherRemain !== 0) {
       if (!values.discount) {
@@ -95,6 +94,22 @@ const Checkout = () => {
       message.error('Your voucher is expired!');
     }
   };
+
+  useEffect(() => {
+    if (checkoutData?.tickets?.adult?.amount) {
+      setAmountAdultTicket(checkoutData?.tickets?.adult?.amount);
+    }
+    if (checkoutData?.tickets?.youth?.amount) {
+      setAmountYouthTicket(checkoutData?.tickets?.youth?.amount);
+    }
+    if (checkoutData?.tickets?.children?.amount) {
+      setAmountChildrenTicket(checkoutData?.tickets?.children?.amount);
+    }
+  }, [
+    checkoutData?.tickets?.adult?.amount,
+    checkoutData?.tickets?.youth?.amount,
+    checkoutData?.tickets?.children?.amount,
+  ]);
 
   useEffect(() => {
     const getTax = async () => {
