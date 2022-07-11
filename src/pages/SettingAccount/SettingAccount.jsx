@@ -104,7 +104,6 @@ const SettingAccount = () => {
         'user',
         JSON.stringify({ ...userInfo, avatar: newCoverImg?.path }),
       );
-      console.log(res.data.data[0]);
     } catch (err) {
       console.log('Error: ', err);
       onError({ err });
@@ -112,7 +111,6 @@ const SettingAccount = () => {
   };
 
   const submitHandler = async values => {
-    console.log(values);
     const req = {
       address: values?.address,
       avatar: coverImg?.id,

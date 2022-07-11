@@ -79,8 +79,6 @@ const AllTours = () => {
         page: '1',
       };
 
-      console.log(temp);
-
       let o = Object.fromEntries(
         Object.entries(temp).filter(([x, v]) => v != null),
       );
@@ -113,12 +111,12 @@ const AllTours = () => {
       }
 
       if (temp['guests[]']) {
-        console.log(temp['guests[]']);
         formSearch.setFieldsValue({
           'guests[]': temp['guests[]'],
         });
       }
       //call method to indicate that loading is done
+      document.title = 'All Tours';
       setTimeout(() => {
         loadingContext.done();
         window.scrollTo({
@@ -168,7 +166,6 @@ const AllTours = () => {
 
   const onSearch = values => {
     const searchParams = {};
-    console.log(values);
     if (values.destinations) {
       searchParams.destination = values.destinations;
     }
@@ -346,11 +343,7 @@ const AllTours = () => {
                 active
                 style={{ height: '433px' }}
               >
-                <CardTour
-                  key={index}
-                  tour={tour}
-                  onClick={() => navigate(`/detail/${tour.id}`)}
-                />
+                <CardTour key={index} tour={tour} />
               </Skeleton>
             ))}
           </div>
