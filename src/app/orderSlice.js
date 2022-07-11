@@ -17,7 +17,11 @@ export const booking = createAsyncThunk('order/booking', async params => {
 const orderSlice = createSlice({
   name: 'order',
   initialState,
-  reducers: {},
+  reducers: {
+    clearIdCheckout: state => {
+      state.checkout = {};
+    },
+  },
   extraReducers: builder => {
     builder.addCase(booking.pending, state => {
       state.loading = true;
@@ -39,3 +43,4 @@ const orderSlice = createSlice({
 });
 
 export default orderSlice;
+export const { clearIdCheckout } = orderSlice.actions;

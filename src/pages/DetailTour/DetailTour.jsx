@@ -97,6 +97,9 @@ export default function DetailTour() {
   const [remainY, setRemainY] = useState(0);
   const [remainA, setRemainA] = useState(0);
   const loading = useSelector(state => state.tours.loading);
+
+  console.log(dataCheckout);
+
   useEffect(() => {
     if (!_.isEmpty(detailTour)) {
       setGallery(detailTour?.tourImages?.map(item => item.path));
@@ -104,6 +107,12 @@ export default function DetailTour() {
   }, [detailTour]);
 
   const [formTicket] = Form.useForm();
+
+  useEffect(() => {
+    if (dataCheckout.id) {
+      navigate(`/checkout/${dataCheckout.id}`);
+    }
+  }, [dataCheckout]);
 
   useEffect(() => {
     setTotal(
@@ -282,7 +291,6 @@ export default function DetailTour() {
         });
       } else {
         dispatch(booking(request));
-        navigate(`/checkout/${dataCheckout.id}`);
       }
     }
   };
