@@ -40,6 +40,7 @@ const Home = () => {
     });
     Aos.refresh();
     loading();
+    document.title = 'Home';
     window.scrollTo({
       top: 0,
       left: 0,
@@ -55,7 +56,6 @@ const Home = () => {
 
   const onSearch = values => {
     const searchParams = {};
-    console.log(values);
     if (values.destinations) {
       searchParams.destination = values.destinations;
     }
@@ -207,7 +207,7 @@ const Home = () => {
         </div>
         <div className="section-3__content-wrapper">
           {popularTours.map((item, index) => {
-            return <CardTour key={index} tour={item} tag="" />;
+            return <CardTour key={index} tour={item} />;
           })}
         </div>
       </div>

@@ -93,23 +93,15 @@ export default function DetailTour() {
   const [visibleGallery, setVisibleGallery] = useState(false);
   const [gallery, setGallery] = useState([]);
   const [photoIndex, setPhotoIndex] = useState(0);
-  const [remainC, setRemainC] = useState(0);
-  const [remainY, setRemainY] = useState(0);
-  const [remainA, setRemainA] = useState(0);
   const loading = useSelector(state => state.tours.loading);
   useEffect(() => {
     if (!_.isEmpty(detailTour)) {
       setGallery(detailTour?.tourImages?.map(item => item.path));
+      document.title = detailTour.title.toString();
     }
   }, [detailTour]);
 
   const [formTicket] = Form.useForm();
-
-  useEffect(() => {
-    if (dataCheckout.id) {
-      navigate(`/checkout/${dataCheckout.id}`);
-    }
-  }, [dataCheckout.id]);
 
   useEffect(() => {
     setTotal(
@@ -118,8 +110,6 @@ export default function DetailTour() {
         childrenNumber.value * childrenNumber.price,
     );
   }, [adultNumber, youthNumber, childrenNumber]);
-
-  localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
 
   const handleChangePrice = (value, unique) => {
     switch (unique.type) {
@@ -253,6 +243,7 @@ export default function DetailTour() {
 
   // validate booking
   const handleSubmit = values => {
+    console.log(values);
     const request = {
       children: children,
       adult: adult,
@@ -262,8 +253,8 @@ export default function DetailTour() {
 
     if (!bookingDate) {
       message.error({
-        content: 'Please select the booking date you go!',
-        key: 'booking!',
+        content: 'Please choose the day!',
+        key: 'booking',
       });
     } else if (
       adultNumber.value === 0 &&
@@ -290,6 +281,7 @@ export default function DetailTour() {
         });
       } else {
         dispatch(booking(request));
+        navigate(`/checkout/${dataCheckout.id}`);
       }
     }
   };

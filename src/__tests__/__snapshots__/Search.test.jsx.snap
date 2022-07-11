@@ -1,5 +1,8 @@
 // Vitest Snapshot v1
 
+<<<<<<< HEAD
+exports[`Search component > should render correctly 1`] = `
+=======
 exports[`Seach component > should render correctly 1`] = `
 {
   "asFragment": [Function],
@@ -936,6 +939,7 @@ exports[`Seach component > should render correctly 1`] = `
 `;
 
 exports[`Seach component test > should render correctly 1`] = `
+>>>>>>> 63a34f5c3c737841d2bf52a624be8d51ab896f08
 {
   "asFragment": [Function],
   "baseElement": <body>

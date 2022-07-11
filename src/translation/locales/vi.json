@@ -159,7 +159,7 @@
 
     "checkout": {
       "order_detail": {
-        "title": "Thanh toán:",
+        "title": "Đơn đặt hàng:",
         "date": "Ngày đi:",
         "time": "Thời gian:",
         "duration": "Số ngày tham quan:",

@@ -24,6 +24,7 @@ const OrderDetail = props => {
               data-testid="test-imageUrl"
               width={200}
               src={data?.imageTour?.path}
+              className="img-order"
             />
           </Col>
           <Col
@@ -99,7 +100,7 @@ const OrderDetail = props => {
         <Divider />
 
         <Row gutter={8} className="ctn-result">
-          <Col lg={8} md={6} sm={6} xs={0}></Col>
+          <Col lg={9} md={6} sm={6} xs={0}></Col>
           <Col className="synthetic-price" lg={12} md={15} sm={15} xs={18}>
             <section>
               <Text strong>{t('checkout.order_detail.sub_total')}</Text>

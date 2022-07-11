@@ -205,7 +205,7 @@ export function Dashboard() {
           <Row gutter={16}>
             <Col span={24} className="admin__dashboard-line-chart">
               <Title className="admin__dashboard-heading" level={5}>
-                total commission per month
+                total revenue per month
               </Title>
               <Area {...lineConfig} />
             </Col>

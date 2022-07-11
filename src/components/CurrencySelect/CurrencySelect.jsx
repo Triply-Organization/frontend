@@ -21,6 +21,7 @@ const CurrencySelect = () => {
   return (
     <div>
       <Select
+        data-testid="currency_select"
         style={{ width: '80px' }}
         defaultValue={localStorage.getItem('currencyItem')}
         onChange={changCurrency}
