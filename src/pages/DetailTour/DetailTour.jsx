@@ -253,7 +253,6 @@ export default function DetailTour() {
 
   // validate booking
   const handleSubmit = values => {
-    console.log(values);
     const request = {
       children: children,
       adult: adult,
@@ -263,8 +262,8 @@ export default function DetailTour() {
 
     if (!bookingDate) {
       message.error({
-        error: 'Book failed!',
-        description: 'Please choose the day!',
+        content: 'Please select the booking date you go!',
+        key: 'booking!',
       });
     } else if (
       adultNumber.value === 0 &&
