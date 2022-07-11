@@ -42,6 +42,7 @@ export default function MobileNav(props) {
       <div className="mobileNav__overlays">
         <div className="mobileNav_close-btn-wrapper">
           <button
+            data-testid="mobileNav_btn"
             className="mobileNav_close-btn"
             onClick={() => {
               onChangeNavbarStatus();
@@ -94,7 +95,7 @@ export default function MobileNav(props) {
 
         <div className="mobileNav__list-wrapper">
           <ul className="mobileNav__list">
-            {navItem.map((item, index) => {
+            {navItem?.map((item, index) => {
               return (
                 <li className="mobileNav__item" key={index}>
                   <Link to={item.link} className="mobileNav__link">

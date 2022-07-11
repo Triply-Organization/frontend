@@ -251,6 +251,7 @@ export default function DetailTour() {
 
   // validate booking
   const handleSubmit = values => {
+    console.log(values);
     const request = {
       children: children,
       adult: adult,

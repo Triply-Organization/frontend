@@ -187,8 +187,8 @@ const toursSlice = createSlice({
         duration: item.duration,
         maxPeople: item.maxPeople,
         tourDestination: item.destination[0].destination,
-        minPrice: item.schedule[0].ticket[2].price,
-        maxPrice: item.schedule[0].ticket[0].price,
+        minPrice: item.schedule[0].ticket[0].price,
+        maxPrice: item.schedule[0].ticket[2].price,
       }));
       state.tour = {
         ...data.data.data,

@@ -34,12 +34,12 @@ const CardTour = props => {
         <div className="card-tour__meta__item-wrapper">
           <div className="card-tour__meta__item">
             <AiOutlineCalendar className="card-tour__meta__item__icon" />
-            <p>{tour.duration} days</p>
+            <p>{tour?.duration} days</p>
           </div>
           <div className="card-tour__meta__item">
             <AiOutlineUser className="card-tour__meta__item__icon" />
 
-            <p>{tour.maxPeople}</p>
+            <p>{tour?.maxPeople}</p>
           </div>
         </div>
         <div className="card-tour__meta__review">
@@ -60,7 +60,7 @@ const CardTour = props => {
           <h2 className="card-tour__title">{tour.name}</h2>
         </Tooltip>
         <p className="card-tour__destination">
-          <GoLocation /> {tour.tourDestination}
+          <GoLocation /> {tour?.tourDestination}
         </p>
       </div>
       <div className="card-tour__footer">
