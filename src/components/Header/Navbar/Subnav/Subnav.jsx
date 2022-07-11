@@ -8,10 +8,10 @@ export default function Subnav(props) {
   const { subnavItem } = props;
   return (
     <>
-      {subnavItem.length === 0 ? null : (
-        <div className="header__subnav-wrapper">
+      {subnavItem?.length === 0 ? null : (
+        <div data-testid="header__subnav" className="header__subnav-wrapper">
           <ul className="header__subnav">
-            {subnavItem.map((item, index) => {
+            {subnavItem?.map((item, index) => {
               return (
                 <li className="header__subnav-item" key={index}>
                   <Link to="#" className="header__subnav-link">

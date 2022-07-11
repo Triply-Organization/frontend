@@ -120,7 +120,6 @@ const MyTour = () => {
     dispatch(getConfirmInfo(req));
     navigate(`/checkout/${req}`);
 
-    console.log(value);
     localStorage.setItem('status', value.status);
   };
 

@@ -125,6 +125,7 @@ const Checkout = () => {
       setTaxInfo(taxData);
     };
     getTax();
+    document.title = 'Checkout';
     setTimeout(() => {
       loadingContext.done();
       window.scrollTo({

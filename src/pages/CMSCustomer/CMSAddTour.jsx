@@ -175,7 +175,7 @@ const CMSAddTour = () => {
         }}
       >
         <Breadcrumb.Item>
-          <Title level={3}>Dashboard</Title>
+          <Title level={3}>Tours</Title>
         </Breadcrumb.Item>
       </Breadcrumb>
       <Form

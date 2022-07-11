@@ -25,24 +25,7 @@ export default function Footer() {
     `${t('footer.contact.blog')}`,
   ];
 
-  const services = [
-    `${t('footer.service.item.booking')}`,
-    `${t('footer.service.item.rental_car')}`,
-    `${t('footer.service.item.hostel_world')}`,
-    `${t('footer.service.item.triago')}`,
-    `${t('footer.service.item.trip_advisor')}`,
-  ];
-
-  const explore = [
-    `${t('footer.explore.item.madrid')}`,
-    `${t('footer.explore.item.stockhome')}`,
-    `${t('footer.explore.item.rome')}`,
-    `${t('footer.explore.item.shanghai')}`,
-    `${t('footer.explore.item.tokyo')}`,
-  ];
-
   const [formFollowByEmail] = Form.useForm();
-  const navigate = useNavigate();
   return (
     <footer className="footer__wrapper">
       <div className="section-4">
@@ -108,7 +91,7 @@ export default function Footer() {
           <div className="footer__direct">
             <div className="footer__info-address">
               <span className="footer__info-address-words">
-                754 West Gartner Street Encino, CA 91316
+                Cai Khe Ward, Ninh Kieu District, Can Tho City, Vietnam
               </span>
             </div>
             <Button className="footer__info-view-map-btn" size="large">
@@ -116,38 +99,7 @@ export default function Footer() {
             </Button>
           </div>
         </div>
-        <div className="footer__list-wrapper footer__list-mobile--left">
-          <Title className="footer__heading" level={4}>
-            {t('footer.service.title')}
-          </Title>
-          <ul className="footer__list">
-            {services.map((item, index) => {
-              return (
-                <li className="footer__item" key={index}>
-                  <a href="#" className="footer__link">
-                    {item}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className="footer__list-wrapper footer__list-mobile--right">
-          <Title className="footer__heading" level={4}>
-            {t('footer.explore.title')}
-          </Title>
-          <ul className="footer__list">
-            {explore.map((item, index) => {
-              return (
-                <li className="footer__item" key={index}>
-                  <a href="#" className="footer__link">
-                    {item}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+
         <div className="footer__detail-wrapper">
           <Title className="footer__heading" level={4}>
             {t('footer.get_update.title')}
@@ -157,6 +109,7 @@ export default function Footer() {
           </p>
           <div className="footer__detail-form">
             <Form
+              data-testid="footer_form"
               form={formFollowByEmail}
               onFinish={e => {
                 formFollowByEmail.resetFields();
@@ -176,6 +129,7 @@ export default function Footer() {
                 ]}
               >
                 <Input
+                  data-testid="footer-input"
                   className="footer__detail-input"
                   size="large"
                   placeholder={t('cta.place_holder_input-email')}
@@ -195,11 +149,8 @@ export default function Footer() {
       </div>
       <div className="footer__lower">
         <div className="footer__lower-words">
-          Copyright © 2022{' '}
-          <a href="#" className="footer__lower-link">
-            Triply
-          </a>
-          . All Rights Reserved.
+          Copyright © 2022 <a className="footer__lower-link">Triply</a>. All
+          Rights Reserved.
         </div>
         <ul className="footer__lower-list">
           {footerItem.map((item, index) => (

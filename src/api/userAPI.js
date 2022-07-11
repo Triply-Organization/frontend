@@ -21,7 +21,6 @@ export const userAPI = {
   },
 
   addReview(params) {
-    console.log(params);
     const url = `reviews/${params.id}`;
     return axiosClient.post(url, params.body, {
       headers: {
