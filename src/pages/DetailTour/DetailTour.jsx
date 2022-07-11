@@ -104,20 +104,12 @@ export default function DetailTour() {
   const [formTicket] = Form.useForm();
 
   useEffect(() => {
-    if (dataCheckout.id) {
-      navigate(`/checkout/${dataCheckout.id}`);
-    }
-  }, [dataCheckout.id]);
-
-  useEffect(() => {
     setTotal(
       adultNumber.value * adultNumber.price +
         youthNumber.value * youthNumber.price +
         childrenNumber.value * childrenNumber.price,
     );
   }, [adultNumber, youthNumber, childrenNumber]);
-
-  localStorage.setItem('bookingInfo', JSON.stringify(dataCheckout));
 
   const handleChangePrice = (value, unique) => {
     switch (unique.type) {
@@ -261,8 +253,8 @@ export default function DetailTour() {
 
     if (!bookingDate) {
       message.error({
-        content: 'Please select the booking date you go!',
-        key: 'booking!',
+        content: 'Please choose the day!',
+        key: 'booking',
       });
     } else if (
       adultNumber.value === 0 &&
@@ -289,6 +281,7 @@ export default function DetailTour() {
         });
       } else {
         dispatch(booking(request));
+        navigate(`/checkout/${dataCheckout.id}`);
       }
     }
   };
