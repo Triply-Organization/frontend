@@ -92,7 +92,7 @@ const RoutesApp = () => {
           loading
         />
 
-        <Route path="detail/:id" element={<DetailTour />} loading />
+        <Route path="detail/:id/:title" element={<DetailTour />} loading />
         <Route path="confirmation/:id" element={<Confirmation loading />} />
 
         <Route
