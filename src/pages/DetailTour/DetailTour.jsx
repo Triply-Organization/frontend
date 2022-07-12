@@ -95,8 +95,6 @@ export default function DetailTour() {
   const [photoIndex, setPhotoIndex] = useState(0);
   const loading = useSelector(state => state.tours.loading);
 
-  console.log(dataCheckout);
-
   useEffect(() => {
     if (!_.isEmpty(detailTour)) {
       setGallery(detailTour?.tourImages?.map(item => item.path));
@@ -252,7 +250,6 @@ export default function DetailTour() {
 
   // validate booking
   const handleSubmit = values => {
-    console.log(values);
     const request = {
       children: children,
       adult: adult,
@@ -290,7 +287,6 @@ export default function DetailTour() {
         });
       } else {
         dispatch(booking(request));
-        navigate(`/checkout/${dataCheckout.id}`);
       }
     }
   };
