@@ -36,14 +36,6 @@ export default function Footer() {
     },
   ];
 
-  const explore = [
-    `${t('footer.explore.item.madrid')}`,
-    `${t('footer.explore.item.stockhome')}`,
-    `${t('footer.explore.item.rome')}`,
-    `${t('footer.explore.item.shanghai')}`,
-    `${t('footer.explore.item.tokyo')}`,
-  ];
-
   const [formFollowByEmail] = Form.useForm();
   return (
     <footer className="footer__wrapper">
@@ -110,7 +102,7 @@ export default function Footer() {
           <div className="footer__direct">
             <div className="footer__info-address">
               <span className="footer__info-address-words">
-                754 West Gartner Street Encino, CA 91316
+                Cai Khe Ward, Ninh Kieu District, Can Tho City, Vietnam
               </span>
             </div>
             <Button className="footer__info-view-map-btn" size="large">
@@ -133,22 +125,6 @@ export default function Footer() {
                     rel="noreferrer"
                   >
                     {item.title}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className="footer__list-wrapper footer__list-mobile--right">
-          <Title className="footer__heading" level={4}>
-            {t('footer.explore.title')}
-          </Title>
-          <ul className="footer__list">
-            {explore.map((item, index) => {
-              return (
-                <li className="footer__item" key={index}>
-                  <a href="#" className="footer__link">
-                    {item}
                   </a>
                 </li>
               );
@@ -204,11 +180,8 @@ export default function Footer() {
       </div>
       <div className="footer__lower">
         <div className="footer__lower-words">
-          Copyright © 2022{' '}
-          <a href="#" className="footer__lower-link">
-            Triply
-          </a>
-          . All Rights Reserved.
+          Copyright © 2022 <a className="footer__lower-link">Triply</a>. All
+          Rights Reserved.
         </div>
         <ul className="footer__lower-list">
           {footerItem.map((item, index) => (

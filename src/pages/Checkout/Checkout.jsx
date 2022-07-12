@@ -11,6 +11,7 @@ import {
   Typography,
   message,
 } from 'antd';
+import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,25 +31,29 @@ const { Title, Text } = Typography;
 const Checkout = () => {
   const loadingContext = useLoadingContext();
   const checkoutData = JSON.parse(localStorage.getItem('bookingInfo'));
+  const userInfo = JSON.parse(localStorage.getItem('user'));
   const status = localStorage.getItem('status');
   const [taxInfo, setTaxInfo] = useState(0);
   const [finalTotal, setFinalTotal] = useState(
     checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
   );
   const [discountValue, setDiscountValue] = useState(0);
+  const [amountAdultTicket, setAmountAdultTicket] = useState(0);
+  const [amountYouthTicket, setAmountYouthTicket] = useState(0);
+  const [amountChidrenTicket, setAmountChildrenTicket] = useState(0);
   const [voucherVal, setVoucherVal] = useState('');
-  const [isDisableBtn, setDisableBtn] = useState(false);
   const [voucherRemain, setVoucherRemain] = useState(0);
   const [voucherCode, setVoucherCode] = useState('');
   const loading = useSelector(state => state.checkout.loading);
   const voucherData = useSelector(state => state.checkout.voucher);
-  const [form] = Form.useForm();
+  const [formContact] = Form.useForm();
   const dispatch = useDispatch();
   const filterTimeout = useRef(null);
   const { t } = useTranslation();
 
   const onFinish = values => {
-    setDisableBtn(true);
+    const totalTicketAmount =
+      amountAdultTicket + amountYouthTicket + amountChidrenTicket;
     const valueWithoutVoucher = {
       orderId: checkoutData.id,
       tourId: checkoutData.tourId,
@@ -62,6 +67,7 @@ const Checkout = () => {
       tourName: checkoutData.tourTitle,
       email: values.email,
       name: `${values.first_name} ${values.last_name}`,
+      numberOfTickets: totalTicketAmount,
     };
     const newValues = {
       orderId: checkoutData.id,
@@ -76,6 +82,7 @@ const Checkout = () => {
       tourName: checkoutData.tourTitle,
       email: values.email,
       name: `${values.first_name} ${values.last_name}`,
+      numberOfTickets: totalTicketAmount,
     };
     if (voucherRemain !== 0) {
       if (!values.discount) {
@@ -85,9 +92,24 @@ const Checkout = () => {
       }
     } else {
       message.error('Your voucher is expired!');
-      setDisableBtn(false);
     }
   };
+
+  useEffect(() => {
+    if (checkoutData?.tickets?.adult?.amount) {
+      setAmountAdultTicket(checkoutData?.tickets?.adult?.amount);
+    }
+    if (checkoutData?.tickets?.youth?.amount) {
+      setAmountYouthTicket(checkoutData?.tickets?.youth?.amount);
+    }
+    if (checkoutData?.tickets?.children?.amount) {
+      setAmountChildrenTicket(checkoutData?.tickets?.children?.amount);
+    }
+  }, [
+    checkoutData?.tickets?.adult?.amount,
+    checkoutData?.tickets?.youth?.amount,
+    checkoutData?.tickets?.children?.amount,
+  ]);
 
   useEffect(() => {
     const getTax = async () => {
@@ -101,6 +123,7 @@ const Checkout = () => {
       setTaxInfo(taxData);
     };
     getTax();
+    document.title = 'Checkout';
     setTimeout(() => {
       loadingContext.done();
       window.scrollTo({
@@ -116,6 +139,18 @@ const Checkout = () => {
       checkoutData.subTotal + (checkoutData.subTotal * taxInfo) / 100,
     );
   }, [taxInfo]);
+
+  useEffect(() => {
+    if (!_.isEmpty(userInfo)) {
+      const valueFormContact = {
+        first_name: userInfo.name,
+        email: userInfo.email,
+        phone: userInfo.phone,
+      };
+
+      formContact.setFieldsValue(valueFormContact);
+    }
+  }, [userInfo]);
 
   useEffect(() => {
     setDiscountValue(voucherData.discount);
@@ -199,7 +234,7 @@ const Checkout = () => {
           </div>
           <div className="ctn-checkout__right-ctn__form">
             <Form
-              form={form}
+              form={formContact}
               layout="vertical"
               size="large"
               className="checkout-form"
@@ -361,7 +396,6 @@ const Checkout = () => {
               ) : (
                 <Form.Item>
                   <Button
-                    disabled={isDisableBtn}
                     loading={loading}
                     htmlType="submit"
                     type="primary"
