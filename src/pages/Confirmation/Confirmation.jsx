@@ -53,7 +53,7 @@ const Confirmation = () => {
             status={confirmInfo.status === 'unpaid' ? 'warning' : 'success'}
             title={
               confirmInfo.status === 'unpaid'
-                ? 'Your Order is not order'
+                ? 'Your Order is not done'
                 : 'Successfully Ordered'
             }
             subTitle={
