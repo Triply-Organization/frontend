@@ -26,11 +26,14 @@ export default function Footer() {
   ];
 
   const services = [
-    `${t('footer.service.item.booking')}`,
-    `${t('footer.service.item.rental_car')}`,
-    `${t('footer.service.item.hostel_world')}`,
-    `${t('footer.service.item.triago')}`,
-    `${t('footer.service.item.trip_advisor')}`,
+    {
+      title: `${t('footer.service.item.hotel')}`,
+      link: 'https://yourhometonight.com/',
+    },
+    {
+      title: `${t('footer.service.item.flight')}`,
+      link: 'https://www.u2fly.org/',
+    },
   ];
 
   const explore = [
@@ -123,8 +126,13 @@ export default function Footer() {
             {services.map((item, index) => {
               return (
                 <li className="footer__item" key={index}>
-                  <a href="#" className="footer__link">
-                    {item}
+                  <a
+                    target="_blank"
+                    href={item.link}
+                    className="footer__link"
+                    rel="noreferrer"
+                  >
+                    {item.title}
                   </a>
                 </li>
               );

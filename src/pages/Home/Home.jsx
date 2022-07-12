@@ -55,7 +55,7 @@ const Home = () => {
 
   const onSearch = values => {
     const searchParams = {};
-    console.log(values);
+    // console.log(values);
     if (values.destinations) {
       searchParams.destination = values.destinations;
     }

@@ -79,7 +79,7 @@ const AllTours = () => {
         page: '1',
       };
 
-      console.log(temp);
+      // console.log(temp);
 
       let o = Object.fromEntries(
         Object.entries(temp).filter(([x, v]) => v != null),
@@ -113,7 +113,7 @@ const AllTours = () => {
       }
 
       if (temp['guests[]']) {
-        console.log(temp['guests[]']);
+        // console.log(temp['guests[]']);
         formSearch.setFieldsValue({
           'guests[]': temp['guests[]'],
         });
