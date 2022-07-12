@@ -5,7 +5,7 @@ footer.footer__wrapper {
 .footer__upper {
   background: #202f59;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
   padding: 50px 315px;
   text-align: left;
   gap: 30px;
@@ -65,6 +65,7 @@ p.footer__detail-words {
   font-size: 1.1rem;
   font-weight: 400;
   line-height: 24px;
+  margin-bottom: 16px;
 }
 
 input.ant-input.ant-input-lg.footer__detail-input {
@@ -246,9 +247,10 @@ a.footer__low-link {
 
 @media (max-width: 1000px) {
   .footer__upper {
-    grid-template-columns: 1fr;
-    gap: 0;
-    row-gap: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .footer__info-wrapper {
@@ -280,6 +282,14 @@ a.footer__low-link {
 
   .footer__heading {
     margin-bottom: 0;
+  }
+
+  .footer__list-wrapper.footer__list-mobile--left {
+    text-align: center;
+  }
+
+  .footer__detail-wrapper {
+    text-align: center;
   }
 }
 

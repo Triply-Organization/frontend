@@ -250,7 +250,7 @@ export default function Header() {
         <div className="header__logo-wrapper" onClick={() => navigate('/')}>
           <img src={logo} alt="logo" className="header__logo" />
         </div>
-        <div data-testid="header-navbar">
+        <div className="header-navbar__wrapper" data-testid="header-navbar">
           {width < 1023 ? null : (
             <Navbar
               activeTab={activeTab}

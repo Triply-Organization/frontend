@@ -25,6 +25,17 @@ export default function Footer() {
     `${t('footer.contact.blog')}`,
   ];
 
+  const services = [
+    {
+      title: `${t('footer.service.item.hotel')}`,
+      link: 'https://yourhometonight.com/',
+    },
+    {
+      title: `${t('footer.service.item.flight')}`,
+      link: 'https://www.u2fly.org/',
+    },
+  ];
+
   const [formFollowByEmail] = Form.useForm();
   return (
     <footer className="footer__wrapper">
@@ -99,7 +110,27 @@ export default function Footer() {
             </Button>
           </div>
         </div>
-
+        <div className="footer__list-wrapper footer__list-mobile--left">
+          <Title className="footer__heading" level={4}>
+            {t('footer.service.title')}
+          </Title>
+          <ul className="footer__list">
+            {services.map((item, index) => {
+              return (
+                <li className="footer__item" key={index}>
+                  <a
+                    target="_blank"
+                    href={item.link}
+                    className="footer__link"
+                    rel="noreferrer"
+                  >
+                    {item.title}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
         <div className="footer__detail-wrapper">
           <Title className="footer__heading" level={4}>
             {t('footer.get_update.title')}

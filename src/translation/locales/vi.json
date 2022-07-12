@@ -52,7 +52,9 @@
         "tour": "Chuyến đi của tôi",
         "review": "Đánh giá của tôi",
         "my_account": "Tài khoản của tôi",
-        "my_profile": "Hồ sơ của tôi"
+        "my_profile": "Hồ sơ của tôi",
+        "dashboard": "Trang quản lý"
+
       },
 
       "not_logged_in": {
@@ -217,11 +219,8 @@
       "service": {
         "title": "Dịch vụ",
         "item": {
-          "booking": "Đặt chỗ",
-          "rental_car": "Thuê xe",
-          "hostel_world": "Nhà nghỉ",
-          "triago": "Triago",
-          "trip_advisor": "Tìm hiểu thêm về chuyến đi"
+          "hotel": "Đặt khách sạn",
+          "flight": "Đặt vé máy bay"
         }
       },
       "explore": {

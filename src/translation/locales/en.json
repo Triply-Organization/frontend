@@ -218,11 +218,8 @@
     "service": {
       "title": "Our Service",
       "item": {
-        "booking": "Booking",
-        "rental_car": "Rental car",
-        "hostel_world": "Hostel World",
-        "triago": "Triago",
-        "trip_advisor": "Trip Advisor"
+        "hotel": "Hotel booking",
+        "flight": "Flight booking"
       }
     },
     "explore": {
