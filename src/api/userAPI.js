@@ -12,7 +12,7 @@ export const userAPI = {
   },
 
   getOrderList() {
-    const url = `users`;
+    const url = `users/`;
     return axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
