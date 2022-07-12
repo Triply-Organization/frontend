@@ -651,7 +651,11 @@ export default function DetailTour() {
                           className="detailTour__booking-btn"
                           type="primary"
                           onClick={() => {
-                            localStorage.setItem('last_path', '/detail/15');
+                            localStorage.setItem(
+                              'last_path',
+                              location.pathname,
+                            );
+                            console.log(location.pathname);
 
                             setTimeout(() => navigate('/login'), 600);
                           }}
