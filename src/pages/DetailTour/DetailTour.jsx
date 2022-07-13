@@ -254,7 +254,6 @@ export default function DetailTour() {
       children: children,
       adult: adult,
       youth: youth,
-      currency: localStorage.getItem('currencyItem').toLowerCase(),
     };
 
     if (!bookingDate) {
