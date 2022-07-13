@@ -221,6 +221,10 @@ a.footer__low-link {
 
 @media (max-width: 1700px) {
   .section-4 {
+    .section-4 {
+      padding-left: 315px;
+      padding-right: 315px;
+    }
     &__link {
       font-size: 1.5rem;
     }
