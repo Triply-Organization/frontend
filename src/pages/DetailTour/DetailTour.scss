@@ -44,9 +44,8 @@ span.detailTour__icon {
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 0 auto;
-  margin-top: 2rem;
-  width: 1290px;
+  margin: 2rem 10% 0;
+  max-width: 1290px;
 }
 
 .detailTour__information-item {
@@ -199,6 +198,10 @@ span.detailTour__place-words {
   margin: 24px 0px;
   border: none;
   border-radius: 16px !important;
+
+  .ant-collapse-content.ant-collapse-content-active {
+    border: none;
+  }
 }
 
 .ant-collapse-content-box {
@@ -358,6 +361,7 @@ img.detailTour__img {
 
 .detailTour {
   padding-top: 90px;
+  overflow-x: hidden;
 }
 
 .detailTour__review-overall-wrapper {
@@ -532,6 +536,16 @@ p.detailTour__booking-label {
   align-items: center;
 }
 
+.detailTour__relatedTour-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 30px;
+  margin: 30px 0 45px;
+}
+
 .detailTour__carousel-wrapper {
   position: relative;
 
@@ -565,5 +579,176 @@ p.detailTour__booking-label {
 
   &:not(:last-child) {
     margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 1620px) {
+  .detailTour__content-wrapper {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .detailTour__information-section {
+    display: flex;
+    justify-content: center;
+    padding: 60px 10% 0 10%;
+  }
+
+  .detailTour__information {
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-around;
+  }
+
+  .detailTour__content {
+    margin-right: unset;
+  }
+
+  .detailTour__booking-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .detailTour__booking {
+    width: 80%;
+    padding: 0 3rem;
+  }
+
+  p.detailTour__booking-label {
+    margin-top: 1rem;
+  }
+
+  .detailTour__booking-footer {
+    & .ant-row.ant-form-item {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .detailTour__relatedTour {
+    padding: 60px 10% 0 10%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 978px) {
+  .detailTour__information-section {
+    padding: 30px 0 0 0;
+  }
+
+  h1.detailTour__intro-heading {
+    font-size: 2.4rem;
+  }
+
+  .detailTour__information {
+    justify-content: space-around;
+  }
+
+  .detailTour__booking {
+    width: 68%;
+  }
+}
+
+@media (max-width: 768px) {
+  .detailTour__intro-heading {
+    font-size: 2.4rem;
+  }
+
+  span.anticon.anticon-right.slick-arrow.slick-next,
+  span.anticon.anticon-left.slick-arrow.slick-prev {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 650px) {
+  h1.detailTour__intro-heading {
+    font-size: 1.8rem;
+  }
+
+  span.detailTour__information-icon {
+    font-size: 2rem;
+  }
+
+  span.detailTour__information-words {
+    font-size: 0.9rem;
+  }
+
+  h2.detailTour__content-heading {
+    font-size: 1.4rem;
+  }
+
+  .detailTour__services-item {
+    & > p {
+      font-size: 1rem;
+    }
+  }
+
+  .detailTour__booking {
+    width: 90%;
+  }
+}
+
+@media (max-width: 500px) {
+  h1.detailTour__intro-heading {
+    font-size: 1.4rem;
+  }
+
+  .detailTour__relatedTour {
+    padding: 0 30px 0;
+  }
+
+  .detailTour__location {
+    font-size: 0.8rem;
+  }
+
+  span.anticon.anticon-right.slick-arrow.slick-next,
+  span.anticon.anticon-left.slick-arrow.slick-prev {
+    padding: 8px;
+  }
+
+  .detailTour__plan-heading-word {
+    font-size: 0.9rem;
+    line-height: 1rem;
+    padding: 0 12px;
+  }
+
+  p.detail__plan-description {
+    font-size: 0.9rem;
+  }
+
+  .card-tour {
+    width: 85%;
+
+    &__content {
+      margin-top: 245px;
+    }
+
+    &__meta__item {
+      & > svg {
+        font-size: 0.85rem;
+      }
+
+      & > p {
+        font-size: 0.8rem;
+      }
+    }
+
+    &__title {
+      font-size: 1rem;
+    }
+
+    &__destination {
+      font-size: 0.8rem;
+    }
+
+    &__footer {
+      & > div {
+        & b {
+          font-size: 0.9rem;
+        }
+      }
+    }
   }
 }
