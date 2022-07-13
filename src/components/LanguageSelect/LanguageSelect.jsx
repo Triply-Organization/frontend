@@ -16,7 +16,7 @@ const LanguageSelect = () => {
     <Select
       style={{ width: 'fit-content' }}
       onChange={changeLanguage}
-      value={i18n.language}
+      value={i18n.language === 'en-US' || i18n.language === 'en' ? 'en' : 'vi'}
     >
       <Option value={'en'}>
         <Space>
@@ -26,7 +26,7 @@ const LanguageSelect = () => {
       </Option>
       <Option value={'vi'}>
         <Space>
-          <img src={vietnameIcon} alt="triply english" />
+          <img src={vietnameIcon} alt="triply vietnamese" />
           <p>Vietnamese</p>
         </Space>
       </Option>
