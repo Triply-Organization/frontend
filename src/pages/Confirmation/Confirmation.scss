@@ -36,3 +36,17 @@
         }
     }
 }
+
+@media only screen and (max-width: 600px) {
+    .ctn-confirmation {
+        &__order-info {
+            &__content {
+                flex-direction: column;
+
+                & > div {
+                    height: 100px;
+                }
+            }
+        }
+    }
+}
