@@ -45,8 +45,6 @@ const MyTour = () => {
   const today = moment(new Date()).format('YYYY-MM-DD');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const currencyString = localStorage.getItem('currencyString') || 'en-US';
-  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const loading = async () => {
     const response = await userAPI.getOrderList();
     const { data } = response.data;
@@ -278,13 +276,10 @@ const MyTour = () => {
                     </p>
 
                     <h3 className="my-tour__price">
-                      {item?.bill?.totalPrice?.toLocaleString(
-                        `${currencyString}`,
-                        {
-                          style: 'currency',
-                          currency: `${currencyItem}`,
-                        },
-                      )}
+                      {item?.bill?.totalPrice?.toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                      })}
                     </h3>
 
                     {item.status === 'unpaid' ? (
