@@ -19,6 +19,7 @@ import { useLoadingContext } from 'react-router-loading';
 
 import { axiosClient } from '../../api/config/axiosClient';
 import { checkout, getVoucherInfo } from '../../app/checkoutSlice';
+import { clearIdCheckout } from '../../app/orderSlice';
 import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
 import paypal from '../../assets/images/paypal-logo.png';
 import stripe from '../../assets/images/stripe-logo.png';
@@ -112,6 +113,7 @@ const Checkout = () => {
   ]);
 
   useEffect(() => {
+    dispatch(clearIdCheckout());
     const getTax = async () => {
       const url = '/taxes/getinfo?currency=vn';
       const res = await axiosClient.get(url, {
@@ -150,7 +152,7 @@ const Checkout = () => {
 
       formContact.setFieldsValue(valueFormContact);
     }
-  }, [userInfo]);
+  }, []);
 
   useEffect(() => {
     setDiscountValue(voucherData.discount);
@@ -254,6 +256,7 @@ const Checkout = () => {
               >
                 <Input
                   placeholder={t('checkout.contact_information.first_name')}
+                  onChange={e => console.log(e.target.value)}
                 />
               </Form.Item>
               <Form.Item

@@ -278,10 +278,13 @@ const MyTour = () => {
                     </p>
 
                     <h3 className="my-tour__price">
-                      {item.totalPrice?.toLocaleString(`${currencyString}`, {
-                        style: 'currency',
-                        currency: `${currencyItem}`,
-                      })}
+                      {item?.bill?.totalPrice?.toLocaleString(
+                        `${currencyString}`,
+                        {
+                          style: 'currency',
+                          currency: `${currencyItem}`,
+                        },
+                      )}
                     </h3>
 
                     {item.status === 'unpaid' ? (
@@ -335,7 +338,7 @@ const MyTour = () => {
                     </p>
 
                     <h2 className="my-tour__price">
-                      {item.totalPrice?.toLocaleString('en-US', {
+                      {item?.bill?.totalPrice?.toLocaleString('en-US', {
                         style: 'currency',
                         currency: 'USD',
                       })}

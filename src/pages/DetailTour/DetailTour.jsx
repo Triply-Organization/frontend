@@ -94,6 +94,7 @@ export default function DetailTour() {
   const [gallery, setGallery] = useState([]);
   const [photoIndex, setPhotoIndex] = useState(0);
   const loading = useSelector(state => state.tours.loading);
+
   useEffect(() => {
     if (!_.isEmpty(detailTour)) {
       setGallery(detailTour?.tourImages?.map(item => item.path));
@@ -102,6 +103,12 @@ export default function DetailTour() {
   }, [detailTour]);
 
   const [formTicket] = Form.useForm();
+
+  useEffect(() => {
+    if (dataCheckout.id) {
+      navigate(`/checkout/${dataCheckout.id}`);
+    }
+  }, [dataCheckout]);
 
   useEffect(() => {
     setTotal(
@@ -243,12 +250,10 @@ export default function DetailTour() {
 
   // validate booking
   const handleSubmit = values => {
-    console.log(values);
     const request = {
       children: children,
       adult: adult,
       youth: youth,
-      currency: localStorage.getItem('currencyItem').toLowerCase(),
     };
 
     if (!bookingDate) {
@@ -281,7 +286,6 @@ export default function DetailTour() {
         });
       } else {
         dispatch(booking(request));
-        navigate(`/checkout/${dataCheckout.id}`);
       }
     }
   };
