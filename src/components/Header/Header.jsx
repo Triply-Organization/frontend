@@ -278,7 +278,18 @@ export default function Header() {
               <div className="header__account-wrapper">
                 <Dropdown overlay={userDataLogin} placement="bottomRight" arrow>
                   <div className="header__account-icon">
-                    <Avatar icon={<UserOutlined />} />
+                    <Avatar
+                      style={{ cursor: 'pointer ', width: 40, height: 40 }}
+                      src={
+                        JSON.parse(localStorage.getItem('user'))?.avatar || null
+                      }
+                      icon={
+                        JSON.parse(localStorage.getItem('user'))
+                          ?.avatar ? null : (
+                          <UserOutlined />
+                        )
+                      }
+                    />
                   </div>
                 </Dropdown>
               </div>
@@ -291,17 +302,7 @@ export default function Header() {
                   arrow
                 >
                   <div className="header__account-icon">
-                    <Avatar
-                      src={
-                        JSON.parse(localStorage.getItem('user'))?.avatar || null
-                      }
-                      icon={
-                        JSON.parse(localStorage.getItem('user'))
-                          ?.avatar ? null : (
-                          <UserOutlined />
-                        )
-                      }
-                    />
+                    <Avatar icon={<UserOutlined />} />
                   </div>
                 </Dropdown>
               </div>

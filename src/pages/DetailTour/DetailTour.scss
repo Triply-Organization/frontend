@@ -587,6 +587,7 @@ p.detailTour__booking-label {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 60px;
   }
 
   .detailTour__information-section {
@@ -690,7 +691,7 @@ p.detailTour__booking-label {
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 520px) {
   h1.detailTour__intro-heading {
     font-size: 1.4rem;
   }
@@ -716,6 +717,19 @@ p.detailTour__booking-label {
 
   p.detail__plan-description {
     font-size: 0.9rem;
+  }
+
+  .ant-btn-round.ant-btn-lg {
+    height: unset;
+    padding: 5px;
+    font-size: unset;
+  }
+
+  .detailTour__review-item-rating-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    row-gap: 6px;
   }
 
   .card-tour {
