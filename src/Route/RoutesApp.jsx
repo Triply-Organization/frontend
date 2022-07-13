@@ -39,18 +39,6 @@ const RoutesApp = () => {
     },
   });
 
-  const style = {
-    height: 50,
-    width: 50,
-    lineHeight: '50px',
-    borderRadius: 9999,
-    backgroundColor: 'rgb(220, 131, 78)',
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 14,
-    marginLeft: 40,
-  };
-
   return (
     <Routes>
       <Route
@@ -60,7 +48,7 @@ const RoutesApp = () => {
             <Header />
             <Outlet />
             <BackTop>
-              <div style={style}>
+              <div className="back-top">
                 <CaretUpOutlined />
               </div>
             </BackTop>
