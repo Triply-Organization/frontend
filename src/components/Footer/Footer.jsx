@@ -111,9 +111,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer__list-wrapper footer__list-mobile--left">
-          <Title className="footer__heading" level={4}>
-            {t('footer.service.title')}
-          </Title>
+          <b className="footer__heading">{t('footer.service.title')}</b>
           <ul className="footer__list">
             {services.map((item, index) => {
               return (
@@ -132,9 +130,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className="footer__detail-wrapper">
-          <Title className="footer__heading" level={4}>
-            {t('footer.get_update.title')}
-          </Title>
+          <b className="footer__heading">{t('footer.get_update.title')}</b>
           <p className="footer__detail-words">
             {t('footer.get_update.content')}
           </p>
@@ -151,6 +147,7 @@ export default function Footer() {
             >
               <Form.Item
                 name="followByEmail"
+                label=""
                 rules={[
                   {
                     required: true,
@@ -180,8 +177,11 @@ export default function Footer() {
       </div>
       <div className="footer__lower">
         <div className="footer__lower-words">
-          Copyright © 2022 <a className="footer__lower-link">Triply</a>. All
-          Rights Reserved.
+          Copyright © 2022{' '}
+          <a href="https://triply.asia/" className="footer__lower-link">
+            Triply
+          </a>
+          . All Rights Reserved.
         </div>
         <ul className="footer__lower-list">
           {footerItem.map((item, index) => (
