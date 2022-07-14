@@ -12,7 +12,7 @@ import React from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import logo from '../../assets/images/logo-white.png';
+import logo from '../../assets/images/logo-white.webp';
 import './Admin.scss';
 
 const { Content, Footer, Sider } = Layout;

@@ -32,7 +32,7 @@ import { useLoadingContext } from 'react-router-loading';
 
 import { getDestinationsServiceTours } from '../../app/toursSlice';
 import { getToursByFilter } from '../../app/toursSlice';
-import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
+import breadcrumbBg from '../../assets/images/breadcrumb-bg.webp';
 import CardTour from '../../components/CardTour/CardTour';
 import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
 import Search from '../../components/Search/Search';

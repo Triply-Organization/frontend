@@ -9,7 +9,7 @@ import { AiOutlineLogout } from 'react-icons/ai';
 import { TbTicket } from 'react-icons/tb';
 import { Link, useNavigate } from 'react-router-dom';
 
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo.webp';
 import LanguageSelect from './../LanguageSelect/LanguageSelect';
 import './Header.scss';
 import MobileNav from './MobileNav/MobileNav';

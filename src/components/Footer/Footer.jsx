@@ -10,7 +10,7 @@ import { FcTwoSmartphones } from 'react-icons/fc';
 import { MdAlternateEmail } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-import logo from '../../assets/images/logo-white.png';
+import logo from '../../assets/images/logo-white.webp';
 import './Footer.scss';
 
 const { Title } = Typography;

@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
 import { login } from '../../app/loginSlice';
-import bgLogin from '../../assets/images/bg-2.jpg';
+import bgLogin from '../../assets/images/bg-2.webp';
 import LanguageSelect from '../../components/LanguageSelect/LanguageSelect';
 import './Login.scss';
 
