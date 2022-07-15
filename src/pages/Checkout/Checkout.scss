@@ -17,7 +17,7 @@
         width: 30%;
 
         &__title {
-            margin-bottom: 3rem;
+            margin-bottom: 1.5rem;
         }
 
         &__form {
@@ -48,7 +48,7 @@
     }
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 768px) {
     .ctn-checkout {
         flex-direction: column;
 
@@ -69,8 +69,8 @@
 
 @media only screen and (max-width: 576px) {
     .ctn-checkout {
-        .synthetic-price {
-            text-align: left;
+        & .title-id {
+            text-align: right;
         }
     }
 }

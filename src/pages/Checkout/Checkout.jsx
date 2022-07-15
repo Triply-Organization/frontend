@@ -209,7 +209,7 @@ const Checkout = () => {
       <div className="ctn ctn-checkout">
         <div className="ctn-checkout__left-ctn">
           <div className="ctn-checkout__left-ctn__title">
-            <Title level={2}>
+            <Title level={2} className="title-id">
               {t('checkout.order_detail.title')} #{checkoutData.id}
             </Title>
             {status === 'refund' ? (

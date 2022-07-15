@@ -31,7 +31,7 @@ const OrderDetail = props => {
             lg={16}
             md={18}
             sm={18}
-            xs={22}
+            xs={24}
             className="checkout-info-display__content"
           >
             <Title level={4}>{data?.tourTitle}</Title>
@@ -100,8 +100,15 @@ const OrderDetail = props => {
         <Divider />
 
         <Row gutter={8} className="ctn-result">
-          <Col lg={9} md={6} sm={0} xs={0}></Col>
-          <Col className="synthetic-price" lg={12} md={15} sm={12} xs={12}>
+          <Col xl={9} lg={9} md={5} sm={0} xs={0}></Col>
+          <Col
+            className="synthetic-price"
+            xl={11}
+            lg={10}
+            md={13}
+            sm={14}
+            xs={10}
+          >
             <section>
               <Text strong>{t('checkout.order_detail.sub_total')}</Text>
             </section>
@@ -122,7 +129,7 @@ const OrderDetail = props => {
               <Title level={4}>{t('checkout.order_detail.total')}</Title>
             </section>
           </Col>
-          <Col lg={3} md={3} sm={12} xs={12}>
+          <Col xl={4} lg={5} md={6} sm={10} xs={14}>
             <section>
               <Text strong>
                 {data?.subTotal?.toLocaleString(`${currencyString}`, {
