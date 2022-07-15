@@ -19,8 +19,6 @@ const Confirmation = () => {
   const confirmInfo = useSelector(state => state.checkout.confirmationData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const currencyString = localStorage.getItem('currencyString') || 'en-US';
-  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
 
   const handleBackToHome = () => {
     navigate('/');
@@ -81,13 +79,10 @@ const Confirmation = () => {
             <div>
               <Text strong>Total after VAT:</Text>
               {confirmInfo?.bill?.totalPrice
-                ? confirmInfo?.bill?.totalPrice?.toLocaleString(
-                    `${currencyString}`,
-                    {
-                      style: 'currency',
-                      currency: `${currencyItem}`,
-                    },
-                  )
+                ? confirmInfo?.bill?.totalPrice?.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                  })
                 : 'Unpaid Order'}
             </div>
           </div>

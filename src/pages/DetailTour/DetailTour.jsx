@@ -87,8 +87,6 @@ export default function DetailTour() {
   const [total, setTotal] = useState(0);
   const [priceFollowDate, setPriceFollowDate] = useState([]);
   const { t } = useTranslation();
-  const currencyString = localStorage.getItem('currencyString') || 'en-US';
-  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const loadingContext = useLoadingContext();
   const [visibleGallery, setVisibleGallery] = useState(false);
   const [gallery, setGallery] = useState([]);
@@ -194,12 +192,12 @@ export default function DetailTour() {
       {
         icon: <AiOutlineDollar />,
         title: 'Price',
-        detail: `${detailTour.minPrice?.toLocaleString(`${currencyString}`, {
+        detail: `${detailTour.minPrice?.toLocaleString('en-US', {
           style: 'currency',
-          currency: `${currencyItem}`,
-        })} - ${detailTour.maxPrice?.toLocaleString(`${currencyString}`, {
+          currency: 'USD',
+        })} - ${detailTour.maxPrice?.toLocaleString('en-US', {
           style: 'currency',
-          currency: `${currencyItem}`,
+          currency: 'USD',
         })}`,
       },
       {
@@ -598,13 +596,10 @@ export default function DetailTour() {
                                     </Text>
 
                                     <Text strong>
-                                      {e.price?.toLocaleString(
-                                        `${currencyString}`,
-                                        {
-                                          style: 'currency',
-                                          currency: `${currencyItem}`,
-                                        },
-                                      )}{' '}
+                                      {e.price?.toLocaleString('en-US', {
+                                        style: 'currency',
+                                        currency: 'USD',
+                                      })}{' '}
                                       :
                                     </Text>
                                   </Space>
@@ -634,9 +629,9 @@ export default function DetailTour() {
                         {t('detail_tour.booking_form.total')}
                       </span>
                       <span className="detailTour__booking-total">
-                        {total?.toLocaleString(`${currencyString}`, {
+                        {total?.toLocaleString('en-US', {
                           style: 'currency',
-                          currency: `${currencyItem}`,
+                          currency: 'USD',
                         })}
                       </span>
                     </div>
