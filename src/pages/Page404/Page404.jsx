@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import page404 from '../../assets/images/404.png';
+import page404 from '../../assets/images/404.webp';
 import './Page404.scss';
 
 export function Page404() {

@@ -2,8 +2,8 @@ import { Select, Space } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import englishIcon from '../../assets/images/united-kingdom.png';
-import vietnameIcon from '../../assets/images/vietnam.png';
+import englishIcon from '../../assets/images/united-kingdom.webp';
+import vietnameIcon from '../../assets/images/vietnam.webp';
 
 const LanguageSelect = () => {
   const { i18n } = useTranslation();

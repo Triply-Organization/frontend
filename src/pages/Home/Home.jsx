@@ -12,11 +12,11 @@ import {
   getDestinationsServiceTours,
   getPopularTours,
 } from '../../app/toursSlice';
-import section1Background from '../../assets/images/section-1-bg.jpg';
-import section2Banner1 from '../../assets/images/section-2_banner-1.jpg';
-import section2Banner2 from '../../assets/images/section-2_banner-2.jpg';
-import section2Banner3 from '../../assets/images/section-2_banner-3.jpg';
-import section2Shape from '../../assets/images/section-2_shape.png';
+import section1Background from '../../assets/images/section-1-bg.webp';
+import section2Banner1 from '../../assets/images/section-2_banner-1.webp';
+import section2Banner2 from '../../assets/images/section-2_banner-2.webp';
+import section2Banner3 from '../../assets/images/section-2_banner-3.webp';
+import section2Shape from '../../assets/images/section-2_shape.webp';
 import CardTour from '../../components/CardTour/CardTour';
 import CardVoucher from '../../components/CardVoucher/CardVoucher';
 import Search from '../../components/Search/Search';

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
+import breadcrumbBg from '../../assets/images/breadcrumb-bg.webp';
 import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
 import OrderDetail from '../../components/OderDetail/OrderDetail';
 import { getConfirmInfo } from './../../app/checkoutSlice';
