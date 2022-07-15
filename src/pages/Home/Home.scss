@@ -396,7 +396,7 @@
     font-size: 42px;
   }
   .section-2 {
-    width: 320px;
+    width: 290px;
     padding-top: 200px;
 
     .card-voucher {
@@ -404,13 +404,13 @@
     }
 
     &__auth {
-      width: 320px;
+      width: 290px;
 
       &__typho {
-        width: 320px;
+        width: 100%;
       }
       &__control {
-        width: 320px;
+        width: 100%;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -418,7 +418,7 @@
     }
   }
   .section-3__content-wrapper {
-    width: 320px;
+    width: 290px;
     & .card-tour {
       height: 500px;
 
