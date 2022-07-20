@@ -20,7 +20,7 @@ export const adminAPI = {
   },
 
   getOverall() {
-    const url = `statistical/`;
+    const url = `statistical`;
     return axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -29,7 +29,7 @@ export const adminAPI = {
   },
 
   getTours(params) {
-    const url = `/tours/all/${params}`;
+    const url = `tours/all/${params}`;
     return axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -38,7 +38,7 @@ export const adminAPI = {
   },
 
   updateTours(id, body) {
-    const url = `/tours/changeStatus/${id}`;
+    const url = `tours/changeStatus/${id}`;
     return axiosClient.patch(url, body, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -47,7 +47,7 @@ export const adminAPI = {
   },
 
   getAllUsers(params) {
-    const url = `/admin/manager/users${params}`;
+    const url = `admin/manager/users${params}`;
     return axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -56,7 +56,7 @@ export const adminAPI = {
   },
 
   changeRoleUser(id, body) {
-    const url = `/admin/manager/users/${id}`;
+    const url = `admin/manager/users/${id}`;
     return axiosClient.patch(url, body, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -65,7 +65,7 @@ export const adminAPI = {
   },
 
   deleteUser(params) {
-    const url = `/admin/manager/users/${params}`;
+    const url = `admin/manager/users/${params}`;
     return axiosClient.delete(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -74,7 +74,7 @@ export const adminAPI = {
   },
 
   getAllCustomers(params) {
-    const url = `/admin/manager/customers${params}`;
+    const url = `admin/manager/customers${params}`;
     return axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -83,7 +83,7 @@ export const adminAPI = {
   },
 
   deleteCustomer(params) {
-    const url = `/admin/manager/customers/${params}`;
+    const url = `admin/manager/customers/${params}`;
     return axiosClient.delete(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -92,7 +92,7 @@ export const adminAPI = {
   },
 
   getAllReviews(params) {
-    const url = `/reviews/${params}`;
+    const url = `reviews/${params}`;
     return axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -101,7 +101,7 @@ export const adminAPI = {
   },
 
   deleteReview(id) {
-    const url = `/reviews/${id}`;
+    const url = `reviews/${id}`;
     return axiosClient.delete(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
