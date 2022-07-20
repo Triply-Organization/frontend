@@ -92,6 +92,13 @@ export default function DetailTour() {
   const [gallery, setGallery] = useState([]);
   const [photoIndex, setPhotoIndex] = useState(0);
   const loading = useSelector(state => state.tours.loading);
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setWidth(window.innerWidth);
+    });
+  }, [width]);
 
   useEffect(() => {
     if (!_.isEmpty(detailTour)) {
@@ -678,27 +685,49 @@ export default function DetailTour() {
             <h2 className="detailTour__content-heading">
               {t('detail_tour.you_may_like')}
             </h2>
-            <Carousel
-              infinite={false}
-              variableWidth={true}
-              className="detailTour__relatedTour-carousel"
-              draggable={true}
-              slidesToShow={3}
-            >
-              {relatedTours && relatedTours.length > 0 ? (
-                relatedTours?.map(item => {
-                  return (
-                    <CardTour
-                      tour={item}
-                      key={item.id}
-                      style={{ width: '405px', marginRight: '1rem' }}
-                    />
-                  );
-                })
-              ) : (
-                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-              )}
-            </Carousel>
+            {width >= 1000 ? (
+              <Carousel
+                infinite={false}
+                variableWidth={true}
+                className="detailTour__relatedTour-carousel"
+                draggable={true}
+                slidesToShow={2}
+              >
+                {relatedTours && relatedTours.length > 0 ? (
+                  relatedTours?.map(item => {
+                    return (
+                      <CardTour
+                        tour={item}
+                        key={item.id}
+                        style={{ width: '405px', marginRight: '1rem' }}
+                      />
+                    );
+                  })
+                ) : (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                )}
+              </Carousel>
+            ) : (
+              <div className="detailTour__relatedTour-wrapper">
+                {relatedTours && relatedTours.length > 0 ? (
+                  relatedTours?.map(item => {
+                    return (
+                      <CardTour
+                        tour={item}
+                        key={item.id}
+                        style={
+                          width >= 500
+                            ? { width: '405px', marginRight: '1rem' }
+                            : null
+                        }
+                      />
+                    );
+                  })
+                ) : (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                )}
+              </div>
+            )}
           </div>
         )}
       </section>
