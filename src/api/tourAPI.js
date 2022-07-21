@@ -23,7 +23,7 @@ export const tourAPI = {
     return axiosClient.post(url, params);
   },
   getToursByFilter(params) {
-    const url = `tours/${decodeURIComponent(params)}`;
+    const url = `tours${decodeURIComponent(params)}`;
     return axiosClient.get(url);
   },
 
