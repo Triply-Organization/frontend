@@ -11,8 +11,8 @@ export const userAPI = {
     return axiosClient.post(url, params);
   },
 
-  getOrderList() {
-    const url = `users`;
+  getOrderList(page = 1) {
+    const url = `users?page=${page}`;
     return axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
