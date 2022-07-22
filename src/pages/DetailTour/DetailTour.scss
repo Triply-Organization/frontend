@@ -348,14 +348,9 @@ img.detailTour__img {
   width: 1290px;
   padding-bottom: 90px;
 
-  & .slick-list {
-    padding: 2rem;
-  }
-
-  & .slick-track {
-    width: 100%;
-    display: flex;
-    gap: 1rem;
+  & .swiper {
+    padding: 1rem;
+    transform: translateX(-1rem);
   }
 }
 
@@ -629,8 +624,11 @@ p.detailTour__booking-label {
   }
 
   .detailTour__relatedTour {
-    padding: 60px 10% 0 10%;
+    & .swiper {
+      padding-bottom: 60px;
+    }
     width: 100%;
+    padding: 0 30px 0;
   }
 }
 
@@ -697,7 +695,11 @@ p.detailTour__booking-label {
   }
 
   .detailTour__relatedTour {
-    padding: 0 30px 0;
+    text-align: center;
+
+    & .swiper {
+      transform: translateX(0);
+    }
   }
 
   .detailTour__location {
@@ -733,7 +735,8 @@ p.detailTour__booking-label {
   }
 
   .card-tour {
-    width: 85%;
+    width: 100%;
+    margin: 0;
 
     &__content {
       margin-top: 245px;

@@ -11,7 +11,6 @@ import {
   Rate,
   Spin,
   Typography,
-  notification,
 } from 'antd';
 import { Collapse } from 'antd';
 import { DatePicker } from 'antd';
@@ -47,6 +46,10 @@ import 'react-image-lightbox/style.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
+import { Pagination } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { getDetailTour } from '../../app/toursSlice';
 import CardTour from '../../components/CardTour/CardTour';
@@ -685,49 +688,27 @@ export default function DetailTour() {
             <h2 className="detailTour__content-heading">
               {t('detail_tour.you_may_like')}
             </h2>
-            {width >= 1000 ? (
-              <Carousel
-                infinite={false}
-                variableWidth={true}
-                className="detailTour__relatedTour-carousel"
-                draggable={true}
-                slidesToShow={2}
-              >
-                {relatedTours && relatedTours.length > 0 ? (
-                  relatedTours?.map(item => {
-                    return (
-                      <CardTour
-                        tour={item}
-                        key={item.id}
-                        style={{ width: '405px', marginRight: '1rem' }}
-                      />
-                    );
-                  })
-                ) : (
-                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                )}
-              </Carousel>
-            ) : (
-              <div className="detailTour__relatedTour-wrapper">
-                {relatedTours && relatedTours.length > 0 ? (
-                  relatedTours?.map(item => {
-                    return (
-                      <CardTour
-                        tour={item}
-                        key={item.id}
-                        style={
-                          width >= 500
-                            ? { width: '405px', marginRight: '1rem' }
-                            : null
-                        }
-                      />
-                    );
-                  })
-                ) : (
-                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                )}
-              </div>
-            )}
+            <Swiper
+              spaceBetween={30}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Pagination]}
+              slidesPerView={
+                document.body.clientWidth > 1620
+                  ? 3
+                  : document.body.clientWidth < 1620 &&
+                    document.body.clientWidth > 950
+                  ? 2
+                  : 1
+              }
+            >
+              {relatedTours.map((tour, index) => (
+                <SwiperSlide key={index}>
+                  <CardTour tour={tour} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         )}
       </section>
