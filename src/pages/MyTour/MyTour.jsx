@@ -111,7 +111,7 @@ const MyTour = () => {
       dayRemain: moment(
         moment(value?.startDay?.date).format('YYYY-MM-DD'),
       ).diff(moment(today), 'days'),
-      currency: localStorage.getItem('currencyItem').toLowerCase(),
+      currency: 'usd',
     };
     try {
       await userAPI.refundOrder(req);

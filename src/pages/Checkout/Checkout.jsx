@@ -63,7 +63,7 @@ const Checkout = () => {
       totalPrice: finalTotal,
       discountPrice: 0,
       taxPrice: (checkoutData.subTotal * taxInfo) / 100,
-      currency: localStorage.getItem('currencyItem').toLowerCase(),
+      currency: 'usd',
       phone: values.phone,
       tourName: checkoutData.tourTitle,
       email: values.email,
@@ -78,7 +78,7 @@ const Checkout = () => {
       totalPrice: finalTotal,
       discountPrice: (checkoutData.subTotal * voucherData.discount) / 100,
       taxPrice: (checkoutData.subTotal * taxInfo) / 100,
-      currency: localStorage.getItem('currencyItem').toLowerCase(),
+      currency: 'usd',
       phone: values.phone,
       tourName: checkoutData.tourTitle,
       email: values.email,
@@ -256,7 +256,6 @@ const Checkout = () => {
               >
                 <Input
                   placeholder={t('checkout.contact_information.first_name')}
-                  onChange={e => console.log(e.target.value)}
                 />
               </Form.Item>
               <Form.Item
