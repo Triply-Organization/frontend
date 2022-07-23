@@ -59,8 +59,8 @@ const Home = () => {
     if (values.destinations) {
       searchParams.destination = values.destinations;
     }
-    if (values['service']) {
-      searchParams['service'] = values['service'];
+    if (values['services[]']) {
+      searchParams['services[]'] = values['services[]'];
     }
 
     if (values.when) {

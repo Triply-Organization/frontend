@@ -655,8 +655,6 @@ export default function DetailTour() {
                               'last_path',
                               location.pathname,
                             );
-                            console.log(location.pathname);
-
                             setTimeout(() => navigate('/login'), 600);
                           }}
                           size="large"
