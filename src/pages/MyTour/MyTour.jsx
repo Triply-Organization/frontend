@@ -149,8 +149,6 @@ const MyTour = () => {
     getData();
   }, [searchParams.get('page')]);
 
-  console.log(totalOrders);
-
   const showPolicyRefund = values => {
     confirm({
       title: 'Refund Policy',
