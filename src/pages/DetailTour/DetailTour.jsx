@@ -11,7 +11,6 @@ import {
   Rate,
   Spin,
   Typography,
-  notification,
 } from 'antd';
 import { Collapse } from 'antd';
 import { DatePicker } from 'antd';
@@ -47,6 +46,10 @@ import 'react-image-lightbox/style.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
+import { Pagination } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { getDetailTour } from '../../app/toursSlice';
 import CardTour from '../../components/CardTour/CardTour';
@@ -87,13 +90,18 @@ export default function DetailTour() {
   const [total, setTotal] = useState(0);
   const [priceFollowDate, setPriceFollowDate] = useState([]);
   const { t } = useTranslation();
-  const currencyString = localStorage.getItem('currencyString') || 'en-US';
-  const currencyItem = localStorage.getItem('currencyItem') || 'USD';
   const loadingContext = useLoadingContext();
   const [visibleGallery, setVisibleGallery] = useState(false);
   const [gallery, setGallery] = useState([]);
   const [photoIndex, setPhotoIndex] = useState(0);
   const loading = useSelector(state => state.tours.loading);
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setWidth(window.innerWidth);
+    });
+  }, [width]);
 
   useEffect(() => {
     if (!_.isEmpty(detailTour)) {
@@ -194,12 +202,12 @@ export default function DetailTour() {
       {
         icon: <AiOutlineDollar />,
         title: 'Price',
-        detail: `${detailTour.minPrice?.toLocaleString(`${currencyString}`, {
+        detail: `${detailTour.minPrice?.toLocaleString('en-US', {
           style: 'currency',
-          currency: `${currencyItem}`,
-        })} - ${detailTour.maxPrice?.toLocaleString(`${currencyString}`, {
+          currency: 'USD',
+        })} - ${detailTour.maxPrice?.toLocaleString('en-US', {
           style: 'currency',
-          currency: `${currencyItem}`,
+          currency: 'USD',
         })}`,
       },
       {
@@ -598,13 +606,10 @@ export default function DetailTour() {
                                     </Text>
 
                                     <Text strong>
-                                      {e.price?.toLocaleString(
-                                        `${currencyString}`,
-                                        {
-                                          style: 'currency',
-                                          currency: `${currencyItem}`,
-                                        },
-                                      )}{' '}
+                                      {e.price?.toLocaleString('en-US', {
+                                        style: 'currency',
+                                        currency: 'USD',
+                                      })}{' '}
                                       :
                                     </Text>
                                   </Space>
@@ -634,9 +639,9 @@ export default function DetailTour() {
                         {t('detail_tour.booking_form.total')}
                       </span>
                       <span className="detailTour__booking-total">
-                        {total?.toLocaleString(`${currencyString}`, {
+                        {total?.toLocaleString('en-US', {
                           style: 'currency',
-                          currency: `${currencyItem}`,
+                          currency: 'USD',
                         })}
                       </span>
                     </div>
@@ -650,8 +655,6 @@ export default function DetailTour() {
                               'last_path',
                               location.pathname,
                             );
-                            console.log(location.pathname);
-
                             setTimeout(() => navigate('/login'), 600);
                           }}
                           size="large"
@@ -683,27 +686,27 @@ export default function DetailTour() {
             <h2 className="detailTour__content-heading">
               {t('detail_tour.you_may_like')}
             </h2>
-            <Carousel
-              infinite={false}
-              variableWidth={true}
-              className="detailTour__relatedTour-carousel"
-              draggable={true}
-              slidesToShow={3}
+            <Swiper
+              spaceBetween={30}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Pagination]}
+              slidesPerView={
+                document.body.clientWidth > 1620
+                  ? 3
+                  : document.body.clientWidth < 1620 &&
+                    document.body.clientWidth > 950
+                  ? 2
+                  : 1
+              }
             >
-              {relatedTours && relatedTours.length > 0 ? (
-                relatedTours?.map(item => {
-                  return (
-                    <CardTour
-                      tour={item}
-                      key={item.id}
-                      style={{ width: '405px', marginRight: '1rem' }}
-                    />
-                  );
-                })
-              ) : (
-                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-              )}
-            </Carousel>
+              {relatedTours.map((tour, index) => (
+                <SwiperSlide key={index}>
+                  <CardTour tour={tour} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         )}
       </section>

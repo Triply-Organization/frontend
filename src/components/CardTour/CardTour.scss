@@ -213,3 +213,16 @@
     }
   }
 }
+
+
+@media screen and (max-width: 450px) {
+  .card-tour__footer {
+    & > div {
+      & b {
+        color: var(--global-color-primary);
+        font-size: 14px;
+        user-select: none;
+      }
+    }
+  }
+}

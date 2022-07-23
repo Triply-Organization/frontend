@@ -59,12 +59,14 @@ const Search = props => {
         <div>
           <b>{t('search.service.title')}</b>
           <Form.Item
-            name="service"
+            name="services[]"
             className="search-form__item search-form__activity"
           >
             <Select
               className="search-form__item__field select-mul"
               allowClear
+              mode="multiple"
+              maxTagCount={1}
               bordered={false}
               data-testid="select-search-services"
               placeholder={t('search.service.place_holder')}
@@ -75,7 +77,7 @@ const Search = props => {
                   services.map((item, index) => (
                     <Option
                       key={index}
-                      value={item.id}
+                      value={item.id && item.id.toString()}
                       data-testid="option-search-services"
                     >
                       {item.name}

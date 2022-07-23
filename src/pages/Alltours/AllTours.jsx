@@ -32,7 +32,7 @@ import { useLoadingContext } from 'react-router-loading';
 
 import { getDestinationsServiceTours } from '../../app/toursSlice';
 import { getToursByFilter } from '../../app/toursSlice';
-import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
+import breadcrumbBg from '../../assets/images/breadcrumb-bg.webp';
 import CardTour from '../../components/CardTour/CardTour';
 import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
 import Search from '../../components/Search/Search';
@@ -72,7 +72,7 @@ const AllTours = () => {
       let temp = {
         destination: searchParams.get('destination'),
         'guests[]': searchParams.getAll('guests[]'),
-        service: searchParams.get('service'),
+        'services[]': searchParams.getAll('services[]'),
         startDate: searchParams.get('startDate'),
         orderBy: searchParams.get('orderBy'),
         orderType: 'price',
@@ -97,10 +97,9 @@ const AllTours = () => {
         });
       }
 
-      if (temp['service']) {
-        if (services?.filter(item => item.id == temp.service)[0]);
+      if (temp['services[]']) {
         formSearch.setFieldsValue({
-          service: services?.filter(item => item.id == temp.service)[0].name,
+          'services[]': temp['services[]'],
         });
       }
 
@@ -169,8 +168,8 @@ const AllTours = () => {
     if (values.destinations) {
       searchParams.destination = values.destinations;
     }
-    if (values['service']) {
-      searchParams['service'] = values['service'];
+    if (values['services[]']) {
+      searchParams['services[]'] = values['services[]'];
     }
 
     if (values.when) {

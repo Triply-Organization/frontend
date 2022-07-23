@@ -12,3 +12,17 @@
 .second-font {
   font-family: 'WindSong', cursive;
 }
+
+.back-top {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #dc834e;
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

@@ -5,7 +5,7 @@ import { AiFillDashboard, AiOutlineUnorderedList } from 'react-icons/ai';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useLoadingContext } from 'react-router-loading';
 
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo.webp';
 import './CMSCustomer.scss';
 
 const { Content, Sider } = Layout;

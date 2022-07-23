@@ -170,3 +170,27 @@
     }
   }
 }
+
+@media screen and (max-width: 450px) {
+  .search-form {
+    bottom: -50%;
+    
+    &__item__select {
+      padding: 1rem;
+      &:not(:nth-child(4)) {
+        border-bottom: 0.5px solid #dfdfdf;
+      }
+    }
+
+    &__item--submit {
+      & button {
+        height: 70px;
+        border-radius: 0 0 16px 16px;
+      }
+    }
+
+    &__item__field {
+      width: 200px !important;
+    }
+  }
+}

@@ -20,9 +20,9 @@ import { useLoadingContext } from 'react-router-loading';
 import { axiosClient } from '../../api/config/axiosClient';
 import { checkout, getVoucherInfo } from '../../app/checkoutSlice';
 import { clearIdCheckout } from '../../app/orderSlice';
-import breadcrumbBg from '../../assets/images/breadcrumb-bg.jpg';
-import paypal from '../../assets/images/paypal-logo.png';
-import stripe from '../../assets/images/stripe-logo.png';
+import breadcrumbBg from '../../assets/images/breadcrumb-bg.webp';
+import paypal from '../../assets/images/paypal-logo.webp';
+import stripe from '../../assets/images/stripe-logo.webp';
 import ImageBreadcrumb from '../../components/ImageBreadcrumb/ImageBreadcrumb';
 import OrderDetail from '../../components/OderDetail/OrderDetail';
 import './Checkout.scss';
@@ -63,7 +63,7 @@ const Checkout = () => {
       totalPrice: finalTotal,
       discountPrice: 0,
       taxPrice: (checkoutData.subTotal * taxInfo) / 100,
-      currency: localStorage.getItem('currencyItem').toLowerCase(),
+      currency: 'usd',
       phone: values.phone,
       tourName: checkoutData.tourTitle,
       email: values.email,
@@ -78,7 +78,7 @@ const Checkout = () => {
       totalPrice: finalTotal,
       discountPrice: (checkoutData.subTotal * voucherData.discount) / 100,
       taxPrice: (checkoutData.subTotal * taxInfo) / 100,
-      currency: localStorage.getItem('currencyItem').toLowerCase(),
+      currency: 'usd',
       phone: values.phone,
       tourName: checkoutData.tourTitle,
       email: values.email,
@@ -209,7 +209,7 @@ const Checkout = () => {
       <div className="ctn ctn-checkout">
         <div className="ctn-checkout__left-ctn">
           <div className="ctn-checkout__left-ctn__title">
-            <Title level={2}>
+            <Title level={2} className="title-id">
               {t('checkout.order_detail.title')} #{checkoutData.id}
             </Title>
             {status === 'refund' ? (
@@ -256,7 +256,6 @@ const Checkout = () => {
               >
                 <Input
                   placeholder={t('checkout.contact_information.first_name')}
-                  onChange={e => console.log(e.target.value)}
                 />
               </Form.Item>
               <Form.Item

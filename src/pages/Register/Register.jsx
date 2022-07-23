@@ -7,7 +7,7 @@ import { useLoadingContext } from 'react-router-loading';
 import { useStepsForm } from 'sunflower-antd';
 
 import { clearSuccess, register } from '../../app/registerSlice';
-import bgLogin from '../../assets/images/bg-2.jpg';
+import bgLogin from '../../assets/images/bg-2.webp';
 import LanguageSelect from '../../components/LanguageSelect/LanguageSelect';
 import './Register.scss';
 

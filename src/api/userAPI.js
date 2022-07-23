@@ -2,17 +2,17 @@ import { axiosClient } from './config/axiosClient';
 
 export const userAPI = {
   login(params) {
-    const url = `/login`;
+    const url = `login`;
     return axiosClient.post(url, params);
   },
 
   register(params) {
-    const url = `/register`;
+    const url = `register`;
     return axiosClient.post(url, params);
   },
 
-  getOrderList() {
-    const url = `users/`;
+  getOrderList(page = 1) {
+    const url = `users?page=${page}`;
     return axiosClient.get(url, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -30,7 +30,7 @@ export const userAPI = {
   },
 
   refundOrder(params) {
-    const url = `/refund/`;
+    const url = `refund`;
     return axiosClient.post(url, params, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -39,14 +39,14 @@ export const userAPI = {
   },
 
   editUser(params) {
-    const url = `/users/${params.id}`;
+    const url = `users/${params.id}`;
     return axiosClient.patch(url, params.body, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
   },
 
   deleteUser(params) {
-    const url = `/users/${params}`;
+    const url = `users/${params}`;
     return axiosClient.delete(url, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
