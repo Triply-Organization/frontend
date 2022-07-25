@@ -152,7 +152,7 @@ const OrderDetail = props => {
                   style: 'currency',
                   currency: 'USD',
                 })
-                  ? data?.subTotal?.toLocaleString('en-US', {
+                  ? data?.bill?.totalPrice?.toLocaleString('en-US', {
                       style: 'currency',
                       currency: 'USD',
                     })
