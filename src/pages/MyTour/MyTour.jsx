@@ -169,9 +169,9 @@ const MyTour = () => {
           />
         </>
       ),
-      okText: 'Refund permanently',
+      okText: 'Confirm',
       okType: 'danger',
-      cancelText: 'No',
+      cancelText: 'Cancel',
       onOk() {
         handleRefund(values);
       },
