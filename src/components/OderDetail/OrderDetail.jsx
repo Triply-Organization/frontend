@@ -12,6 +12,8 @@ const OrderDetail = props => {
   const { data, finalTotal, discountValue, taxInfo, voucherCode } = props;
   const { t } = useTranslation();
 
+  console.log(finalTotal);
+
   return (
     <>
       <Divider />
