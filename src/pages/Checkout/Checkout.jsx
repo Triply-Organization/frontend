@@ -52,6 +52,8 @@ const Checkout = () => {
   const filterTimeout = useRef(null);
   const { t } = useTranslation();
 
+  console.log(voucherData);
+
   const onFinish = values => {
     const totalTicketAmount =
       amountAdultTicket + amountYouthTicket + amountChidrenTicket;
@@ -67,7 +69,7 @@ const Checkout = () => {
       phone: values.phone,
       tourName: checkoutData.tourTitle,
       email: values.email,
-      name: `${values.first_name} ${values.last_name}`,
+      name: values.full_name,
       numberOfTickets: totalTicketAmount,
     };
     const newValues = {
@@ -82,7 +84,7 @@ const Checkout = () => {
       phone: values.phone,
       tourName: checkoutData.tourTitle,
       email: values.email,
-      name: `${values.first_name} ${values.last_name}`,
+      name: values.full_name,
       numberOfTickets: totalTicketAmount,
     };
     if (voucherRemain !== 0) {
@@ -145,7 +147,7 @@ const Checkout = () => {
   useEffect(() => {
     if (!_.isEmpty(userInfo)) {
       const valueFormContact = {
-        first_name: userInfo.name,
+        full_name: userInfo.name,
         email: userInfo.email,
         phone: userInfo.phone,
       };
@@ -246,7 +248,7 @@ const Checkout = () => {
               }}
             >
               <Form.Item
-                name="first_name"
+                name="full_name"
                 rules={[
                   {
                     required: true,
@@ -255,10 +257,10 @@ const Checkout = () => {
                 ]}
               >
                 <Input
-                  placeholder={t('checkout.contact_information.first_name')}
+                  placeholder={t('checkout.contact_information.full_name')}
                 />
               </Form.Item>
-              <Form.Item
+              {/* <Form.Item
                 name="last_name"
                 rules={[
                   {
@@ -270,7 +272,7 @@ const Checkout = () => {
                 <Input
                   placeholder={t('checkout.contact_information.last_name')}
                 />
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item
                 name="email"
                 rules={[

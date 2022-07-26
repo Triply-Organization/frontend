@@ -180,6 +180,7 @@
       "contact_information": {
         "title": "Thông tin liên hệ",
         "first_name": "Tên",
+        "full_name": "Họ và tên",
         "last_name": "Họ",
         "email": "Email",
         "phone": "Số điện thoại",

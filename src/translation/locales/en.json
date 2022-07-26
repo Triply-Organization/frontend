@@ -180,6 +180,7 @@
       "title": "Contact Information",
       "first_name": "First Name",
       "last_name": "Last Name",
+      "full_name": "Full Name",
       "email": "Email",
       "phone": "Phone Number",
       "payment": "Payment Method",
