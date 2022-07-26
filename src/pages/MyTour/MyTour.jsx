@@ -157,11 +157,11 @@ const MyTour = () => {
         <>
           <Badge
             color="green"
-            text="Cancellation 7 days in advance: Lose 30% of the total value of the tour"
+            text="Cancellation 7 days in advance: Lose 50% of the total value of the tour"
           />
           <Badge
             color="red"
-            text="Cancellation from 2 to 6 days: Lose 50% of the total value of the tour program."
+            text="Cancellation from 2 to 6 days: Lose 70% of the total value of the tour program."
           />
           <Badge
             color="purple"
